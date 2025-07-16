@@ -13,7 +13,7 @@ import java.util.Date;
 public class JwtUtil {
     private SecretKey secretKey;
 
-    public JwtUtil(@Value("jwt.secret.key") String secretKey) {
+    public JwtUtil(@Value("${jwt.secret.key}") String secretKey) {
         this.secretKey = new SecretKeySpec(secretKey.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
     }
 
@@ -26,7 +26,6 @@ public class JwtUtil {
                 .expiration(new Date(System.currentTimeMillis() + expiredMs))
                 .signWith(secretKey)
                 .compact();
-
     }
 
     public String getUserName(String token) {
