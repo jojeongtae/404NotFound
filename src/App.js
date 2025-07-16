@@ -1,24 +1,27 @@
-import logo from './logo.svg';
+import { BrowserRouter, Route,  Routes } from 'react-router-dom';
 import './App.css';
+import MainLayout from "./pages/MainLayout";
+import HomePage from './pages/HomePage';
+import BoardPage from './pages/BoardPage';
+import { AuthProvider } from './context/AuthContext'; 
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<MainLayout />}>
+            {/* HomePage를 게시판 섹션의 부모 라우트로 설정 */}
+            <Route path='/' element={<HomePage />}>
+              {/* '/' 경로로 접속했을 때 HomePage의 Outlet에 BoardPage가 기본으로 렌더링됨 */}
+              <Route index element={<BoardPage />} /> 
+              {/* '/:boardId' 경로로 접속했을 때 HomePage의 Outlet에 해당 BoardPage가 렌더링됨 */}
+              <Route path=':boardId' element={<BoardPage />} />
+            </Route>
+          </Route>
+        </Routes>  
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
