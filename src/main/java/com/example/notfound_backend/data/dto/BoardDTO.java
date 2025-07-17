@@ -1,4 +1,4 @@
-package com.example.notfound_backend.data.DTO;
+package com.example.notfound_backend.data.dto;
 
 import com.example.notfound_backend.data.entity.UserAuthEntity;
 import lombok.AllArgsConstructor;

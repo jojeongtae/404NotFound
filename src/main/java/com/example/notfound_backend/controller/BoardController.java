@@ -1,6 +1,6 @@
 package com.example.notfound_backend.controller;
 
-import com.example.notfound_backend.data.DTO.BoardDTO;
+import com.example.notfound_backend.data.dto.BoardDTO;
 import com.example.notfound_backend.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

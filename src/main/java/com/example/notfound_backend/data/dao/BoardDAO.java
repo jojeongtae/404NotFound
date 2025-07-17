@@ -1,9 +1,8 @@
-package com.example.notfound_backend.data.DAO;
+package com.example.notfound_backend.data.dao;
 
 import com.example.notfound_backend.data.entity.BoardEntity;
 import com.example.notfound_backend.data.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,7 +1,7 @@
 package com.example.notfound_backend.service;
 
-import com.example.notfound_backend.data.DAO.BoardDAO;
-import com.example.notfound_backend.data.DTO.BoardDTO;
+import com.example.notfound_backend.data.dao.BoardDAO;
+import com.example.notfound_backend.data.dto.BoardDTO;
 import com.example.notfound_backend.data.entity.BoardEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
