@@ -31,5 +31,10 @@ public class UserAuthDAO {
         return userAuthRepository.save(userAuthEntity);
     }
 
+    // 비번수정
+    public int updatePassword(String username, String password) {
+        return userAuthRepository.updatePassword(username, passwordEncoder.encode(password));
+    }
+
 
 }
