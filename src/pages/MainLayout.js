@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import Modal from '../features/common/Modal'; // Modal 컴포넌트 임포트
-import LoginForm from '../features/auth/LoginForm'; // LoginForm 임포트
-import SignUpForm from '../features/auth/SignUpForm'; // SignUpForm 임포트
+import Modal from '../features/common/Modal';
+import LoginForm from '../features/auth/LoginForm';
+import SignUpForm from '../features/auth/SignUpForm';
+import '../style/MainPage.css'; // 테마 CSS 파일 임포트
 
 const MainLayout = () => {
   const { isLoggedIn, logout } = useAuth();
-  const [showModal, setShowModal] = useState(false); // 모달 표시 여부 상태
-  const [modalType, setModalType] = useState(null); // 'login' 또는 'signup'
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState(null);
 
   const openModal = (type) => {
     setModalType(type);
@@ -21,35 +22,35 @@ const MainLayout = () => {
   };
 
   return (
-    <div>
-      {/* 1. 헤더 영역: 로고와 네비게이션만 포함 */}
-      <header style={{ padding: '20px', borderBottom: '1px solid #ccc', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
-          <h1>404NotFound</h1>
+    <div className="main-container">
+      <header>
+        <Link to="/" className="header-title-container" style={{ textDecoration: 'none' }}>
+          <h1 className="glitch-title" data-text="404NotFound">404NotFound</h1>
         </Link>
-        <nav>
+        <nav className="nav-links">
           {isLoggedIn ? (
-            <button onClick={logout} style={{ marginRight: '10px' }}>Logout</button>
+            <button onClick={logout} className="nav-link">Logout</button>
           ) : (
             <>
-              <button onClick={() => openModal('login')} style={{ marginRight: '10px' }}>Login</button>
-              <button onClick={() => openModal('signup')} style={{ marginRight: '10px' }}>SignUp</button>
+              <button onClick={() => openModal('login')} className="nav-link">Login</button>
+              <button onClick={() => openModal('signup')} className="nav-link">SignUp</button>
             </>
           )}
         </nav>
       </header>
 
-      {/* 2. 메인 콘텐츠를 표시할 영역 */}
-      <main style={{ padding: '20px', minHeight: '70vh' }}>
+      <main>
+        {/* Outlet을 통해 현재 경로에 맞는 페이지 컴포넌트가 렌더링됩니다. */}
+        {/* 홈페이지의 경우, 특별한 콘텐츠가 없을 수 있습니다. */}
         <Outlet />
       </main>
 
-      {/* 3. 푸터 영역 */}
-      <footer style={{ padding: '20px', borderTop: '1px solid #ccc', textAlign: 'center' }}>
-        <p>&copy; 2025 404NotFound. All rights reserved.</p>
+      <footer>
+        <p className="subtitle">
+          A digital space for the lost and found<span className="blinking-cursor"></span>
+        </p>
       </footer>
 
-      {/* 모달 렌더링 */}
       {showModal && (
         <Modal onClose={closeModal}>
           {modalType === 'login' && <LoginForm onClose={closeModal} />}

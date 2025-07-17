@@ -22,9 +22,6 @@ const SignUpForm = ({ onClose }) => {
     const authData = {
       username: formData.username,
       password: formData.password,
-    };
-    const profileData = {
-      username: formData.username, 
       nickname: formData.nickname,
       phone: formData.phone,
       address: formData.address,
@@ -37,10 +34,6 @@ const SignUpForm = ({ onClose }) => {
 
       console.log('1. 인증 서버로 전송 성공:', authResponse.data);
 
-
-      // const profileResponse = await apiClient.post('/join', profileData);
-
-      // console.log('2. 프로필 서버로 전송 성공:', profileResponse.data);
       alert('회원가입이 완료되었습니다!');
       onClose(); // 모달 닫기
 

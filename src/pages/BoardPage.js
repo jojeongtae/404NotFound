@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage'; // NotFoundPage 임포트
+import apiClient from '../api/apiClient';
+import BoardPageForm from '../features/board/BoardPageForm';
 
 const BoardPage = () => {
   const { boardId } = useParams(); // URL 파라미터에서 boardId를 가져옴
@@ -23,12 +25,16 @@ const BoardPage = () => {
     return <NotFoundPage />;
   }
 
+
+
   return (
-    <div>
-      <h3>{boardId} 게시판</h3>
-      <p>이곳은 {boardId} 게시판의 내용이 표시될 공간입니다.</p>
-      {/* 실제 게시물 목록이나 상세 내용이 여기에 렌더링됩니다. */}
-    </div>
+    <>
+      <div>
+        <h3>{boardId} 게시판</h3>
+        <BoardPageForm></BoardPageForm>
+
+      </div>
+    </>
   );
 };
 

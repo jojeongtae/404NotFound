@@ -4,6 +4,7 @@ import MainLayout from "./pages/MainLayout";
 import HomePage from './pages/HomePage';
 import BoardPage from './pages/BoardPage';
 import { AuthProvider } from './context/AuthContext'; 
+import NewBoardPage from './pages/NewBoardPage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
               <Route index element={<BoardPage />} /> 
               {/* '/:boardId' 경로로 접속했을 때 HomePage의 Outlet에 해당 BoardPage가 렌더링됨 */}
               <Route path=':boardId' element={<BoardPage />} />
+              <Route path='/board/new' element={<NewBoardPage />}></Route>
             </Route>
           </Route>
         </Routes>  
