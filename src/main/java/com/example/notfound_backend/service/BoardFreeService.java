@@ -1,6 +1,7 @@
 package com.example.notfound_backend.service;
 
 import com.example.notfound_backend.data.dao.BoardFreeDAO;
+import com.example.notfound_backend.data.dto.BoardFreeDTO;
 import com.example.notfound_backend.data.entity.BoardFreeEntity;
 import com.example.notfound_backend.data.entity.Status;
 import lombok.RequiredArgsConstructor;
@@ -16,11 +17,11 @@ import java.util.List;
 public class BoardFreeService {
     private final BoardFreeDAO boardFreeDAO;
 
-    public List<com.example.notfound_backend.data.dto.BoardFreeDTO> findAll() {
+    public List<BoardFreeDTO> findAll() {
         List<BoardFreeEntity> boardFreeEntityList = boardFreeDAO.findAllBoards();
-        List<com.example.notfound_backend.data.dto.BoardFreeDTO> boardFreeDTOList =new ArrayList<>();
+        List<BoardFreeDTO> boardFreeDTOList =new ArrayList<>();
         for(BoardFreeEntity boardFreeEntity : boardFreeEntityList){
-            com.example.notfound_backend.data.dto.BoardFreeDTO boardFreeDTO =new com.example.notfound_backend.data.dto.BoardFreeDTO();
+            BoardFreeDTO boardFreeDTO =new BoardFreeDTO();
             boardFreeDTO.setId(boardFreeEntity.getId());
             boardFreeDTO.setTitle(boardFreeEntity.getTitle());
             boardFreeDTO.setBody(boardFreeEntity.getBody());
@@ -38,15 +39,15 @@ public class BoardFreeService {
     }
 
     @Transactional
-    public com.example.notfound_backend.data.dto.BoardFreeDTO viewBoard(Integer id) {
+    public BoardFreeDTO viewBoard(Integer id) {
         boardFreeDAO.incrementViews(id);
         BoardFreeEntity entity= boardFreeDAO.findById(id)
                 .orElseThrow(()->new RuntimeException("Board not found"));
         return toDTO(entity);
     }
 
-    private com.example.notfound_backend.data.dto.BoardFreeDTO toDTO(BoardFreeEntity entity) {
-        return new com.example.notfound_backend.data.dto.BoardFreeDTO(
+    private BoardFreeDTO toDTO(BoardFreeEntity entity) {
+        return new BoardFreeDTO(
                 entity.getId(),
                 entity.getTitle(),
                 entity.getBody(),
@@ -62,7 +63,7 @@ public class BoardFreeService {
     }
 
     @Transactional
-    public com.example.notfound_backend.data.dto.BoardFreeDTO createBoard(com.example.notfound_backend.data.dto.BoardFreeDTO boardFreeDTO) {
+    public BoardFreeDTO createBoard(BoardFreeDTO boardFreeDTO) {
         BoardFreeEntity entity = new BoardFreeEntity();
         entity.setTitle(boardFreeDTO.getTitle());
         entity.setBody(boardFreeDTO.getBody());
@@ -80,7 +81,7 @@ public class BoardFreeService {
     }
 
     @Transactional
-    public com.example.notfound_backend.data.dto.BoardFreeDTO updateBoard(Integer id, com.example.notfound_backend.data.dto.BoardFreeDTO boardFreeDTO) {
+    public BoardFreeDTO updateBoard(Integer id, BoardFreeDTO boardFreeDTO) {
         BoardFreeEntity entity = boardFreeDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
 
@@ -104,7 +105,7 @@ public class BoardFreeService {
         boardFreeDAO.delete(entity);
     }
 
-    public com.example.notfound_backend.data.dto.BoardFreeDTO recommendBoard(Integer id) {
+    public BoardFreeDTO recommendBoard(Integer id) {
         boardFreeDAO.incrementRecommend(id);
         BoardFreeEntity entity= boardFreeDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
