@@ -29,7 +29,10 @@ const MainLayout = () => {
         </Link>
         <nav className="nav-links">
           {isLoggedIn ? (
-            <button onClick={logout} className="nav-link">Logout</button>
+            <>
+              <Link to="/board/new" className="nav-link">글쓰기</Link>
+              <button onClick={logout} className="nav-link">Logout</button>
+            </>
           ) : (
             <>
               <button onClick={() => openModal('login')} className="nav-link">Login</button>
@@ -39,10 +42,22 @@ const MainLayout = () => {
         </nav>
       </header>
 
-      <main>
-        {/* Outlet을 통해 현재 경로에 맞는 페이지 컴포넌트가 렌더링됩니다. */}
-        {/* 홈페이지의 경우, 특별한 콘텐츠가 없을 수 있습니다. */}
-        <Outlet />
+      <main style={{ display: 'flex', flexGrow: 1 }}>
+        {/* 왼쪽 게시판 목록 (사이드바) */}
+        <nav style={{ width: '200px', padding: '20px', borderRight: '1px solid #eee', overflowY: 'auto' }}>
+          <h3>게시판 목록</h3>
+          <ul style={{ listStyle: 'none', padding: 0 }}>
+            <li style={{ marginBottom: '10px' }}><Link to="/board/notice">공지사항</Link></li>
+            <li style={{ marginBottom: '10px' }}><Link to="/board/free">자유 게시판</Link></li>
+            <li style={{ marginBottom: '10px' }}><Link to="/board/qna">Q&A 게시판</Link></li>
+            {/* 더 많은 게시판 추가 가능 */}
+          </ul>
+        </nav>
+
+        {/* 오른쪽 메인 콘텐츠 영역 */}
+        <div style={{ flexGrow: 1, padding: '20px', overflowY: 'auto' }}>
+          <Outlet /> {/* 게시판 내용이 여기에 렌더링. */}
+        </div>
       </main>
 
       <footer>

@@ -36,16 +36,24 @@ body {
   text-align: center;
 }
 
+main {
+  margin-top: 40px; /* 본문 상단에 40px 간격 추가 */
+  width: 100%; /* 필요에 따라 너비 설정 */
+  padding: 20px; /* 내부 여백 */
+  box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
+}
+
 header {
   position: relative; /* 자식 요소의 절대 위치 지정을 위해 필요 */
   width: 100%;
-  padding: 20px;
+  padding: 0 20px 20px 20px; /* 상단 패딩 0으로 설정 */
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: flex-end; /* 네비게이션을 오른쪽 끝으로 보냄 */
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 20px; /* 헤더 아래 간격 추가 */
 }
 
 .header-title-container {

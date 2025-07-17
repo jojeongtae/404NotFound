@@ -1,31 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import apiClient from '../../api/apiClient';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Link 임포트
 
-const BoardPageForm = () => { // boardId prop은 일단 제거하거나 사용하지 않음
+const BoardPageForm = ({ boardId }) => { // boardId prop 다시 받기
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchAllPosts = async () => {
+        const fetchBoardPosts = async () => { 
+            if (!boardId) {
+                setLoading(false);
+                return; // boardId가 없으면 요청하지 않음
+            }
             try {
                 setLoading(true);
                 setError(null);
-                // TODO: 모든 게시글을 불러오는 실제 백엔드 API 경로로 변경하세요.
-                const res = await apiClient.get("/board/list"); 
+                const res = await apiClient.get(`/board/list`); 
                 setPosts(res.data);
-                console.log("모든 게시글:", res.data);
+                console.log(`게시판 ${boardId}의 게시글:`, res.data);
             } catch (err) {
-                console.error("모든 게시글 불러오기 실패:", err);
+                console.error(`게시판 ${boardId} 게시글 불러오기 실패:`, err);
                 setError("게시글을 불러오는 데 실패했습니다.");
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchAllPosts();
-    }, []); // 의존성 배열을 비워 컴포넌트 마운트 시 한 번만 실행
+        fetchBoardPosts();
+    }, [boardId]); // boardId가 변경될 때마다 다시 불러옴
 
     if (loading) {
         return <div>게시글을 불러오는 중...</div>;
@@ -35,22 +38,22 @@ const BoardPageForm = () => { // boardId prop은 일단 제거하거나 사용�
         return <div style={{ color: 'red' }}>{error}</div>;
     }
 
-
-
     return (
         <div>
-            <h3>모든 게시글</h3>
+            <h3>{boardId} 게시판</h3>
             {posts.length > 0 ? (
                 <ul>
                     {posts.map(post => (
-                        <li key={post.id}>{post.title}</li> // TODO: 실제 게시글 데이터 구조에 맞게 수정
+                        <li key={post.id}>
+                            <Link to={`/board/${boardId}/${post.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                               {post.id} | 제목 : {post.title} | 작성자 :{post.author}
+                            </Link>
+                        </li> 
                     ))}
                 </ul>
-            
             ) : (
                 <p>게시글이 없습니다.</p>
             )}
-            <Link to={"/board/new"}>글쓰기</Link>
         </div>
     )
 }

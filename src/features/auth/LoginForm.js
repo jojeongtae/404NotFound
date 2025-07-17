@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import apiClient from '../../api/apiClient';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../../features/auth/tokenSlice';
-import { setUser } from '../../features/auth/userSlice'; // setUser 액션 임포트
+import { setUser } from '../../features/auth/userSlice'; 
 
 const LoginForm = ({ onClose }) => {
   const { login } = useAuth();
@@ -40,35 +40,21 @@ const LoginForm = ({ onClose }) => {
       console.log("기본 사용자 정보 저장 완료:", basicUserData);
 
       // 2단계: 추가 정보 비동기 요청 및 저장
-      const fetchUserDetails = async (token) => {
+      const fetchUserDetails = async (token, username) => {
         try {
-          // TODO: 아래 URL을 실제 사용자 상세 정보 API 엔드포인트로 교체하세요.
-          // const userDetailsResponse = await apiClient.get('/api/user/details', {
-          //   headers: { 'Authorization': token }
-          // });
-
-          // --- 아래는 API 연동 전 임시 목(Mock) 데이터입니다. ---
-          // --- 실제 API 연동 시 이 부분을 삭제하고 위 주석을 해제하세요. ---
-          const userDetailsResponse = {
-            data: {
-              nickname: "임시 닉네임",
-              phone: "010-1234-5678",
-              address: "임시 주소"
-            }
-          };
-          // --- 여기까지 임시 목 데이터 ---
-
+          const userDetailsResponse = await apiClient.get(`/user/user-info?username=${username}`, 
+            // { headers: { 'Authorization': token }}
+          );
           dispatch(setUser(userDetailsResponse.data));
           console.log("추가 사용자 정보 저장 완료:", userDetailsResponse.data);
 
         } catch (error) {
           console.error("추가 사용자 정보 로딩 중 오류 발생:", error);
-          // 추가 정보 로딩 실패 시 사용자에게 알림을 주거나 다른 처리를 할 수 있습니다.
         }
       };
 
       if (accessToken) {
-        fetchUserDetails(accessToken);
+        fetchUserDetails(accessToken, basicUserData.username);
       }
       
       login(); // AuthContext의 로그인 상태 업데이트
