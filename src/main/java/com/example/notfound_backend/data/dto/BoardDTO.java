@@ -17,7 +17,7 @@ public class BoardDTO {
     private String title;
     private String body;
     private String imgsrc;
-    private UserAuthEntity author;
+    private String author;
     private Integer recommend;
     private Integer views;
     private String category;

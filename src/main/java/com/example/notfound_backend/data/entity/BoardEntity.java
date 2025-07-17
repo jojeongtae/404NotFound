@@ -33,22 +33,20 @@ public class BoardEntity {
     @Column(name = "imgsrc")
     private String imgsrc;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "author", nullable = false)
-    private UserAuthEntity author;
+    @Column(name="author")
+    private String author;
 
     @ColumnDefault("0")
     @Column(name = "recommend")
-    private Integer recommend;
+    private Integer recommend=0;
 
     @ColumnDefault("0")
     @Column(name = "views")
-    private Integer views;
+    private Integer views=0;
 
     @Size(max = 30)
     @Column(name = "category", length = 30)
-    private String category;
+    private String category="NORMAL";
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
@@ -58,9 +56,9 @@ public class BoardEntity {
     @Column(name = "updated_at")
     private Instant updatedAt;
 
-    @ColumnDefault("'VISIBLE'")
-    @Lob
-    @Column(name = "status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", columnDefinition = "ENUM('VISIBLE','DELETED','PRIVATE','BLOCKED')", nullable = false)
+    private Status status = Status.VISIBLE;
 
 }
+
