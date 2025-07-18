@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface BoardFoodRepository extends JpaRepository<BoardFoodEntity, Integer> {
 
     List<BoardFoodEntity> findAll();
@@ -21,6 +23,10 @@ public interface BoardFoodRepository extends JpaRepository<BoardFoodEntity, Inte
     @Modifying
     @Query("UPDATE BoardFoodEntity b SET b.recommend = b.recommend + 1 WHERE b.id = :id")
     void incrementRecommend(@Param("id") Integer id);
+
+    @Modifying
+    @Query("UPDATE BoardFoodEntity b SET b.recommend = b.recommend - 1 WHERE b.id = :id AND b.recommend > 0")
+    void decrementRecommend(@Param("id") Integer id);
 
     Optional<BoardFoodEntity> findById(Integer id);
 

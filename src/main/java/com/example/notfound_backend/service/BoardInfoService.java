@@ -3,6 +3,7 @@ package com.example.notfound_backend.service;
 import com.example.notfound_backend.data.dao.BoardInfoDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
 import com.example.notfound_backend.data.dto.BoardDTO;
+import com.example.notfound_backend.data.entity.BoardFoodEntity;
 import com.example.notfound_backend.data.entity.BoardInfoEntity;
 import com.example.notfound_backend.data.entity.Status;
 import com.example.notfound_backend.data.entity.UserAuthEntity;
@@ -117,6 +118,13 @@ public class BoardInfoService {
 
     public BoardDTO recommendBoard(Integer id) {
         boardInfoDAO.incrementRecommend(id);
+        BoardInfoEntity entity= boardInfoDAO.findById(id)
+                .orElseThrow(() -> new RuntimeException("Board not found"));
+        return toDTO(entity);
+    }
+
+    public BoardDTO cancelRecommendBoard(Integer id) {
+        boardInfoDAO.decrementRecommend(id);
         BoardInfoEntity entity= boardInfoDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
         return toDTO(entity);

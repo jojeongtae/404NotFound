@@ -29,6 +29,9 @@ public class BoardFoodDAO {
     }
 
     @Transactional
+    public void decrementRecommend(Integer id) {boardFoodRepository.decrementRecommend(id);}
+
+    @Transactional
     public void incrementViews(Integer id) {
         boardFoodRepository.incrementViews(id);
     }

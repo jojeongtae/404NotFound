@@ -3,10 +3,7 @@ package com.example.notfound_backend.service;
 import com.example.notfound_backend.data.dao.BoardNoticeDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
 import com.example.notfound_backend.data.dto.BoardDTO;
-import com.example.notfound_backend.data.entity.BoardFreeEntity;
-import com.example.notfound_backend.data.entity.BoardNoticeEntity;
-import com.example.notfound_backend.data.entity.Status;
-import com.example.notfound_backend.data.entity.UserAuthEntity;
+import com.example.notfound_backend.data.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
@@ -146,6 +143,13 @@ public class BoardNoticeService {
 
     public BoardDTO recommendBoard(Integer id) {
         boardNoticeDAO.incrementRecommend(id);
+        BoardNoticeEntity entity= boardNoticeDAO.findById(id)
+                .orElseThrow(() -> new RuntimeException("Board not found"));
+        return toDTO(entity);
+    }
+
+    public BoardDTO cancelRecommendBoard(Integer id) {
+        boardNoticeDAO.decrementRecommend(id);
         BoardNoticeEntity entity= boardNoticeDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
         return toDTO(entity);

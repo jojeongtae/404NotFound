@@ -22,5 +22,9 @@ public interface BoardNoticeRepository extends JpaRepository<BoardNoticeEntity, 
     @Query("UPDATE BoardNoticeEntity b SET b.recommend = b.recommend + 1 WHERE b.id = :id")
     void incrementRecommend(@Param("id") Integer id);
 
+    @Modifying
+    @Query("UPDATE BoardNoticeEntity b SET b.recommend = b.recommend - 1 WHERE b.id = :id AND b.recommend > 0")
+    void decrementRecommend(@Param("id") Integer id);
+
     Optional<BoardNoticeEntity> findById(Integer id);
 }

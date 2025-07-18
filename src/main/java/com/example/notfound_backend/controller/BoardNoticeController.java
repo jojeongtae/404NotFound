@@ -55,4 +55,10 @@ public class BoardNoticeController {
         BoardDTO updated= boardNoticeService.recommendBoard(id);
         return ResponseEntity.ok(updated);
     }
+
+    @PatchMapping("/{id}/cancel_recommend")
+    public ResponseEntity<BoardDTO> cancelRecommend(@PathVariable Integer id) {
+        BoardDTO updated= boardNoticeService.cancelRecommendBoard(id);
+        return ResponseEntity.ok(updated);
+    }
 }
