@@ -12,7 +12,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "board")
+@Table(name = "board_free")
 public class BoardEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +33,12 @@ public class BoardEntity {
     @Column(name = "imgsrc")
     private String imgsrc;
 
-    @Column(name="author")
-    private String author;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author", referencedColumnName = "username") // 외래키 설정
+    private UserAuthEntity author;
+
+//    @Column(name="author")
+//    private String author;
 
     @ColumnDefault("0")
     @Column(name = "recommend")

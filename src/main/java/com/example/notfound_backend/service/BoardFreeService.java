@@ -4,6 +4,7 @@ import com.example.notfound_backend.data.dao.BoardFreeDAO;
 import com.example.notfound_backend.data.dto.BoardFreeDTO;
 import com.example.notfound_backend.data.entity.BoardFreeEntity;
 import com.example.notfound_backend.data.entity.Status;
+import com.example.notfound_backend.data.entity.UserAuthEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +27,11 @@ public class BoardFreeService {
             boardFreeDTO.setTitle(boardFreeEntity.getTitle());
             boardFreeDTO.setBody(boardFreeEntity.getBody());
             boardFreeDTO.setImgsrc(boardFreeEntity.getImgsrc());
-            boardFreeDTO.setAuthor(boardFreeEntity.getAuthor());
+
+            if (boardFreeEntity.getAuthor() != null) {
+                boardFreeDTO.setAuthor(boardFreeEntity.getAuthor());
+            }
+
             boardFreeDTO.setRecommend(boardFreeEntity.getRecommend());
             boardFreeDTO.setViews(boardFreeEntity.getViews());
             boardFreeDTO.setCategory(boardFreeEntity.getCategory());

@@ -1,5 +1,6 @@
 package com.example.notfound_backend.data.dto;
 
+import com.example.notfound_backend.data.entity.UserAuthEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
