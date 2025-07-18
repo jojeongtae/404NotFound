@@ -5,7 +5,7 @@ import BoardPageForm from '../features/board/BoardPageForm';
 
 const BoardPage = () => {
   const { boardId } = useParams();
-  const validBoardIds = ['free', 'notice', 'qna','info','food','used','ox','quiz','servy']; // 유효한 게시판 ID 목록 정의
+  const validBoardIds = ['free', 'notice', 'qna','info','food','used','ox','quiz','survey']; // 유효한 게시판 ID 목록 정의
 
   // boardId가 없을 경우 (루트 경로) 404 Not Found 컨셉 메시지 표시
   if (!boardId) {

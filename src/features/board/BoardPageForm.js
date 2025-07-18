@@ -16,7 +16,7 @@ const BoardPageForm = ({ boardId }) => { // boardId prop 다시 받기
         food:"먹거리 게시판",
         used:"중고 게시판",
         quiz:"퀴즈 게시판",
-        servy:"설문조사 게시판",
+        survey:"설문조사 게시판",
         ox:"OX 게시판"
     };
 
@@ -74,7 +74,7 @@ const BoardPageForm = ({ boardId }) => { // boardId prop 다시 받기
                                 <span className="post-item post-title">{post.title}</span>
                                 <span className="post-item post-author">{post.author}</span>
                                 <span className="post-item post-views">{post.views}</span>
-                                <span className="post-item post-recommend">0</span> {/* 임시 추천 수 */}
+                                <span className="post-item post-recommend">{post.recommend}</span> {/* 임시 추천 수 */}
                             </Link>
                         </li> 
                     ))}
