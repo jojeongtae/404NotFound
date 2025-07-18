@@ -53,7 +53,6 @@ public class UserAuthService implements UserDetailsService {
 
         UserAuthEntity userAuthEntity = UserAuthEntity.builder()
                 .username(userJoinDTO.getUsername())
-                //.password(userJoinDTO.getPassword())
                 .build();
 
         UserInfoEntity userInfoEntity = UserInfoEntity.builder()
@@ -77,6 +76,8 @@ public class UserAuthService implements UserDetailsService {
         }
         if (!passwordEncoder.matches(userAuthUpdateDTO.getOldPassword(), userAuthEntity.getPassword())) {
             throw new IllegalArgumentException("기존 비밀번호 불일치");
+        } else if (userAuthUpdateDTO.getOldPassword().equals(userAuthUpdateDTO.getNewPassword())) {
+            throw new IllegalArgumentException("기존 비밀번호와 새 비밀번호가 같습니다.");
         } else {
             int result = userAuthDAO.updatePassword(userAuthUpdateDTO.getUsername(), userAuthUpdateDTO.getNewPassword());
             return (result == 1) ? "비밀번호 수정 성공" : "비밀번호 수정 실패";
