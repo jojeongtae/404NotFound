@@ -1,6 +1,5 @@
 package com.example.notfound_backend.data.dto;
 
-import com.example.notfound_backend.data.entity.UserAuthEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,12 +11,12 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BoardFreeDTO {
+public class BoardDTO {
     private Integer id;
     private String title;
     private String body;
     private String imgsrc;
-    private String author;
+    private String author; //username
     private Integer recommend;
     private Integer views;
     private String category;

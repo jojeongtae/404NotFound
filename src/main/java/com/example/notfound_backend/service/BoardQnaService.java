@@ -1,9 +1,9 @@
 package com.example.notfound_backend.service;
 
-import com.example.notfound_backend.data.dao.BoardFreeDAO;
+import com.example.notfound_backend.data.dao.BoardQnaDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
 import com.example.notfound_backend.data.dto.BoardDTO;
-import com.example.notfound_backend.data.entity.BoardFreeEntity;
+import com.example.notfound_backend.data.entity.BoardQnaEntity;
 import com.example.notfound_backend.data.entity.Status;
 import com.example.notfound_backend.data.entity.UserAuthEntity;
 import lombok.RequiredArgsConstructor;
@@ -16,44 +16,45 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BoardFreeService {
-    private final BoardFreeDAO boardFreeDAO;
+public class BoardQnaService {
+
+    private final BoardQnaDAO boardQnaDAO;
     private final UserAuthDAO userAuthDAO;
 
     public List<BoardDTO> findAll() {
-        List<BoardFreeEntity> boardFreeEntityList = boardFreeDAO.findAllBoards();
+        List<BoardQnaEntity> boardQnaEntityList = boardQnaDAO.findAllBoards();
         List<BoardDTO> boardDTOList =new ArrayList<>();
-        for(BoardFreeEntity boardFreeEntity : boardFreeEntityList){
-            BoardDTO boardFreeDTO =new BoardDTO();
-            boardFreeDTO.setId(boardFreeEntity.getId());
-            boardFreeDTO.setTitle(boardFreeEntity.getTitle());
-            boardFreeDTO.setBody(boardFreeEntity.getBody());
-            boardFreeDTO.setImgsrc(boardFreeEntity.getImgsrc());
+        for(BoardQnaEntity boardQnaEntity : boardQnaEntityList){
+            BoardDTO boardQnaDTO =new BoardDTO();
+            boardQnaDTO.setId(boardQnaEntity.getId());
+            boardQnaDTO.setTitle(boardQnaEntity.getTitle());
+            boardQnaDTO.setBody(boardQnaEntity.getBody());
+            boardQnaDTO.setImgsrc(boardQnaEntity.getImgsrc());
 
-            if (boardFreeEntity.getAuthor() != null) {
-                boardFreeDTO.setAuthor(boardFreeEntity.getAuthor().getUsername());
+            if (boardQnaEntity.getAuthor() != null) {
+                boardQnaDTO.setAuthor(boardQnaEntity.getAuthor().getUsername());
             }
 
-            boardFreeDTO.setRecommend(boardFreeEntity.getRecommend());
-            boardFreeDTO.setViews(boardFreeEntity.getViews());
-            boardFreeDTO.setCategory(boardFreeEntity.getCategory());
-            boardFreeDTO.setCreatedAt(boardFreeEntity.getCreatedAt());
-            boardFreeDTO.setUpdatedAt(boardFreeEntity.getUpdatedAt());
-            boardFreeDTO.setStatus(boardFreeEntity.getStatus().name());
-            boardDTOList.add(boardFreeDTO);
+            boardQnaDTO.setRecommend(boardQnaEntity.getRecommend());
+            boardQnaDTO.setViews(boardQnaEntity.getViews());
+            boardQnaDTO.setCategory(boardQnaEntity.getCategory());
+            boardQnaDTO.setCreatedAt(boardQnaEntity.getCreatedAt());
+            boardQnaDTO.setUpdatedAt(boardQnaEntity.getUpdatedAt());
+            boardQnaDTO.setStatus(boardQnaEntity.getStatus().name());
+            boardDTOList.add(boardQnaDTO);
         }
         return boardDTOList;
     }
 
     @Transactional
     public BoardDTO viewBoard(Integer id) {
-        boardFreeDAO.incrementViews(id);
-        BoardFreeEntity entity= boardFreeDAO.findById(id)
+        boardQnaDAO.incrementViews(id);
+        BoardQnaEntity entity= boardQnaDAO.findById(id)
                 .orElseThrow(()->new RuntimeException("Board not found"));
         return toDTO(entity);
     }
 
-    private BoardDTO toDTO(BoardFreeEntity entity) {
+    private BoardDTO toDTO(BoardQnaEntity entity) {
         return new BoardDTO(
                 entity.getId(),
                 entity.getTitle(),
@@ -71,7 +72,7 @@ public class BoardFreeService {
 
     @Transactional
     public BoardDTO createBoard(BoardDTO boardDTO) {
-        BoardFreeEntity entity = new BoardFreeEntity();
+        BoardQnaEntity entity = new BoardQnaEntity();
         entity.setTitle(boardDTO.getTitle());
         entity.setBody(boardDTO.getBody());
         entity.setImgsrc(boardDTO.getImgsrc());
@@ -81,17 +82,17 @@ public class BoardFreeService {
 
         entity.setRecommend(0);
         entity.setViews(0); // 새 글이니 조회수 0으로 시작
-        entity.setCategory("NORMAL");
+        entity.setCategory("FOOD");
         entity.setStatus(Status.VISIBLE);
         entity.setCreatedAt(Instant.now());
         entity.setUpdatedAt(Instant.now());
-        BoardFreeEntity saved = boardFreeDAO.save(entity);
+        BoardQnaEntity saved = boardQnaDAO.save(entity);
         return toDTO(saved);
     }
 
     @Transactional
     public BoardDTO updateBoard(Integer id, BoardDTO boardDTO) {
-        BoardFreeEntity entity = boardFreeDAO.findById(id)
+        BoardQnaEntity entity = boardQnaDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
 
         // 원하는 필드만 수정
@@ -103,21 +104,22 @@ public class BoardFreeService {
         entity.setStatus(boardDTO.getStatus() != null ? Status.valueOf(boardDTO.getStatus()) : entity.getStatus());
         entity.setUpdatedAt(Instant.now());
 
-        BoardFreeEntity updated = boardFreeDAO.save(entity);
+        BoardQnaEntity updated = boardQnaDAO.save(entity);
         return toDTO(updated);
     }
 
     @Transactional
     public void deleteBoard(Integer id) {
-        BoardFreeEntity entity = boardFreeDAO.findById(id)
+        BoardQnaEntity entity = boardQnaDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
-        boardFreeDAO.delete(entity);
+        boardQnaDAO.delete(entity);
     }
 
     public BoardDTO recommendBoard(Integer id) {
-        boardFreeDAO.incrementRecommend(id);
-        BoardFreeEntity entity= boardFreeDAO.findById(id)
+        boardQnaDAO.incrementRecommend(id);
+        BoardQnaEntity entity= boardQnaDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
         return toDTO(entity);
     }
+
 }

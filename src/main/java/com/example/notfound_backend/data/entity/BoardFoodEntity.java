@@ -12,8 +12,8 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "board_free")
-public class BoardFreeEntity {
+@Table(name = "board_food")
+public class BoardFoodEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -47,8 +47,9 @@ public class BoardFreeEntity {
     private Integer views=0;
 
     @Size(max = 30)
+    @ColumnDefault("'FOOD'")
     @Column(name = "category", length = 30)
-    private String category="NORMAL";
+    private String category="FOOD";
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
@@ -63,4 +64,3 @@ public class BoardFreeEntity {
     private Status status = Status.VISIBLE;
 
 }
-
