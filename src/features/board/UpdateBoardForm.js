@@ -21,7 +21,7 @@ const dispatch = useDispatch();
         setLoading(true);
         setError(null);
         // TODO: 게시글 상세 정보 API 경로 확인
-        const response = await apiClient.get(`/board/${postId}`); // 게시글 상세 정보 불러오기
+        const response = await apiClient.get(`/${boardId}/${postId}`); // 게시글 상세 정보 불러오기
         const postData = response.data;
 
         // 작성자 확인
@@ -67,7 +67,7 @@ const dispatch = useDispatch();
         author: originalAuthor, // 작성자는 변경되지 않음
       };
       // TODO: 게시글 수정 API 경로 확인 (PUT 또는 PATCH)
-      await apiClient.put(`/board/${postId}`, updatedPost);
+      await apiClient.put(`/${boardId}/${postId}`, updatedPost);
       dispatch(setPostDetails({...updatedPost, id:postId}))
       alert('게시글이 성공적으로 수정되었습니다!');
       navigate(`/board/${boardId}/${postId}`); // 수정된 게시글 상세 페이지로 이동

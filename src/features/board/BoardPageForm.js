@@ -7,6 +7,19 @@ const BoardPageForm = ({ boardId }) => { // boardId prop 다시 받기
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // boardId를 한글 이름으로 매핑하는 객체
+    const boardNames = {
+        free: '자유 게시판',
+        notice: '공지사항',
+        qna: 'Q&A 게시판',
+        info:"정보 게시판",
+        food:"먹거리 게시판",
+        used:"중고 게시판",
+    };
+
+    // boardId에 해당하는 한글 게시판 이름 또는 기본값 설정
+    const displayBoardName = boardNames[boardId] || `${boardId} 게시판`;
+
     useEffect(() => {
         const fetchBoardPosts = async () => { 
             if (!boardId) {
@@ -16,7 +29,7 @@ const BoardPageForm = ({ boardId }) => { // boardId prop 다시 받기
             try {
                 setLoading(true);
                 setError(null);
-                const res = await apiClient.get(`/board/${boardId}/list`); 
+                const res = await apiClient.get(`/${boardId}/list`); 
                 setPosts(res.data);
                 console.log(`게시판 ${boardId}의 게시글:`, res.data);
             } catch (err) {
@@ -37,16 +50,28 @@ const BoardPageForm = ({ boardId }) => { // boardId prop 다시 받기
     if (error) {
         return <div style={{ color: 'red' }}>{error}</div>;
     }
-
+                console.log(posts);
     return (
         <div>
-            <h3>{boardId} 게시판</h3>
+            <h3>{displayBoardName}</h3> {/* 한글 게시판 이름 사용 */}
+            <div className="post-list-header"> {/* 헤더 추가 */}
+                <span className="header-item header-id">번호</span>
+                <span className="header-item header-title">제목</span>
+                <span className="header-item header-author">글쓴이</span>
+                <span className="header-item header-views">조회</span>
+                <span className="header-item header-recommend">추천</span>
+            </div>
             {posts.length > 0 ? (
-                <ul>
+
+                <ul className="post-list"> {/* 클래스 추가 */}
                     {posts.map(post => (
-                        <li key={post.id}>
-                            <Link to={`/board/${boardId}/${post.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                               {post.id} | 제목 : {post.title} | 작성자 :{post.author}
+                        <li key={post.id} className="post-list-item"> {/* 클래스 추가 */}
+                            <Link to={`/board/${boardId}/${post.id}`} className="post-link"> {/* 클래스 추가 */}
+                                <span className="post-item post-id">{post.id}</span>
+                                <span className="post-item post-title">{post.title}</span>
+                                <span className="post-item post-author">{post.author}</span>
+                                <span className="post-item post-views">{post.views}</span>
+                                <span className="post-item post-recommend">0</span> {/* 임시 추천 수 */}
                             </Link>
                         </li> 
                     ))}

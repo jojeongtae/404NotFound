@@ -23,7 +23,7 @@ const handleDeletePost= async()=>{
   try {
     const result = window.confirm("정말 삭제하시겠습니까?");
     if(result){
-    const res = await apiClient.delete(`/board/${postId}`);
+    const res = await apiClient.delete(`/${boardId}/${postId}`);
     console.log(res.data);
     alert("삭제가 완료되었습니다");
     navigate(-1);

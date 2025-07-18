@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Modal from '../features/common/Modal';
@@ -9,6 +9,7 @@ import '../style/MainPage.css'; // 테마 CSS 파일 임포트
 import { clearToken } from '../features/auth/tokenSlice';
 import { clearUser } from '../features/auth/userSlice';
 import { useDispatch } from 'react-redux'; // useDispatch는 계속 필요
+import { clearPost } from '../features/board/boardSlice';
 
 const MainLayout = () => {
   const { isLoggedIn, logout } = useAuth();
@@ -29,8 +30,9 @@ const MainLayout = () => {
   // useEffect(() => {
   //   dispatch(clearToken());
   //   dispatch(clearUser());
-  // }, []);
-  // }, []);
+  //   dispatch(clearPost());
+  // }, [dispatch]);
+
   return (
     <div className="main-container">
       <header>
@@ -42,7 +44,8 @@ const MainLayout = () => {
           {isLoggedIn ? (
             <>
               <Link to="/board/new" className="nav-link">글쓰기</Link>
-              <Link to={"/user/userinfo"}>내 정보 확인</Link>
+              <Link to={"/user/userinfo"} className='nav-link'>내 정보 확인</Link>
+              <button onClick={logout} className="nav-link">Logout</button>
             </>
               )
             : (<>
@@ -62,7 +65,7 @@ const MainLayout = () => {
             <li style={{ marginBottom: '10px' }}><Link to="/board/notice">공지사항</Link></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/free">자유 게시판</Link></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/qna">Q&A 게시판</Link></li>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/info">Q&A 게시판</Link></li>
+            <li style={{ marginBottom: '10px' }}><Link to="/board/info">정보 게시판</Link></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/used">중고거래 게시판</Link></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/food">먹거리 게시판</Link></li>
             {/* 더 많은 게시판 추가 가능 */}

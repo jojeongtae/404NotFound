@@ -1,14 +1,11 @@
-
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import NotFoundPage from './NotFoundPage'; // NotFoundPage 임포트
-import apiClient from '../api/apiClient';
+import NotFoundPage from './NotFoundPage';
 import BoardPageForm from '../features/board/BoardPageForm';
 
 const BoardPage = () => {
-  const { boardId } = useParams(); // URL 파라미터에서 boardId를 가져옴
-  // 유효한 게시판 ID 목록 정의
-  const validBoardIds = ['free', 'notice', 'qna'];
+  const { boardId } = useParams();
+  const validBoardIds = ['free', 'notice', 'qna','info','food','used']; // 유효한 게시판 ID 목록 정의
 
   // boardId가 없을 경우 (루트 경로) 404 Not Found 컨셉 메시지 표시
   if (!boardId) {
@@ -21,12 +18,16 @@ const BoardPage = () => {
     );
   }
 
+  // 유효하지 않은 boardId일 경우 NotFoundPage 표시
+  if (!validBoardIds.includes(boardId)) {
+    return <NotFoundPage />;
+  }
+
   return (
     <>
       <div>
-        <h3>{boardId} 게시판</h3>
-        <BoardPageForm></BoardPageForm>
-
+        {/* boardId를 BoardPageForm 컴포넌트에 prop으로 전달 */}
+        <BoardPageForm boardId={boardId} /> 
       </div>
     </>
   );

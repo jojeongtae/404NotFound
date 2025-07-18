@@ -5,7 +5,7 @@ import { setPostDetails } from './boardSlice';
 export const fetchPostDetailAndComments = async (boardId, postId,dispatch) => {
   try {
     // 게시글 상세 정보 불러오기
-    const postResponse = await apiClient.get(`/board/${postId}`); // TODO: 실제 백엔드 API 경로 확인
+    const postResponse = await apiClient.get(`/${boardId}/${postId}`); // TODO: 실제 백엔드 API 경로 확인
     dispatch(setPostDetails(postResponse.data));
     // 댓글 목록 불러오기
     // TODO: 실제 백엔드 API 경로로 변경하세요. (예: /api/board/{boardId}/posts/{postId}/comments)
