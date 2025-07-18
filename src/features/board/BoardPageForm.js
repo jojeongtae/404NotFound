@@ -16,7 +16,7 @@ const BoardPageForm = ({ boardId }) => { // boardId prop 다시 받기
             try {
                 setLoading(true);
                 setError(null);
-                const res = await apiClient.get(`/board/list`); 
+                const res = await apiClient.get(`/board/${boardId}/list`); 
                 setPosts(res.data);
                 console.log(`게시판 ${boardId}의 게시글:`, res.data);
             } catch (err) {
