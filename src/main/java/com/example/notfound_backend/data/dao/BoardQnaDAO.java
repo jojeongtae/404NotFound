@@ -30,6 +30,9 @@ public class BoardQnaDAO {
     }
 
     @Transactional
+    public void decrementRecommend(Integer id) {boardQnaRepository.decrementRecommend(id);}
+
+    @Transactional
     public void incrementViews(Integer id) {
         boardQnaRepository.incrementViews(id);
     }

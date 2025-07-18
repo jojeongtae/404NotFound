@@ -124,4 +124,11 @@ public class BoardFoodService {
         return toDTO(entity);
     }
 
+    public BoardDTO cancelRecommendBoard(Integer id) {
+        boardFoodDAO.decrementRecommend(id);
+        BoardFoodEntity entity= boardFoodDAO.findById(id)
+                .orElseThrow(() -> new RuntimeException("Board not found"));
+        return toDTO(entity);
+    }
+
 }

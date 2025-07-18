@@ -51,4 +51,11 @@ public class BoardFreeController {
         BoardDTO updated= boardFreeService.recommendBoard(id);
         return ResponseEntity.ok(updated);
     }
+
+    @PatchMapping("/{id}/cancel")
+    public ResponseEntity<BoardDTO> cancelRecommend(@PathVariable Integer id) {
+        BoardDTO updated= boardFreeService.cancelRecommendBoard(id);
+        return ResponseEntity.ok(updated);
+    }
+
 }

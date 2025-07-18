@@ -28,6 +28,9 @@ public class BoardFreeDAO {
     }
 
     @Transactional
+    public void decrementRecommend(Integer id) {boardFreeRepository.decrementRecommend(id);}
+
+    @Transactional
     public void incrementViews(Integer id) {
         boardFreeRepository.incrementViews(id);
     }

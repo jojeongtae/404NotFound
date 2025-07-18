@@ -24,6 +24,10 @@ public interface BoardQnaRepository extends JpaRepository<BoardQnaEntity, Intege
     @Query("UPDATE BoardQnaEntity b SET b.recommend = b.recommend + 1 WHERE b.id = :id")
     void incrementRecommend(@Param("id") Integer id);
 
+    @Modifying
+    @Query("UPDATE BoardQnaEntity b SET b.recommend = b.recommend - 1 WHERE b.id = :id AND b.recommend > 0")
+    void decrementRecommend(@Param("id") Integer id);
+
     Optional<BoardQnaEntity> findById(Integer id);
 
 }

@@ -29,6 +29,9 @@ public class BoardNoticeDAO {
     }
 
     @Transactional
+    public void decrementRecommend(Integer id) {boardNoticeRepository.decrementRecommend(id);}
+
+    @Transactional
     public void incrementViews(Integer id) {
         boardNoticeRepository.incrementViews(id);
     }
