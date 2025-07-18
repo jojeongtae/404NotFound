@@ -15,6 +15,9 @@ const BoardPageForm = ({ boardId }) => { // boardId prop 다시 받기
         info:"정보 게시판",
         food:"먹거리 게시판",
         used:"중고 게시판",
+        quiz:"퀴즈 게시판",
+        servy:"설문조사 게시판",
+        ox:"OX 게시판"
     };
 
     // boardId에 해당하는 한글 게시판 이름 또는 기본값 설정

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import apiClient from '../../api/apiClient';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'; // useNavigate 임포트
@@ -21,7 +21,7 @@ const NewBoardForm = () => {
             console.log(user.role);
             console.log(res.data);
             alert('글이 성공적으로 작성되었습니다!'); // 성공 알림
-            navigate(`/board/${boardId}`); // 'free' 게시판으로 이동
+            navigate(`/board/${boardId}`); // 예)'free' 게시판으로 이동
         } catch (error) {
             console.log(error);
             alert('글 작성에 실패했습니다.'); // 실패 알림
@@ -33,6 +33,7 @@ const NewBoardForm = () => {
                 e.preventDefault();
                 handleNewBoard();
             }}>
+                {/* 게시글 작성 */}
                 <select id="boardSelect" onChange={(e) => setBoardId(e.target.value)}>
                     <option value="">게시판을 선택</option>
                     {user.role === "ROLE_ADMIN" && (

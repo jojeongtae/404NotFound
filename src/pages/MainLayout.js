@@ -60,14 +60,21 @@ const MainLayout = () => {
       <main style={{ display: 'flex', flexGrow: 1 }}>
         {/* 왼쪽 게시판 목록 (사이드바) */}
         <nav style={{ width: '200px', padding: '20px', borderRight: '1px solid #eee', overflowY: 'auto' }}>
-          <h3>게시판 목록</h3>
+          <h3>게시판 목록</h3><br />
           <ul style={{ listStyle: 'none', padding: 0 }}>
+            <li style={{ marginBottom: '10px' }}><span>--운영자 게시판 목록--</span></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/notice">공지사항</Link></li>
+            <li style={{ marginBottom: '10px' }}><span>--일반 게시판 목록--</span></li>
+
             <li style={{ marginBottom: '10px' }}><Link to="/board/free">자유 게시판</Link></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/qna">Q&A 게시판</Link></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/info">정보 게시판</Link></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/used">중고거래 게시판</Link></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/food">먹거리 게시판</Link></li>
+            <li style={{ marginBottom: '10px' }}><span>--포인트 게시판 종류--</span></li>
+            <li style={{ marginBottom: '10px' }}><Link to="/board/quiz">퀴즈 게시판</Link></li>
+            <li style={{ marginBottom: '10px' }}><Link to="/board/ox">OX 게시판</Link></li>
+            <li style={{ marginBottom: '10px' }}><Link to="/board/servy">설문조사 게시판</Link></li>
             {/* 더 많은 게시판 추가 가능 */}
           </ul>
         </nav>

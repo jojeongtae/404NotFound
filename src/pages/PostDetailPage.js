@@ -5,36 +5,34 @@ import { useSelector } from 'react-redux';
 import { fetchPostDetailAndComments /*, submitComment */ } from '../features/board/boardService'; // 함수 임포트
 import { useDispatch } from 'react-redux';
 import apiClient from '../api/apiClient';
+import { useAuth } from '../context/AuthContext'; // useAuth 임포트
 
 const PostDetailPage = () => {
   const { boardId, postId } = useParams();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isRecommended, setIsRecommended] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const username = useSelector(state => state.user.username);
+  const { isLoggedIn } = useAuth(); // isLoggedIn 상태 가져오기
 
-  // const [comments, setComments] = useState([]); // 댓글 목록 상태
-  // const [newCommentText, setNewCommentText] = useState(''); // 새 댓글 텍스트 상태
-  // const [commentLoading, setCommentLoading] = useState(false); // 댓글 로딩 상태
-  // const [commentError, setCommentError] = useState(null); // 댓글 에러 상태
-const handleDeletePost= async()=>{
-  try {
-    const result = window.confirm("정말 삭제하시겠습니까?");
-    if(result){
-    const res = await apiClient.delete(`/${boardId}/${postId}`);
-    console.log(res.data);
-    alert("삭제가 완료되었습니다");
-    navigate(-1);
-    }else{
-      return;
+  const handleDeletePost= async()=>{
+    try {
+      const result = window.confirm("정말 삭제하시겠습니까?");
+      if(result){
+      const res = await apiClient.delete(`/${boardId}/${postId}`);
+      console.log(res.data);
+      alert("삭제가 완료되었습니다");
+      navigate(-1);
+      }else{
+        return;
+      }
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
   }
-}
-
 
   useEffect(() => {
     const loadPostAndComments = async () => {
@@ -60,23 +58,31 @@ const handleDeletePost= async()=>{
     }
   }, [boardId, postId, dispatch]);
 
-  // const handleCommentSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     setCommentLoading(true);
-  //     setCommentError(null);
-  //     await submitComment(boardId, postId, username, newCommentText);
-  //     setNewCommentText('');
-  //     await loadPostAndComments(); // 댓글 목록 새로고침
-  //     alert("댓글이 성공적으로 작성되었습니다.");
-  //   } catch (err) {
-  //     console.error("댓글 작성 실패:", err);
-  //     setCommentError(err.message);
-  //     alert(err.message);
-  //   } finally {
-  //     setCommentLoading(false);
-  //   }
-  // };
+  const handleRecommend = async() => {
+    if (!isLoggedIn) {
+      alert("로그인 후 추천할 수 있습니다.");
+      return;
+    }
+
+    try {
+      let res;
+      if (isRecommended) { // 이미 추천한 상태라면 추천 취소
+        res = await apiClient.patch(`/${boardId}/${postId}/cancel_recommend`);
+        alert("추천이 취소되었습니다!");
+        setIsRecommended(false);
+        setPost(prevPost => ({ ...prevPost, recommend: prevPost.recommend - 1 })); // 추천수 감소
+      } else { // 추천하지 않은 상태라면 추천
+        res = await apiClient.patch(`/${boardId}/${postId}/recommend`);
+        alert("추천되었습니다!");
+        setIsRecommended(true);
+        setPost(prevPost => ({ ...prevPost, recommend: prevPost.recommend + 1 })); // 추천수 증가
+      }
+      console.log(res.data);
+    } catch (error) {
+      console.error("추천/추천 취소 실패:", error);
+      alert("추천/추천 취소에 실패했습니다.");
+    }
+  }
 
   if (loading) {
     return <div style={{ textAlign: 'center', padding: '50px' }}>게시글을 불러오는 중...</div>;
@@ -99,6 +105,13 @@ const handleDeletePost= async()=>{
         <p>조회수: {post.views}</p>
         <hr />
         <div>내용: {post.body}</div>
+
+        <hr />
+        <button onClick={handleRecommend}>
+          {isRecommended ? "추천 취소" : "추천"}
+        </button>
+        <span>추천수 : {post.recommend}</span>
+        <hr />
 
         {/* 댓글 섹션 주석 처리 */}
         {/*
