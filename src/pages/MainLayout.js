@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; // useEffect 제거
 import { Outlet, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Modal from '../features/common/Modal';
 import LoginForm from '../features/auth/LoginForm';
 import SignUpForm from '../features/auth/SignUpForm';
 import '../style/MainPage.css'; // 테마 CSS 파일 임포트
+import { clearToken } from '../features/auth/tokenSlice';
+import { clearUser } from '../features/auth/userSlice';
+import { useDispatch } from 'react-redux'; // useDispatch는 계속 필요
 
 const MainLayout = () => {
   const { isLoggedIn, logout } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState(null);
+  const dispatch = useDispatch(); // useDispatch는 계속 필요
 
   const openModal = (type) => {
     setModalType(type);
@@ -21,6 +25,11 @@ const MainLayout = () => {
     setModalType(null);
   };
 
+  // useEffect 블록을 제거합니다.
+  // useEffect(() => {
+  //   dispatch(clearToken());
+  //   dispatch(clearUser());
+  // }, []);
   return (
     <div className="main-container">
       <header>
