@@ -38,6 +38,14 @@ public class UserInfoService {
                 .warning(userInfoEntity.getWarning())
                 .build();
     }
+    public boolean findByNickname(String nickname) {
+        UserInfoEntity userInfoEntity = userInfoDAO.findByNickname(nickname);
+        if (userInfoEntity == null) {
+            return true;
+        }
+        return false;
+    }
+
 
 
 

@@ -2,6 +2,7 @@ package com.example.notfound_backend.controller;
 
 import com.example.notfound_backend.data.dto.UserInfoAllDTO;
 import com.example.notfound_backend.data.dto.UserInfoDTO;
+import com.example.notfound_backend.service.UserAuthService;
 import com.example.notfound_backend.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/api/user")
 public class UserInfoController {
     private final UserInfoService userInfoService;
-
+    private final UserAuthService userAuthService;
     // 유저정보 수정
     @PutMapping(value = "/user-info")
     public ResponseEntity<UserInfoDTO> updateUserInfo(@RequestBody UserInfoDTO userInfoDTO) {
@@ -27,5 +28,22 @@ public class UserInfoController {
         return ResponseEntity.status(HttpStatus.OK).body(userInfoService.getUserInfo(username));
     }
 
+    @GetMapping(value = "/check-username/{username}")
+    public ResponseEntity<Boolean> getUserInfoByUsername(@PathVariable String username) { // @PathVariable로 변경
+        boolean isExists = userAuthService.findUserByUsername(username);
+        if (isExists) {
+            return ResponseEntity.ok(false); // 이미 사용 중 → 사용 불가
+        } else {
+            return ResponseEntity.ok(true);  // 사용 가능
+        }
+    }
+    @GetMapping(value = "/check-nickname/{nickname}")
+    public ResponseEntity<Boolean> getUserInfoByNickname(@PathVariable String nickname) {
+        boolean isExists = userInfoService.findByNickname(nickname);
+        if (isExists) {
+            return ResponseEntity.ok(false);
+        }
+        return ResponseEntity.ok(true);
+    }
 
 }
