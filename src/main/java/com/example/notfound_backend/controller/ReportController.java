@@ -45,7 +45,7 @@ public class ReportController {
         return ResponseEntity.status(HttpStatus.OK).body(reportService.getAllReports());
     }
 
-    // 신고응답 (관리자)
+    // 신고처리 (관리자)
     @PatchMapping(value = "/admin/report")
     public ResponseEntity<ReportResponseDTO> updateReportByAdmin(@RequestBody ReportUpdateByAdnimDTO reportUpdateByAdnimDTO) {
         ReportResponseDTO response = reportService.updateReportByAdmin(reportUpdateByAdnimDTO);

@@ -11,6 +11,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserInfoService {
@@ -19,11 +22,24 @@ public class UserInfoService {
 
     // 회원정보 수정
     @Transactional // 실행중 예외발생시 자동으로 롤백
-    public int updateUserInfo(UserInfoDTO userInfoDTO) {
-        if (userAuthDAO.findByUsername(userInfoDTO.getUsername()) == null) {
+    public UserInfoDTO updateUserInfo(UserInfoDTO userInfoDTO) {
+        UserAuthEntity userAuth = userAuthDAO.findByUsername(userInfoDTO.getUsername());
+        if (userAuth == null) {
             throw new UserNotFoundException("존재하지않는 username 입니다.");
         }
-        return userInfoDAO.updateUserInfo(userInfoDTO.getUsername(), userInfoDTO.getNickname(), userInfoDTO.getPhone(), userInfoDTO.getAddress());
+        UserInfoEntity userInfoEntity = UserInfoEntity.builder()
+                .username(userAuth)
+                .nickname(userInfoDTO.getNickname())
+                .phone(userInfoDTO.getPhone())
+                .address(userInfoDTO.getAddress())
+                .build();
+        UserInfoEntity updatedUserInfo = userInfoDAO.updateUserInfo(userInfoEntity);
+        return UserInfoDTO.builder()
+                .username(updatedUserInfo.getUsername().getUsername())
+                .nickname(updatedUserInfo.getNickname())
+                .phone(updatedUserInfo.getPhone())
+                .address(updatedUserInfo.getAddress())
+                .build();
     }
 
     // 회원정보 찾기
@@ -37,6 +53,24 @@ public class UserInfoService {
                 .point(userInfoEntity.getPoint())
                 .warning(userInfoEntity.getWarning())
                 .build();
+    }
+
+    // 회원정보리스트 (관리자)
+    public List<UserInfoAllDTO> getAllUserInfo() {
+        List<UserInfoEntity> userInfoEntityList = userInfoDAO.getAllUserInfo();
+        List<UserInfoAllDTO> userInfoDTOList = new ArrayList<>();
+        for (UserInfoEntity userInfoEntity : userInfoEntityList) {
+            UserInfoAllDTO userInfoAllDTO = UserInfoAllDTO.builder()
+                    .username(userInfoEntity.getUsername().getUsername())
+                    .nickname(userInfoEntity.getNickname())
+                    .phone(userInfoEntity.getPhone())
+                    .address(userInfoEntity.getAddress())
+                    .point(userInfoEntity.getPoint())
+                    .warning(userInfoEntity.getWarning())
+                    .build();
+            userInfoDTOList.add(userInfoAllDTO);
+        }
+        return userInfoDTOList;
     }
 
 
