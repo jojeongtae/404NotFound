@@ -8,6 +8,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserInfoDAO {
@@ -20,9 +22,13 @@ public class UserInfoDAO {
     }
 
     // 회원정보 수정
-//    @Transactional // 실행중 예외발생시 자동으로 롤백
-    public int updateUserInfo(String username, String nickname, String phone, String address) {
-        return userInfoRepository.updateUserInfo(username, nickname, phone, address);
+    public UserInfoEntity updateUserInfo(UserInfoEntity userInfoEntity) {
+        UserInfoEntity userInfo = userInfoRepository.getByUsername(userInfoEntity.getUsername());
+        userInfo.setUsername(userInfoEntity.getUsername());
+        userInfo.setNickname(userInfoEntity.getNickname());
+        userInfo.setPhone(userInfoEntity.getPhone());
+        userInfo.setAddress(userInfoEntity.getAddress());
+        return userInfoRepository.save(userInfo);
     }
 
     // 회원정보 찾기
@@ -39,4 +45,11 @@ public class UserInfoDAO {
         return userInfoEntity;
     }
 
+
+    // 회원정보리스트 (관리자)
+    public List<UserInfoEntity> getAllUserInfo() {
+        return userInfoRepository.findAll();
+    }
+
 }
+

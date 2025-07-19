@@ -119,7 +119,7 @@ public class ReportService {
         return reportResponseDTOS;
     }
 
-    // 신고응답 (관리자)
+    // 신고처리 (관리자)
     @Transactional
     public ReportResponseDTO updateReportByAdmin(ReportUpdateByAdnimDTO updateByAdnimDTO) {
         ReportEntity reportEntity = reportDAO.updateReportByAdmin(updateByAdnimDTO.getReportId(), updateByAdnimDTO.getStatus());

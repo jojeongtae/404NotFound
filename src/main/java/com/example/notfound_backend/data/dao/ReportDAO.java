@@ -50,7 +50,7 @@ public class ReportDAO {
         return reportRepository.findAll();
     }
 
-    // 신고응답 (관리자)
+    // 신고처리 (관리자)
     public ReportEntity updateReportByAdmin(Integer reportId, ReportStatus newStatus) {
         ReportEntity report = reportRepository.findById(reportId).orElseThrow(() -> new UserNotFoundException("존재하지 않는 신고"));
         report.setStatus(newStatus);
