@@ -36,6 +36,15 @@ public class UserInfoDAO {
         UserAuthEntity userAuthEntity = userAuthRepository.findById(username).orElse(null);
         return userInfoRepository.getByUsername(userAuthEntity);
     }
+    public UserAuthEntity findByUsername(String username) {
+        UserAuthEntity userAuthEntity = userAuthRepository.findByUsername(username);
+        return userAuthEntity;
+    }
+    public UserInfoEntity findByNickname(String nickname) {
+        UserInfoEntity userInfoEntity = userInfoRepository.findByNickname(nickname);
+        return userInfoEntity;
+    }
+
 
     // 회원정보리스트 (관리자)
     public List<UserInfoEntity> getAllUserInfo() {
@@ -43,3 +52,4 @@ public class UserInfoDAO {
     }
 
 }
+

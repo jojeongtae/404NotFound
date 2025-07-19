@@ -54,6 +54,14 @@ public class UserInfoService {
                 .warning(userInfoEntity.getWarning())
                 .build();
     }
+    public boolean findByNickname(String nickname) {
+        UserInfoEntity userInfoEntity = userInfoDAO.findByNickname(nickname);
+        if (userInfoEntity == null) {
+            return true;
+        }
+        return false;
+    }
+
 
     // 회원정보리스트 (관리자)
     public List<UserInfoAllDTO> getAllUserInfo() {

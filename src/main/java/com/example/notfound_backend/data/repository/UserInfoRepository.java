@@ -12,4 +12,6 @@ public interface UserInfoRepository extends JpaRepository<UserInfoEntity, Intege
     // 회원정보 찾기
     UserInfoEntity getByUsername(UserAuthEntity username);
 
+     UserInfoEntity findByNickname(String nickname);
+
 }

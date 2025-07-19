@@ -12,8 +12,8 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "board")
-public class BoardEntity {
+@Table(name = "board_info")
+public class BoardInfoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -33,8 +33,10 @@ public class BoardEntity {
     @Column(name = "imgsrc")
     private String imgsrc;
 
-    @Column(name="author")
-    private String author;
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "author", nullable = false)
+    private UserAuthEntity author;
 
     @ColumnDefault("0")
     @Column(name = "recommend")
@@ -45,8 +47,9 @@ public class BoardEntity {
     private Integer views=0;
 
     @Size(max = 30)
+    @ColumnDefault("'INFO'")
     @Column(name = "category", length = 30)
-    private String category="NORMAL";
+    private String category="INFO";
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
@@ -61,4 +64,3 @@ public class BoardEntity {
     private Status status = Status.VISIBLE;
 
 }
-

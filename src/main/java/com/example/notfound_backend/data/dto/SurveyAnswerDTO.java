@@ -11,16 +11,10 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BoardFreeDTO {
+public class SurveyAnswerDTO {
     private Integer id;
-    private String title;
-    private String body;
-    private String imgsrc;
-    private String author;
-    private Integer recommend;
-    private Integer views;
-    private String category;
+    private String username;
+    private String answers;
     private Instant createdAt;
-    private Instant updatedAt;
-    private String status;
+    private Integer parentId;
 }

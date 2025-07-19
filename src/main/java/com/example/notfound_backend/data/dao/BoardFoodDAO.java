@@ -1,0 +1,48 @@
+package com.example.notfound_backend.data.dao;
+
+import com.example.notfound_backend.data.entity.BoardFoodEntity;
+import com.example.notfound_backend.data.repository.BoardFoodRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+public class BoardFoodDAO {
+
+    private final BoardFoodRepository boardFoodRepository;
+
+    public List<BoardFoodEntity> findAllBoards() {
+        return boardFoodRepository.findAll();
+    }
+
+    public BoardFoodEntity save(BoardFoodEntity boardFoodEntity) {
+        return boardFoodRepository.save(boardFoodEntity);
+    }
+
+    @Transactional
+    public void incrementRecommend(Integer id) {
+        boardFoodRepository.incrementRecommend(id);
+    }
+
+    @Transactional
+    public void decrementRecommend(Integer id) {boardFoodRepository.decrementRecommend(id);}
+
+    @Transactional
+    public void incrementViews(Integer id) {
+        boardFoodRepository.incrementViews(id);
+    }
+
+    public Optional<BoardFoodEntity> findById(Integer id) {
+        return boardFoodRepository.findById(id);
+    }
+
+    public void delete(BoardFoodEntity boardFoodEntity) {
+        boardFoodRepository.delete(boardFoodEntity);
+    }
+
+
+}

@@ -1,6 +1,6 @@
 package com.example.notfound_backend.data.repository;
 
-import com.example.notfound_backend.data.entity.BoardEntity;
+import com.example.notfound_backend.data.entity.QuizEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
+public interface QuizRepository extends JpaRepository<QuizEntity,Integer> {
 
-    List<BoardEntity> findAll();
+    List<QuizEntity> findAll();
 
     @Modifying
-    @Query("UPDATE BoardEntity b SET b.views=b.views+1 WHERE b.id=:id")
+    @Query("UPDATE QuizEntity q SET q.views=q.views+1 WHERE q.id=:id")
     void incrementViews(@Param("id") Integer id);
 
-    Optional<BoardEntity> findById(Integer id);
+    Optional<QuizEntity> findById(Integer id);
 }

@@ -2,7 +2,6 @@ package com.example.notfound_backend.service;
 
 import com.example.notfound_backend.data.dao.UserAuthDAO;
 import com.example.notfound_backend.data.dao.UserInfoDAO;
-import com.example.notfound_backend.data.dto.UserAuthDTO;
 import com.example.notfound_backend.data.dto.UserAuthUpdateDTO;
 import com.example.notfound_backend.data.dto.UserJoinDTO;
 import com.example.notfound_backend.data.entity.UserAuthEntity;
@@ -82,6 +81,14 @@ public class UserAuthService implements UserDetailsService {
             int result = userAuthDAO.updatePassword(userAuthUpdateDTO.getUsername(), userAuthUpdateDTO.getNewPassword());
             return (result == 1) ? "비밀번호 수정 성공" : "비밀번호 수정 실패";
         }
+    }
+
+    public boolean findUserByUsername(String username) {
+        UserAuthEntity userAuthEntity = this.userAuthDAO.findByUsername(username);
+        if (userAuthEntity == null) {
+            return true;
+        }
+        return false;
     }
 
 

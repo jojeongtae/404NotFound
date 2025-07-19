@@ -1,6 +1,7 @@
 package com.example.notfound_backend.data.repository;
 
 import com.example.notfound_backend.data.entity.BoardFreeEntity;
+import com.example.notfound_backend.data.entity.BoardInfoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,21 +12,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BoardFreeRepository extends JpaRepository<BoardFreeEntity, Integer> {
+public interface BoardInfoRepository extends JpaRepository<BoardInfoEntity, Integer> {
 
-    List<BoardFreeEntity> findAll();
+    List<BoardInfoEntity> findAll();
 
     @Modifying
-    @Query("UPDATE BoardFreeEntity b SET b.views=b.views+1 WHERE b.id=:id")
+    @Query("UPDATE BoardInfoEntity b SET b.views=b.views+1 WHERE b.id=:id")
     void incrementViews(@Param("id") Integer id);
 
     @Modifying
-    @Query("UPDATE BoardFreeEntity b SET b.recommend = b.recommend + 1 WHERE b.id = :id")
+    @Query("UPDATE BoardInfoEntity b SET b.recommend = b.recommend + 1 WHERE b.id = :id")
     void incrementRecommend(@Param("id") Integer id);
 
     @Modifying
-    @Query("UPDATE BoardFreeEntity b SET b.recommend = b.recommend - 1 WHERE b.id = :id AND b.recommend > 0")
+    @Query("UPDATE BoardInfoEntity b SET b.recommend = b.recommend - 1 WHERE b.id = :id AND b.recommend > 0")
     void decrementRecommend(@Param("id") Integer id);
 
-    Optional<BoardFreeEntity> findById(Integer id);
+    Optional<BoardInfoEntity> findById(Integer id);
+
 }
