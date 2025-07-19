@@ -1,9 +1,9 @@
 package com.example.notfound_backend.data.dao;
 
-import com.example.notfound_backend.data.dto.ReportUpdateByAdnimDTO;
 import com.example.notfound_backend.data.entity.ReportEntity;
 import com.example.notfound_backend.data.entity.ReportStatus;
 import com.example.notfound_backend.data.repository.ReportRepository;
+import com.example.notfound_backend.exception.ReportNotFoundException;
 import com.example.notfound_backend.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,6 +32,19 @@ public class ReportDAO {
         return reportRepository.save(savedReportEntity);
     }
 
+    // 신고 수정 (신고자)
+    public ReportEntity updateReport(ReportEntity reportEntity) {
+        return reportRepository.save(reportEntity); // 이미 영속 상태이므로 dirty checking 발생
+    }
+
+    // 신고 삭제 (신고자)
+    public void deleteReportById(Integer reportId) {
+        if (!reportRepository.existsById(reportId)) {
+            throw new ReportNotFoundException("Report not found 삭제할 신고 존재하지 않음.");
+        }
+        reportRepository.deleteById(reportId);
+    }
+
     // 신고리스트 (관리자)
     public List<ReportEntity> getAllReports() {
         return reportRepository.findAll();
@@ -46,7 +59,9 @@ public class ReportDAO {
     }
 
     public ReportEntity findReportById(Integer id) {
-        return reportRepository.findById(id).orElse(null);
+        return reportRepository.findById(id).orElseThrow(() -> new ReportNotFoundException("Report not found 삭제할 신고 존재하지 않음."));
     }
+
+
 
 }

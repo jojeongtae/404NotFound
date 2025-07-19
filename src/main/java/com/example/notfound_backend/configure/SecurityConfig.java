@@ -48,11 +48,11 @@ public class SecurityConfig {
                 .httpBasic(httpBasic -> httpBasic.disable())
                 // 요청별 권한
                 .authorizeHttpRequests(requests -> {
-//                    requests.anyRequest().permitAll(); // 인증 무력화 (임시)
-                    requests.requestMatchers("/","/api/join", "/api/login","/api/reissue","/api/naver","/api/kakao","/api/google","api/login/oauth2/code/*").permitAll();
-                    requests.requestMatchers("/api/admin/**").hasRole("ADMIN");
-                    requests.requestMatchers("/api/user/**").hasAnyRole("USER","ADMIN");
-                    requests.anyRequest().authenticated();
+                    requests.anyRequest().permitAll(); // 인증 무력화 (임시)
+//                    requests.requestMatchers("/","/api/join", "/api/login","/api/reissue","/api/naver","/api/kakao","/api/google","api/login/oauth2/code/*").permitAll();
+//                    requests.requestMatchers("/api/admin/**").hasRole("ADMIN");
+//                    requests.requestMatchers("/api/user/**").hasAnyRole("USER","ADMIN");
+//                    requests.anyRequest().authenticated();
                 })
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration corsConfiguration = new CorsConfiguration();
