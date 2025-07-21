@@ -28,6 +28,11 @@ public class UserInfoController {
     public ResponseEntity<UserInfoAllDTO> getUserInfo(@RequestParam String username) {
         return ResponseEntity.status(HttpStatus.OK).body(userInfoService.getUserInfo(username));
     }
+    // 회원등급 찾기
+    @GetMapping(value = "/user/user-grade")
+    public ResponseEntity<String> getUserGrade(@RequestParam String username) {
+        return ResponseEntity.status(HttpStatus.OK).body(userInfoService.getUserGrade(username));
+    }
 
     // 회원정보리스트 (관리자)
     @GetMapping(value = "/admin/users")

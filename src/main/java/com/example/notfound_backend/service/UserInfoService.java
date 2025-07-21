@@ -62,6 +62,24 @@ public class UserInfoService {
         return false;
     }
 
+    // 회원등급
+    public String getUserGrade(String username) {
+        UserInfoEntity user = userInfoDAO.getUserInfo(username);
+        String userRole = userAuthDAO.getRole(username);
+        if (userRole.equals("ROLE_ADMIN")) {
+            return "500 Internal Server Error (운영진)";
+        } else if (user.getPoint() < 25) {
+            return "404 Not Found (신규)";
+         } else if (user.getPoint() > 25 && user.getPoint() < 50) {
+            return "200 OK (일반 회원)";
+        } else if (user.getPoint() > 50 && user.getPoint() < 75) {
+            return "202 Accepted (활동 회원)";
+        } else if (user.getPoint() > 75 && user.getPoint() < 100) {
+            return "403 Forbidden (우수 회원)";
+        } else {
+            return "401 Unauthorized (손님)";
+        }
+    }
 
     // 회원정보리스트 (관리자)
     public List<UserInfoAllDTO> getAllUserInfo() {
