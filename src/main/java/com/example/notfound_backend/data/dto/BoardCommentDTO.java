@@ -11,7 +11,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BoardFoodCommentDTO {
+public class BoardCommentDTO {
     private Integer id;
     private Integer boardId;
     private Integer parentId;
@@ -19,5 +19,4 @@ public class BoardFoodCommentDTO {
     private String content;
     private Instant createdAt;
     private String status;
-
 }
