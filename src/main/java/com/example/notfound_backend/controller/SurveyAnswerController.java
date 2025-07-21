@@ -21,7 +21,7 @@ public class SurveyAnswerController {
     }
 
     @GetMapping("/{surveyId}")
-    public ResponseEntity<List<SurveyAnswerDTO>> getAnswersBySurvey(@PathVariable int surveyId) {
+    public ResponseEntity<List<SurveyAnswerDTO>> getAnswersBySurvey(@PathVariable Integer surveyId) {
         return ResponseEntity.ok(surveyAnswerService.getAnswersBySurvey(surveyId));
     }
 }
