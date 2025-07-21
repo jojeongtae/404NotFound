@@ -12,6 +12,16 @@ public interface UserInfoRepository extends JpaRepository<UserInfoEntity, Intege
     // 회원정보 찾기
     UserInfoEntity getByUsername(UserAuthEntity username);
 
-     UserInfoEntity findByNickname(String nickname);
+    UserInfoEntity findByNickname(String nickname);
+
+    @Modifying
+    @Query("update UserInfoEntity u set u.point = u.point + :point where u.username = :username")
+    Integer incrementPoint(@Param("username") UserAuthEntity user, @Param("point") Integer point);
+
+    @Modifying
+    @Query("update UserInfoEntity u set u.point = u.point - :point where u.username = :username")
+    Integer decrementPoint(@Param("username") UserAuthEntity user, @Param("point") Integer point);
+
+
 
 }

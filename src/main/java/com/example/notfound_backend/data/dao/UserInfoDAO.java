@@ -45,6 +45,16 @@ public class UserInfoDAO {
         return userInfoEntity;
     }
 
+    public Integer incrementPoint(String username, int point) {
+        UserAuthEntity user = userAuthRepository.findByUsername(username);
+        return userInfoRepository.incrementPoint(user, point);
+    }
+    public Integer decrementPoint(String username, int point) {
+        UserAuthEntity user = userAuthRepository.findByUsername(username);
+        return userInfoRepository.decrementPoint(user, point);
+    }
+
+
 
     // 회원정보리스트 (관리자)
     public List<UserInfoEntity> getAllUserInfo() {

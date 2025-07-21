@@ -2,6 +2,7 @@ package com.example.notfound_backend.service;
 
 import com.example.notfound_backend.data.dao.SurveyDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
+import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.QuizDTO;
 import com.example.notfound_backend.data.dto.SurveyDTO;
 import com.example.notfound_backend.data.entity.QuizEntity;
@@ -22,6 +23,7 @@ import java.util.List;
 public class SurveyService {
     private final SurveyDAO surveyDAO;
     private final UserAuthDAO userAuthDAO;
+    private final UserInfoDAO userInfoDAO;
 
     public List<SurveyDTO> findAll() {
         List<SurveyEntity> surveyEntities=surveyDAO.findAllBoards();
@@ -88,6 +90,7 @@ public class SurveyService {
         entity.setCategory("SURVEY");
         entity.setViews(0);
         SurveyEntity saved=surveyDAO.save(entity);
+        userInfoDAO.incrementPoint(surveyDTO.getAuthor(), 1); // 1포인트증가
         return toDTO(saved);
     }
 

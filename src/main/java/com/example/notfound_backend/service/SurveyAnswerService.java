@@ -3,6 +3,7 @@ package com.example.notfound_backend.service;
 import com.example.notfound_backend.data.dao.SurveyAnswerDAO;
 import com.example.notfound_backend.data.dao.SurveyDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
+import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.SurveyAnswerDTO;
 import com.example.notfound_backend.data.entity.SurveyAnswerEntity;
 import com.example.notfound_backend.data.entity.SurveyEntity;
@@ -22,6 +23,7 @@ public class SurveyAnswerService {
     private final SurveyAnswerDAO surveyAnswerDAO;
     private final SurveyDAO surveyDAO;
     private final UserAuthDAO userAuthDAO;
+    private final UserInfoDAO userInfoDAO;
 
     @Transactional
     public SurveyAnswerDTO submitAnswer(SurveyAnswerDTO dto) {
@@ -39,6 +41,7 @@ public class SurveyAnswerService {
         entity.setParentId(parentSurvey);
 
         SurveyAnswerEntity saved = surveyAnswerDAO.save(entity);
+        userInfoDAO.incrementPoint(dto.getUsername(), 1); // 1포인트증가
         return toDTO(saved);
     }
 
