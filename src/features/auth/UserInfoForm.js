@@ -1,9 +1,9 @@
 import apiClient from "../../api/apiClient";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {setUser} from "./userSlice";
 
-const UserInfoForm = () => {
+const UserInfoForm = ({ onClose }) => { // onClose prop 추가
     const dispatch = useDispatch();
     const userInfo = useSelector(state => state.user);
     const [userData, setUserData] = useState({
@@ -13,6 +13,15 @@ const UserInfoForm = () => {
         address: userInfo.address,
     });
 
+    useEffect(() => {
+        setUserData({
+            username: userInfo.username,
+            nickname: userInfo.nickname,
+            phone: userInfo.phone,
+            address: userInfo.address,
+        });
+    }, [userInfo]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setUserData((prevData) => ({
@@ -21,18 +30,17 @@ const UserInfoForm = () => {
         }));
     };
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const userResponse = await apiClient.put("/user/user-info", userData);
             console.log("정보 수정 성공: ", userResponse.data);
             dispatch(setUser(userData));
-        }catch (error){
+            onClose(); // navigate(-1) 대신 onClose 호출
+        } catch (error) {
             console.error("정보 수정 에러: ", error);
         }
     }
-
 
     return(
         <>
@@ -46,7 +54,7 @@ const UserInfoForm = () => {
                 <div>
                     <input name="address" value={userData.address} onChange={handleChange} placeholder="주소"/>
                 </div>
-                <button type={"submit"}>정보 수정</button>
+                <button type="submit">정보 수정</button>
             </form>
         </>
     );

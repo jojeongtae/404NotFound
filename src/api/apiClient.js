@@ -1,5 +1,5 @@
 import axios from "axios";
-import store from "../store/store";
+import {store} from "../store/store";
 import { setToken } from "../features/auth/tokenSlice";
 
 const apiClient = axios.create({

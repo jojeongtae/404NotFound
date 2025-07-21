@@ -8,6 +8,7 @@ const userSlice = createSlice({
     nickname: null,
     phone: null,
     address: null,
+    point: null,
     // 여기에 필요한 다른 사용자 정보 필드를 추가할 수 있습니다.
   },
   reducers: {
@@ -21,6 +22,7 @@ const userSlice = createSlice({
       state.address = null;
       state.nickname = null;
       state.phone = null;
+      state.point = null;
       
       // 필요한 다른 필드도 여기서 초기화합니다.
     },

@@ -3,9 +3,11 @@ import './App.css';
 import MainLayout from "./pages/MainLayout";
 import HomePage from './pages/HomePage';
 import BoardPage from './pages/BoardPage';
+import PostDetailPage from './pages/PostDetailPage';
 import { AuthProvider } from './context/AuthContext'; 
 import NewBoardPage from './pages/NewBoardPage';
-import UserInfoPage from "./pages/UserInfoPage";
+import PostUpdatePage from './pages/PostUpdatePage';
+import AdminReportForm from './features/board/AdminReportForm';
 
 function App() {
   return (
@@ -13,15 +15,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<MainLayout />}>
-            {/* HomePage를 게시판 섹션의 부모 라우트로 설정 */}
-            <Route path='/' element={<HomePage />}>
-              {/* '/' 경로로 접속했을 때 HomePage의 Outlet에 BoardPage가 기본으로 렌더링됨 */}
-              <Route index element={<BoardPage />} /> 
-              {/* '/:boardId' 경로로 접속했을 때 HomePage의 Outlet에 해당 BoardPage가 렌더링됨 */}
-              <Route path=':boardId' element={<BoardPage />} />
-              <Route path='/board/new' element={<NewBoardPage />}></Route>
-              <Route path='/user/userinfo' element={<UserInfoPage/>}></Route>
-            </Route>
+            <Route index element={<HomePage />} /> {/* 기본 경로를 HomePage로 설정 */}
+            <Route path='board/:boardId' element={<BoardPage />} /> {/* 게시판 목록 페이지 */}
+            <Route path='board/:boardId/:postId' element={<PostDetailPage />} /> {/* 게시글 상세 페이지 */}
+            <Route path='board/new' element={<NewBoardPage />} /> {/* 새 게시글 작성 페이지 */}
+            <Route path='board/:boardId/:postId/edit' element={<PostUpdatePage />}></Route>
+            <Route path='board/admin-report' element={<AdminReportForm />}></Route>
+            
+            {/* 다른 페이지 라우트들 */}
           </Route>
         </Routes>  
       </BrowserRouter>

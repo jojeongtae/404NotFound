@@ -12,7 +12,7 @@ b, u, i, center,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
 table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
+article, aside, details, embed, 
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
@@ -45,4 +45,115 @@ q:before, q:after {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+}
+
+/* 게시글 리스트 스타일 */
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.post-list-item {
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.post-list-item:last-child {
+  border-bottom: none;
+}
+
+.post-list-item:hover {
+  background-color: #f9f9f9;
+}
+
+.post-link {
+  display: flex; /* Flexbox 적용 */
+  align-items: center; /* 세로 중앙 정렬 */
+  text-decoration: none;
+  color: #333;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+/* 게시글 항목의 각 요소 스타일 */
+.post-item {
+  text-align: center; /* 기본 정렬 */
+}
+
+.post-id {
+  font-size: 0.9em;
+  color: #999;
+  margin-right: 10px; /* ID와 내용 사이 간격 줄임 (15px -> 10px) */
+  min-width: 30px; /* ID가 짧아도 공간 확보 */
+  text-align: right; /* ID를 오른쪽 정렬 */
+}
+
+.post-title {
+  flex-grow: 1; /* 남은 공간을 모두 차지 */
+  text-align: left; /* 제목 가운데 정렬 (left -> center) */
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-left: 80px;
+}
+
+.post-author { /* 글쓴이 정렬 변경 (right -> left) */
+  width: 80px; /* 헤더와 동일한 너비 설정 */
+  text-align: left;
+  margin-left: 5px;
+  font-size: 0.9em;
+  color: #666;
+}
+
+.post-views,
+.post-recommend {
+  width: 80px; /* 헤더와 동일한 너비 설정 */
+  text-align: right;
+  margin-right: 5px; /*간격 조절 (10px -> 5px)*/
+  font-size: 0.9em;
+  color: #666;
+}
+
+/* 게시글 리스트 헤더 스타일 */
+.post-list-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  color: #555;
+}
+
+.header-item {
+  text-align: center;
+}
+
+.header-id {
+  min-width: 30px;
+  margin-right: 10px; /* ID와 내용 사이 간격 줄임 (15px -> 10px) */
+  text-align: right;
+}
+
+.header-title {
+  flex-grow: 1;
+  text-align: center; /* 제목 가운데 정렬 (left -> center) */
+}
+
+.header-author { /* 글쓴이 정렬 변경 (right -> left) */
+  width: 80px; /* 적절한 너비 설정 */
+  text-align: left;
+  margin-left: 5px; /* 간격 조절 (10px -> 5px) */
+}
+
+.header-views,
+.header-recommend {
+  width: 80px; /* 적절한 너비 설정 */
+  text-align: right;
+  margin-left: 5px; /* 간격 조절 (10px -> 5px) */
 }
