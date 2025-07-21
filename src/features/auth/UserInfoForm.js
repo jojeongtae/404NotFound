@@ -1,12 +1,10 @@
 import apiClient from "../../api/apiClient";
-import {useState, useEffect} from "react"; // useEffect 임포트
+import {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {setUser} from "./userSlice";
-import { useNavigate } from "react-router-dom";
 
-const UserInfoForm = () => {
+const UserInfoForm = ({ onClose }) => { // onClose prop 추가
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const userInfo = useSelector(state => state.user);
     const [userData, setUserData] = useState({
         username: userInfo.username,
@@ -15,7 +13,6 @@ const UserInfoForm = () => {
         address: userInfo.address,
     });
 
-    // userInfo (Redux 스토어의 user 슬라이스)가 변경될 때마다 userData 상태 업데이트
     useEffect(() => {
         setUserData({
             username: userInfo.username,
@@ -23,7 +20,7 @@ const UserInfoForm = () => {
             phone: userInfo.phone,
             address: userInfo.address,
         });
-    }, [userInfo]); // userInfo가 의존성 배열에 포함되어 변경될 때마다 실행
+    }, [userInfo]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -33,19 +30,17 @@ const UserInfoForm = () => {
         }));
     };
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const userResponse = await apiClient.put("/user/user-info", userData);
             console.log("정보 수정 성공: ", userResponse.data);
             dispatch(setUser(userData));
-            navigate(-1);
-        }catch (error){
+            onClose(); // navigate(-1) 대신 onClose 호출
+        } catch (error) {
             console.error("정보 수정 에러: ", error);
         }
     }
-
 
     return(
         <>
@@ -59,7 +54,7 @@ const UserInfoForm = () => {
                 <div>
                     <input name="address" value={userData.address} onChange={handleChange} placeholder="주소"/>
                 </div>
-                <button type={"submit"}>정보 수정</button>
+                <button type="submit">정보 수정</button>
             </form>
         </>
     );
