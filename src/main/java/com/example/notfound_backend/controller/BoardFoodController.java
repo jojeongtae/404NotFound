@@ -2,6 +2,8 @@ package com.example.notfound_backend.controller;
 
 
 import com.example.notfound_backend.data.dto.BoardDTO;
+import com.example.notfound_backend.data.dto.BoardFoodCommentDTO;
+import com.example.notfound_backend.service.BoardFoodCommentService;
 import com.example.notfound_backend.service.BoardFoodService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/food")
 public class BoardFoodController {
     private final BoardFoodService boardFoodService;
+    private final BoardFoodCommentService boardFoodCommentService;
 
     @GetMapping("/list")
     public List<BoardDTO> getAllBoards() {
@@ -57,5 +60,23 @@ public class BoardFoodController {
     public ResponseEntity<BoardDTO> cancelRecommend(@PathVariable Integer id) {
         BoardDTO updated= boardFoodService.cancelRecommendBoard(id);
         return ResponseEntity.ok(updated);
+    }
+
+    @GetMapping("/comments/{boardId}")
+    public List<BoardFoodCommentDTO> getComments(@PathVariable Integer boardId) {
+        List<BoardFoodCommentDTO> boardDtoList=boardFoodCommentService.getCommentsByBoardId(boardId);
+        return boardDtoList;
+    }
+
+    @PostMapping("/comments/new")
+    public ResponseEntity<BoardFoodCommentDTO> addComment(@RequestBody BoardFoodCommentDTO dto) {
+        BoardFoodCommentDTO created= boardFoodCommentService.addComment(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @DeleteMapping("/comments/delete")
+    public ResponseEntity<BoardFoodCommentDTO> deleteComment(@RequestBody BoardFoodCommentDTO dto) {
+        boardFoodCommentService.deleteComment(dto.getId());
+        return ResponseEntity.noContent().build();
     }
 }

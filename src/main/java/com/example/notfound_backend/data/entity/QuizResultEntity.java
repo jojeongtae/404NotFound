@@ -39,9 +39,6 @@ public class QuizResultEntity {
     @Column(name = "result", nullable = false)
     private Byte result;
 
-    @Column(name = "time_taken")
-    private Integer timeTaken;
-
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "solved_at")
     private Instant solvedAt;

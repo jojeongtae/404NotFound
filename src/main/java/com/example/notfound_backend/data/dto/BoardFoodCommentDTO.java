@@ -11,11 +11,13 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class QuizResultDTO {
+public class BoardFoodCommentDTO {
     private Integer id;
-    private Integer quiz_id;
-    private String username;
-    private String userAnswer;
-    private Byte result;
-    private Instant solvedAt;
+    private Integer boardId;
+    private Integer parentId;
+    private String author;
+    private String content;
+    private Instant createdAt;
+    private String status;
+
 }

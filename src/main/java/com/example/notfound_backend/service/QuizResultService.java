@@ -34,8 +34,8 @@ public class QuizResultService {
         entity.setUserAnswer(dto.getUserAnswer());
         QuizEntity quiz = quizDAO.findById(dto.getQuiz_id()).orElseThrow(() -> new RuntimeException("Quiz not found"));
         entity.setQuiz(quiz);
+        entity.setResult(dto.getResult());
 
-        entity.setTimeTaken(dto.getTimeTaken()); // 초 단위 시간 (프론트 or 컨트롤러에서 계산해서 넣어줘야 함)
         entity.setSolvedAt(Instant.now());
 
         // 저장
@@ -56,7 +56,6 @@ public class QuizResultService {
                 .username(entity.getUsername().getUsername())
                 .userAnswer(entity.getUserAnswer())
                 .result(entity.getResult())
-                .timeTaken(entity.getTimeTaken())
                 .solvedAt(entity.getSolvedAt())
                 .build();
     }
