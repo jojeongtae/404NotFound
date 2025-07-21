@@ -9,9 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface VotingAnswerRepository extends JpaRepository<VotingAnswerEntity, Integer> {
-    Optional<VotingAnswerEntity> findVotingAnswerByVotingId(Integer id);
+//    Optional<VotingAnswerEntity> findVotingAnswerByParent_Id(Integer id);
 
     List<VotingAnswerEntity> findByParent_Id(Integer parentId);
 
-    List<VotingAnswerEntity> findByUsername(String username);
+    List<VotingAnswerEntity> findByUser_Username(String username);
 }

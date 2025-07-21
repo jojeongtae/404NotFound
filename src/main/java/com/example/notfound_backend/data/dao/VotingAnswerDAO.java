@@ -21,6 +21,6 @@ public class VotingAnswerDAO {
     }
 
     public List<VotingAnswerEntity> findByUsername(String username) {
-        return votingAnswerRepository.findByUsername(username);
+        return votingAnswerRepository.findByUser_Username(username);
     }
 }

@@ -13,7 +13,8 @@ import java.util.Optional;
 @Repository
 public interface VotingRepository extends JpaRepository<VotingEntity, Integer> {
 
-    Optional<VotingEntity> findByAuthor(String author);
+//    @Query("SELECT v FROM VotingEntity v WHERE v.author.username = :username")
+//    Optional<VotingEntity> findByAuthorUsername(@Param("username") String username);
 
     List<VotingEntity> findAll();
 
