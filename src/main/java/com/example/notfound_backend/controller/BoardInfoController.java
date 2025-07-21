@@ -8,6 +8,7 @@ import com.example.notfound_backend.service.BoardInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -74,9 +75,9 @@ public class BoardInfoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @DeleteMapping("/comments/delete")
-    public ResponseEntity<BoardCommentDTO> deleteComment(@RequestBody BoardCommentDTO dto) {
-        boardInfoCommentService.deleteComment(dto.getId());
+    @DeleteMapping("/comments/{id}")
+    public ResponseEntity<BoardCommentDTO> deleteComment(@PathVariable Integer id) {
+        boardInfoCommentService.deleteComment(id);
         return ResponseEntity.noContent().build();
     }
 }

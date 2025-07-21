@@ -74,9 +74,9 @@ public class BoardQnaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @DeleteMapping("/comments/delete")
-    public ResponseEntity<BoardCommentDTO> deleteComment(@RequestBody BoardCommentDTO dto) {
-        boardQnaCommentService.deleteComment(dto.getId());
+    @DeleteMapping("/comments/{id}")
+    public ResponseEntity<BoardCommentDTO> deleteComment(@PathVariable Integer id) {
+        boardQnaCommentService.deleteComment(id);
         return ResponseEntity.noContent().build();
     }
 }

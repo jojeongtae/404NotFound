@@ -74,9 +74,9 @@ public class BoardFoodController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @DeleteMapping("/comments/delete")
-    public ResponseEntity<BoardCommentDTO> deleteComment(@RequestBody BoardCommentDTO dto) {
-        boardFoodCommentService.deleteComment(dto.getId());
+    @DeleteMapping("/comments/{id}")
+    public ResponseEntity<BoardCommentDTO> deleteComment(@PathVariable Integer id) {
+        boardFoodCommentService.deleteComment(id);
         return ResponseEntity.noContent().build();
     }
 }

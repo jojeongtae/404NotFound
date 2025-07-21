@@ -74,9 +74,9 @@ public class BoardUsedController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @DeleteMapping("/comments/delete")
-    public ResponseEntity<BoardCommentDTO> deleteComment(@RequestBody BoardCommentDTO dto) {
-        boardUsedCommentService.deleteComment(dto.getId());
+    @DeleteMapping("/comments/{id}")
+    public ResponseEntity<BoardCommentDTO> deleteComment(@PathVariable Integer id) {
+        boardUsedCommentService.deleteComment(id);
         return ResponseEntity.noContent().build();
     }
 }

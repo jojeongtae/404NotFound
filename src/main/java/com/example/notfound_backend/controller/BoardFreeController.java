@@ -73,9 +73,9 @@ public class BoardFreeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @DeleteMapping("/comments/delete")
-    public ResponseEntity<BoardCommentDTO> deleteComment(@RequestBody BoardCommentDTO dto) {
-        boardFreeCommentService.deleteComment(dto.getId());
+    @DeleteMapping("/comments/{id}")
+    public ResponseEntity<BoardCommentDTO> deleteComment(@PathVariable Integer id) {
+        boardFreeCommentService.deleteComment(id);
         return ResponseEntity.noContent().build();
     }
 
