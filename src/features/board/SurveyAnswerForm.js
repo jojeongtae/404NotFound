@@ -1,6 +1,6 @@
 
-//설문조사 게시판
-const SurveyBoardForm = () => {
+//설문 정답 풀이
+const SurveyAnswerForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -16,10 +16,10 @@ const SurveyBoardForm = () => {
                 <textarea name="text" placeholder="내용을 입력해주세요"></textarea>
                 <input type="text" name="author" placeholder="임시 작성란"/>
                 <input type="checkbox" />
-                <button type="submit">설문 등록</button>
+                <button type="submit">응답 제출</button>
             </form>
         </>
     );
 }
 
-export default SurveyBoardForm;
+export default SurveyAnswerForm;
