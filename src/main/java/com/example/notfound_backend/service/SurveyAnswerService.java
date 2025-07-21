@@ -41,7 +41,7 @@ public class SurveyAnswerService {
         entity.setParentId(parentSurvey);
 
         SurveyAnswerEntity saved = surveyAnswerDAO.save(entity);
-        userInfoDAO.incrementPoint(dto.getUsername(), 1); // 1포인트증가
+        userInfoDAO.updatePoint(dto.getUsername(), 1); // 1포인트증가
         return toDTO(saved);
     }
 

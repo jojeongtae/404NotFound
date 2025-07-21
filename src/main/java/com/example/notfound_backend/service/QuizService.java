@@ -87,7 +87,7 @@ public class QuizService {
         entity.setType(Type.valueOf(quizDTO.getType()));
         entity.setViews(0); // 새 글이니 조회수 0으로 시작
         QuizEntity saved = quizDAO.save(entity);
-        userInfoDAO.incrementPoint(quizDTO.getAuthor(), 3); // 3포인트증가
+        userInfoDAO.updatePoint(quizDTO.getAuthor(), 3); // 3포인트증가
         return toDTO(saved);
     }
 

@@ -39,7 +39,7 @@ public class BoardNoticeCommentService {
         entity.setCreatedAt(dto.getCreatedAt() != null ? dto.getCreatedAt() : Instant.now());
 
         BoardNoticeCommentEntity saved = boardNoticeCommentDAO.save(entity);
-        userInfoDAO.incrementPoint(dto.getAuthor(), 1); // 1포인트증가
+        userInfoDAO.updatePoint(dto.getAuthor(), 1); // 1포인트증가
         return toDTO(saved);
     }
 

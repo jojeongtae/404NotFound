@@ -41,7 +41,7 @@ public class QuizResultService {
         entity.setSolvedAt(Instant.now());
 
         if (dto.getResult() == 1) { // 퀴즈 맞추면,
-            userInfoDAO.incrementPoint(dto.getUsername(), 2); // 3포인트증가
+            userInfoDAO.updatePoint(dto.getUsername(), 2); // 3포인트증가
         }
 
         // 저장

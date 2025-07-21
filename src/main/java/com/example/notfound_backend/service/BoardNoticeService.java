@@ -90,7 +90,7 @@ public class BoardNoticeService {
         entity.setUpdatedAt(Instant.now());
 
         BoardNoticeEntity saved = boardNoticeDAO.save(entity);
-        userInfoDAO.incrementPoint(boardDTO.getAuthor(), 3); // 3포인트증가
+        userInfoDAO.updatePoint(boardDTO.getAuthor(), 3); // 3포인트증가
         return toDTO(saved);
     }
 

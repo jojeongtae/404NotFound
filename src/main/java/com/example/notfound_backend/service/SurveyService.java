@@ -90,7 +90,7 @@ public class SurveyService {
         entity.setCategory("SURVEY");
         entity.setViews(0);
         SurveyEntity saved=surveyDAO.save(entity);
-        userInfoDAO.incrementPoint(surveyDTO.getAuthor(), 1); // 1포인트증가
+        userInfoDAO.updatePoint(surveyDTO.getAuthor(), 1); // 1포인트증가
         return toDTO(saved);
     }
 

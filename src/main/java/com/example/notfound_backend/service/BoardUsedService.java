@@ -90,7 +90,7 @@ public class BoardUsedService {
         entity.setCreatedAt(Instant.now());
         entity.setUpdatedAt(Instant.now());
         BoardUsedEntity saved = boardUsedDAO.save(entity);
-        userInfoDAO.incrementPoint(boardDTO.getAuthor(), 3); // 3포인트증가
+        userInfoDAO.updatePoint(boardDTO.getAuthor(), 3); // 3포인트증가
         return toDTO(saved);
     }
 

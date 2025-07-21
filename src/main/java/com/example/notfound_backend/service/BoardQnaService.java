@@ -90,7 +90,7 @@ public class BoardQnaService {
         entity.setCreatedAt(Instant.now());
         entity.setUpdatedAt(Instant.now());
         BoardQnaEntity saved = boardQnaDAO.save(entity);
-        userInfoDAO.incrementPoint(boardDTO.getAuthor(), 3); // 3포인트증가
+        userInfoDAO.updatePoint(boardDTO.getAuthor(), 3); // 3포인트증가
         return toDTO(saved);
     }
 

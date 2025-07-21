@@ -38,7 +38,7 @@ public class BoardFreeCommentService {
         entity.setCreatedAt(dto.getCreatedAt() != null ? dto.getCreatedAt() : Instant.now());
 
         BoardFreeCommentEntity saved = boardFreeCommentDAO.save(entity);
-        userInfoDAO.incrementPoint(dto.getAuthor(), 1); // 1포인트증가
+        userInfoDAO.updatePoint(dto.getAuthor(), 1); // 1포인트증가
         return toDTO(saved);
     }
 

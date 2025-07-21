@@ -16,11 +16,7 @@ public interface UserInfoRepository extends JpaRepository<UserInfoEntity, Intege
 
     @Modifying
     @Query("update UserInfoEntity u set u.point = u.point + :point where u.username = :username")
-    Integer incrementPoint(@Param("username") UserAuthEntity user, @Param("point") Integer point);
-
-    @Modifying
-    @Query("update UserInfoEntity u set u.point = u.point - :point where u.username = :username")
-    Integer decrementPoint(@Param("username") UserAuthEntity user, @Param("point") Integer point);
+    Integer updatePoint(@Param("username") UserAuthEntity user, @Param("point") Integer point);
 
 
 
