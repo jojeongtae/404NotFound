@@ -70,7 +70,7 @@ const MainLayout = () => {
             <li style={{ marginBottom: '10px' }}><Link to="/board/food">먹거리 게시판</Link></li>
             <li style={{ marginBottom: '10px' }}><span>--포인트 게시판 종류--</span></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/quiz">퀴즈 게시판</Link></li>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/ox">OX 게시판</Link></li>
+            <li style={{ marginBottom: '10px' }}><Link to="/board/voting">OX 게시판</Link></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/survey">설문조사 게시판</Link></li>
           </ul>
         </nav>

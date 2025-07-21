@@ -9,10 +9,10 @@ export const fetchPostDetailAndComments = async (boardId, postId,dispatch) => {
     dispatch(setPostDetails(postResponse.data));
     // 댓글 목록 불러오기
     // TODO: 실제 백엔드 API 경로로 변경하세요. (예: /api/board/{boardId}/posts/{postId}/comments)
-    // const commentsResponse = await apiClient.get(`/board/${boardId}/posts/${postId}/comments`); 
+    const commentsResponse = await apiClient.get(`/${boardId}/comments/${postId}`); 
 
-    // return { post: postResponse.data, comments: commentsResponse.data };
-    return{post:postResponse.data}
+    return { post: postResponse.data, comments: commentsResponse.data };
+    
   } catch (err) {
     console.error("데이터 불러오기 실패:", err);
     throw new Error("게시글 또는 댓글을 불러오는 데 실패했습니다.");
@@ -30,12 +30,13 @@ export const submitComment = async (boardId, postId, username, commentText) => {
 
   try {
     const commentData = {
+      boardId:postId,
       author: username,
-      text: commentText,
+      content: commentText,
       postId: postId, // 백엔드에서 게시글 ID를 필요로 할 경우
     };
     // TODO: 댓글 작성 API 경로 확인
-    // await apiClient.post(`/board/${boardId}/posts/${postId}/comments`, commentData);
+    await apiClient.post(`/${boardId}/comments/new`, commentData);
     return true;
   } catch (err) {
     console.error("댓글 작성 실패:", err);

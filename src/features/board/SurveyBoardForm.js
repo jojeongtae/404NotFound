@@ -9,8 +9,14 @@ const SurveyBoardForm = () => {
     const [selectedOption, setSelectedOption] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [hasParticipated, setHasParticipated] = useState(false); // 참여 여부 상태
+    const [surveyResults, setSurveyResults] = useState(null); // 설문조사 결과 상태 (집계된 득표수)
+    const [totalVotes, setTotalVotes] = useState(0); // 총 투표수 상태
+    const [resultsLoading, setResultsLoading] = useState(false); // 결과 로딩 상태
+    const [resultsError, setResultsError] = useState(null); // 결과 에러 상태
     const user = useSelector(state => state.user);
 
+    // 설문조사 데이터 불러오기
     useEffect(() => {
         const fetchSurvey = async () => {
             try {
@@ -27,8 +33,37 @@ const SurveyBoardForm = () => {
 
         if (boardId && postId) {
             fetchSurvey();
+            // TODO: 사용자가 이미 참여했는지 백엔드에서 확인하는 로직 추가 (예: /survey-responses/check?userId=...&surveyId=...)
+            // 만약 이미 참여했다면 setHasParticipated(true) 및 fetchSurveyResults() 호출
         }
     }, [boardId, postId]);
+
+    // 설문조사 결과 불러오기 (프론트엔드에서 집계)
+    const fetchSurveyResults = async () => {
+        setResultsLoading(true);
+        setResultsError(null);
+        try {
+            const res = await apiClient.get(`/survey-answers/${postId}`); 
+            const rawAnswers = res.data; // 백엔드에서 받은 개별 응답 데이터
+
+            // 응답 데이터 집계
+            const aggregatedResults = {};
+            let currentTotalVotes = 0;
+            rawAnswers.forEach(answer => {
+                const option = answer.answers; // 'answers' 필드에 선택된 옵션 값이 있다고 가정
+                aggregatedResults[option] = (aggregatedResults[option] || 0) + 1;
+                currentTotalVotes++;
+            });
+            setSurveyResults(aggregatedResults);
+            setTotalVotes(currentTotalVotes);
+
+        } catch (err) {
+            console.error("설문조사 결과 불러오기 실패:", err);
+            setResultsError("설문조사 결과를 불러오는데 실패했습니다.");
+        } finally {
+            setResultsLoading(false);
+        }
+    };
 
     const handleChange = (event) => {
         setSelectedOption(event.target.value);
@@ -50,7 +85,8 @@ const SurveyBoardForm = () => {
             const res = await apiClient.post("/survey-answers/new", responseData);
             console.log("설문조사 응답 제출 성공:", res.data);
             alert("설문조사 응답이 제출되었습니다!");
-            // 제출 후 폼 비활성화 또는 다른 페이지로 이동 등 추가 로직
+            setHasParticipated(true); // 참여 완료
+            fetchSurveyResults(); // 결과 불러오기
         } catch (err) {
             console.error("설문조사 응답 제출 실패:", err);
             alert("설문조사 응답 제출에 실패했습니다.");
@@ -81,24 +117,51 @@ const SurveyBoardForm = () => {
         <div style={{ padding: '20px' }}>
             <h2>{surveyData.title}</h2>
             <h3>{surveyData.question}</h3>
-            <form onSubmit={handleSubmit}>
-                {columns.map((column, index) => (
-                    <div key={index}>
-                        <label>
-                            <input
-                                type="radio"
-                                name="surveyOption"
-                                value={column}
-                                checked={selectedOption === column}
-                                onChange={handleChange}
-                            />
-                            {column}
-                        </label>
-                    </div>
-                ))}
-                <br />
-                <button type="submit">제출</button>
-            </form>
+
+            {hasParticipated ? (
+                // 설문조사 결과 표시
+                <div>
+                    <h4>설문조사 결과</h4>
+                    {resultsLoading && <p>결과를 불러오는 중...</p>}
+                    {resultsError && <p style={{ color: 'red' }}>{resultsError}</p>}
+                    {surveyResults && (
+                        <div>
+                            <p>총 투표수: {totalVotes} 표</p>
+                            <ul>
+                                {columns.map((column, index) => {
+                                    const voteCount = surveyResults[column] || 0;
+                                    const percentage = totalVotes > 0 ? ((voteCount / totalVotes) * 100).toFixed(1) : 0;
+                                    return (
+                                        <li key={index}>
+                                            {column}: {voteCount} 표 ({percentage}%)
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+                        </div>
+                    )}
+                </div>
+            ) : (
+                // 설문조사 폼 표시
+                <form onSubmit={handleSubmit}>
+                    {columns.map((column, index) => (
+                        <div key={index}>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="surveyOption"
+                                    value={column}
+                                    checked={selectedOption === column}
+                                    onChange={handleChange}
+                                />
+                                {column}
+                            </label>
+                        </div>
+                    ))}
+                    <br />
+                    <button type="submit">제출</button>
+                </form>
+            )}
         </div>
     );
 }

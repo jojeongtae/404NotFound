@@ -16,6 +16,9 @@ const NewBoardForm = () => {
     const [surveyColumn3, setSurveyColumn3] = useState('');
     const [surveyColumn4, setSurveyColumn4] = useState('');
     const [surveyColumn5, setSurveyColumn5] = useState('');
+    // OX 게시판 관련 상태 추가
+    const [oxVotingQuestion, setOxVotingQuestion] = useState('');
+    const [oxVotingCorrectAnswer, setOxVotingCorrectAnswer] = useState('');
 
     const user = useSelector(state => state.user);
     const navigate = useNavigate(); // useNavigate 훅 사용
@@ -50,6 +53,14 @@ const NewBoardForm = () => {
                 column5: surveyColumn5,
                 category: boardId,
             };
+        } else if (boardId === 'voting') { // OX 게시판일 경우 데이터 추가
+            boardData = {
+                author: user.username,
+                title: title,
+                question: oxVotingQuestion,
+                answer: oxVotingCorrectAnswer,
+                category: boardId,
+            };
         }
 
         console.log(boardData);
@@ -66,7 +77,7 @@ const NewBoardForm = () => {
         }
     }
 
-    
+
 
     return (
         <>
@@ -87,6 +98,7 @@ const NewBoardForm = () => {
                     <option value="used">중고 게시판</option>
                     <option value="quiz">퀴즈 게시판</option>
                     <option value="survey">설문조사 게시판</option>
+                    <option value="voting">OX게시판</option>
                 </select>
                 <br />
 
@@ -102,21 +114,49 @@ const NewBoardForm = () => {
                     />
                 ) : boardId === 'quiz' ? (
                     <>
+                        <input type='text' placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}></input> <br />
                         <select id='quizSelect' onChange={(e) => setQuizId(e.target.value)}>
                             <option value="MULTI">객관식</option>
                             <option value="SUBJECTIVE">주관식</option>
                             <option value="OX">OX</option>
                         </select>
-                        <input type='text' placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}></input> <br />
                         <input type='text' placeholder='퀴즈 문제' value={quizQuestion} onChange={(e) => setQuizQuestion(e.target.value)}></input> <br />
                         <input type='text' placeholder='퀴즈 정답' value={quizAnswer} onChange={(e) => setQuizAnswer(e.target.value)}></input>
+                    </>
+                ) : boardId === "voting" ? (
+                    <>
+                        <input type='text' placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}></input> <br />
+                        <input type='text' placeholder='OX 문제' value={oxVotingQuestion} onChange={(e) => setOxVotingQuestion(e.target.value)}></input> <br />
+                        <div>
+                            <label>
+                                <input
+                                    type="radio"
+                                    name="oxAnswer"
+                                    value="O"
+                                    checked={oxVotingCorrectAnswer === 'O'}
+                                    onChange={(e) => setOxVotingCorrectAnswer(e.target.value)}
+                                />
+                                O
+                            </label>
+                            <label style={{ marginLeft: '10px' }}>
+                                <input
+                                    type="radio"
+                                    name="oxAnswer"
+                                    value="X"
+                                    checked={oxVotingCorrectAnswer === 'X'}
+                                    onChange={(e) => setOxVotingCorrectAnswer(e.target.value)}
+                                />
+                                X
+                            </label>
+                        </div>
                     </>
                 ) : (
                     <>
                         <input type='text' placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}></input> <br />
                         <textarea placeholder='내용' value={textBody} onChange={(e) => setTextBody(e.target.value)}></textarea>
                     </>
-                )}
+                )
+                }
                 <input type="submit" value="전송" />
             </form>
         </>

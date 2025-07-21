@@ -48,7 +48,7 @@ const QuizPostDisplay = ({ post }) => {
       <hr />
       <div>
         <h3>문제: {post.question}</h3> {/* 퀴즈 문제 표시 */}
-        <p>힌트: {post.body}</p> {/* 기존 body를 힌트로 활용 */}
+        <p>힌트: 아는만큼 보인다</p> {/* 기존 body를 힌트로 활용 */}
       </div>
 
       <form onSubmit={handleAnswerSubmit}>
