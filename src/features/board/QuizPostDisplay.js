@@ -12,7 +12,9 @@ const QuizPostDisplay = ({ post }) => {
     setIsAnswerChecked(true);
     if (userAnswer.toLowerCase() === post.answer.toLowerCase()) { // 정답은 소문자로 비교
       setIsCorrect(true);
-      
+      // 퀴즈 정답을 시도했는지 안했는지 체크
+      // const resultResponse = await apiClient.get(`/api/quiz-answers/${}`)
+
       const res = await apiClient.post("/quiz-answers/new",{
         username: user.username,
         userAnswer:userAnswer,
@@ -68,10 +70,7 @@ const QuizPostDisplay = ({ post }) => {
       )}
 
       <hr />
-      {/* 기존 추천, 신고 버튼 등은 필요에 따라 여기에 추가 */}
-      {/* <button>추천</button>
-      <span>추천수 : {post.recommend}</span> */}
-      <button>🏮신고하기</button> 
+      {/* 추천, 신고 버튼은 PostDetailPage에서 관리 */}
       <hr />
       {/* 댓글 섹션은 퀴즈 게시판에서는 다르게 처리할 수 있음 */}
     </div>

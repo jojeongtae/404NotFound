@@ -29,7 +29,7 @@ const BoardPageForm = ({ boardId }) => { // boardId prop 다시 받기
                 setLoading(false);
                 return; // boardId가 없으면 요청하지 않음
             }
-            if (boardId === "ox", boardId === "quiz") {
+            if (boardId === "ox" || boardId === "quiz") {
                 setPointBoard(true);
             } else {
                 setPointBoard(false);

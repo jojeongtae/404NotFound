@@ -6,6 +6,8 @@ import { fetchPostDetailAndComments /*, submitComment */ } from '../features/boa
 import { useDispatch } from 'react-redux';
 import apiClient from '../api/apiClient';
 import { useAuth } from '../context/AuthContext'; // useAuth 임포트
+import QuizPostDisplay from '../features/board/QuizPostDisplay'; // QuizPostDisplay 임포트
+import SurveyBoardForm from '../features/board/SurveyBoardForm'; // SurveyBoardForm 임포트
 
 const PostDetailPage = () => {
   const { boardId, postId } = useParams();
@@ -112,52 +114,58 @@ const PostDetailPage = () => {
 
   return (
     <>
-      <div style={{ padding: '20px' }}>
-        <h2>제목: {post.title}</h2>
-        <p><strong>작성자:</strong> {post.author}</p>
-        <p><strong>작성일:</strong> {new Date(post.createdAt).toLocaleDateString()}</p>
-        <p>조회수: {post.views}</p>
-        <hr />
-        <div>내용: {post.body}</div>
+      {boardId === 'quiz' ? (
+        <QuizPostDisplay post={post} />
+      ) : boardId === 'survey' ? (
+        <SurveyBoardForm />
+      ) : (
+        <div style={{ padding: '20px' }}>
+          <h2>제목: {post.title}</h2>
+          <p><strong>작성자:</strong> {post.author}</p>
+          <p><strong>작성일:</strong> {new Date(post.createdAt).toLocaleDateString()}</p>
+          <p>조회수: {post.views}</p>
+          <hr />
+          <div dangerouslySetInnerHTML={{ __html: post.body }}></div>
 
-        <hr />
-        <button onClick={handleRecommend}>
-          {isRecommended ? "추천 취소" : "추천"}
-        </button>
-        <span>추천수 : {post.recommend}</span> <button onClick={handleReport}>🏮신고하기</button>
-        <hr />
+          <hr />
+          <button onClick={handleRecommend}>
+            {isRecommended ? "추천 취소" : "추천"}
+          </button>
+          <span>추천수 : {post.recommend}</span> <button onClick={handleReport}>🏮신고하기</button>
+          <hr />
 
-        {/* 댓글 섹션 주석 처리 */}
-        {/*
-      <hr style={{ marginTop: '30px' }} />
-      <h3>댓글</h3>
-      {commentLoading && <p>댓글 불러오는 중...</p>}
-      {commentError && <p style={{ color: 'red' }}>{commentError}</p>}
-      {!commentLoading && comments.length === 0 && <p>아직 댓글이 없습니다.</p>}
-      
-      <ul style={{ listStyle: 'none', padding: 0 }}>
-        {comments.map(comment => (
-          <li key={comment.id} style={{ borderBottom: '1px solid #eee', padding: '10px 0' }}>
-            <p><strong>{comment.author}:</strong> {comment.text}</p>
-            <small>{new Date(comment.createdAt).toLocaleString()}</small>
-          </li>
-        ))}
-      </ul>
+          {/* 댓글 섹션 주석 처리 */}
+          {/*
+        <hr style={{ marginTop: '30px' }} />
+        <h3>댓글</h3>
+        {commentLoading && <p>댓글 불러오는 중...</p>}
+        {commentError && <p style={{ color: 'red' }}>{commentError}</p>}
+        {!commentLoading && comments.length === 0 && <p>아직 댓글이 없습니다.</p>}
+        
+        <ul style={{ listStyle: 'none', padding: 0 }}>
+          {comments.map(comment => (
+            <li key={comment.id} style={{ borderBottom: '1px solid #eee', padding: '10px 0' }}>
+              <p><strong>{comment.author}:</strong> {comment.text}</p>
+              <small>{new Date(comment.createdAt).toLocaleString()}</small>
+            </li>
+          ))}
+        </ul>
 
-      <form onSubmit={handleCommentSubmit} style={{ marginTop: '20px' }}>
-        <textarea
-          value={newCommentText}
-          onChange={(e) => setNewCommentText(e.target.value)}
-          placeholder="댓글을 입력하세요..."
-          rows="3"
-          style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc' }}
-        ></textarea>
-        <button type="submit" className="nav-link" disabled={commentLoading}>
-          댓글 작성
-        </button>
-      </form>
-      */}
-      </div>
+        <form onSubmit={handleCommentSubmit} style={{ marginTop: '20px' }}>
+          <textarea
+            value={newCommentText}
+            onChange={(e) => setNewCommentText(e.target.value)}
+            placeholder="댓글을 입력하세요..."
+            rows="3"
+            style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc' }}
+          ></textarea>
+          <button type="submit" className="nav-link" disabled={commentLoading}>
+            댓글 작성
+          </button>
+        </form>
+        */}
+        </div>
+      )}
       <div>
         {username === post.author && (
           <button onClick={() => navigate(`/board/${boardId}/${postId}/edit`)} className='nav-link'>게시글 수정</button>
