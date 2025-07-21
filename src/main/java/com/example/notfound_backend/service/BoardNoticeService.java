@@ -2,6 +2,7 @@ package com.example.notfound_backend.service;
 
 import com.example.notfound_backend.data.dao.BoardNoticeDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
+import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.BoardDTO;
 import com.example.notfound_backend.data.entity.*;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 public class BoardNoticeService {
     private final BoardNoticeDAO boardNoticeDAO;
     private final UserAuthDAO userAuthDAO;
+    private final UserInfoDAO userInfoDAO;
 
     public List<BoardDTO> findAll() {
         List<BoardNoticeEntity> boardNoticeEntityList = boardNoticeDAO.findAllBoards();
@@ -88,6 +90,7 @@ public class BoardNoticeService {
         entity.setUpdatedAt(Instant.now());
 
         BoardNoticeEntity saved = boardNoticeDAO.save(entity);
+        userInfoDAO.updatePoint(boardDTO.getAuthor(), 3); // 3포인트증가
         return toDTO(saved);
     }
 

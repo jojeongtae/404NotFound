@@ -2,6 +2,7 @@ package com.example.notfound_backend.service;
 
 import com.example.notfound_backend.data.dao.QuizDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
+import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.QuizDTO;
 import com.example.notfound_backend.data.entity.QuizEntity;
 import com.example.notfound_backend.data.entity.Status;
@@ -20,6 +21,8 @@ import java.util.List;
 public class QuizService {
     private final QuizDAO quizDAO;
     private final UserAuthDAO userAuthDAO;
+    private final UserInfoDAO userInfoDAO;
+
 
     public List<QuizDTO> findAll() {
         List<QuizEntity> quizEntities = quizDAO.findAllBoards();
@@ -84,6 +87,7 @@ public class QuizService {
         entity.setType(Type.valueOf(quizDTO.getType()));
         entity.setViews(0); // 새 글이니 조회수 0으로 시작
         QuizEntity saved = quizDAO.save(entity);
+        userInfoDAO.updatePoint(quizDTO.getAuthor(), 3); // 3포인트증가
         return toDTO(saved);
     }
 

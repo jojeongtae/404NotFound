@@ -2,11 +2,13 @@ package com.example.notfound_backend.service;
 
 import com.example.notfound_backend.data.dao.ReportDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
+import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.ReportAddDTO;
 import com.example.notfound_backend.data.dto.ReportResponseDTO;
 import com.example.notfound_backend.data.dto.ReportUpdateByAdnimDTO;
 import com.example.notfound_backend.data.dto.ReportUpdateDTO;
 import com.example.notfound_backend.data.entity.ReportEntity;
+import com.example.notfound_backend.data.entity.ReportStatus;
 import com.example.notfound_backend.data.entity.UserAuthEntity;
 import com.example.notfound_backend.exception.UnauthorizedAccessException;
 import com.example.notfound_backend.exception.UserNotFoundException;
@@ -23,6 +25,7 @@ import java.util.List;
 public class ReportService {
     private final ReportDAO reportDAO;
     private final UserAuthDAO userAuthDAO;
+    private final UserInfoDAO userInfoDAO;
 
     // 신고
     public ReportResponseDTO addReport(ReportAddDTO reportAddDTO) {

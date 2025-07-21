@@ -2,6 +2,7 @@ package com.example.notfound_backend.service;
 
 import com.example.notfound_backend.data.dao.BoardQnaDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
+import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.BoardDTO;
 import com.example.notfound_backend.data.entity.BoardFoodEntity;
 import com.example.notfound_backend.data.entity.BoardQnaEntity;
@@ -21,6 +22,7 @@ public class BoardQnaService {
 
     private final BoardQnaDAO boardQnaDAO;
     private final UserAuthDAO userAuthDAO;
+    private final UserInfoDAO userInfoDAO;
 
     public List<BoardDTO> findAll() {
         List<BoardQnaEntity> boardQnaEntityList = boardQnaDAO.findAllBoards();
@@ -88,6 +90,7 @@ public class BoardQnaService {
         entity.setCreatedAt(Instant.now());
         entity.setUpdatedAt(Instant.now());
         BoardQnaEntity saved = boardQnaDAO.save(entity);
+        userInfoDAO.updatePoint(boardDTO.getAuthor(), 3); // 3포인트증가
         return toDTO(saved);
     }
 

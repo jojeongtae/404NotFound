@@ -3,6 +3,7 @@ package com.example.notfound_backend.service;
 import com.example.notfound_backend.data.dao.BoardFreeCommentDAO;
 import com.example.notfound_backend.data.dao.BoardFreeDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
+import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.BoardCommentDTO;
 import com.example.notfound_backend.data.entity.BoardFreeCommentEntity;
 import com.example.notfound_backend.data.entity.BoardFreeEntity;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class BoardFreeCommentService {
     private final BoardFreeCommentDAO boardFreeCommentDAO;
     private final UserAuthDAO userAuthDAO;
+    private final UserInfoDAO userInfoDAO;
     private final BoardFreeDAO boardFreeDAO;
 
     @Transactional
@@ -36,6 +38,7 @@ public class BoardFreeCommentService {
         entity.setCreatedAt(dto.getCreatedAt() != null ? dto.getCreatedAt() : Instant.now());
 
         BoardFreeCommentEntity saved = boardFreeCommentDAO.save(entity);
+        userInfoDAO.updatePoint(dto.getAuthor(), 1); // 1포인트증가
         return toDTO(saved);
     }
 

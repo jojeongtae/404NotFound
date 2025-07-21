@@ -3,6 +3,7 @@ package com.example.notfound_backend.service;
 import com.example.notfound_backend.data.dao.QuizDAO;
 import com.example.notfound_backend.data.dao.QuizResultDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
+import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.QuizResultDTO;
 import com.example.notfound_backend.data.entity.QuizEntity;
 import com.example.notfound_backend.data.entity.QuizResultEntity;
@@ -22,6 +23,7 @@ public class QuizResultService {
     private final QuizResultDAO quizResultDAO;
     private final QuizDAO quizDAO;
     private final UserAuthDAO userAuthDAO;
+    private final UserInfoDAO userInfoDAO;
 
     @Transactional
     public QuizResultDTO submitAnswer(QuizResultDTO dto){
@@ -38,6 +40,10 @@ public class QuizResultService {
         entity.setResult(dto.getResult());
 
         entity.setSolvedAt(Instant.now());
+
+        if (dto.getResult() == 1) { // 퀴즈 맞추면,
+            userInfoDAO.updatePoint(dto.getUsername(), 2); // 3포인트증가
+        }
 
         // 저장
         QuizResultEntity saved = quizResultDAO.save(entity);
