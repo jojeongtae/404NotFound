@@ -46,6 +46,6 @@ public class BoardFreeCommentEntity {
     @ColumnDefault("'VISIBLE'")
     @Lob
     @Column(name = "status")
-    private String status;
+    private Status status;
 
 }

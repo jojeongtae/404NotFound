@@ -1,7 +1,9 @@
 package com.example.notfound_backend.controller;
 
 
+import com.example.notfound_backend.data.dto.BoardCommentDTO;
 import com.example.notfound_backend.data.dto.BoardDTO;
+import com.example.notfound_backend.service.BoardInfoCommentService;
 import com.example.notfound_backend.service.BoardInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/info")
 public class BoardInfoController {
     private final BoardInfoService boardInfoService;
+    private final BoardInfoCommentService boardInfoCommentService;
 
     @GetMapping("/list")
     public List<BoardDTO> getAllBoards() {
@@ -57,5 +60,23 @@ public class BoardInfoController {
     public ResponseEntity<BoardDTO> cancelRecommend(@PathVariable Integer id) {
         BoardDTO updated= boardInfoService.cancelRecommendBoard(id);
         return ResponseEntity.ok(updated);
+    }
+
+    @GetMapping("/comments/{boardId}")
+    public List<BoardCommentDTO> getComments(@PathVariable Integer boardId) {
+        List<BoardCommentDTO> boardDtoList=boardInfoCommentService.getCommentsByBoardId(boardId);
+        return boardDtoList;
+    }
+
+    @PostMapping("/comments/new")
+    public ResponseEntity<BoardCommentDTO> addComment(@RequestBody BoardCommentDTO dto) {
+        BoardCommentDTO created= boardInfoCommentService.addComment(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @DeleteMapping("/comments/delete")
+    public ResponseEntity<BoardCommentDTO> deleteComment(@RequestBody BoardCommentDTO dto) {
+        boardInfoCommentService.deleteComment(dto.getId());
+        return ResponseEntity.noContent().build();
     }
 }

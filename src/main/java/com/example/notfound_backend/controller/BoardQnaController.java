@@ -1,7 +1,9 @@
 package com.example.notfound_backend.controller;
 
 
+import com.example.notfound_backend.data.dto.BoardCommentDTO;
 import com.example.notfound_backend.data.dto.BoardDTO;
+import com.example.notfound_backend.service.BoardQnaCommentService;
 import com.example.notfound_backend.service.BoardQnaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import java.util.List;
 @RequestMapping("/api/qna")
 public class BoardQnaController {
     private final BoardQnaService boardQnaService;
+    private final BoardQnaCommentService boardQnaCommentService;
 
     @GetMapping("/list")
     public List<BoardDTO> getAllBoards() {
@@ -57,5 +60,23 @@ public class BoardQnaController {
     public ResponseEntity<BoardDTO> cancelRecommend(@PathVariable Integer id) {
         BoardDTO updated= boardQnaService.cancelRecommendBoard(id);
         return ResponseEntity.ok(updated);
+    }
+
+    @GetMapping("/comments/{boardId}")
+    public List<BoardCommentDTO> getComments(@PathVariable Integer boardId) {
+        List<BoardCommentDTO> boardDtoList=boardQnaCommentService.getCommentsByBoardId(boardId);
+        return boardDtoList;
+    }
+
+    @PostMapping("/comments/new")
+    public ResponseEntity<BoardCommentDTO> addComment(@RequestBody BoardCommentDTO dto) {
+        BoardCommentDTO created= boardQnaCommentService.addComment(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @DeleteMapping("/comments/delete")
+    public ResponseEntity<BoardCommentDTO> deleteComment(@RequestBody BoardCommentDTO dto) {
+        boardQnaCommentService.deleteComment(dto.getId());
+        return ResponseEntity.noContent().build();
     }
 }

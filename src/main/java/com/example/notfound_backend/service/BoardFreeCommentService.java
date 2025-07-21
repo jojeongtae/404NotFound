@@ -1,11 +1,11 @@
 package com.example.notfound_backend.service;
 
-import com.example.notfound_backend.data.dao.BoardFoodCommentDAO;
-import com.example.notfound_backend.data.dao.BoardFoodDAO;
+import com.example.notfound_backend.data.dao.BoardFreeCommentDAO;
+import com.example.notfound_backend.data.dao.BoardFreeDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
 import com.example.notfound_backend.data.dto.BoardCommentDTO;
-import com.example.notfound_backend.data.entity.BoardFoodCommentEntity;
-import com.example.notfound_backend.data.entity.BoardFoodEntity;
+import com.example.notfound_backend.data.entity.BoardFreeCommentEntity;
+import com.example.notfound_backend.data.entity.BoardFreeEntity;
 import com.example.notfound_backend.data.entity.UserAuthEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,17 +17,16 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class BoardFoodCommentService {
-
-    private final BoardFoodCommentDAO boardFoodCommentDAO;
+public class BoardFreeCommentService {
+    private final BoardFreeCommentDAO boardFreeCommentDAO;
     private final UserAuthDAO userAuthDAO;
-    private final BoardFoodDAO boardFoodDAO;
+    private final BoardFreeDAO boardFreeDAO;
 
     @Transactional
     public BoardCommentDTO addComment(BoardCommentDTO dto) {
-        BoardFoodCommentEntity entity = new BoardFoodCommentEntity();
+        BoardFreeCommentEntity entity = new BoardFreeCommentEntity();
 
-        BoardFoodEntity board = boardFoodDAO.findById(dto.getBoardId())
+        BoardFreeEntity board = boardFreeDAO.findById(dto.getBoardId())
                 .orElseThrow(() -> new RuntimeException("해당 게시글이 존재하지 않습니다."));
         entity.setBoard(board);
 
@@ -36,25 +35,25 @@ public class BoardFoodCommentService {
         entity.setContent(dto.getContent());
         entity.setCreatedAt(dto.getCreatedAt() != null ? dto.getCreatedAt() : Instant.now());
 
-        BoardFoodCommentEntity saved = boardFoodCommentDAO.save(entity);
+        BoardFreeCommentEntity saved = boardFreeCommentDAO.save(entity);
         return toDTO(saved);
     }
 
     @Transactional(readOnly = true)
     public List<BoardCommentDTO> getCommentsByBoardId(Integer boardId) {
-        return boardFoodCommentDAO.findAllByBoardIdOrderByCreatedAtDesc(boardId).stream()
+        return boardFreeCommentDAO.findAllByBoardIdOrderByCreatedAtDesc(boardId).stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 
     @Transactional
     public void deleteComment(Integer id) {
-        BoardFoodCommentEntity entity = boardFoodCommentDAO.findById(id)
+        BoardFreeCommentEntity entity = boardFreeCommentDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("댓글이 존재하지 않습니다."));
-        boardFoodCommentDAO.delete(entity);
+        boardFreeCommentDAO.delete(entity);
     }
 
-    private BoardCommentDTO toDTO(BoardFoodCommentEntity entity) {
+    private BoardCommentDTO toDTO(BoardFreeCommentEntity entity) {
         return BoardCommentDTO.builder()
                 .id(entity.getId())
                 .boardId(entity.getBoard().getId())
@@ -63,5 +62,6 @@ public class BoardFoodCommentService {
                 .createdAt(entity.getCreatedAt())
                 .build();
     }
+
 
 }

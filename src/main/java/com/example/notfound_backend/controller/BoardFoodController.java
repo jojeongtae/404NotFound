@@ -1,8 +1,8 @@
 package com.example.notfound_backend.controller;
 
 
+import com.example.notfound_backend.data.dto.BoardCommentDTO;
 import com.example.notfound_backend.data.dto.BoardDTO;
-import com.example.notfound_backend.data.dto.BoardFoodCommentDTO;
 import com.example.notfound_backend.service.BoardFoodCommentService;
 import com.example.notfound_backend.service.BoardFoodService;
 import lombok.RequiredArgsConstructor;
@@ -63,19 +63,19 @@ public class BoardFoodController {
     }
 
     @GetMapping("/comments/{boardId}")
-    public List<BoardFoodCommentDTO> getComments(@PathVariable Integer boardId) {
-        List<BoardFoodCommentDTO> boardDtoList=boardFoodCommentService.getCommentsByBoardId(boardId);
+    public List<BoardCommentDTO> getComments(@PathVariable Integer boardId) {
+        List<BoardCommentDTO> boardDtoList=boardFoodCommentService.getCommentsByBoardId(boardId);
         return boardDtoList;
     }
 
     @PostMapping("/comments/new")
-    public ResponseEntity<BoardFoodCommentDTO> addComment(@RequestBody BoardFoodCommentDTO dto) {
-        BoardFoodCommentDTO created= boardFoodCommentService.addComment(dto);
+    public ResponseEntity<BoardCommentDTO> addComment(@RequestBody BoardCommentDTO dto) {
+        BoardCommentDTO created= boardFoodCommentService.addComment(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @DeleteMapping("/comments/delete")
-    public ResponseEntity<BoardFoodCommentDTO> deleteComment(@RequestBody BoardFoodCommentDTO dto) {
+    public ResponseEntity<BoardCommentDTO> deleteComment(@RequestBody BoardCommentDTO dto) {
         boardFoodCommentService.deleteComment(dto.getId());
         return ResponseEntity.noContent().build();
     }

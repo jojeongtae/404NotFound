@@ -3,7 +3,6 @@ package com.example.notfound_backend.service;
 import com.example.notfound_backend.data.dao.BoardInfoDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
 import com.example.notfound_backend.data.dto.BoardDTO;
-import com.example.notfound_backend.data.entity.BoardFoodEntity;
 import com.example.notfound_backend.data.entity.BoardInfoEntity;
 import com.example.notfound_backend.data.entity.Status;
 import com.example.notfound_backend.data.entity.UserAuthEntity;
