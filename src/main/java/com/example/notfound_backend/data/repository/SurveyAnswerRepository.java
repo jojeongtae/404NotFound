@@ -14,4 +14,5 @@ public interface SurveyAnswerRepository extends JpaRepository<SurveyAnswerEntity
 
     List<SurveyAnswerEntity> findByParentId_Id(int parentId);
 
+    List<SurveyAnswerEntity> findByUser_Username(String username);
 }

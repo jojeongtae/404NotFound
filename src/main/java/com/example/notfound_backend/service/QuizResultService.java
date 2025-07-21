@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,5 +65,11 @@ public class QuizResultService {
                 .result(entity.getResult())
                 .solvedAt(entity.getSolvedAt())
                 .build();
+    }
+
+    public QuizResultDTO findByUsername(UserAuthEntity user){
+        QuizResultEntity result = quizResultDAO.findByUsername(user)
+                .orElseThrow(() -> new RuntimeException("해당 사용자의 퀴즈 결과가 없습니다."));
+        return toDTO(result);
     }
 }

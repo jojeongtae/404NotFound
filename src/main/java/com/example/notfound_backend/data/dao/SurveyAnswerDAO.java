@@ -17,8 +17,12 @@ public class SurveyAnswerDAO {
         return surveyAnswerRepository.save(entity);
     }
 
-    public List<SurveyAnswerEntity> findByParentId(int parentId) {
+    public List<SurveyAnswerEntity> findByParentId(Integer parentId) {
         return surveyAnswerRepository.findByParentId_Id(parentId);
+    }
+
+    public List<SurveyAnswerEntity> findByUsername(String username) {
+        return surveyAnswerRepository.findByUser_Username(username);
     }
 
 }
