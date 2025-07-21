@@ -66,9 +66,7 @@ const NewBoardForm = () => {
         }
     }
 
-    const handleSurveySuccess = () => {
-        navigate(`/board/${boardId}`);
-    };
+    
 
     return (
         <>

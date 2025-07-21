@@ -9,7 +9,7 @@ import UserInfoModal from '../features/auth/UserInfoModal'; // UserInfoModal 임
 import '../style/MainPage.css'; // 테마 CSS 파일 임포트
 import { clearToken } from '../features/auth/tokenSlice';
 import { clearUser } from '../features/auth/userSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { clearPost } from '../features/board/boardSlice';
 
 const MainLayout = () => {
@@ -17,6 +17,7 @@ const MainLayout = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalType, setModalType] = useState(null);
   const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
 
   const openModal = (type) => {
     setModalType(type);
@@ -56,6 +57,11 @@ const MainLayout = () => {
           <ul style={{ listStyle: 'none', padding: 0 }}>
             <li style={{ marginBottom: '10px' }}><span>--운영자 게시판 목록--</span></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/notice">공지사항</Link></li>
+            {user.role === "ROLE_ADMIN" ?
+            <li style={{ marginBottom: '10px' }}><Link to="/board/admin-report">신고 목록 조회</Link></li>
+            :""}
+            <li style={{ marginBottom: '10px' }}><span>--오늘의 개추--</span></li>
+            <li style={{ marginBottom: '10px' }}><Link to="/board/best">Best404추천수</Link></li>
             <li style={{ marginBottom: '10px' }}><span>--일반 게시판 목록--</span></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/free">자유 게시판</Link></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/qna">Q&A 게시판</Link></li>
