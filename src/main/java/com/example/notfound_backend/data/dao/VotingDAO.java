@@ -1,5 +1,6 @@
 package com.example.notfound_backend.data.dao;
 
+import com.example.notfound_backend.data.entity.UserAuthEntity;
 import com.example.notfound_backend.data.entity.VotingEntity;
 import com.example.notfound_backend.data.repository.VotingRepository;
 import lombok.RequiredArgsConstructor;

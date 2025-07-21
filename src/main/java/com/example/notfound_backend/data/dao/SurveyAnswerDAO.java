@@ -22,7 +22,7 @@ public class SurveyAnswerDAO {
     }
 
     public List<SurveyAnswerEntity> findByUsername(String username) {
-        return surveyAnswerRepository.findByUsername(username);
+        return surveyAnswerRepository.findByUser_Username(username);
     }
 
 }
