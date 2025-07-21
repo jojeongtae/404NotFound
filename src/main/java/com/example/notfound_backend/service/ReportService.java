@@ -5,14 +5,16 @@ import com.example.notfound_backend.data.dao.UserAuthDAO;
 import com.example.notfound_backend.data.dto.ReportAddDTO;
 import com.example.notfound_backend.data.dto.ReportResponseDTO;
 import com.example.notfound_backend.data.dto.ReportUpdateByAdnimDTO;
+import com.example.notfound_backend.data.dto.ReportUpdateDTO;
 import com.example.notfound_backend.data.entity.ReportEntity;
 import com.example.notfound_backend.data.entity.UserAuthEntity;
+import com.example.notfound_backend.exception.UnauthorizedAccessException;
 import com.example.notfound_backend.exception.UserNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +28,13 @@ public class ReportService {
     public ReportResponseDTO addReport(ReportAddDTO reportAddDTO) {
         UserAuthEntity reporter = userAuthDAO.findByUsername(reportAddDTO.getReporter());
         UserAuthEntity reported = userAuthDAO.findByUsername(reportAddDTO.getReported());
-        if (reporter == null || reported == null) {
+        if (reporter == null) {
             throw new UserNotFoundException("신고자 정보가 존재하지 않습니다");
+        } else if (reported == null) {
+            throw new UserNotFoundException("피신고자 정보가 존재하지 않습니다.");
+        } else if (reporter.getUsername().equals(reported.getUsername())) {
+            throw new IllegalArgumentException("자기자신은 신고할 수 없습니다.");
         }
-
         ReportEntity reportEntity = ReportEntity.builder()
                 .reason(reportAddDTO.getReason())
                 .description(reportAddDTO.getDescription())
@@ -54,6 +59,44 @@ public class ReportService {
                 .build();
     }
 
+    // 신고 수정 (신고자)
+    @Transactional
+    public ReportResponseDTO updateReport(ReportUpdateDTO updateDTO) {
+        ReportEntity existingReport = reportDAO.findReportById(updateDTO.getReportId());
+
+        if (!existingReport.getReporter().getUsername().equals(updateDTO.getReporter())) {
+            throw new UserNotFoundException("신고자 본인만 수정할 수 있습니다.");
+        }
+        existingReport.setReason(updateDTO.getReason());
+        existingReport.setDescription(updateDTO.getDescription());
+        existingReport.setUpdatedAt(LocalDateTime.now());
+
+        ReportEntity updatedReport = reportDAO.updateReport(existingReport);
+
+        return ReportResponseDTO.builder()
+                .id(updatedReport.getId())
+                .reason(updatedReport.getReason())
+                .description(updatedReport.getDescription())
+                .reporter(updatedReport.getReporter().getUsername())
+                .reported(updatedReport.getReported().getUsername())
+                .targetTable(updatedReport.getTargetTable())
+                .targetId(updatedReport.getTargetId())
+                .status(updatedReport.getStatus())
+                .createdAt(updatedReport.getCreatedAt())
+                .updatedAt(updatedReport.getUpdatedAt())
+                .build();
+    }
+
+    // 신고 삭제 (신고자,관리자)
+    @Transactional
+    public void deleteReport(Integer reportId, String username)  {
+        ReportEntity reportEntity = reportDAO.findReportById(reportId);
+        if (!reportEntity.getReporter().getUsername().equals(username) && !userAuthDAO.getRole(username).equals("ROLE_ADMIN")) {
+            throw new UnauthorizedAccessException("삭제 권한이 없습니다.");
+        }
+        reportDAO.deleteReportById(reportId);
+    }
+
     // 신고리스트 (관리자)
     public List<ReportResponseDTO> getAllReports() {
         List<ReportEntity> reportEntities = reportDAO.getAllReports();
@@ -76,7 +119,7 @@ public class ReportService {
         return reportResponseDTOS;
     }
 
-    // 신고응답 (관리자)
+    // 신고처리 (관리자)
     @Transactional
     public ReportResponseDTO updateReportByAdmin(ReportUpdateByAdnimDTO updateByAdnimDTO) {
         ReportEntity reportEntity = reportDAO.updateReportByAdmin(updateByAdnimDTO.getReportId(), updateByAdnimDTO.getStatus());

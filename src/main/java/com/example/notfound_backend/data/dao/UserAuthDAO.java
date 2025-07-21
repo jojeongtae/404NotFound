@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +35,19 @@ public class UserAuthDAO {
     // 비번수정
     public int updatePassword(String username, String password) {
         return userAuthRepository.updatePassword(username, passwordEncoder.encode(password));
+    }
+
+    // 회원탈퇴
+
+
+    public String getRole(String username) {
+        Optional<UserAuthEntity> userAuth = userAuthRepository.findById(username);
+        return userAuth.map(UserAuthEntity::getRole).orElse(null);
+    }
+
+    public boolean isAdmin(String username) {
+        Optional<UserAuthEntity> userAuth = userAuthRepository.findById(username);
+        return userAuth.isPresent() && userAuth.get().getRole().equals("ROLE_ADMIN");
     }
 
 
