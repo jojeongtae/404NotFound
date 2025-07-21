@@ -95,6 +95,20 @@ const PostDetailPage = () => {
   if (!post) {
     return <NotFoundPage />;
   }
+  const handleReport = async() =>{
+    try {
+      const res = await apiClient.post("/user/report",{
+        reason:"간단신고",
+        reporter:username,
+        reported:post.author,
+        targetTable:`board_${boardId}`,
+        targetId:postId
+      });
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   return (
     <>
@@ -110,7 +124,7 @@ const PostDetailPage = () => {
         <button onClick={handleRecommend}>
           {isRecommended ? "추천 취소" : "추천"}
         </button>
-        <span>추천수 : {post.recommend}</span>
+        <span>추천수 : {post.recommend}</span> <button onClick={handleReport}>🏮신고하기</button>
         <hr />
 
         {/* 댓글 섹션 주석 처리 */}
