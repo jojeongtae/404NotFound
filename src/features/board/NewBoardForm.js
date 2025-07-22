@@ -37,7 +37,7 @@ const NewBoardForm = () => {
                 ...boardData,
                 author: user.username,
                 question: quizQuestion,
-                answer: quizAnswer,
+                answer: quizAnswer.toLocaleUpperCase,
                 title,
                 type: quizId
             };

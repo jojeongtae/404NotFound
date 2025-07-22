@@ -20,7 +20,7 @@ export const fetchPostDetailAndComments = async (boardId, postId,dispatch) => {
 };
 
 // 새로운 댓글을 작성하는 함수
-export const submitComment = async (boardId, postId, username, commentText) => {
+export const submitComment = async (boardId, postId, username, commentText, parentId = null) => {
   if (!commentText.trim()) {
     throw new Error("댓글 내용을 입력해주세요.");
   }
@@ -30,10 +30,11 @@ export const submitComment = async (boardId, postId, username, commentText) => {
 
   try {
     const commentData = {
-      boardId:postId,
+      boardId: postId,
       author: username,
       content: commentText,
       postId: postId, // 백엔드에서 게시글 ID를 필요로 할 경우
+      parentId: parentId,
     };
     // TODO: 댓글 작성 API 경로 확인
     await apiClient.post(`/${boardId}/comments/new`, commentData);

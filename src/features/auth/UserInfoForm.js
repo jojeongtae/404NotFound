@@ -1,7 +1,7 @@
 import apiClient from "../../api/apiClient";
-import {useState, useEffect} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {setUser} from "./userSlice";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "./userSlice";
 
 const UserInfoForm = ({ onClose }) => { // onClose prop 추가
     const dispatch = useDispatch();
@@ -11,6 +11,7 @@ const UserInfoForm = ({ onClose }) => { // onClose prop 추가
         nickname: userInfo.nickname,
         phone: userInfo.phone,
         address: userInfo.address,
+        point: userInfo.point,
     });
 
     useEffect(() => {
@@ -42,18 +43,31 @@ const UserInfoForm = ({ onClose }) => { // onClose prop 추가
         }
     }
 
-    return(
+    return (
         <>
             <form onSubmit={handleSubmit}>
                 <div>
-                    <input name="nickname" value={userData.nickname} onChange={handleChange} placeholder="닉네임"/>
+                <span>닉네임 : </span>
+
+                    <input name="nickname" value={userData.nickname} onChange={handleChange} placeholder="닉네임" />
+                   
                 </div>
                 <div>
-                    <input name="phone" value={userData.phone} onChange={handleChange} placeholder="전화번호"/>
+                <span>전화번호 : </span>
+
+                    <input name="phone" value={userData.phone} onChange={handleChange} placeholder="전화번호" />
                 </div>
                 <div>
-                    <input name="address" value={userData.address} onChange={handleChange} placeholder="주소"/>
+                <span>주소 :</span>
+
+                    <input name="address" value={userData.address} onChange={handleChange} placeholder="주소" />
                 </div>
+                <span>포인트 :</span>
+                 <input
+                        name="point"
+                        readOnly={true}
+                        placeholder={userInfo.point}
+                    />
                 <button type="submit">정보 수정</button>
             </form>
         </>

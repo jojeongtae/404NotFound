@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage';
 import { useSelector } from 'react-redux';
@@ -8,6 +8,8 @@ import apiClient from '../api/apiClient';
 import { useAuth } from '../context/AuthContext'; // useAuth 임포트
 import QuizPostDisplay from '../features/board/QuizPostDisplay'; // QuizPostDisplay 임포트
 import SurveyBoardForm from '../features/board/SurveyBoardForm'; // SurveyBoardForm 임포트
+import CommentThread from '../components/CommentThread'; // CommentThread 임포트
+import VotingBoardForm from '../features/board/VotingBoardForm'; // VotingBoardForm 임포트
 
 const PostDetailPage = () => {
   const { boardId, postId } = useParams();
@@ -38,29 +40,43 @@ const PostDetailPage = () => {
     }
   }
 
-  useEffect(() => {
-    const loadPostAndComments = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const { post , comments  } = await fetchPostDetailAndComments(boardId, postId, dispatch);
+  const loadPostAndComments = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // 퀴즈, 설문, 투표 게시판은 댓글을 불러오지 않음
+      if (boardId === 'quiz' || boardId === 'survey' || boardId === 'voting') {
+        setPost(null); // 게시글 정보는 불러와야 하므로, 이 부분은 별도로 처리 필요
+        // 현재는 fetchPostDetailAndComments에서 게시글과 댓글을 함께 가져오므로,
+        // 댓글만 제외하는 로직을 추가하거나, 백엔드에서 게시글만 가져오는 API를 분리해야 합니다.
+        // 여기서는 일단 댓글만 빈 배열로 설정하고, 게시글 정보는 그대로 진행합니다.
+        const postResponse = await apiClient.get(`/${boardId}/${postId}`);
+        setPost(postResponse.data);
+        setComments([]);
+      } else {
+        const { post, comments } = await fetchPostDetailAndComments(boardId, postId, dispatch);
         setPost(post);
         console.log(post);
-        setComments(comments);
-      } catch (err) {
-        console.error("데이터 불러오기 실패:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
+        const sortedComments = comments.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        setComments(sortedComments);
       }
-    };
+    } catch (err) {
+      console.error("데이터 불러오기 실패:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [boardId, postId, dispatch]);
+
+  useEffect(() => {
     if (boardId && postId) {
       loadPostAndComments();
     } else {
       setLoading(false);
       setError("잘못된 게시글 경로입니다.");
     }
-  }, [boardId, postId, dispatch]);
+  }, [boardId, postId, dispatch, loadPostAndComments]);
 
   const handleRecommend = async() => {
     if (!isLoggedIn) {
@@ -100,8 +116,8 @@ const PostDetailPage = () => {
     }
 
     try {
-      // submitComment 함수 호출
-      await submitComment(boardId, postId, username, newCommentText);
+      // submitComment 함수 호출 (parentId는 null로 전달하여 최상위 댓글로 추가)
+      await submitComment(boardId, postId, username, newCommentText, null);
       setNewCommentText(''); // 입력 필드 초기화
       // 댓글 목록 새로고침 (다시 불러오기)
       const { comments: updatedComments } = await fetchPostDetailAndComments(boardId, postId, dispatch);
@@ -166,9 +182,12 @@ const PostDetailPage = () => {
         <QuizPostDisplay post={post} />
       ) : boardId === 'survey' ? (
         <SurveyBoardForm />
+      ) : boardId === 'voting' ? (
+        <VotingBoardForm />
       ) : (
         <div style={{ padding: '20px' }}>
           <h2>제목: {post.title}</h2>
+          {/* authorNickname 변경예정 */}
           <p><strong>작성자:</strong> {post.author}</p>
           <p className="post-date"><strong>작성일:</strong> {new Date(post.createdAt).toLocaleDateString()}</p>
           <p>조회수: {post.views}</p>
@@ -181,33 +200,29 @@ const PostDetailPage = () => {
           </button>
           <span>추천수 : {post.recommend}</span> <button onClick={handleReport}>🏮신고하기</button>
           <hr />
-          <h3>댓글</h3>
-          {comments.length === 0 && <p>아직 댓글이 없습니다.</p>}
-          <ul>
-              {comments.map(comment => (
-                            <li key={comment.id} className="post-list-item" style={{ borderBottom: '1px solid #eee', padding: '10px 0' }}> 
-                                    <div><strong>작성자 :</strong> {comment.author}</div>
-                                    <div> <strong>내용 :</strong> {comment.content}</div>
-                                    <div style={{ textAlign: 'right', fontSize: '0.8em', color: '#666' }}>작성시간 : {new Date(comment.createdAt).toLocaleString()}</div>
-                                    {username === comment.author && (
-                                        <button onClick={() => handleDeleteComment(comment.id)} style={{ marginLeft: '10px', background: 'red', color: 'white', border: 'none', padding: '5px 10px', cursor: 'pointer' }}>삭제</button>
-                                    )}
-                            </li>
-                        ))}
-            </ul>
 
-            <form onSubmit={handleCommentSubmit} style={{ marginTop: '20px' }}>
-                <textarea
-                    value={newCommentText}
-                    onChange={(e) => setNewCommentText(e.target.value)}
-                    placeholder="댓글을 입력하세요..."
-                    rows="3"
-                    style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc' }}
-                ></textarea>
-                <button type="submit" className="nav-link">
-                    댓글 작성
-                </button>
-            </form>
+          {/* 댓글 섹션 시작 */}
+          {boardId !== 'quiz' && boardId !== 'survey' && boardId !== 'voting' && (
+            <>
+              <h3>댓글</h3>
+              {comments.length === 0 && <p>아직 댓글이 없습니다.</p>}
+              <CommentThread comments={comments} onCommentUpdate={loadPostAndComments} username={username} handleDeleteComment={handleDeleteComment} />
+
+              <form onSubmit={handleCommentSubmit} style={{ marginTop: '20px' }}>
+                  <textarea
+                      value={newCommentText}
+                      onChange={(e) => setNewCommentText(e.target.value)}
+                      placeholder="댓글을 입력하세요..."
+                      rows="3"
+                      style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc' }}
+                  ></textarea>
+                  <button type="submit" className="nav-link">
+                      댓글 작성
+                  </button>
+              </form>
+            </>
+          )}
+          {/* 댓글 섹션 끝 */}
         </div>
       )}
       <div>

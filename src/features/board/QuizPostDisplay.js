@@ -29,7 +29,7 @@ const QuizPostDisplay = ({ post }) => {
     } else {
       const res = await apiClient.post("/quiz-answers/new",{
         username: user.username,
-        userAnswer:userAnswer,
+        userAnswer:userAnswer.toLocaleUpperCase,
         quiz_id:post.id,
         result:0
       })
@@ -42,6 +42,7 @@ const QuizPostDisplay = ({ post }) => {
   return (
     <div style={{ padding: '20px' }}>
       <h2>퀴즈: {post.title}</h2>
+      {/* authorNickname 변경예정 */}
       <p><strong>작성자:</strong> {post.author}</p>
       <p><strong>작성일:</strong> {new Date(post.createdAt).toLocaleDateString()}</p>
       <p>조회수: {post.views}</p>

@@ -116,6 +116,8 @@ const SurveyBoardForm = () => {
     return(
         <div style={{ padding: '20px' }}>
             <h2>{surveyData.title}</h2>
+            {/* authorNickname 변경예정 */}
+            <p><strong>작성자:</strong> {surveyData.author}</p>
             <h3>{surveyData.question}</h3>
 
             {hasParticipated ? (

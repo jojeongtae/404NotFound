@@ -42,11 +42,23 @@ const AdminReportForm = () => {
         try {
             const res = await apiClient.delete(`/user/report/${reportId}?username=${user.username}`);
             console.log(res.data);
+            alert("취소 완료");
         } catch (err) {
             console.log(err);
         }
-
-
+    }
+    const handleAddReportUser = async (id) =>{
+        const body = {
+            reportId:id,
+            status:"ACCEPTED"
+        }
+        try {
+            const res = await apiClient.patch(`/admin/report`,body);
+            console.log(res.data);
+            alert("처리 완료")
+        } catch (error) {
+            console.log(error);
+        }
     }
     return (
         <>
@@ -57,7 +69,9 @@ const AdminReportForm = () => {
                         <h3>신고 ID: {report.id}</h3>
                         <div style={{ marginBottom: '5px' }}><strong>사유:</strong> {report.reason || '사유 없음'}</div>
                         <div style={{ marginBottom: '5px' }}><strong>상세:</strong> {report.description || '-'}</div>
+                        {/* authorNickname 변경예정 */}
                         <div style={{ marginBottom: '5px' }}><strong>신고자:</strong> {report.reporter || '알 수 없음'}</div>
+                        {/* authorNickname 변경예정 */}
                         <div style={{ marginBottom: '5px' }}><strong>피신고자:</strong> {report.reported || '알 수 없음'}</div>
                         <div style={{ marginBottom: '5px' }}>
                             <strong>대상:</strong>
@@ -69,7 +83,7 @@ const AdminReportForm = () => {
                         <div style={{ marginBottom: '5px' }}><strong>신고 시간:</strong> {new Date(report.createdAt).toLocaleString()}</div>
                         {report.updatedAt && <div style={{ marginBottom: '5px' }}><strong>처리 시간:</strong> {new Date(report.updatedAt).toLocaleString()}</div>}
                         <button onClick={() => handleCancle(report.id)}>탈락 땅땅땅</button> &nbsp;
-                        <button>처리완료 땅땅땅</button>
+                        <button onClick={()=> handleAddReportUser(report.id)}>처리완료 땅땅땅</button>
                         {/* 여기에 신고 처리 버튼 (예: 게시글 숨기기, 사용자 경고 등) 추가 가능 */}
                     </li>
                 ))}

@@ -1,44 +1,6 @@
-boardService.js:12 
- GET http://localhost:8080/api/board/free/comments/1 404 (Not Found)
-Promise.then		
-fetchPostDetailAndComments	@	boardService.js:12
-await in fetchPostDetailAndComments		
-loadPostAndComments	@	PostDetailPage.js:44
-(anonymous)	@	PostDetailPage.js:56
-<PostDetailPage>		
-App	@	App.js:20
-<App>		
-./src/index.js	@	index.js:23
-options.factory	@	react refresh:37
-__webpack_require__	@	bootstrap:22
-(anonymous)	@	startup:7
-(anonymous)	@	startup:7
-boardService.js:17 데이터 불러오기 실패: 
-AxiosError {message: 'Request failed with status code 404', name: 'AxiosError', code: 'ERR_BAD_REQUEST', config: {…}, request: XMLHttpRequest, …}
-code
-: 
-"ERR_BAD_REQUEST"
-config
-: 
-{transitional: {…}, adapter: Array(3), transformRequest: Array(1), transformResponse: Array(1), timeout: 0, …}
-message
-: 
-"Request failed with status code 404"
-name
-: 
-"AxiosError"
-request
-: 
-XMLHttpRequest {onreadystatechange: null, readyState: 4, timeout: 0, withCredentials: true, upload: XMLHttpRequestUpload, …}
-response
-: 
-{data: {…}, status: 404, statusText: '', headers: AxiosHeaders, config: {…}, …}
-status
-: 
-404
-stack
-: 
-"AxiosError: Request failed with status code 404\n    at settle (http://localhost:3000/static/js/bundle.js:5662:12)\n    at XMLHttpRequest.onloadend (http://localhost:3000/static/js/bundle.js:4289:66)\n    at Axios.request (http://localhost:3000/static/js/bundle.js:4788:41)\n    at async fetchPostDetailAndComments (http://localhost:3000/static/js/bundle.js:48097:30)\n    at async loadPostAndComments (http://localhost:3000/static/js/bundle.js:49559:13)"
-[[Prototype]]
-: 
-Error
+package com.example.notfound_backend.data.entity;
+
+public enum Answers {
+    O,
+    X
+}

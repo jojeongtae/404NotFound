@@ -7,10 +7,7 @@ import LoginForm from '../features/auth/LoginForm';
 import SignUpForm from '../features/auth/SignUpForm';
 import UserInfoModal from '../features/auth/UserInfoModal'; // UserInfoModal 임포트
 import '../style/MainPage.css'; // 테마 CSS 파일 임포트
-import { clearToken } from '../features/auth/tokenSlice';
-import { clearUser } from '../features/auth/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearPost } from '../features/board/boardSlice';
 
 const MainLayout = () => {
   const { isLoggedIn, logout } = useAuth();
@@ -61,7 +58,8 @@ const MainLayout = () => {
             <li style={{ marginBottom: '10px' }}><Link to="/board/admin-report">신고 목록 조회</Link></li>
             :""}
             <li style={{ marginBottom: '10px' }}><span>--오늘의 개추--</span></li>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/best">Best404추천수</Link></li>
+            <li style={{ marginBottom: '10px' }}><Link to="/board/ranking/recommend">Best404추천수</Link></li>
+            <li style={{ marginBottom: '10px' }}><Link to="/board/ranking/comment">Best404댓글수</Link></li>
             <li style={{ marginBottom: '10px' }}><span>--일반 게시판 목록--</span></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/free">자유 게시판</Link></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/qna">Q&A 게시판</Link></li>
