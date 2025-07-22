@@ -58,7 +58,7 @@ public class VotingAnswerService {
         return VotingAnswerDTO.builder()
                 .id(entity.getId())
                 .username(entity.getUser().getUsername())
-                .answers(entity.getAnswers().name())
+                .answers(entity.getAnswers().toString())
                 .reason(entity.getReason())
                 .createdAt(entity.getCreatedAt())
                 .parent(entity.getParent().getId())

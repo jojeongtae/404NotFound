@@ -17,7 +17,7 @@ public class VotingAnswerDAO {
     }
 
     public List<VotingAnswerEntity> findByParentId(Integer parentId) {
-        return votingAnswerRepository.findByParent_Id(parentId);
+        return votingAnswerRepository.findByParentId(parentId);
     }
 
     public List<VotingAnswerEntity> findByUsername(String username) {
