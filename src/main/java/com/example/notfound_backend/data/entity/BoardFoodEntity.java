@@ -47,9 +47,9 @@ public class BoardFoodEntity {
     private Integer views=0;
 
     @Size(max = 30)
-    @ColumnDefault("'FOOD'")
+    @ColumnDefault("'food'")
     @Column(name = "category", length = 30)
-    private String category="FOOD";
+    private String category="food";
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")

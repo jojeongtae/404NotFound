@@ -47,9 +47,9 @@ public class BoardInfoEntity {
     private Integer views=0;
 
     @Size(max = 30)
-    @ColumnDefault("'INFO'")
+    @ColumnDefault("'info'")
     @Column(name = "category", length = 30)
-    private String category="INFO";
+    private String category="info";
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")

@@ -47,9 +47,9 @@ public class BoardNoticeEntity {
     private Integer views=0;
 
     @Size(max = 30)
-    @ColumnDefault("'NOTICE'")
+    @ColumnDefault("'notice'")
     @Column(name = "category", length = 30)
-    private String category="NOTICE";
+    private String category="notice";
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")

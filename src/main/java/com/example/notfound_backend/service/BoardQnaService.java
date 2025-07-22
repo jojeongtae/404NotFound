@@ -90,7 +90,7 @@ public class BoardQnaService {
 
         entity.setRecommend(0);
         entity.setViews(0); // 새 글이니 조회수 0으로 시작
-        entity.setCategory("FOOD");
+        entity.setCategory("qna");
         entity.setStatus(Status.VISIBLE);
         entity.setCreatedAt(Instant.now());
         entity.setUpdatedAt(Instant.now());

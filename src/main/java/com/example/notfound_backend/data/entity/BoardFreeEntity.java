@@ -47,8 +47,9 @@ public class BoardFreeEntity {
     private Integer views=0;
 
     @Size(max = 30)
+    @ColumnDefault("'free'")
     @Column(name = "category", length = 30)
-    private String category="NORMAL";
+    private String category="free";
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
