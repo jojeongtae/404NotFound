@@ -15,6 +15,7 @@ public class QuizResultDTO {
     private Integer id;
     private Integer quiz_id;
     private String username;
+    private String userNickname;
     private String userAnswer;
     private Byte result;
     private Instant solvedAt;

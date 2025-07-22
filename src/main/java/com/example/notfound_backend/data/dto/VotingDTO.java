@@ -16,6 +16,7 @@ public class VotingDTO {
     private String title;
     private String question;
     private String author;
+    private String authorNickname;
     private Instant createdAt;
     private String category;
     private Integer views;

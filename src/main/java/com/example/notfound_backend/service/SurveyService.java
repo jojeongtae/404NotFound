@@ -39,6 +39,8 @@ public class SurveyService {
             surveyDTO.setColumn4(surveyEntity.getColumn4());
             surveyDTO.setColumn5(surveyEntity.getColumn5());
             surveyDTO.setAuthor(surveyEntity.getAuthor().getUsername());
+            String userNickname = userInfoDAO.getUserInfo(surveyEntity.getAuthor().getUsername()).getNickname();
+            surveyDTO.setAuthorNickname(userNickname);
             surveyDTO.setCreatedAt(surveyEntity.getCreatedAt());
             surveyDTO.setCategory(surveyEntity.getCategory());
             surveyDTO.setViews(surveyEntity.getViews());
@@ -56,6 +58,7 @@ public class SurveyService {
     }
 
     private SurveyDTO toDTO(SurveyEntity entity){
+        String userNickname = userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname();
         return new SurveyDTO(
                 entity.getId(),
                 entity.getTitle(),
@@ -66,6 +69,7 @@ public class SurveyService {
                 entity.getColumn4(),
                 entity.getColumn5(),
                 entity.getAuthor().getUsername(),
+                userNickname,
                 entity.getCreatedAt(),
                 entity.getCategory(),
                 entity.getViews()

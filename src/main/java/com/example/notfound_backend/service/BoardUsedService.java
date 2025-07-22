@@ -27,24 +27,27 @@ public class BoardUsedService {
     public List<BoardDTO> findAll() {
         List<BoardUsedEntity> boardUsedEntityList = boardUsedDAO.findAllBoards();
         List<BoardDTO> boardDTOList =new ArrayList<>();
-        for(BoardUsedEntity boardUsedEntity : boardUsedEntityList){
-            BoardDTO boardUsedDTO =new BoardDTO();
-            boardUsedDTO.setId(boardUsedEntity.getId());
-            boardUsedDTO.setTitle(boardUsedEntity.getTitle());
-            boardUsedDTO.setBody(boardUsedEntity.getBody());
-            boardUsedDTO.setImgsrc(boardUsedEntity.getImgsrc());
+        for(BoardUsedEntity boardUsedEntity : boardUsedEntityList) {
+            if (boardUsedEntity.getStatus() == Status.VISIBLE) { // VISIBLE만 노출
+                BoardDTO boardUsedDTO = new BoardDTO();
+                boardUsedDTO.setId(boardUsedEntity.getId());
+                boardUsedDTO.setTitle(boardUsedEntity.getTitle());
+                boardUsedDTO.setBody(boardUsedEntity.getBody());
+                boardUsedDTO.setImgsrc(boardUsedEntity.getImgsrc());
 
-            if (boardUsedEntity.getAuthor() != null) {
-                boardUsedDTO.setAuthor(boardUsedEntity.getAuthor().getUsername());
+                if (boardUsedEntity.getAuthor() != null) {
+                    boardUsedDTO.setAuthor(boardUsedEntity.getAuthor().getUsername());
+                }
+                String userNickname = userInfoDAO.getUserInfo(boardUsedEntity.getAuthor().getUsername()).getNickname();
+                boardUsedDTO.setAuthorNickname(userNickname); // 추가
+                boardUsedDTO.setRecommend(boardUsedEntity.getRecommend());
+                boardUsedDTO.setViews(boardUsedEntity.getViews());
+                boardUsedDTO.setCategory(boardUsedEntity.getCategory());
+                boardUsedDTO.setCreatedAt(boardUsedEntity.getCreatedAt());
+                boardUsedDTO.setUpdatedAt(boardUsedEntity.getUpdatedAt());
+                boardUsedDTO.setStatus(boardUsedEntity.getStatus().name());
+                boardDTOList.add(boardUsedDTO);
             }
-
-            boardUsedDTO.setRecommend(boardUsedEntity.getRecommend());
-            boardUsedDTO.setViews(boardUsedEntity.getViews());
-            boardUsedDTO.setCategory(boardUsedEntity.getCategory());
-            boardUsedDTO.setCreatedAt(boardUsedEntity.getCreatedAt());
-            boardUsedDTO.setUpdatedAt(boardUsedEntity.getUpdatedAt());
-            boardUsedDTO.setStatus(boardUsedEntity.getStatus().name());
-            boardDTOList.add(boardUsedDTO);
         }
         return boardDTOList;
     }
@@ -58,12 +61,14 @@ public class BoardUsedService {
     }
 
     private BoardDTO toDTO(BoardUsedEntity entity) {
+        String userNickname = userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname();
         return new BoardDTO(
                 entity.getId(),
                 entity.getTitle(),
                 entity.getBody(),
                 entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
+                userNickname,
                 entity.getRecommend(),
                 entity.getViews(),
                 entity.getCategory(),

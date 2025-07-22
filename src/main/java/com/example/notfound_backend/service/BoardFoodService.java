@@ -29,23 +29,26 @@ public class BoardFoodService {
         List<BoardFoodEntity> boardFoodEntityList = boardFoodDAO.findAllBoards();
         List<BoardDTO> boardDTOList =new ArrayList<>();
         for(BoardFoodEntity boardFoodEntity : boardFoodEntityList){
-            BoardDTO boardFoodDTO =new BoardDTO();
-            boardFoodDTO.setId(boardFoodEntity.getId());
-            boardFoodDTO.setTitle(boardFoodEntity.getTitle());
-            boardFoodDTO.setBody(boardFoodEntity.getBody());
-            boardFoodDTO.setImgsrc(boardFoodEntity.getImgsrc());
+            if (boardFoodEntity.getStatus() == Status.VISIBLE) { // VISIBLE만 노출
+                BoardDTO boardFoodDTO = new BoardDTO();
+                boardFoodDTO.setId(boardFoodEntity.getId());
+                boardFoodDTO.setTitle(boardFoodEntity.getTitle());
+                boardFoodDTO.setBody(boardFoodEntity.getBody());
+                boardFoodDTO.setImgsrc(boardFoodEntity.getImgsrc());
 
-            if (boardFoodEntity.getAuthor() != null) {
-                boardFoodDTO.setAuthor(boardFoodEntity.getAuthor().getUsername());
+                if (boardFoodEntity.getAuthor() != null) {
+                    boardFoodDTO.setAuthor(boardFoodEntity.getAuthor().getUsername());
+                }
+                String userNickname = userInfoDAO.getUserInfo(boardFoodEntity.getAuthor().getUsername()).getNickname();
+                boardFoodDTO.setAuthorNickname(userNickname); // 추가
+                boardFoodDTO.setRecommend(boardFoodEntity.getRecommend());
+                boardFoodDTO.setViews(boardFoodEntity.getViews());
+                boardFoodDTO.setCategory(boardFoodEntity.getCategory());
+                boardFoodDTO.setCreatedAt(boardFoodEntity.getCreatedAt());
+                boardFoodDTO.setUpdatedAt(boardFoodEntity.getUpdatedAt());
+                boardFoodDTO.setStatus(boardFoodEntity.getStatus().name());
+                boardDTOList.add(boardFoodDTO);
             }
-
-            boardFoodDTO.setRecommend(boardFoodEntity.getRecommend());
-            boardFoodDTO.setViews(boardFoodEntity.getViews());
-            boardFoodDTO.setCategory(boardFoodEntity.getCategory());
-            boardFoodDTO.setCreatedAt(boardFoodEntity.getCreatedAt());
-            boardFoodDTO.setUpdatedAt(boardFoodEntity.getUpdatedAt());
-            boardFoodDTO.setStatus(boardFoodEntity.getStatus().name());
-            boardDTOList.add(boardFoodDTO);
         }
         return boardDTOList;
     }
@@ -59,12 +62,14 @@ public class BoardFoodService {
     }
 
     private BoardDTO toDTO(BoardFoodEntity entity) {
+        String userNickname = userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname();
         return new BoardDTO(
                 entity.getId(),
                 entity.getTitle(),
                 entity.getBody(),
                 entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
+                userNickname,
                 entity.getRecommend(),
                 entity.getViews(),
                 entity.getCategory(),

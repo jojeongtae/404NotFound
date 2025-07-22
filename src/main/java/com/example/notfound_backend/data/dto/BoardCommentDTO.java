@@ -16,6 +16,7 @@ public class BoardCommentDTO {
     private Integer boardId;
     private Integer parentId;
     private String author;
+    private String authorNickname;
     private String content;
     private Instant createdAt;
     private String status;

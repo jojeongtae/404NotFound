@@ -28,23 +28,26 @@ public class BoardQnaService {
         List<BoardQnaEntity> boardQnaEntityList = boardQnaDAO.findAllBoards();
         List<BoardDTO> boardDTOList =new ArrayList<>();
         for(BoardQnaEntity boardQnaEntity : boardQnaEntityList){
-            BoardDTO boardQnaDTO =new BoardDTO();
-            boardQnaDTO.setId(boardQnaEntity.getId());
-            boardQnaDTO.setTitle(boardQnaEntity.getTitle());
-            boardQnaDTO.setBody(boardQnaEntity.getBody());
-            boardQnaDTO.setImgsrc(boardQnaEntity.getImgsrc());
+            if (boardQnaEntity.getStatus() == Status.VISIBLE) { // VISIBLE만 노출
+                BoardDTO boardQnaDTO = new BoardDTO();
+                boardQnaDTO.setId(boardQnaEntity.getId());
+                boardQnaDTO.setTitle(boardQnaEntity.getTitle());
+                boardQnaDTO.setBody(boardQnaEntity.getBody());
+                boardQnaDTO.setImgsrc(boardQnaEntity.getImgsrc());
 
-            if (boardQnaEntity.getAuthor() != null) {
-                boardQnaDTO.setAuthor(boardQnaEntity.getAuthor().getUsername());
+                if (boardQnaEntity.getAuthor() != null) {
+                    boardQnaDTO.setAuthor(boardQnaEntity.getAuthor().getUsername());
+                }
+                String userNickname = userInfoDAO.getUserInfo(boardQnaEntity.getAuthor().getUsername()).getNickname();
+                boardQnaDTO.setAuthorNickname(userNickname); // 추가
+                boardQnaDTO.setRecommend(boardQnaEntity.getRecommend());
+                boardQnaDTO.setViews(boardQnaEntity.getViews());
+                boardQnaDTO.setCategory(boardQnaEntity.getCategory());
+                boardQnaDTO.setCreatedAt(boardQnaEntity.getCreatedAt());
+                boardQnaDTO.setUpdatedAt(boardQnaEntity.getUpdatedAt());
+                boardQnaDTO.setStatus(boardQnaEntity.getStatus().name());
+                boardDTOList.add(boardQnaDTO);
             }
-
-            boardQnaDTO.setRecommend(boardQnaEntity.getRecommend());
-            boardQnaDTO.setViews(boardQnaEntity.getViews());
-            boardQnaDTO.setCategory(boardQnaEntity.getCategory());
-            boardQnaDTO.setCreatedAt(boardQnaEntity.getCreatedAt());
-            boardQnaDTO.setUpdatedAt(boardQnaEntity.getUpdatedAt());
-            boardQnaDTO.setStatus(boardQnaEntity.getStatus().name());
-            boardDTOList.add(boardQnaDTO);
         }
         return boardDTOList;
     }
@@ -58,12 +61,14 @@ public class BoardQnaService {
     }
 
     private BoardDTO toDTO(BoardQnaEntity entity) {
+        String userNickname = userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname();
         return new BoardDTO(
                 entity.getId(),
                 entity.getTitle(),
                 entity.getBody(),
                 entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
+                userNickname,
                 entity.getRecommend(),
                 entity.getViews(),
                 entity.getCategory(),

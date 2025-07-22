@@ -1,6 +1,7 @@
 package com.example.notfound_backend.service;
 
 import com.example.notfound_backend.data.dao.UserAuthDAO;
+import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dao.VotingAnswerDAO;
 import com.example.notfound_backend.data.dao.VotingDAO;
 import com.example.notfound_backend.data.dto.VotingAnswerDTO;
@@ -25,6 +26,7 @@ public class VotingAnswerService {
     private final VotingAnswerDAO votingAnswerDAO;
     private final UserAuthDAO userAuthDAO;
     private final VotingDAO votingDAO;
+    private final UserInfoDAO userInfoDAO;
 
     @Transactional
     public VotingAnswerDTO submitAnswer(VotingAnswerDTO dto) {
@@ -59,6 +61,7 @@ public class VotingAnswerService {
                 .id(entity.getId())
                 .username(entity.getUser().getUsername())
                 .answers(entity.getAnswers().toString())
+                .userNickname(userInfoDAO.getUserInfo(entity.getUser().getUsername()).getNickname())
                 .reason(entity.getReason())
                 .createdAt(entity.getCreatedAt())
                 .parent(entity.getParent().getId())
