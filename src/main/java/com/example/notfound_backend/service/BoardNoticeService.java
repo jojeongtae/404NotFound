@@ -123,18 +123,6 @@ public class BoardNoticeService {
         return toDTO(updated);
     }
 
-//    @Transactional
-//    public void deleteBoard(Integer id, String username) {
-//        BoardNoticeEntity entity = boardNoticeDAO.findById(id)
-//                .orElseThrow(() -> new RuntimeException("Board not found"));
-//
-//        UserAuthEntity user = userAuthDAO.findByUsername(username);
-//        if (!"ROLE_ADMIN".equals(user.getRole())) {
-//            throw new AccessDeniedException("관리자만 삭제할 수 있습니다.");
-//        }
-//
-//        boardNoticeDAO.delete(entity);
-//    }
 
     @Transactional
     public void deleteBoard(Integer id, String username) {
@@ -149,18 +137,18 @@ public class BoardNoticeService {
         boardNoticeDAO.delete(entity);
     }
 
-    public BoardDTO recommendBoard(Integer id) {
-        boardNoticeDAO.incrementRecommend(id);
-        BoardNoticeEntity entity= boardNoticeDAO.findById(id)
-                .orElseThrow(() -> new RuntimeException("Board not found"));
-        return toDTO(entity);
-    }
-
-    public BoardDTO cancelRecommendBoard(Integer id) {
-        boardNoticeDAO.decrementRecommend(id);
-        BoardNoticeEntity entity= boardNoticeDAO.findById(id)
-                .orElseThrow(() -> new RuntimeException("Board not found"));
-        return toDTO(entity);
-    }
+//    public BoardDTO recommendBoard(Integer id) {
+//        boardNoticeDAO.incrementRecommend(id);
+//        BoardNoticeEntity entity= boardNoticeDAO.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Board not found"));
+//        return toDTO(entity);
+//    }
+//
+//    public BoardDTO cancelRecommendBoard(Integer id) {
+//        boardNoticeDAO.decrementRecommend(id);
+//        BoardNoticeEntity entity= boardNoticeDAO.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Board not found"));
+//        return toDTO(entity);
+//    }
 
 }

@@ -23,6 +23,7 @@ public class BoardUsedRecommendDAO {
         boardUsedRecommendRepository.save(entity);
     }
 
+    @Transactional
     public void increaseRecommendCount(Integer boardId) {
         boardUsedRepository.incrementRecommend(boardId);
     }

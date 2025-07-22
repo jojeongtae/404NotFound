@@ -23,13 +23,13 @@ public class BoardNoticeDAO {
         return boardNoticeRepository.save(boardNoticeEntity);
     }
 
-    @Transactional
-    public void incrementRecommend(Integer id) {
-        boardNoticeRepository.incrementRecommend(id);
-    }
-
-    @Transactional
-    public void decrementRecommend(Integer id) {boardNoticeRepository.decrementRecommend(id);}
+//    @Transactional
+//    public void incrementRecommend(Integer id) {
+//        boardNoticeRepository.incrementRecommend(id);
+//    }
+//
+//    @Transactional
+//    public void decrementRecommend(Integer id) {boardNoticeRepository.decrementRecommend(id);}
 
     @Transactional
     public void incrementViews(Integer id) {

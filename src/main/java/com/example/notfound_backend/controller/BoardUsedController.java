@@ -58,17 +58,17 @@ public class BoardUsedController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{id}/recommend")
-    public ResponseEntity<BoardDTO> recommend(@PathVariable Integer id) {
-        BoardDTO updated= boardUsedService.recommendBoard(id);
-        return ResponseEntity.ok(updated);
-    }
-
-    @PatchMapping("/{id}/cancel_recommend")
-    public ResponseEntity<BoardDTO> cancelRecommend(@PathVariable Integer id) {
-        BoardDTO updated= boardUsedService.cancelRecommendBoard(id);
-        return ResponseEntity.ok(updated);
-    }
+//    @PatchMapping("/{id}/recommend")
+//    public ResponseEntity<BoardDTO> recommend(@PathVariable Integer id) {
+//        BoardDTO updated= boardUsedService.recommendBoard(id);
+//        return ResponseEntity.ok(updated);
+//    }
+//
+//    @PatchMapping("/{id}/cancel_recommend")
+//    public ResponseEntity<BoardDTO> cancelRecommend(@PathVariable Integer id) {
+//        BoardDTO updated= boardUsedService.cancelRecommendBoard(id);
+//        return ResponseEntity.ok(updated);
+//    }
 
     @GetMapping("/comments/{boardId}")
     public List<BoardCommentDTO> getComments(@PathVariable Integer boardId) {
@@ -104,7 +104,6 @@ public class BoardUsedController {
     public ResponseEntity<?> recommend(@PathVariable Integer boardId, @RequestBody Map<String, String> body) {
         String username = body.get("username");
         boardUsedRecommendService.recommend(boardId, username);
-
         return ResponseEntity.ok("추천 완료");
     }
 }

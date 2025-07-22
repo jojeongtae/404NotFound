@@ -125,18 +125,18 @@ public class BoardUsedService {
     }
 
 
-    public BoardDTO recommendBoard(Integer id) {
-        boardUsedDAO.incrementRecommend(id);
-        BoardUsedEntity entity= boardUsedDAO.findById(id)
-                .orElseThrow(() -> new RuntimeException("Board not found"));
-        return toDTO(entity);
-    }
-
-    public BoardDTO cancelRecommendBoard(Integer id) {
-        boardUsedDAO.decrementRecommend(id);
-        BoardUsedEntity entity= boardUsedDAO.findById(id)
-                .orElseThrow(() -> new RuntimeException("Board not found"));
-        return toDTO(entity);
-    }
+//    public BoardDTO recommendBoard(Integer id) {
+//        boardUsedDAO.incrementRecommend(id);
+//        BoardUsedEntity entity= boardUsedDAO.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Board not found"));
+//        return toDTO(entity);
+//    }
+//
+//    public BoardDTO cancelRecommendBoard(Integer id) {
+//        boardUsedDAO.decrementRecommend(id);
+//        BoardUsedEntity entity= boardUsedDAO.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Board not found"));
+//        return toDTO(entity);
+//    }
 
 }

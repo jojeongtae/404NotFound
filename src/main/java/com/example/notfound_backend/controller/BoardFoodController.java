@@ -53,17 +53,17 @@ public class BoardFoodController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{id}/recommend")
-    public ResponseEntity<BoardDTO> recommend(@PathVariable Integer id) {
-        BoardDTO updated= boardFoodService.recommendBoard(id);
-        return ResponseEntity.ok(updated);
-    }
-
-    @PatchMapping("/{id}/cancel_recommend")
-    public ResponseEntity<BoardDTO> cancelRecommend(@PathVariable Integer id) {
-        BoardDTO updated= boardFoodService.cancelRecommendBoard(id);
-        return ResponseEntity.ok(updated);
-    }
+//    @PatchMapping("/{id}/recommend")
+//    public ResponseEntity<BoardDTO> recommend(@PathVariable Integer id) {
+//        BoardDTO updated= boardFoodService.recommendBoard(id);
+//        return ResponseEntity.ok(updated);
+//    }
+//
+//    @PatchMapping("/{id}/cancel_recommend")
+//    public ResponseEntity<BoardDTO> cancelRecommend(@PathVariable Integer id) {
+//        BoardDTO updated= boardFoodService.cancelRecommendBoard(id);
+//        return ResponseEntity.ok(updated);
+//    }
 
     @GetMapping("/comments/{boardId}")
     public List<BoardCommentDTO> getComments(@PathVariable Integer boardId) {

@@ -24,13 +24,13 @@ public class BoardUsedDAO {
         return boardUsedRepository.save(boardUsedEntity);
     }
 
-    @Transactional
-    public void incrementRecommend(Integer id) {
-        boardUsedRepository.incrementRecommend(id);
-    }
-
-    @Transactional
-    public void decrementRecommend(Integer id) {boardUsedRepository.decrementRecommend(id);}
+//    @Transactional
+//    public void incrementRecommend(Integer id) {
+//        boardUsedRepository.incrementRecommend(id);
+//    }
+//
+//    @Transactional
+//    public void decrementRecommend(Integer id) {boardUsedRepository.decrementRecommend(id);}
 
     @Transactional
     public void incrementViews(Integer id) {

@@ -124,18 +124,18 @@ public class BoardQnaService {
         boardQnaDAO.delete(entity);
     }
 
-    public BoardDTO recommendBoard(Integer id) {
-        boardQnaDAO.incrementRecommend(id);
-        BoardQnaEntity entity= boardQnaDAO.findById(id)
-                .orElseThrow(() -> new RuntimeException("Board not found"));
-        return toDTO(entity);
-    }
-
-    public BoardDTO cancelRecommendBoard(Integer id) {
-        boardQnaDAO.decrementRecommend(id);
-        BoardQnaEntity entity= boardQnaDAO.findById(id)
-                .orElseThrow(() -> new RuntimeException("Board not found"));
-        return toDTO(entity);
-    }
+//    public BoardDTO recommendBoard(Integer id) {
+//        boardQnaDAO.incrementRecommend(id);
+//        BoardQnaEntity entity= boardQnaDAO.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Board not found"));
+//        return toDTO(entity);
+//    }
+//
+//    public BoardDTO cancelRecommendBoard(Integer id) {
+//        boardQnaDAO.decrementRecommend(id);
+//        BoardQnaEntity entity= boardQnaDAO.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Board not found"));
+//        return toDTO(entity);
+//    }
 
 }

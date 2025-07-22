@@ -52,17 +52,17 @@ public class BoardFreeController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{id}/recommend")
-    public ResponseEntity<BoardDTO> recommend(@PathVariable Integer id) {
-        BoardDTO updated= boardFreeService.recommendBoard(id);
-        return ResponseEntity.ok(updated);
-    }
-
-    @PatchMapping("/{id}/cancel_recommend")
-    public ResponseEntity<BoardDTO> cancelRecommend(@PathVariable Integer id) {
-        BoardDTO updated= boardFreeService.cancelRecommendBoard(id);
-        return ResponseEntity.ok(updated);
-    }
+//    @PatchMapping("/{id}/recommend")
+//    public ResponseEntity<BoardDTO> recommend(@PathVariable Integer id) {
+//        BoardDTO updated= boardFreeService.recommendBoard(id);
+//        return ResponseEntity.ok(updated);
+//    }
+//
+//    @PatchMapping("/{id}/cancel_recommend")
+//    public ResponseEntity<BoardDTO> cancelRecommend(@PathVariable Integer id) {
+//        BoardDTO updated= boardFreeService.cancelRecommendBoard(id);
+//        return ResponseEntity.ok(updated);
+//    }
 
     @GetMapping("/comments/{boardId}")
     public List<BoardCommentDTO> getComments(@PathVariable Integer boardId) {

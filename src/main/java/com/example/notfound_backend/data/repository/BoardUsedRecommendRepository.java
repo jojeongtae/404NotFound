@@ -20,5 +20,4 @@ public interface BoardUsedRecommendRepository extends JpaRepository<BoardUsedRec
     //추천 취소 기능
     Optional<BoardUsedRecommendEntity> findByBoardAndUsername(BoardUsedEntity board, UserAuthEntity username);
 
-
 }
