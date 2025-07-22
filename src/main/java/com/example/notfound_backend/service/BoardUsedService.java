@@ -119,6 +119,7 @@ public class BoardUsedService {
         boardUsedDAO.delete(entity);
     }
 
+
     public BoardDTO recommendBoard(Integer id) {
         boardUsedDAO.incrementRecommend(id);
         BoardUsedEntity entity= boardUsedDAO.findById(id)

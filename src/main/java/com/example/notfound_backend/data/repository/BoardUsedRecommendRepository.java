@@ -14,10 +14,6 @@ import java.util.Optional;
 @Repository
 public interface BoardUsedRecommendRepository extends JpaRepository<BoardUsedRecommendEntity, Integer> {
 
-    @Modifying
-    @Query("UPDATE BoardUsedEntity b SET b.recommend = b.recommend + 1 WHERE b.id = :id")
-    void incrementRecommend(@Param("id") Integer id);
-
     //중복 추천 방지
     boolean existsByBoardAndUsernameAndIsActive(BoardUsedEntity board, UserAuthEntity username, Boolean isActive);
 
