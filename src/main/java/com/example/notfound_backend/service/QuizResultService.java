@@ -61,6 +61,7 @@ public class QuizResultService {
                 .id(entity.getId())
                 .quiz_id(entity.getQuiz().getId())
                 .username(entity.getUsername().getUsername())
+                .userNickname(userInfoDAO.getUserInfo(entity.getUsername().getUsername()).getNickname())
                 .userAnswer(entity.getUserAnswer())
                 .result(entity.getResult())
                 .solvedAt(entity.getSolvedAt())

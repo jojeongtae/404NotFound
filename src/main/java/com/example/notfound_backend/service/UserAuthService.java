@@ -85,6 +85,21 @@ public class UserAuthService implements UserDetailsService {
         }
     }
 
+    // 회원탈퇴
+    @Transactional
+    public String deleteUserAuth(String username, String password) {
+        UserAuthEntity userAuthEntity = userAuthDAO.findByUsername(username);
+        if (userAuthEntity == null) {
+            throw new UsernameNotFoundException("존재하지 않는 사용자입니다.");
+        }
+        if (!passwordEncoder.matches(password, userAuthEntity.getPassword())) {
+            throw new IllegalArgumentException("비밀번호 불일치");
+        } else {
+            userAuthDAO.deleteUserAuth(username);
+            return "회원탈퇴 완료";
+        }
+    }
+
     public boolean findUserByUsername(String username) {
         UserAuthEntity userAuthEntity = this.userAuthDAO.findByUsername(username);
         if (userAuthEntity == null) {

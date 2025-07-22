@@ -55,6 +55,7 @@ public class SurveyAnswerService {
         return SurveyAnswerDTO.builder()
                 .id(entity.getId())
                 .username(entity.getUser() != null ? entity.getUser().getUsername() : null)
+                .userNickname(userInfoDAO.getUserInfo(entity.getUser().getUsername()).getNickname())
                 .answers(entity.getAnswers())
                 .createdAt(entity.getCreatedAt())
                 .parentId(entity.getParentId().getId())

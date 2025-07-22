@@ -14,6 +14,7 @@ import java.time.Instant;
 public class SurveyAnswerDTO {
     private Integer id;
     private String username;
+    private String userNickname;
     private String answers;
     private Instant createdAt;
     private Integer parentId;

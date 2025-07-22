@@ -1,6 +1,7 @@
 package com.example.notfound_backend.service;
 
 import com.example.notfound_backend.data.dao.UserAuthDAO;
+import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dao.VotingDAO;
 import com.example.notfound_backend.data.dto.VotingDTO;
 import com.example.notfound_backend.data.entity.UserAuthEntity;
@@ -19,6 +20,7 @@ import java.util.List;
 public class VotingService {
     private final VotingDAO votingDAO;
     private final UserAuthDAO userAuthDAO;
+    private final UserInfoDAO userInfoDAO;
 
     public List<VotingDTO> findAll(){
         List<VotingEntity> votingEntities=votingDAO.findAllVoting();
@@ -29,6 +31,8 @@ public class VotingService {
             votingDTO.setTitle(votingEntity.getTitle());
             votingDTO.setQuestion(votingEntity.getQuestion());
             votingDTO.setAuthor(votingEntity.getAuthor().getUsername());
+            String userNickname = userInfoDAO.getUserInfo(votingEntity.getAuthor().getUsername()).getNickname();
+            votingDTO.setAuthorNickname(userNickname);
             votingDTO.setCreatedAt(votingEntity.getCreatedAt());
             votingDTO.setCategory(votingEntity.getCategory());
             votingDTO.setViews(votingEntity.getViews());
@@ -46,11 +50,13 @@ public class VotingService {
     }
 
     private VotingDTO toDTO(VotingEntity entity){
+        String userNickname = userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname();
         return new VotingDTO(
                 entity.getId(),
                 entity.getTitle(),
                 entity.getQuestion(),
                 entity.getAuthor().getUsername(),
+                userNickname,
                 entity.getCreatedAt(),
                 entity.getCategory(),
                 entity.getViews()

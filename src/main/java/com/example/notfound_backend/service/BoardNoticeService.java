@@ -25,23 +25,26 @@ public class BoardNoticeService {
         List<BoardNoticeEntity> boardNoticeEntityList = boardNoticeDAO.findAllBoards();
         List<BoardDTO> boardDTOList =new ArrayList<>();
         for(BoardNoticeEntity boardNoticeEntity : boardNoticeEntityList){
-            BoardDTO boardNoticeDTO =new BoardDTO();
-            boardNoticeDTO.setId(boardNoticeEntity.getId());
-            boardNoticeDTO.setTitle(boardNoticeEntity.getTitle());
-            boardNoticeDTO.setBody(boardNoticeEntity.getBody());
-            boardNoticeDTO.setImgsrc(boardNoticeEntity.getImgsrc());
+            if (boardNoticeEntity.getStatus() == Status.VISIBLE) { // VISIBLE만 노출
+                BoardDTO boardNoticeDTO = new BoardDTO();
+                boardNoticeDTO.setId(boardNoticeEntity.getId());
+                boardNoticeDTO.setTitle(boardNoticeEntity.getTitle());
+                boardNoticeDTO.setBody(boardNoticeEntity.getBody());
+                boardNoticeDTO.setImgsrc(boardNoticeEntity.getImgsrc());
 
-            if (boardNoticeEntity.getAuthor() != null) {
-                boardNoticeDTO.setAuthor(boardNoticeEntity.getAuthor().getUsername());
+                if (boardNoticeEntity.getAuthor() != null) {
+                    boardNoticeDTO.setAuthor(boardNoticeEntity.getAuthor().getUsername());
+                }
+                String userNickname = userInfoDAO.getUserInfo(boardNoticeEntity.getAuthor().getUsername()).getNickname();
+                boardNoticeDTO.setAuthorNickname(userNickname); // 추가
+                boardNoticeDTO.setRecommend(boardNoticeEntity.getRecommend());
+                boardNoticeDTO.setViews(boardNoticeEntity.getViews());
+                boardNoticeDTO.setCategory(boardNoticeEntity.getCategory());
+                boardNoticeDTO.setCreatedAt(boardNoticeEntity.getCreatedAt());
+                boardNoticeDTO.setUpdatedAt(boardNoticeEntity.getUpdatedAt());
+                boardNoticeDTO.setStatus(boardNoticeEntity.getStatus().name());
+                boardDTOList.add(boardNoticeDTO);
             }
-
-            boardNoticeDTO.setRecommend(boardNoticeEntity.getRecommend());
-            boardNoticeDTO.setViews(boardNoticeEntity.getViews());
-            boardNoticeDTO.setCategory(boardNoticeEntity.getCategory());
-            boardNoticeDTO.setCreatedAt(boardNoticeEntity.getCreatedAt());
-            boardNoticeDTO.setUpdatedAt(boardNoticeEntity.getUpdatedAt());
-            boardNoticeDTO.setStatus(boardNoticeEntity.getStatus().name());
-            boardDTOList.add(boardNoticeDTO);
         }
         return boardDTOList;
     }
@@ -55,12 +58,14 @@ public class BoardNoticeService {
     }
 
     private BoardDTO toDTO(BoardNoticeEntity entity) {
+        String userNickname = userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname();
         return new BoardDTO(
                 entity.getId(),
                 entity.getTitle(),
                 entity.getBody(),
                 entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
+                userNickname,
                 entity.getRecommend(),
                 entity.getViews(),
                 entity.getCategory(),

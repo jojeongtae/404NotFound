@@ -37,7 +37,8 @@ public class QuizService {
             if (quizEntity.getAuthor() != null) {
                 quizDTO.setAuthor(quizEntity.getAuthor().getUsername());
             }
-
+            String userNickname = userInfoDAO.getUserInfo(quizEntity.getAuthor().getUsername()).getNickname();
+            quizDTO.setAuthorNickname(userNickname);
             quizDTO.setCreatedAt(quizEntity.getCreatedAt());
             quizDTO.setLevel(quizEntity.getLevel());
             quizDTO.setCategory(quizEntity.getCategory());
@@ -57,12 +58,14 @@ public class QuizService {
     }
 
     private QuizDTO toDTO(QuizEntity entity) {
+        String userNickname = userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname();
         return new QuizDTO(
                 entity.getId(),
                 entity.getTitle(),
                 entity.getQuestion(),
                 entity.getAnswer(),
                 entity.getAuthor().getUsername(),
+                userNickname,
                 entity.getCreatedAt(),
                 entity.getLevel(),
                 entity.getCategory(),
