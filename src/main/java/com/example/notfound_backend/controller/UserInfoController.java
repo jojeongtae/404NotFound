@@ -2,6 +2,7 @@ package com.example.notfound_backend.controller;
 
 import com.example.notfound_backend.data.dto.UserInfoAllDTO;
 import com.example.notfound_backend.data.dto.UserInfoDTO;
+import com.example.notfound_backend.data.entity.UserStatus;
 import com.example.notfound_backend.service.UserAuthService;
 import com.example.notfound_backend.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,11 @@ public class UserInfoController {
     @GetMapping(value = "/admin/users")
     public ResponseEntity<List<UserInfoAllDTO>> getAllUsers() {
         return ResponseEntity.status(HttpStatus.OK).body(userInfoService.getAllUserInfo());
+    }
+    // 회원 상태변경 (관리자)
+    @PatchMapping(value = "/admin/user-status/{username}")
+    public ResponseEntity<UserInfoAllDTO> updateUserStatus(@PathVariable String username, @RequestParam UserStatus status) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(userInfoService.updateStatus(username, status));
     }
 
     @GetMapping(value = "/check-username/{username}")
