@@ -123,18 +123,18 @@ public class BoardFreeService {
         boardFreeDAO.delete(entity);
     }
 
-    public BoardDTO recommendBoard(Integer id) {
-        boardFreeDAO.incrementRecommend(id);
-        BoardFreeEntity entity= boardFreeDAO.findById(id)
-                .orElseThrow(() -> new RuntimeException("Board not found"));
-        return toDTO(entity);
-    }
-
-    public BoardDTO cancelRecommendBoard(Integer id) {
-        boardFreeDAO.decrementRecommend(id);
-        BoardFreeEntity entity= boardFreeDAO.findById(id)
-                .orElseThrow(() -> new RuntimeException("Board not found"));
-        return toDTO(entity);
-    }
+//    public BoardDTO recommendBoard(Integer id) {
+//        boardFreeDAO.incrementRecommend(id);
+//        BoardFreeEntity entity= boardFreeDAO.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Board not found"));
+//        return toDTO(entity);
+//    }
+//
+//    public BoardDTO cancelRecommendBoard(Integer id) {
+//        boardFreeDAO.decrementRecommend(id);
+//        BoardFreeEntity entity= boardFreeDAO.findById(id)
+//                .orElseThrow(() -> new RuntimeException("Board not found"));
+//        return toDTO(entity);
+//    }
 
 }

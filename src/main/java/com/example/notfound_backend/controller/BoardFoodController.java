@@ -5,6 +5,7 @@ import com.example.notfound_backend.data.dto.BoardCommentDTO;
 import com.example.notfound_backend.data.dto.BoardDTO;
 import com.example.notfound_backend.data.dto.BoardRankingDTO;
 import com.example.notfound_backend.service.BoardFoodCommentService;
+import com.example.notfound_backend.service.BoardFoodRecommendService;
 import com.example.notfound_backend.service.BoardFoodService;
 import com.example.notfound_backend.service.BoardRankingService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,6 +24,7 @@ public class BoardFoodController {
     private final BoardFoodService boardFoodService;
     private final BoardFoodCommentService boardFoodCommentService;
     private final BoardRankingService  boardRankingService;
+    private final BoardFoodRecommendService boardFoodRecommendService;
 
     @GetMapping("/list")
     public List<BoardDTO> getAllBoards() {
@@ -53,17 +57,17 @@ public class BoardFoodController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{id}/recommend")
-    public ResponseEntity<BoardDTO> recommend(@PathVariable Integer id) {
-        BoardDTO updated= boardFoodService.recommendBoard(id);
-        return ResponseEntity.ok(updated);
-    }
-
-    @PatchMapping("/{id}/cancel_recommend")
-    public ResponseEntity<BoardDTO> cancelRecommend(@PathVariable Integer id) {
-        BoardDTO updated= boardFoodService.cancelRecommendBoard(id);
-        return ResponseEntity.ok(updated);
-    }
+//    @PatchMapping("/{id}/recommend")
+//    public ResponseEntity<BoardDTO> recommend(@PathVariable Integer id) {
+//        BoardDTO updated= boardFoodService.recommendBoard(id);
+//        return ResponseEntity.ok(updated);
+//    }
+//
+//    @PatchMapping("/{id}/cancel_recommend")
+//    public ResponseEntity<BoardDTO> cancelRecommend(@PathVariable Integer id) {
+//        BoardDTO updated= boardFoodService.cancelRecommendBoard(id);
+//        return ResponseEntity.ok(updated);
+//    }
 
     @GetMapping("/comments/{boardId}")
     public List<BoardCommentDTO> getComments(@PathVariable Integer boardId) {
@@ -93,5 +97,11 @@ public class BoardFoodController {
     public List<BoardRankingDTO> getRecommendByRecommendToday() {
         List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getFoodTop5ByRecommendToday();
         return boardRankingDTOList;
+    }
+
+    @PostMapping("/{boardId}/recommend")
+    public ResponseEntity<?> recommend(@PathVariable Integer boardId, Principal principal) {
+        boardFoodRecommendService.recommend(boardId, principal.getName());
+        return ResponseEntity.ok("추천 완료");
     }
 }

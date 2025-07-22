@@ -23,13 +23,13 @@ public class BoardFreeDAO {
         return boardFreeRepository.save(boardFreeEntity);
     }
 
-    @Transactional
-    public void incrementRecommend(Integer id) {
-        boardFreeRepository.incrementRecommend(id);
-    }
-
-    @Transactional
-    public void decrementRecommend(Integer id) {boardFreeRepository.decrementRecommend(id);}
+//    @Transactional
+//    public void incrementRecommend(Integer id) {
+//        boardFreeRepository.incrementRecommend(id);
+//    }
+//
+//    @Transactional
+//    public void decrementRecommend(Integer id) {boardFreeRepository.decrementRecommend(id);}
 
     @Transactional
     public void incrementViews(Integer id) {

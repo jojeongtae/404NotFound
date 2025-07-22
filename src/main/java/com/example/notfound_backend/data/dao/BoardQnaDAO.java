@@ -25,13 +25,13 @@ public class BoardQnaDAO {
         return boardQnaRepository.save(boardQnaEntity);
     }
 
-    @Transactional
-    public void incrementRecommend(Integer id) {
-        boardQnaRepository.incrementRecommend(id);
-    }
-
-    @Transactional
-    public void decrementRecommend(Integer id) {boardQnaRepository.decrementRecommend(id);}
+//    @Transactional
+//    public void incrementRecommend(Integer id) {
+//        boardQnaRepository.incrementRecommend(id);
+//    }
+//
+//    @Transactional
+//    public void decrementRecommend(Integer id) {boardQnaRepository.decrementRecommend(id);}
 
     @Transactional
     public void incrementViews(Integer id) {
