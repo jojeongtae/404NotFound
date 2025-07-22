@@ -35,6 +35,7 @@ public interface BoardFoodRepository extends JpaRepository<BoardFoodEntity, Inte
             b.id AS id,
             b.title AS title,
             b.author AS author,
+        u.nickname AS authorNickname,
             b.recommend AS recommend,
             b.views AS views,
             b.category AS category,
@@ -43,6 +44,8 @@ public interface BoardFoodRepository extends JpaRepository<BoardFoodEntity, Inte
              FROM board_food_comments c 
              WHERE c.board_id = b.id AND c.status = 'VISIBLE') AS commentCount
         FROM board_food b
+        JOIN user_auth ua ON b.author = ua.username 
+        JOIN user_info u ON ua.username = u.username 
         WHERE DATE(b.created_at) = CURRENT_DATE AND b.status = 'VISIBLE'
         ORDER BY commentCount DESC
         LIMIT 5
@@ -54,6 +57,7 @@ public interface BoardFoodRepository extends JpaRepository<BoardFoodEntity, Inte
         b.id AS id,
         b.title AS title,
         b.author AS author,
+        u.nickname AS authorNickname,
         b.recommend AS recommend,
         b.views AS views,
         b.category AS category,
@@ -62,6 +66,8 @@ public interface BoardFoodRepository extends JpaRepository<BoardFoodEntity, Inte
          FROM board_food_comments c 
          WHERE c.board_id = b.id AND c.status = 'VISIBLE') AS commentCount
     FROM board_food b
+        JOIN user_auth ua ON b.author = ua.username 
+            JOIN user_info u ON ua.username = u.username 
     WHERE DATE(b.created_at) = CURRENT_DATE AND b.status = 'VISIBLE'
     ORDER BY b.recommend DESC
     LIMIT 5

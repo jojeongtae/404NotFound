@@ -37,12 +37,15 @@ public interface BoardInfoRepository extends JpaRepository<BoardInfoEntity, Inte
             b.author AS author,
             b.recommend AS recommend,
             b.views AS views,
+        u.nickname AS authorNickname,
             b.category AS category,
             b.created_at AS createdAt,
             (SELECT COUNT(*) 
              FROM board_info_comments c 
              WHERE c.board_id = b.id AND c.status = 'VISIBLE') AS commentCount
         FROM board_info b
+                JOIN user_auth ua ON b.author = ua.username 
+            JOIN user_info u ON ua.username = u.username 
         WHERE DATE(b.created_at) = CURRENT_DATE AND b.status = 'VISIBLE'
         ORDER BY commentCount DESC
         LIMIT 5
@@ -55,6 +58,7 @@ public interface BoardInfoRepository extends JpaRepository<BoardInfoEntity, Inte
         b.title AS title,
         b.author AS author,
         b.recommend AS recommend,
+        u.nickname AS authorNickname,
         b.views AS views,
         b.category AS category,
         b.created_at AS createdAt,
@@ -62,6 +66,8 @@ public interface BoardInfoRepository extends JpaRepository<BoardInfoEntity, Inte
          FROM board_info_comments c 
          WHERE c.board_id = b.id AND c.status = 'VISIBLE') AS commentCount
     FROM board_info b
+        JOIN user_auth ua ON b.author = ua.username 
+            JOIN user_info u ON ua.username = u.username 
     WHERE DATE(b.created_at) = CURRENT_DATE AND b.status = 'VISIBLE'
     ORDER BY b.recommend DESC
     LIMIT 5
