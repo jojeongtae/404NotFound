@@ -5,10 +5,7 @@ import com.example.notfound_backend.data.dao.BoardFoodDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
 import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.BoardCommentDTO;
-import com.example.notfound_backend.data.entity.BoardFoodCommentEntity;
-import com.example.notfound_backend.data.entity.BoardFoodEntity;
-import com.example.notfound_backend.data.entity.UserAuthEntity;
-import com.example.notfound_backend.data.entity.UserStatus;
+import com.example.notfound_backend.data.entity.*;
 import com.example.notfound_backend.exception.UserSuspendedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +22,7 @@ public class BoardFoodCommentService {
     private final BoardFoodCommentDAO boardFoodCommentDAO;
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
+    private final UserInfoService userInfoService;
     private final BoardFoodDAO boardFoodDAO;
 
     @Transactional
@@ -64,14 +62,16 @@ public class BoardFoodCommentService {
     }
 
     private BoardCommentDTO toDTO(BoardFoodCommentEntity entity) {
+        UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(entity.getAuthor().getUsername());
         return BoardCommentDTO.builder()
                 .id(entity.getId())
                 .boardId(entity.getBoard().getId())
                 .parentId(entity.getParentId())
                 .author(entity.getAuthor().getUsername())
-                .authorNickname(userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname())
+                .authorNickname(userInfoEntity.getNickname())
                 .content(entity.getContent())
                 .createdAt(entity.getCreatedAt())
+                .grade(userInfoService.getUserGrade(userInfoEntity))
                 .build();
     }
 

@@ -21,6 +21,7 @@ public class BoardFreeService {
     private final BoardFreeDAO boardFreeDAO;
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
+    private final UserInfoService userInfoService;
 
     public List<BoardDTO> findAll() {
         List<BoardFreeEntity> boardFreeEntityList = boardFreeDAO.findAllBoards();
@@ -37,8 +38,11 @@ public class BoardFreeService {
                 if (boardFreeEntity.getAuthor() != null) {
                     boardFreeDTO.setAuthor(boardFreeEntity.getAuthor().getUsername());
                 }
-                String userNickname = userInfoDAO.getUserInfo(boardFreeEntity.getAuthor().getUsername()).getNickname();
+                UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(boardFreeEntity.getAuthor().getUsername());
+                String userNickname = userInfoEntity.getNickname();
+                String userGrade = userInfoService.getUserGrade(userInfoEntity);
                 boardFreeDTO.setAuthorNickname(userNickname); // 추가
+                boardFreeDTO.setGrade(userGrade);
                 boardFreeDTO.setRecommend(boardFreeEntity.getRecommend());
                 boardFreeDTO.setViews(boardFreeEntity.getViews());
                 boardFreeDTO.setCategory(boardFreeEntity.getCategory());
@@ -61,7 +65,8 @@ public class BoardFreeService {
     }
 
     private BoardDTO toDTO(BoardFreeEntity entity) {
-        String userNickname = userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname();
+        UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(entity.getAuthor().getUsername());
+        String userNickname = userInfoEntity.getNickname();
         return new BoardDTO(
                 entity.getId(),
                 entity.getTitle(),
@@ -69,6 +74,7 @@ public class BoardFreeService {
                 entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
                 userNickname, // 추가
+                userInfoService.getUserGrade(userInfoEntity),
                 entity.getRecommend(),
                 entity.getViews(),
                 entity.getCategory(),

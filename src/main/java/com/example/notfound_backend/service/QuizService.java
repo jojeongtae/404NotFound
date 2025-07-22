@@ -20,6 +20,7 @@ public class QuizService {
     private final QuizDAO quizDAO;
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
+    private final UserInfoService userInfoService;
 
 
     public List<QuizDTO> findAll() {
@@ -35,8 +36,11 @@ public class QuizService {
             if (quizEntity.getAuthor() != null) {
                 quizDTO.setAuthor(quizEntity.getAuthor().getUsername());
             }
-            String userNickname = userInfoDAO.getUserInfo(quizEntity.getAuthor().getUsername()).getNickname();
+            UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(quizEntity.getAuthor().getUsername());
+            String userNickname = userInfoEntity.getNickname();
+            String userGrade = userInfoService.getUserGrade(userInfoEntity);
             quizDTO.setAuthorNickname(userNickname);
+            quizDTO.setGrade(userGrade);
             quizDTO.setCreatedAt(quizEntity.getCreatedAt());
             quizDTO.setLevel(quizEntity.getLevel());
             quizDTO.setCategory(quizEntity.getCategory());
@@ -56,7 +60,8 @@ public class QuizService {
     }
 
     private QuizDTO toDTO(QuizEntity entity) {
-        String userNickname = userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname();
+        UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(entity.getAuthor().getUsername());
+        String userNickname = userInfoEntity.getNickname();
         return new QuizDTO(
                 entity.getId(),
                 entity.getTitle(),
@@ -64,6 +69,7 @@ public class QuizService {
                 entity.getAnswer(),
                 entity.getAuthor().getUsername(),
                 userNickname,
+                userInfoService.getUserGrade(userInfoEntity),
                 entity.getCreatedAt(),
                 entity.getLevel(),
                 entity.getCategory(),

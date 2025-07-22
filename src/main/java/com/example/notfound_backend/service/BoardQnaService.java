@@ -21,6 +21,7 @@ public class BoardQnaService {
     private final BoardQnaDAO boardQnaDAO;
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
+    private final UserInfoService userInfoService;
 
     public List<BoardDTO> findAll() {
         List<BoardQnaEntity> boardQnaEntityList = boardQnaDAO.findAllBoards();
@@ -36,8 +37,11 @@ public class BoardQnaService {
                 if (boardQnaEntity.getAuthor() != null) {
                     boardQnaDTO.setAuthor(boardQnaEntity.getAuthor().getUsername());
                 }
-                String userNickname = userInfoDAO.getUserInfo(boardQnaEntity.getAuthor().getUsername()).getNickname();
+                UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(boardQnaEntity.getAuthor().getUsername());
+                String userNickname = userInfoEntity.getNickname();
+                String userGrade = userInfoService.getUserGrade(userInfoEntity);
                 boardQnaDTO.setAuthorNickname(userNickname); // 추가
+                boardQnaDTO.setGrade(userGrade);
                 boardQnaDTO.setRecommend(boardQnaEntity.getRecommend());
                 boardQnaDTO.setViews(boardQnaEntity.getViews());
                 boardQnaDTO.setCategory(boardQnaEntity.getCategory());
@@ -59,7 +63,8 @@ public class BoardQnaService {
     }
 
     private BoardDTO toDTO(BoardQnaEntity entity) {
-        String userNickname = userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname();
+        UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(entity.getAuthor().getUsername());
+        String userNickname = userInfoEntity.getNickname();
         return new BoardDTO(
                 entity.getId(),
                 entity.getTitle(),
@@ -67,6 +72,7 @@ public class BoardQnaService {
                 entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
                 userNickname,
+                userInfoService.getUserGrade(userInfoEntity),
                 entity.getRecommend(),
                 entity.getViews(),
                 entity.getCategory(),

@@ -1,7 +1,9 @@
 package com.example.notfound_backend.controller;
 
+import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.UserInfoAllDTO;
 import com.example.notfound_backend.data.dto.UserInfoDTO;
+import com.example.notfound_backend.data.entity.UserInfoEntity;
 import com.example.notfound_backend.data.entity.UserStatus;
 import com.example.notfound_backend.service.UserAuthService;
 import com.example.notfound_backend.service.UserInfoService;
@@ -18,6 +20,7 @@ import java.util.List;
 public class UserInfoController {
     private final UserInfoService userInfoService;
     private final UserAuthService userAuthService;
+    private final UserInfoDAO userInfoDAO;
     // 유저정보 수정
     @PutMapping(value = "/user/user-info")
     public ResponseEntity<UserInfoDTO> updateUserInfo(@RequestBody UserInfoDTO userInfoDTO) {
@@ -32,7 +35,8 @@ public class UserInfoController {
     // 회원등급 찾기
     @GetMapping(value = "/user/user-grade")
     public ResponseEntity<String> getUserGrade(@RequestParam String username) {
-        return ResponseEntity.status(HttpStatus.OK).body(userInfoService.getUserGrade(username));
+        UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(username);
+        return ResponseEntity.status(HttpStatus.OK).body(userInfoService.getUserGrade(userInfoEntity));
     }
 
     // 회원정보리스트 (관리자)

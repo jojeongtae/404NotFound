@@ -18,6 +18,7 @@ public class QuizDTO {
     private String answer;
     private String author;
     private String authorNickname;
+    private String grade;
     private Instant createdAt;
     private Integer level;
     private String category;

@@ -22,6 +22,7 @@ public class SurveyService {
     private final SurveyDAO surveyDAO;
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
+    private final UserInfoService userInfoService;
 
     public List<SurveyDTO> findAll() {
         List<SurveyEntity> surveyEntities=surveyDAO.findAllBoards();
@@ -37,8 +38,11 @@ public class SurveyService {
             surveyDTO.setColumn4(surveyEntity.getColumn4());
             surveyDTO.setColumn5(surveyEntity.getColumn5());
             surveyDTO.setAuthor(surveyEntity.getAuthor().getUsername());
-            String userNickname = userInfoDAO.getUserInfo(surveyEntity.getAuthor().getUsername()).getNickname();
+            UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(surveyEntity.getAuthor().getUsername());
+            String userNickname = userInfoEntity.getNickname();
+            String userGrade = userInfoService.getUserGrade(userInfoEntity);
             surveyDTO.setAuthorNickname(userNickname);
+            surveyDTO.setGrade(userGrade);
             surveyDTO.setCreatedAt(surveyEntity.getCreatedAt());
             surveyDTO.setCategory(surveyEntity.getCategory());
             surveyDTO.setViews(surveyEntity.getViews());
@@ -56,7 +60,8 @@ public class SurveyService {
     }
 
     private SurveyDTO toDTO(SurveyEntity entity){
-        String userNickname = userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname();
+        UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(entity.getAuthor().getUsername());
+        String userNickname = userInfoEntity.getNickname();
         return new SurveyDTO(
                 entity.getId(),
                 entity.getTitle(),
@@ -68,6 +73,7 @@ public class SurveyService {
                 entity.getColumn5(),
                 entity.getAuthor().getUsername(),
                 userNickname,
+                userInfoService.getUserGrade(userInfoEntity),
                 entity.getCreatedAt(),
                 entity.getCategory(),
                 entity.getViews()

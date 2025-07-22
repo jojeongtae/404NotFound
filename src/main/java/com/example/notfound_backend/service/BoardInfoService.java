@@ -4,10 +4,7 @@ import com.example.notfound_backend.data.dao.BoardInfoDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
 import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.BoardDTO;
-import com.example.notfound_backend.data.entity.BoardInfoEntity;
-import com.example.notfound_backend.data.entity.Status;
-import com.example.notfound_backend.data.entity.UserAuthEntity;
-import com.example.notfound_backend.data.entity.UserStatus;
+import com.example.notfound_backend.data.entity.*;
 import com.example.notfound_backend.exception.UserSuspendedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +21,7 @@ public class BoardInfoService {
     private final BoardInfoDAO boardInfoDAO;
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
+    private final UserInfoService userInfoService;
 
     public List<BoardDTO> findAll() {
         List<BoardInfoEntity> boardInfoEntityList = boardInfoDAO.findAllBoards();
@@ -39,8 +37,11 @@ public class BoardInfoService {
                 if (boardInfoEntity.getAuthor() != null) {
                     boardInfoDTO.setAuthor(boardInfoEntity.getAuthor().getUsername());
                 }
-                String userNickname = userInfoDAO.getUserInfo(boardInfoEntity.getAuthor().getUsername()).getNickname();
+                UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(boardInfoEntity.getAuthor().getUsername());
+                String userNickname = userInfoEntity.getNickname();
+                String userGrade = userInfoService.getUserGrade(userInfoEntity);
                 boardInfoDTO.setAuthorNickname(userNickname); // 추가
+                boardInfoDTO.setGrade(userGrade);
                 boardInfoDTO.setRecommend(boardInfoEntity.getRecommend());
                 boardInfoDTO.setViews(boardInfoEntity.getViews());
                 boardInfoDTO.setCategory(boardInfoEntity.getCategory());
@@ -62,7 +63,8 @@ public class BoardInfoService {
     }
 
     private BoardDTO toDTO(BoardInfoEntity entity) {
-        String userNickname = userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname();
+        UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(entity.getAuthor().getUsername());
+        String userNickname = userInfoEntity.getNickname();
         return new BoardDTO(
                 entity.getId(),
                 entity.getTitle(),
@@ -70,6 +72,7 @@ public class BoardInfoService {
                 entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
                 userNickname,
+                userInfoService.getUserGrade(userInfoEntity),
                 entity.getRecommend(),
                 entity.getViews(),
                 entity.getCategory(),

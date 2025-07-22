@@ -5,6 +5,7 @@ import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dao.VotingDAO;
 import com.example.notfound_backend.data.dto.VotingDTO;
 import com.example.notfound_backend.data.entity.UserAuthEntity;
+import com.example.notfound_backend.data.entity.UserInfoEntity;
 import com.example.notfound_backend.data.entity.UserStatus;
 import com.example.notfound_backend.data.entity.VotingEntity;
 import com.example.notfound_backend.exception.UserSuspendedException;
@@ -23,6 +24,7 @@ public class VotingService {
     private final VotingDAO votingDAO;
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
+    private final UserInfoService userInfoService;
 
     public List<VotingDTO> findAll(){
         List<VotingEntity> votingEntities=votingDAO.findAllVoting();
@@ -33,8 +35,11 @@ public class VotingService {
             votingDTO.setTitle(votingEntity.getTitle());
             votingDTO.setQuestion(votingEntity.getQuestion());
             votingDTO.setAuthor(votingEntity.getAuthor().getUsername());
-            String userNickname = userInfoDAO.getUserInfo(votingEntity.getAuthor().getUsername()).getNickname();
+            UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(votingEntity.getAuthor().getUsername());
+            String userNickname = userInfoEntity.getNickname();
+            String userGrade = userInfoService.getUserGrade(userInfoEntity);
             votingDTO.setAuthorNickname(userNickname);
+            votingDTO.setGrade(userGrade);
             votingDTO.setCreatedAt(votingEntity.getCreatedAt());
             votingDTO.setCategory(votingEntity.getCategory());
             votingDTO.setViews(votingEntity.getViews());
@@ -52,13 +57,15 @@ public class VotingService {
     }
 
     private VotingDTO toDTO(VotingEntity entity){
-        String userNickname = userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname();
+        UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(entity.getAuthor().getUsername());
+        String userNickname = userInfoEntity.getNickname();
         return new VotingDTO(
                 entity.getId(),
                 entity.getTitle(),
                 entity.getQuestion(),
                 entity.getAuthor().getUsername(),
                 userNickname,
+                userInfoService.getUserGrade(userInfoEntity),
                 entity.getCreatedAt(),
                 entity.getCategory(),
                 entity.getViews()

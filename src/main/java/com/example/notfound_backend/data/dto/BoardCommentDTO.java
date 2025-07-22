@@ -19,5 +19,6 @@ public class BoardCommentDTO {
     private String authorNickname;
     private String content;
     private Instant createdAt;
+    private String grade;
     private String status;
 }

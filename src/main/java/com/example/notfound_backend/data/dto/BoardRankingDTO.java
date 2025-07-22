@@ -16,4 +16,5 @@ public interface BoardRankingDTO {
     Instant getCreatedAt();
     BigInteger getCommentCount();
     String getAuthorNickname();
+    String getGrade();
 }

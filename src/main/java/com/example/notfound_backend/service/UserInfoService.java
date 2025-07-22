@@ -10,6 +10,7 @@ import com.example.notfound_backend.data.entity.UserStatus;
 import com.example.notfound_backend.exception.UserNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ import java.util.List;
 public class UserInfoService {
     private final UserInfoDAO userInfoDAO;
     private final UserAuthDAO userAuthDAO;
+    private final ConversionService conversionService;
 
     // 회원정보 수정
     @Transactional // 실행중 예외발생시 자동으로 롤백
@@ -40,6 +42,7 @@ public class UserInfoService {
                 .nickname(updatedUserInfo.getNickname())
                 .phone(updatedUserInfo.getPhone())
                 .address(updatedUserInfo.getAddress())
+                .grade(getUserGrade(updatedUserInfo))
                 .build();
     }
 
@@ -54,6 +57,7 @@ public class UserInfoService {
                 .point(userInfoEntity.getPoint())
                 .warning(userInfoEntity.getWarning())
                 .status(userInfoEntity.getStatus())
+                .grade(getUserGrade(userInfoEntity))
                 .build();
     }
     public boolean findByNickname(String nickname) {
@@ -65,21 +69,24 @@ public class UserInfoService {
     }
 
     // 회원등급
-    public String getUserGrade(String username) {
-        UserInfoEntity user = userInfoDAO.getUserInfo(username);
-        String userRole = userAuthDAO.getRole(username);
+    public String getUserGrade(UserInfoEntity user) {
+        String userRole = userAuthDAO.getRole(user.getUsername().getUsername());
+        if (userRole == null) {
+            return "알 수 없는 등급"; // 또는 적절한 기본값
+        }
+
         if (userRole.equals("ROLE_ADMIN")) {
-            return "500 Internal Server Error (운영진)";
+            return "👑 500";
         } else if (user.getPoint() < 25) {
-            return "404 Not Found (신규)";
-         } else if (user.getPoint() > 25 && user.getPoint() < 50) {
-            return "200 OK (일반 회원)";
-        } else if (user.getPoint() > 50 && user.getPoint() < 75) {
-            return "202 Accepted (활동 회원)";
-        } else if (user.getPoint() > 75 && user.getPoint() < 100) {
-            return "403 Forbidden (우수 회원)";
+            return "🐣 404";
+         } else if (user.getPoint() >= 25 && user.getPoint() < 50) {
+            return "👍 200";
+        } else if (user.getPoint() >= 50 && user.getPoint() < 75) {
+            return "🚀 202";
+        } else if (user.getPoint() >= 75) {
+            return "💎 403";
         } else {
-            return "401 Unauthorized (손님)";
+            return "👻 401";
         }
     }
 
@@ -96,6 +103,7 @@ public class UserInfoService {
                     .point(userInfoEntity.getPoint())
                     .warning(userInfoEntity.getWarning())
                     .status(userInfoEntity.getStatus())
+                    .grade(getUserGrade(userInfoEntity))
                     .build();
             userInfoDTOList.add(userInfoAllDTO);
         }

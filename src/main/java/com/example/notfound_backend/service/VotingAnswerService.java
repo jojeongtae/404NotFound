@@ -25,6 +25,7 @@ public class VotingAnswerService {
     private final UserAuthDAO userAuthDAO;
     private final VotingDAO votingDAO;
     private final UserInfoDAO userInfoDAO;
+    private final UserInfoService userInfoService;
 
     @Transactional
     public VotingAnswerDTO submitAnswer(VotingAnswerDTO dto) {
@@ -60,14 +61,16 @@ public class VotingAnswerService {
     }
 
     private VotingAnswerDTO toDTO(VotingAnswerEntity entity) {
+        UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(entity.getUser().getUsername());
         return VotingAnswerDTO.builder()
                 .id(entity.getId())
                 .username(entity.getUser().getUsername())
                 .answers(entity.getAnswers().toString())
-                .userNickname(userInfoDAO.getUserInfo(entity.getUser().getUsername()).getNickname())
+                .userNickname(userInfoEntity.getNickname())
                 .reason(entity.getReason())
                 .createdAt(entity.getCreatedAt())
                 .parent(entity.getParent().getId())
+                .grade(userInfoService.getUserGrade(userInfoEntity))
                 .build();
     }
 

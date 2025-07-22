@@ -18,4 +18,5 @@ public class UserInfoAllDTO {
     private Integer point;
     private Integer warning;
     private UserStatus status;
+    private String grade;
 }

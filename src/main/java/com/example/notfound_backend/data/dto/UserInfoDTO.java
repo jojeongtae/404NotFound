@@ -14,4 +14,5 @@ public class UserInfoDTO {
     private String nickname;
     private String phone;
     private String address;
+    private String grade;
 }

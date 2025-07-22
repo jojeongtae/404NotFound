@@ -20,6 +20,7 @@ public class BoardNoticeService {
     private final BoardNoticeDAO boardNoticeDAO;
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
+    private final UserInfoService userInfoService;
 
     public List<BoardDTO> findAll() {
         List<BoardNoticeEntity> boardNoticeEntityList = boardNoticeDAO.findAllBoards();
@@ -35,8 +36,11 @@ public class BoardNoticeService {
                 if (boardNoticeEntity.getAuthor() != null) {
                     boardNoticeDTO.setAuthor(boardNoticeEntity.getAuthor().getUsername());
                 }
-                String userNickname = userInfoDAO.getUserInfo(boardNoticeEntity.getAuthor().getUsername()).getNickname();
+                UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(boardNoticeEntity.getAuthor().getUsername());
+                String userNickname = userInfoEntity.getNickname();
+                String userGrade = userInfoService.getUserGrade(userInfoEntity);
                 boardNoticeDTO.setAuthorNickname(userNickname); // 추가
+                boardNoticeDTO.setGrade(userGrade);
                 boardNoticeDTO.setRecommend(boardNoticeEntity.getRecommend());
                 boardNoticeDTO.setViews(boardNoticeEntity.getViews());
                 boardNoticeDTO.setCategory(boardNoticeEntity.getCategory());
@@ -58,7 +62,8 @@ public class BoardNoticeService {
     }
 
     private BoardDTO toDTO(BoardNoticeEntity entity) {
-        String userNickname = userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname();
+        UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(entity.getAuthor().getUsername());
+        String userNickname = userInfoEntity.getNickname();
         return new BoardDTO(
                 entity.getId(),
                 entity.getTitle(),
@@ -66,6 +71,7 @@ public class BoardNoticeService {
                 entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
                 userNickname,
+                userInfoService.getUserGrade(userInfoEntity),
                 entity.getRecommend(),
                 entity.getViews(),
                 entity.getCategory(),

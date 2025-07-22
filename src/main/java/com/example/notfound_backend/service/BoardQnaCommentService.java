@@ -5,10 +5,7 @@ import com.example.notfound_backend.data.dao.BoardQnaDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
 import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.BoardCommentDTO;
-import com.example.notfound_backend.data.entity.BoardQnaCommentEntity;
-import com.example.notfound_backend.data.entity.BoardQnaEntity;
-import com.example.notfound_backend.data.entity.UserAuthEntity;
-import com.example.notfound_backend.data.entity.UserStatus;
+import com.example.notfound_backend.data.entity.*;
 import com.example.notfound_backend.exception.UserSuspendedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +22,7 @@ public class BoardQnaCommentService {
     private final BoardQnaCommentDAO boardQnaCommentDAO;
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
+    private final UserInfoService userInfoService;
     private final BoardQnaDAO boardQnaDAO;
 
     @Transactional
@@ -65,14 +63,16 @@ public class BoardQnaCommentService {
     }
 
     private BoardCommentDTO toDTO(BoardQnaCommentEntity entity) {
+        UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(entity.getAuthor().getUsername());
         return BoardCommentDTO.builder()
                 .id(entity.getId())
                 .boardId(entity.getBoard().getId())
                 .parentId(entity.getParentId())
                 .author(entity.getAuthor().getUsername())
-                .authorNickname(userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname())
+                .authorNickname(userInfoEntity.getNickname())
                 .content(entity.getContent())
                 .createdAt(entity.getCreatedAt())
+                .grade(userInfoService.getUserGrade(userInfoEntity))
                 .build();
     }
 

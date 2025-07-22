@@ -5,10 +5,7 @@ import com.example.notfound_backend.data.dao.QuizResultDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
 import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.QuizResultDTO;
-import com.example.notfound_backend.data.entity.QuizEntity;
-import com.example.notfound_backend.data.entity.QuizResultEntity;
-import com.example.notfound_backend.data.entity.UserAuthEntity;
-import com.example.notfound_backend.data.entity.UserStatus;
+import com.example.notfound_backend.data.entity.*;
 import com.example.notfound_backend.exception.UserSuspendedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +23,7 @@ public class QuizResultService {
     private final QuizDAO quizDAO;
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
+    private final UserInfoService userInfoService;
 
     @Transactional
     public QuizResultDTO submitAnswer(QuizResultDTO dto){
@@ -64,14 +62,16 @@ public class QuizResultService {
     }
 
     private QuizResultDTO toDTO(QuizResultEntity entity){
+        UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(entity.getUsername().getUsername());
         return QuizResultDTO.builder()
                 .id(entity.getId())
                 .quiz_id(entity.getQuiz().getId())
                 .username(entity.getUsername().getUsername())
-                .userNickname(userInfoDAO.getUserInfo(entity.getUsername().getUsername()).getNickname())
+                .userNickname(userInfoEntity.getNickname())
                 .userAnswer(entity.getUserAnswer())
                 .result(entity.getResult())
                 .solvedAt(entity.getSolvedAt())
+                .grade(userInfoService.getUserGrade(userInfoEntity))
                 .build();
     }
 

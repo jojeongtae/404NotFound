@@ -5,10 +5,7 @@ import com.example.notfound_backend.data.dao.SurveyDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
 import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.SurveyAnswerDTO;
-import com.example.notfound_backend.data.entity.SurveyAnswerEntity;
-import com.example.notfound_backend.data.entity.SurveyEntity;
-import com.example.notfound_backend.data.entity.UserAuthEntity;
-import com.example.notfound_backend.data.entity.UserStatus;
+import com.example.notfound_backend.data.entity.*;
 import com.example.notfound_backend.exception.UserSuspendedException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +23,7 @@ public class SurveyAnswerService {
     private final SurveyDAO surveyDAO;
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
+    private final UserInfoService userInfoService;
 
     @Transactional
     public SurveyAnswerDTO submitAnswer(SurveyAnswerDTO dto) {
@@ -59,13 +57,15 @@ public class SurveyAnswerService {
     }
 
     private SurveyAnswerDTO toDTO(SurveyAnswerEntity entity) {
+        UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(entity.getUser().getUsername());
         return SurveyAnswerDTO.builder()
                 .id(entity.getId())
                 .username(entity.getUser() != null ? entity.getUser().getUsername() : null)
-                .userNickname(userInfoDAO.getUserInfo(entity.getUser().getUsername()).getNickname())
+                .userNickname(userInfoEntity.getNickname())
                 .answers(entity.getAnswers())
                 .createdAt(entity.getCreatedAt())
                 .parentId(entity.getParentId().getId())
+                .grade(userInfoService.getUserGrade(userInfoEntity))
                 .build();
     }
 }

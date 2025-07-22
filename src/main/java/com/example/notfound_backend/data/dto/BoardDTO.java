@@ -18,6 +18,7 @@ public class BoardDTO {
     private String imgsrc;
     private String author; //username
     private String authorNickname; // 추가
+    private String grade;
     private Integer recommend;
     private Integer views;
     private String category;

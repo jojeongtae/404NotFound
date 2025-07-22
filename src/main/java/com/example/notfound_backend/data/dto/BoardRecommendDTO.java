@@ -15,6 +15,7 @@ public class BoardRecommendDTO {
     private Integer id;
     private Integer boardId;
     private String username;
+    private String grade;
     private Byte isActive;
     private Instant createdAt;
     private Instant updatedAt;
