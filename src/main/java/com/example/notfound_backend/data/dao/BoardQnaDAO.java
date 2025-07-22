@@ -1,6 +1,7 @@
 package com.example.notfound_backend.data.dao;
 
 
+import com.example.notfound_backend.data.dto.BoardRankingDTO;
 import com.example.notfound_backend.data.entity.BoardQnaEntity;
 import com.example.notfound_backend.data.repository.BoardQnaRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,4 +46,11 @@ public class BoardQnaDAO {
         boardQnaRepository.delete(boardQnaEntity);
     }
 
+    public List<BoardRankingDTO> getTop5ByRecommendToday() {
+        return boardQnaRepository.findTop5ByRecommendToday();
+    }
+
+    public List<BoardRankingDTO> getTop5ByCommentsToday() {
+        return boardQnaRepository.findTop5ByCommentsToday();
+    }
 }

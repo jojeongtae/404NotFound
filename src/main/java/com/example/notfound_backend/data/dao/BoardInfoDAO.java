@@ -1,5 +1,6 @@
 package com.example.notfound_backend.data.dao;
 
+import com.example.notfound_backend.data.dto.BoardRankingDTO;
 import com.example.notfound_backend.data.entity.BoardInfoEntity;
 import com.example.notfound_backend.data.repository.BoardInfoRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,4 +45,11 @@ public class BoardInfoDAO {
         boardInfoRepository.delete(boardInfoEntity);
     }
 
+    public List<BoardRankingDTO> getTop5ByRecommendToday() {
+        return boardInfoRepository.findTop5ByRecommendToday();
+    }
+
+    public List<BoardRankingDTO> getTop5ByCommentsToday() {
+        return boardInfoRepository.findTop5ByCommentsToday();
+    }
 }

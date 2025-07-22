@@ -3,8 +3,10 @@ package com.example.notfound_backend.controller;
 
 import com.example.notfound_backend.data.dto.BoardCommentDTO;
 import com.example.notfound_backend.data.dto.BoardDTO;
+import com.example.notfound_backend.data.dto.BoardRankingDTO;
 import com.example.notfound_backend.service.BoardQnaCommentService;
 import com.example.notfound_backend.service.BoardQnaService;
+import com.example.notfound_backend.service.BoardRankingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.util.List;
 public class BoardQnaController {
     private final BoardQnaService boardQnaService;
     private final BoardQnaCommentService boardQnaCommentService;
+    private final BoardRankingService boardRankingService;
 
     @GetMapping("/list")
     public List<BoardDTO> getAllBoards() {
@@ -78,5 +81,17 @@ public class BoardQnaController {
     public ResponseEntity<BoardCommentDTO> deleteComment(@PathVariable Integer id) {
         boardQnaCommentService.deleteComment(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/ranking/comments")
+    public List<BoardRankingDTO> getRankingByCommentsToday() {
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getQnaTop5ByCommentsToday();
+        return boardRankingDTOList;
+    }
+
+    @GetMapping("/ranking/recommend")
+    public List<BoardRankingDTO> getRecommendByRecommendToday() {
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getQnaTop5ByRecommendToday();
+        return boardRankingDTOList;
     }
 }
