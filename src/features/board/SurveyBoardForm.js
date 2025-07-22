@@ -116,7 +116,7 @@ const SurveyBoardForm = () => {
     return(
         <div style={{ padding: '20px' }}>
             <h2>제목 : {surveyData.title}</h2>
-            <p><strong>작성자 :</strong> {surveyData.authorNickname}</p>
+            <p><strong>작성자 :</strong> {surveyData.grade}{surveyData.authorNickname}</p>
             <h3>질문 : {surveyData.question}</h3>
 
             {hasParticipated ? (

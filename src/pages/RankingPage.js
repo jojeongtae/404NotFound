@@ -56,7 +56,7 @@ const RankingPage = () => {
         <ol>
           {rankingData.map((item, index) => (
             <li key={index} style={{ marginBottom: '10px' }}>
-              <strong>{index + 1}.</strong>제목 : {item.title} (작성자: {/* authorNickname 변경예정 */} {item.authorNickname}, {type === 'recommend' ? `추천수 : ${item.recommend}` : `댓글수${item.commentCount}`})
+              <strong>{index + 1}.</strong>제목 : {item.title} (작성자: {/* authorNickname 변경예정 */}{item.grade} {item.authorNickname}, {type === 'recommend' ? `추천수 : ${item.recommend}` : `댓글수${item.commentCount}`})
             </li>
           ))}
         </ol>

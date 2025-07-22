@@ -112,7 +112,7 @@ const VotingBoardForm = () => {
         <div style={{ padding: '20px' }}>
             <h2>{votingData.title}</h2>
 
-            <p><strong>작성자:</strong> {votingData.authorNickname}</p>
+            <p><strong>작성자:</strong> {votingData.grade}{votingData.authorNickname}</p>
             <h3>{votingData.question}</h3>
 
             {hasParticipated ? (

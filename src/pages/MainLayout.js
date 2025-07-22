@@ -9,6 +9,19 @@ import UserInfoModal from '../features/auth/UserInfoModal'; // UserInfoModal 임
 import '../style/MainPage.css'; // 테마 CSS 파일 임포트
 import { useDispatch, useSelector } from 'react-redux';
 
+const gradeDescriptions = {
+    "👑 500": "500 Internal Server Error (운영진)",
+    "🐣 404": "404 Not Found (신규)",
+    "👍 200": "200 OK (일반 회원)",
+    "🚀 202": "202 Accepted (활동 회원)",
+    "💎 403": "403 Forbidden (우수 회원)",
+    "👻 401": "401 Unauthorized (손님)"
+};
+
+const getFullGradeDescription = (shortGrade) => {
+    return gradeDescriptions[shortGrade] || shortGrade; // 매핑된 값이 없으면 짧은 등급 그대로 반환
+};
+
 const MainLayout = () => {
   const { isLoggedIn, logout } = useAuth();
   const [showModal, setShowModal] = useState(false);
@@ -37,6 +50,7 @@ const MainLayout = () => {
             <>
               <Link to="/board/new" className="nav-link">글쓰기</Link>
               <button onClick={() => openModal('userInfo')} className='nav-link'>내 정보 수정</button> {/* 버튼으로 변경 */}
+              {/* {user.grade && <span className="user-grade" title={getFullGradeDescription(user.grade)}>{user.grade}</span>} */}
               <button onClick={logout} className="nav-link">Logout</button>
             </>
           ) : (
