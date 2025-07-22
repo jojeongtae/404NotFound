@@ -6,6 +6,7 @@ import com.example.notfound_backend.data.dto.UserInfoAllDTO;
 import com.example.notfound_backend.data.dto.UserInfoDTO;
 import com.example.notfound_backend.data.entity.UserAuthEntity;
 import com.example.notfound_backend.data.entity.UserInfoEntity;
+import com.example.notfound_backend.data.entity.UserStatus;
 import com.example.notfound_backend.exception.UserNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +53,7 @@ public class UserInfoService {
                 .address(userInfoEntity.getAddress())
                 .point(userInfoEntity.getPoint())
                 .warning(userInfoEntity.getWarning())
+                .status(userInfoEntity.getStatus())
                 .build();
     }
     public boolean findByNickname(String nickname) {
@@ -93,12 +95,25 @@ public class UserInfoService {
                     .address(userInfoEntity.getAddress())
                     .point(userInfoEntity.getPoint())
                     .warning(userInfoEntity.getWarning())
+                    .status(userInfoEntity.getStatus())
                     .build();
             userInfoDTOList.add(userInfoAllDTO);
         }
         return userInfoDTOList;
     }
 
+    // 회원 상태변경 (관리자)
+    @Transactional
+    public UserInfoAllDTO updateStatus(String username, UserStatus status) throws Exception {
+        Integer result = userInfoDAO.updateStatus(username, status);
+        if (result == 1) {
+            return this.getUserInfo(username);
+        } else if (result == 0) {
+            throw new UserNotFoundException("일치하는 유저 없음");
+        } else {
+            throw new Exception("상태변경 실패");
+        }
+    }
 
 
 }

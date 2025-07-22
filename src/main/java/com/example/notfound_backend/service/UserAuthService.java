@@ -6,6 +6,7 @@ import com.example.notfound_backend.data.dto.UserAuthUpdateDTO;
 import com.example.notfound_backend.data.dto.UserJoinDTO;
 import com.example.notfound_backend.data.entity.UserAuthEntity;
 import com.example.notfound_backend.data.entity.UserInfoEntity;
+import com.example.notfound_backend.data.entity.UserStatus;
 import com.example.notfound_backend.exception.DuplicateIdException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +62,7 @@ public class UserAuthService implements UserDetailsService {
                 .address(userJoinDTO.getAddress())
                 .point(0)
                 .warning(0)
+                .status(UserStatus.ACTIVE)
                 .build();
         userInfoDAO.addUserInfo(userInfoEntity);
         return userJoinDTO.getUsername() + " 회원가입 성공";

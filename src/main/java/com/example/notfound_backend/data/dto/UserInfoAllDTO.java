@@ -1,5 +1,6 @@
 package com.example.notfound_backend.data.dto;
 
+import com.example.notfound_backend.data.entity.UserStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,4 +17,5 @@ public class UserInfoAllDTO {
     private String address;
     private Integer point;
     private Integer warning;
+    private UserStatus status;
 }

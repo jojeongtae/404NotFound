@@ -2,6 +2,7 @@ package com.example.notfound_backend.data.dao;
 
 import com.example.notfound_backend.data.entity.UserAuthEntity;
 import com.example.notfound_backend.data.entity.UserInfoEntity;
+import com.example.notfound_backend.data.entity.UserStatus;
 import com.example.notfound_backend.data.repository.UserAuthRepository;
 import com.example.notfound_backend.data.repository.UserInfoRepository;
 import jakarta.transaction.Transactional;
@@ -46,10 +47,14 @@ public class UserInfoDAO {
     }
 
     public Integer updatePoint(String username, int point) {
-        UserAuthEntity user = userAuthRepository.findByUsername(username);
-        return userInfoRepository.updatePoint(user, point);
+        return userInfoRepository.updatePoint(username, point);
     }
-
+    public Integer updateWarning(String username, int warning) {
+        return userInfoRepository.updateWarning(username, warning);
+    }
+    public Integer updateStatus(String username, UserStatus status) {
+        return userInfoRepository.updateStatus(username, status);
+    }
 
 
     // 회원정보리스트 (관리자)

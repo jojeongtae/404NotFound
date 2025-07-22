@@ -46,4 +46,8 @@ public class UserInfoEntity {
     @Column(name = "warning")
     private Integer warning;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private UserStatus status = UserStatus.ACTIVE;
+
 }

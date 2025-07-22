@@ -126,6 +126,10 @@ public class ReportService {
     @Transactional
     public ReportResponseDTO updateReportByAdmin(ReportUpdateByAdnimDTO updateByAdnimDTO) {
         ReportEntity reportEntity = reportDAO.updateReportByAdmin(updateByAdnimDTO.getReportId(), updateByAdnimDTO.getStatus());
+        if (reportEntity.getStatus() == ReportStatus.ACCEPTED) {
+            String username = reportEntity.getReported().getUsername();
+            userInfoDAO.updateWarning(username, 1);
+        }
         return ReportResponseDTO.builder()
                 .id(reportEntity.getId())
                 .reason(reportEntity.getReason())
