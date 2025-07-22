@@ -64,6 +64,7 @@ public class BoardUsedCommentService {
                 .boardId(entity.getBoard().getId())
                 .parentId(entity.getParentId())
                 .author(entity.getAuthor().getUsername())
+                .authorNickname(userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname())
                 .content(entity.getContent())
                 .createdAt(entity.getCreatedAt())
                 .build();

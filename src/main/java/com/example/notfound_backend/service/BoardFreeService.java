@@ -25,25 +25,30 @@ public class BoardFreeService {
 
     public List<BoardDTO> findAll() {
         List<BoardFreeEntity> boardFreeEntityList = boardFreeDAO.findAllBoards();
-        List<BoardDTO> boardDTOList =new ArrayList<>();
+        List<BoardDTO> boardDTOList = new ArrayList<>();
         for(BoardFreeEntity boardFreeEntity : boardFreeEntityList){
-            BoardDTO boardFreeDTO =new BoardDTO();
-            boardFreeDTO.setId(boardFreeEntity.getId());
-            boardFreeDTO.setTitle(boardFreeEntity.getTitle());
-            boardFreeDTO.setBody(boardFreeEntity.getBody());
-            boardFreeDTO.setImgsrc(boardFreeEntity.getImgsrc());
 
-            if (boardFreeEntity.getAuthor() != null) {
-                boardFreeDTO.setAuthor(boardFreeEntity.getAuthor().getUsername());
+            if (boardFreeEntity.getStatus() == Status.VISIBLE) { // VISIBLE만 노출
+                BoardDTO boardFreeDTO = new BoardDTO();
+                boardFreeDTO.setId(boardFreeEntity.getId());
+                boardFreeDTO.setTitle(boardFreeEntity.getTitle());
+                boardFreeDTO.setBody(boardFreeEntity.getBody());
+                boardFreeDTO.setImgsrc(boardFreeEntity.getImgsrc());
+
+                if (boardFreeEntity.getAuthor() != null) {
+                    boardFreeDTO.setAuthor(boardFreeEntity.getAuthor().getUsername());
+                }
+                String userNickname = userInfoDAO.getUserInfo(boardFreeEntity.getAuthor().getUsername()).getNickname();
+                boardFreeDTO.setAuthorNickname(userNickname); // 추가
+                boardFreeDTO.setRecommend(boardFreeEntity.getRecommend());
+                boardFreeDTO.setViews(boardFreeEntity.getViews());
+                boardFreeDTO.setCategory(boardFreeEntity.getCategory());
+                boardFreeDTO.setCreatedAt(boardFreeEntity.getCreatedAt());
+                boardFreeDTO.setUpdatedAt(boardFreeEntity.getUpdatedAt());
+                boardFreeDTO.setStatus(boardFreeEntity.getStatus().name());
+                boardDTOList.add(boardFreeDTO);
             }
-
-            boardFreeDTO.setRecommend(boardFreeEntity.getRecommend());
-            boardFreeDTO.setViews(boardFreeEntity.getViews());
-            boardFreeDTO.setCategory(boardFreeEntity.getCategory());
-            boardFreeDTO.setCreatedAt(boardFreeEntity.getCreatedAt());
-            boardFreeDTO.setUpdatedAt(boardFreeEntity.getUpdatedAt());
-            boardFreeDTO.setStatus(boardFreeEntity.getStatus().name());
-            boardDTOList.add(boardFreeDTO);
+            
         }
         return boardDTOList;
     }
@@ -57,12 +62,14 @@ public class BoardFreeService {
     }
 
     private BoardDTO toDTO(BoardFreeEntity entity) {
+        String userNickname = userInfoDAO.getUserInfo(entity.getAuthor().getUsername()).getNickname();
         return new BoardDTO(
                 entity.getId(),
                 entity.getTitle(),
                 entity.getBody(),
                 entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
+                userNickname, // 추가
                 entity.getRecommend(),
                 entity.getViews(),
                 entity.getCategory(),

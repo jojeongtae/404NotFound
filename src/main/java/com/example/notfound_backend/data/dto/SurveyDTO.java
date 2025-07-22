@@ -21,6 +21,7 @@ public class SurveyDTO {
     private String column4;
     private String column5;
     private String author;
+    private String authorNickname;
     private Instant createdAt;
     private String category;
     private Integer views;

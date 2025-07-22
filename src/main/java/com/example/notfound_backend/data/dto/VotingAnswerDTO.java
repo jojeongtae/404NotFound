@@ -14,6 +14,7 @@ import java.time.Instant;
 public class VotingAnswerDTO {
     private Integer id;
     private String username;
+    private String userNickname;
     private String answers;
     private String reason;
     private Instant createdAt;
