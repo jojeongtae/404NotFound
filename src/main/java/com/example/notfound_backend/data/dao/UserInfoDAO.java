@@ -45,6 +45,12 @@ public class UserInfoDAO {
         return userInfoEntity;
     }
 
+    public Integer updatePoint(String username, int point) {
+        UserAuthEntity user = userAuthRepository.findByUsername(username);
+        return userInfoRepository.updatePoint(user, point);
+    }
+
+
 
     // 회원정보리스트 (관리자)
     public List<UserInfoEntity> getAllUserInfo() {

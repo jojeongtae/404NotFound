@@ -3,6 +3,7 @@ package com.example.notfound_backend.service;
 import com.example.notfound_backend.data.dao.BoardQnaCommentDAO;
 import com.example.notfound_backend.data.dao.BoardQnaDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
+import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.BoardCommentDTO;
 import com.example.notfound_backend.data.entity.BoardQnaCommentEntity;
 import com.example.notfound_backend.data.entity.BoardQnaEntity;
@@ -21,6 +22,7 @@ public class BoardQnaCommentService {
 
     private final BoardQnaCommentDAO boardQnaCommentDAO;
     private final UserAuthDAO userAuthDAO;
+    private final UserInfoDAO userInfoDAO;
     private final BoardQnaDAO boardQnaDAO;
 
     @Transactional
@@ -37,6 +39,7 @@ public class BoardQnaCommentService {
         entity.setCreatedAt(dto.getCreatedAt() != null ? dto.getCreatedAt() : Instant.now());
 
         BoardQnaCommentEntity saved = boardQnaCommentDAO.save(entity);
+        userInfoDAO.updatePoint(dto.getAuthor(), 1); // 1포인트증가
         return toDTO(saved);
     }
 

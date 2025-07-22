@@ -2,6 +2,7 @@ package com.example.notfound_backend.service;
 
 import com.example.notfound_backend.data.dao.BoardInfoDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
+import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.BoardDTO;
 import com.example.notfound_backend.data.entity.BoardInfoEntity;
 import com.example.notfound_backend.data.entity.Status;
@@ -20,6 +21,7 @@ public class BoardInfoService {
 
     private final BoardInfoDAO boardInfoDAO;
     private final UserAuthDAO userAuthDAO;
+    private final UserInfoDAO userInfoDAO;
 
     public List<BoardDTO> findAll() {
         List<BoardInfoEntity> boardInfoEntityList = boardInfoDAO.findAllBoards();
@@ -87,6 +89,7 @@ public class BoardInfoService {
         entity.setCreatedAt(Instant.now());
         entity.setUpdatedAt(Instant.now());
         BoardInfoEntity saved = boardInfoDAO.save(entity);
+        userInfoDAO.updatePoint(boardDTO.getAuthor(), 3); // 3포인트증가
         return toDTO(saved);
     }
 

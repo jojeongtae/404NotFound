@@ -2,6 +2,7 @@ package com.example.notfound_backend.service;
 
 import com.example.notfound_backend.data.dao.BoardFreeDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
+import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.BoardDTO;
 import com.example.notfound_backend.data.entity.BoardFoodEntity;
 import com.example.notfound_backend.data.entity.BoardFreeEntity;
@@ -20,6 +21,7 @@ import java.util.List;
 public class BoardFreeService {
     private final BoardFreeDAO boardFreeDAO;
     private final UserAuthDAO userAuthDAO;
+    private final UserInfoDAO userInfoDAO;
 
     public List<BoardDTO> findAll() {
         List<BoardFreeEntity> boardFreeEntityList = boardFreeDAO.findAllBoards();
@@ -87,6 +89,7 @@ public class BoardFreeService {
         entity.setCreatedAt(Instant.now());
         entity.setUpdatedAt(Instant.now());
         BoardFreeEntity saved = boardFreeDAO.save(entity);
+        userInfoDAO.updatePoint(boardDTO.getAuthor(), 3); // 3포인트증가
         return toDTO(saved);
     }
 
