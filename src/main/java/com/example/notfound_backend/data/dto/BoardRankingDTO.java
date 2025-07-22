@@ -2,6 +2,7 @@ package com.example.notfound_backend.data.dto;
 
 import lombok.*;
 
+import java.math.BigInteger;
 import java.time.Instant;
 
 
@@ -13,7 +14,5 @@ public interface BoardRankingDTO {
     Integer getViews();
     String getCategory();
     Instant getCreatedAt();
-    Integer getCommentCount();
-
-
+    BigInteger getCommentCount();
 }

@@ -40,6 +40,9 @@ public class BoardUsedCommentService {
         entity.setParentId(dto.getParentId());
 
         BoardUsedCommentEntity saved = boardUsedCommentDAO.save(entity);
+
+
+
         userInfoDAO.updatePoint(dto.getAuthor(), 1); // 1포인트증가
         return toDTO(saved);
     }
