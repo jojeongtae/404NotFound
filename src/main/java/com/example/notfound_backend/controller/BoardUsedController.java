@@ -100,10 +100,9 @@ public class BoardUsedController {
         return boardRankingDTOList;
     }
 
-    @PostMapping("/{boardId}/testrecommend")
-    public ResponseEntity<?> recommend(@PathVariable Integer boardId, @RequestBody Map<String, String> body) {
-        String username = body.get("username");
-        boardUsedRecommendService.recommend(boardId, username);
+    @PostMapping("/{boardId}/recommend")
+    public ResponseEntity<?> recommend(@PathVariable Integer boardId, Principal principal) {
+        boardUsedRecommendService.recommend(boardId, principal.getName());
         return ResponseEntity.ok("추천 완료");
     }
 }

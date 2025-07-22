@@ -5,6 +5,7 @@ import com.example.notfound_backend.data.dto.BoardCommentDTO;
 import com.example.notfound_backend.data.dto.BoardDTO;
 import com.example.notfound_backend.data.dto.BoardRankingDTO;
 import com.example.notfound_backend.service.BoardQnaCommentService;
+import com.example.notfound_backend.service.BoardQnaRecommendService;
 import com.example.notfound_backend.service.BoardQnaService;
 import com.example.notfound_backend.service.BoardRankingService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -21,6 +23,7 @@ public class BoardQnaController {
     private final BoardQnaService boardQnaService;
     private final BoardQnaCommentService boardQnaCommentService;
     private final BoardRankingService boardRankingService;
+    private final BoardQnaRecommendService boardQnaRecommendService;
 
     @GetMapping("/list")
     public List<BoardDTO> getAllBoards() {
@@ -93,5 +96,11 @@ public class BoardQnaController {
     public List<BoardRankingDTO> getRecommendByRecommendToday() {
         List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getQnaTop5ByRecommendToday();
         return boardRankingDTOList;
+    }
+
+    @PostMapping("/{boardId}/recommend")
+    public ResponseEntity<?> recommend(@PathVariable Integer boardId, Principal principal) {
+        boardQnaRecommendService.recommend(boardId, principal.getName());
+        return ResponseEntity.ok("추천 완료");
     }
 }

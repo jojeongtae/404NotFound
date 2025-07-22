@@ -5,6 +5,7 @@ import com.example.notfound_backend.data.dto.BoardCommentDTO;
 import com.example.notfound_backend.data.dto.BoardDTO;
 import com.example.notfound_backend.data.dto.BoardRankingDTO;
 import com.example.notfound_backend.service.BoardInfoCommentService;
+import com.example.notfound_backend.service.BoardInfoRecommendService;
 import com.example.notfound_backend.service.BoardInfoService;
 import com.example.notfound_backend.service.BoardRankingService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -22,6 +24,7 @@ public class BoardInfoController {
     private final BoardInfoService boardInfoService;
     private final BoardInfoCommentService boardInfoCommentService;
     private final BoardRankingService boardRankingService;
+    private final BoardInfoRecommendService boardInfoRecommendService;
 
     @GetMapping("/list")
     public List<BoardDTO> getAllBoards() {
@@ -94,5 +97,11 @@ public class BoardInfoController {
     public List<BoardRankingDTO> getRecommendByRecommendToday() {
         List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getInfoTop5ByRecommendToday();
         return boardRankingDTOList;
+    }
+
+    @PostMapping("/{boardId}/recommend")
+    public ResponseEntity<?> recommend(@PathVariable Integer boardId, Principal principal) {
+        boardInfoRecommendService.recommend(boardId, principal.getName());
+        return ResponseEntity.ok("추천 완료");
     }
 }

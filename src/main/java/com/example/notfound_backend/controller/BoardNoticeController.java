@@ -3,6 +3,7 @@ package com.example.notfound_backend.controller;
 import com.example.notfound_backend.data.dto.BoardCommentDTO;
 import com.example.notfound_backend.data.dto.BoardDTO;
 import com.example.notfound_backend.service.BoardNoticeCommentService;
+import com.example.notfound_backend.service.BoardNoticeRecommendService;
 import com.example.notfound_backend.service.BoardNoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -19,6 +21,7 @@ import java.util.List;
 public class BoardNoticeController {
     private final BoardNoticeService boardNoticeService;
     private final BoardNoticeCommentService boardNoticeCommentService;
+    private final BoardNoticeRecommendService boardNoticeRecommendService;
 
     @GetMapping("/list")
     public List<BoardDTO> getAllBoards() {
@@ -81,5 +84,11 @@ public class BoardNoticeController {
     public ResponseEntity<BoardCommentDTO> deleteComment(@PathVariable Integer id) {
         boardNoticeCommentService.deleteComment(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{boardId}/recommend")
+    public ResponseEntity<?> recommend(@PathVariable Integer boardId, Principal principal) {
+        boardNoticeRecommendService.recommend(boardId, principal.getName());
+        return ResponseEntity.ok("추천 완료");
     }
 }
