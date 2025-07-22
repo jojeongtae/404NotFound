@@ -37,7 +37,7 @@ public class BoardFoodCommentService {
         entity.setAuthor(user);
         entity.setContent(dto.getContent());
         entity.setCreatedAt(dto.getCreatedAt() != null ? dto.getCreatedAt() : Instant.now());
-
+        entity.setParentId(dto.getParentId());
         BoardFoodCommentEntity saved = boardFoodCommentDAO.save(entity);
         userInfoDAO.updatePoint(dto.getAuthor(), 1); // 1포인트증가
         return toDTO(saved);
