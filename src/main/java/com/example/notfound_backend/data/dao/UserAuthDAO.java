@@ -38,7 +38,9 @@ public class UserAuthDAO {
     }
 
     // 회원탈퇴
-
+    public void deleteUserAuth(String username) {
+        userAuthRepository.deleteById(username);
+    }
 
     public String getRole(String username) {
         Optional<UserAuthEntity> userAuth = userAuthRepository.findById(username);
