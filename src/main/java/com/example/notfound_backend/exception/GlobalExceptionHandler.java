@@ -72,6 +72,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleReportNotFoundException(ReportNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+    // 활동정지
+    @ExceptionHandler(value = UserSuspendedException.class)
+    public ResponseEntity<String> handleUserSuspendedException(UserSuspendedException ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+    }
 
 
 

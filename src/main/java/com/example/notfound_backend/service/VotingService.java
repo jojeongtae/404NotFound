@@ -5,7 +5,9 @@ import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dao.VotingDAO;
 import com.example.notfound_backend.data.dto.VotingDTO;
 import com.example.notfound_backend.data.entity.UserAuthEntity;
+import com.example.notfound_backend.data.entity.UserStatus;
 import com.example.notfound_backend.data.entity.VotingEntity;
+import com.example.notfound_backend.exception.UserSuspendedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
@@ -65,6 +67,10 @@ public class VotingService {
 
     @Transactional
     public VotingDTO createVoting(VotingDTO dto){
+        UserStatus userStatus = userInfoDAO.getUserInfo(dto.getAuthor()).getStatus();
+        if (userStatus != UserStatus.ACTIVE) {
+            throw new UserSuspendedException("활동 정지된 사용자입니다.");
+        }
         VotingEntity entity=new VotingEntity();
         entity.setTitle(dto.getTitle());
         entity.setQuestion(dto.getQuestion());
@@ -81,6 +87,10 @@ public class VotingService {
 
     @Transactional
     public VotingDTO updateVoting(Integer id, VotingDTO dto){
+        UserStatus userStatus = userInfoDAO.getUserInfo(dto.getAuthor()).getStatus();
+        if (userStatus != UserStatus.ACTIVE) {
+            throw new UserSuspendedException("활동 정지된 사용자입니다.");
+        }
         VotingEntity entity=votingDAO.findById(id)
                 .orElseThrow(()->new RuntimeException("Voting not found"));
 

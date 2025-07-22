@@ -8,6 +8,8 @@ import com.example.notfound_backend.data.dto.SurveyAnswerDTO;
 import com.example.notfound_backend.data.entity.SurveyAnswerEntity;
 import com.example.notfound_backend.data.entity.SurveyEntity;
 import com.example.notfound_backend.data.entity.UserAuthEntity;
+import com.example.notfound_backend.data.entity.UserStatus;
+import com.example.notfound_backend.exception.UserSuspendedException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,11 @@ public class SurveyAnswerService {
 
     @Transactional
     public SurveyAnswerDTO submitAnswer(SurveyAnswerDTO dto) {
+        UserStatus userStatus = userInfoDAO.getUserInfo(dto.getUsername()).getStatus();
+        if (userStatus != UserStatus.ACTIVE) {
+            throw new UserSuspendedException("활동 정지된 사용자입니다.");
+        }
+
         SurveyAnswerEntity entity = new SurveyAnswerEntity();
 
         if (dto.getUsername() != null) {

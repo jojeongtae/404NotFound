@@ -8,6 +8,8 @@ import com.example.notfound_backend.data.dto.BoardCommentDTO;
 import com.example.notfound_backend.data.entity.BoardInfoCommentEntity;
 import com.example.notfound_backend.data.entity.BoardInfoEntity;
 import com.example.notfound_backend.data.entity.UserAuthEntity;
+import com.example.notfound_backend.data.entity.UserStatus;
+import com.example.notfound_backend.exception.UserSuspendedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,10 @@ public class BoardInfoCommentService {
 
     @Transactional
     public BoardCommentDTO addComment(BoardCommentDTO dto) {
+        UserStatus userStatus = userInfoDAO.getUserInfo(dto.getAuthor()).getStatus();
+        if (userStatus != UserStatus.ACTIVE) {
+            throw new UserSuspendedException("활동 정지된 사용자입니다.");
+        }
         BoardInfoCommentEntity entity = new BoardInfoCommentEntity();
 
         BoardInfoEntity board = boardInfoDAO.findById(dto.getBoardId())
