@@ -8,6 +8,8 @@ import com.example.notfound_backend.data.dto.QuizResultDTO;
 import com.example.notfound_backend.data.entity.QuizEntity;
 import com.example.notfound_backend.data.entity.QuizResultEntity;
 import com.example.notfound_backend.data.entity.UserAuthEntity;
+import com.example.notfound_backend.data.entity.UserStatus;
+import com.example.notfound_backend.exception.UserSuspendedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,11 @@ public class QuizResultService {
 
     @Transactional
     public QuizResultDTO submitAnswer(QuizResultDTO dto){
+        UserStatus userStatus = userInfoDAO.getUserInfo(dto.getUsername()).getStatus();
+        if (userStatus != UserStatus.ACTIVE) {
+            throw new UserSuspendedException("활동 정지된 사용자입니다.");
+        }
+
         QuizResultEntity entity=new QuizResultEntity();
 
         if(dto.getUsername()!=null){
