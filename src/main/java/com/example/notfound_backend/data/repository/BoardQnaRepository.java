@@ -1,6 +1,6 @@
 package com.example.notfound_backend.data.repository;
 
-import com.example.notfound_backend.data.entity.BoardFreeEntity;
+import com.example.notfound_backend.data.dto.BoardRankingDTO;
 import com.example.notfound_backend.data.entity.BoardQnaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -29,5 +29,43 @@ public interface BoardQnaRepository extends JpaRepository<BoardQnaEntity, Intege
     void decrementRecommend(@Param("id") Integer id);
 
     Optional<BoardQnaEntity> findById(Integer id);
+
+    @Query(value = """
+        SELECT 
+            b.id AS id,
+            b.title AS title,
+            b.author AS author,
+            b.recommend AS recommend,
+            b.views AS views,
+            b.category AS category,
+            b.created_at AS createdAt,
+            (SELECT COUNT(*) 
+             FROM board_qna_comments c 
+             WHERE c.board_id = b.id AND c.status = 'VISIBLE') AS commentCount
+        FROM board_qna b
+        WHERE DATE(b.created_at) = CURRENT_DATE AND b.status = 'VISIBLE'
+        ORDER BY commentCount DESC
+        LIMIT 5
+        """, nativeQuery = true)
+    List<BoardRankingDTO> findTop5ByCommentsToday(); //댓글 top5
+
+    @Query(value = """
+    SELECT 
+        b.id AS id,
+        b.title AS title,
+        b.author AS author,
+        b.recommend AS recommend,
+        b.views AS views,
+        b.category AS category,
+        b.created_at AS createdAt,
+        (SELECT COUNT(*) 
+         FROM board_qna_comments c 
+         WHERE c.board_id = b.id AND c.status = 'VISIBLE') AS commentCount
+    FROM board_qna b
+    WHERE DATE(b.created_at) = CURRENT_DATE AND b.status = 'VISIBLE'
+    ORDER BY b.recommend DESC
+    LIMIT 5
+    """, nativeQuery = true)
+    List<BoardRankingDTO> findTop5ByRecommendToday();
 
 }

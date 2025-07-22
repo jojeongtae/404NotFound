@@ -37,6 +37,7 @@ public class BoardNoticeCommentService {
         entity.setAuthor(user);
         entity.setContent(dto.getContent());
         entity.setCreatedAt(dto.getCreatedAt() != null ? dto.getCreatedAt() : Instant.now());
+        entity.setParentId(dto.getParentId());
 
         BoardNoticeCommentEntity saved = boardNoticeCommentDAO.save(entity);
         userInfoDAO.updatePoint(dto.getAuthor(), 1); // 1포인트증가
@@ -61,6 +62,7 @@ public class BoardNoticeCommentService {
         return BoardCommentDTO.builder()
                 .id(entity.getId())
                 .boardId(entity.getBoard().getId())
+                .parentId(entity.getParentId())
                 .author(entity.getAuthor().getUsername())
                 .content(entity.getContent())
                 .createdAt(entity.getCreatedAt())

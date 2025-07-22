@@ -36,6 +36,7 @@ public class BoardFreeCommentService {
         entity.setAuthor(user);
         entity.setContent(dto.getContent());
         entity.setCreatedAt(dto.getCreatedAt() != null ? dto.getCreatedAt() : Instant.now());
+        entity.setParentId(dto.getParentId());
 
         BoardFreeCommentEntity saved = boardFreeCommentDAO.save(entity);
         userInfoDAO.updatePoint(dto.getAuthor(), 1); // 1포인트증가
@@ -60,6 +61,7 @@ public class BoardFreeCommentService {
         return BoardCommentDTO.builder()
                 .id(entity.getId())
                 .boardId(entity.getBoard().getId())
+                .parentId(entity.getParentId())
                 .author(entity.getAuthor().getUsername())
                 .content(entity.getContent())
                 .createdAt(entity.getCreatedAt())

@@ -1,5 +1,6 @@
 package com.example.notfound_backend.data.dao;
 
+import com.example.notfound_backend.data.dto.BoardRankingDTO;
 import com.example.notfound_backend.data.entity.BoardFreeEntity;
 import com.example.notfound_backend.data.repository.BoardFreeRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,14 @@ public class BoardFreeDAO {
 
     public void delete(BoardFreeEntity boardFreeEntity) {
         boardFreeRepository.delete(boardFreeEntity);
+    }
+
+    public List<BoardRankingDTO> getTop5ByRecommendToday() {
+        return boardFreeRepository.findTop5ByRecommendToday();
+    }
+
+    public List<BoardRankingDTO> getTop5ByCommentsToday() {
+        return boardFreeRepository.findTop5ByCommentsToday();
     }
 
 }
