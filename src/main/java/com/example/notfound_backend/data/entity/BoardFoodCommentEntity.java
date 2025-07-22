@@ -41,8 +41,8 @@ public class BoardFoodCommentEntity {
     private Instant createdAt;
 
     @ColumnDefault("'VISIBLE'")
-    @Lob
-    @Column(name = "status")
-    private Status status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", columnDefinition = "ENUM('VISIBLE','DELETED','PRIVATE','BLOCKED')", nullable = false)
+    private Status status=Status.VISIBLE;
 
 }

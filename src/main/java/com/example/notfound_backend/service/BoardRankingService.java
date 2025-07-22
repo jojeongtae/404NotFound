@@ -63,7 +63,7 @@ public class BoardRankingService {
 
         // 댓글 수 내림차순 정렬 후 상위 5개
         return combined.stream()
-                .sorted(Comparator.comparing(BoardRankingDTO::getCommentCount).reversed())
+                .sorted(Comparator.comparing(dto -> dto.getCommentCount()))
                 .limit(5)
                 .toList();
     }
