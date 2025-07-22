@@ -11,6 +11,8 @@ const boardSlice = createSlice({
         views: null,
         category: null,
         recommend:null,
+        authorNickname:null,
+        userNickname:null,
 
     },
     reducers: {
@@ -26,6 +28,8 @@ const boardSlice = createSlice({
                 state.views = null;
                 state.category = null;
                 state.recommend = null;
+                state.authorNickname = null;
+                state.userNickname = null;
         },
 
     },

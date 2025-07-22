@@ -43,6 +43,7 @@ const AdminReportForm = () => {
             const res = await apiClient.delete(`/user/report/${reportId}?username=${user.username}`);
             console.log(res.data);
             alert("취소 완료");
+            setReports(prevReports => prevReports.filter(report => report.id !== reportId));
         } catch (err) {
             console.log(err);
         }
@@ -56,6 +57,7 @@ const AdminReportForm = () => {
             const res = await apiClient.patch(`/admin/report`,body);
             console.log(res.data);
             alert("처리 완료")
+            setReports(prevReports => prevReports.filter(report => report.id !== id));
         } catch (error) {
             console.log(error);
         }
@@ -73,6 +75,7 @@ const AdminReportForm = () => {
                         <div style={{ marginBottom: '5px' }}><strong>신고자:</strong> {report.reporter || '알 수 없음'}</div>
                         {/* authorNickname 변경예정 */}
                         <div style={{ marginBottom: '5px' }}><strong>피신고자:</strong> {report.reported || '알 수 없음'}</div>
+                        {console.log(report)}
                         <div style={{ marginBottom: '5px' }}>
                             <strong>대상:</strong>
                             <Link to={`/board/${report.targetTable.replace('board_', '')}/${report.targetId}`} style={{ marginLeft: '5px', color: 'blue', textDecoration: 'underline' }}>

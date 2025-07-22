@@ -42,8 +42,7 @@ const QuizPostDisplay = ({ post }) => {
   return (
     <div style={{ padding: '20px' }}>
       <h2>퀴즈: {post.title}</h2>
-      {/* authorNickname 변경예정 */}
-      <p><strong>작성자:</strong> {post.author}</p>
+      <p><strong>작성자:</strong> {post.authorNickname}</p>
       <p><strong>작성일:</strong> {new Date(post.createdAt).toLocaleDateString()}</p>
       <p>조회수: {post.views}</p>
       <hr />

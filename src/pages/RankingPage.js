@@ -4,6 +4,7 @@ import apiClient from '../api/apiClient';
 
 const RankingPage = () => {
   const { type } = useParams(); // URL 파라미터에서 랭킹 타입 (recommend 또는 comment)을 가져옴
+  console.log("RankingPage - type:", type);
   const [rankingData, setRankingData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,10 +14,13 @@ const RankingPage = () => {
       setLoading(true);
       setError(null);
       try {
-        if(type === "comments"){
+        if(type === "comment"){
         const response = await apiClient.get(`/ranking/comments`);
-        setRankingData(response.data);
-        console.log(response.data);
+        console.log("Original Data (before sort):", response.data);
+        // 댓글 수 기준으로 내림차순 정렬
+        const sortedData = [...response.data].sort((a, b) => Number(b.commentCount) - Number(a.commentCount));
+        console.log("Sorted Data:", sortedData);
+        setRankingData(sortedData);
 
         }else{
         const response = await apiClient.get(`/ranking/recommend`);
@@ -51,8 +55,8 @@ const RankingPage = () => {
       ) : (
         <ol>
           {rankingData.map((item, index) => (
-            <li key={item.id} style={{ marginBottom: '10px' }}>
-              <strong>{index + 1}.</strong> {item.title} (작성자: {/* authorNickname 변경예정 */} {item.author}, {type === 'recommend' ? `추천수 : ${item.recommend}` : `댓글수${item.commentCount}`})
+            <li key={index} style={{ marginBottom: '10px' }}>
+              <strong>{index + 1}.</strong>제목 : {item.title} (작성자: {/* authorNickname 변경예정 */} {item.authorNickname}, {type === 'recommend' ? `추천수 : ${item.recommend}` : `댓글수${item.commentCount}`})
             </li>
           ))}
         </ol>
