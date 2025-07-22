@@ -2,8 +2,10 @@ package com.example.notfound_backend.controller;
 
 import com.example.notfound_backend.data.dto.BoardDTO;
 import com.example.notfound_backend.data.dto.BoardCommentDTO;
+import com.example.notfound_backend.data.dto.BoardRankingDTO;
 import com.example.notfound_backend.service.BoardFreeCommentService;
 import com.example.notfound_backend.service.BoardFreeService;
+import com.example.notfound_backend.service.BoardRankingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import java.util.List;
 public class BoardFreeController {
     private final BoardFreeService boardFreeService;
     private final BoardFreeCommentService boardFreeCommentService;
+    private final BoardRankingService boardRankingService;
 
     @GetMapping("/list")
     public List<BoardDTO> getAllBoards() {
@@ -77,6 +80,18 @@ public class BoardFreeController {
     public ResponseEntity<BoardCommentDTO> deleteComment(@PathVariable Integer id) {
         boardFreeCommentService.deleteComment(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/ranking/comments")
+    public List<BoardRankingDTO> getRankingByCommentsToday() {
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getFreeTop5ByCommentsToday();
+        return boardRankingDTOList;
+    }
+
+    @GetMapping("/ranking/recommend")
+    public List<BoardRankingDTO> getRecommendByRecommendToday() {
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getFreeTop5ByRecommendToday();
+        return boardRankingDTOList;
     }
 
 }

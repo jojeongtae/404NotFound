@@ -1,7 +1,7 @@
 package com.example.notfound_backend.data.repository;
 
+import com.example.notfound_backend.data.dto.BoardRankingDTO;
 import com.example.notfound_backend.data.entity.BoardFoodEntity;
-import com.example.notfound_backend.data.entity.BoardFreeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -29,5 +29,43 @@ public interface BoardFoodRepository extends JpaRepository<BoardFoodEntity, Inte
     void decrementRecommend(@Param("id") Integer id);
 
     Optional<BoardFoodEntity> findById(Integer id);
+
+    @Query(value = """
+        SELECT 
+            b.id AS id,
+            b.title AS title,
+            b.author AS author,
+            b.recommend AS recommend,
+            b.views AS views,
+            b.category AS category,
+            b.created_at AS createdAt,
+            (SELECT COUNT(*) 
+             FROM board_food_comments c 
+             WHERE c.board_id = b.id AND c.status = 'VISIBLE') AS commentCount
+        FROM board_food b
+        WHERE DATE(b.created_at) = CURRENT_DATE AND b.status = 'VISIBLE'
+        ORDER BY commentCount DESC
+        LIMIT 5
+        """, nativeQuery = true)
+    List<BoardRankingDTO> findTop5ByCommentsToday(); //댓글 top5
+
+    @Query(value = """
+    SELECT 
+        b.id AS id,
+        b.title AS title,
+        b.author AS author,
+        b.recommend AS recommend,
+        b.views AS views,
+        b.category AS category,
+        b.created_at AS createdAt,
+        (SELECT COUNT(*) 
+         FROM board_food_comments c 
+         WHERE c.board_id = b.id AND c.status = 'VISIBLE') AS commentCount
+    FROM board_food b
+    WHERE DATE(b.created_at) = CURRENT_DATE AND b.status = 'VISIBLE'
+    ORDER BY b.recommend DESC
+    LIMIT 5
+    """, nativeQuery = true)
+    List<BoardRankingDTO> findTop5ByRecommendToday();
 
 }

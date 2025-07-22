@@ -3,6 +3,8 @@ package com.example.notfound_backend.controller;
 
 import com.example.notfound_backend.data.dto.BoardCommentDTO;
 import com.example.notfound_backend.data.dto.BoardDTO;
+import com.example.notfound_backend.data.dto.BoardRankingDTO;
+import com.example.notfound_backend.service.BoardRankingService;
 import com.example.notfound_backend.service.BoardUsedCommentService;
 import com.example.notfound_backend.service.BoardUsedService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.List;
 public class BoardUsedController {
     private final BoardUsedService boardUsedService;
     private final BoardUsedCommentService boardUsedCommentService;
+    private final BoardRankingService boardRankingService;
 
     @GetMapping("/list")
     public List<BoardDTO> getAllBoards() {
@@ -78,5 +81,17 @@ public class BoardUsedController {
     public ResponseEntity<BoardCommentDTO> deleteComment(@PathVariable Integer id) {
         boardUsedCommentService.deleteComment(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/ranking/comments")
+    public List<BoardRankingDTO> getRankingByCommentsToday() {
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getUsedTop5ByCommentsToday();
+        return boardRankingDTOList;
+    }
+
+    @GetMapping("/ranking/recommend")
+    public List<BoardRankingDTO> getRecommendByRecommendToday() {
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getUsedTop5ByRecommendToday();
+        return boardRankingDTOList;
     }
 }
