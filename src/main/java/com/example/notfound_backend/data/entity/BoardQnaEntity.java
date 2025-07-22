@@ -47,9 +47,9 @@ public class BoardQnaEntity {
     private Integer views=0;
 
     @Size(max = 30)
-    @ColumnDefault("'QNA'")
+    @ColumnDefault("'qna'")
     @Column(name = "category", length = 30)
-    private String category="QNA";
+    private String category="qna";
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")

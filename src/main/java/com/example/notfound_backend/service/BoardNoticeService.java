@@ -89,7 +89,7 @@ public class BoardNoticeService {
         entity.setAuthor(author);
         entity.setRecommend(0);
         entity.setViews(0);
-        entity.setCategory("NORMAL");
+        entity.setCategory("notice");
         entity.setStatus(Status.VISIBLE);
         entity.setCreatedAt(Instant.now());
         entity.setUpdatedAt(Instant.now());

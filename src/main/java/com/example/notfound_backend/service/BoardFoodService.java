@@ -91,7 +91,7 @@ public class BoardFoodService {
 
         entity.setRecommend(0);
         entity.setViews(0); // 새 글이니 조회수 0으로 시작
-        entity.setCategory("FOOD");
+        entity.setCategory("food");
         entity.setStatus(Status.VISIBLE);
         entity.setCreatedAt(Instant.now());
         entity.setUpdatedAt(Instant.now());

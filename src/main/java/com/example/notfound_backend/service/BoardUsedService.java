@@ -90,7 +90,7 @@ public class BoardUsedService {
 
         entity.setRecommend(0);
         entity.setViews(0); // 새 글이니 조회수 0으로 시작
-        entity.setCategory("USED");
+        entity.setCategory("used");
         entity.setStatus(Status.VISIBLE);
         entity.setCreatedAt(Instant.now());
         entity.setUpdatedAt(Instant.now());
