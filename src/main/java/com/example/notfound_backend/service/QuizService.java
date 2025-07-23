@@ -5,7 +5,6 @@ import com.example.notfound_backend.data.dao.UserAuthDAO;
 import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.QuizDTO;
 import com.example.notfound_backend.data.entity.*;
-import com.example.notfound_backend.exception.UserSuspendedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,10 +79,8 @@ public class QuizService {
 
     @Transactional
     public QuizDTO createBoard(QuizDTO quizDTO) {
-        UserStatus userStatus = userInfoDAO.getUserInfo(quizDTO.getAuthor()).getStatus();
-        if (userStatus != UserStatus.ACTIVE) {
-            throw new UserSuspendedException("활동 정지된 사용자입니다.");
-        }
+        userInfoService.userStatusValidator(quizDTO.getAuthor());
+
         QuizEntity entity = new QuizEntity();
         entity.setTitle(quizDTO.getTitle());
         entity.setQuestion(quizDTO.getQuestion());
@@ -104,10 +101,8 @@ public class QuizService {
 
     @Transactional
     public QuizDTO updateBoard(Integer id, QuizDTO quizDTO) {
-        UserStatus userStatus = userInfoDAO.getUserInfo(quizDTO.getAuthor()).getStatus();
-        if (userStatus != UserStatus.ACTIVE) {
-            throw new UserSuspendedException("활동 정지된 사용자입니다.");
-        }
+        userInfoService.userStatusValidator(quizDTO.getAuthor());
+
         QuizEntity entity = quizDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Quiz not found"));
 

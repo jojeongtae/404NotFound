@@ -6,7 +6,6 @@ import com.example.notfound_backend.data.dao.UserAuthDAO;
 import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.BoardCommentDTO;
 import com.example.notfound_backend.data.entity.*;
-import com.example.notfound_backend.exception.UserSuspendedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,10 +26,8 @@ public class BoardFoodCommentService {
 
     @Transactional
     public BoardCommentDTO addComment(BoardCommentDTO dto) {
-        UserStatus userStatus = userInfoDAO.getUserInfo(dto.getAuthor()).getStatus();
-        if (userStatus != UserStatus.ACTIVE) {
-            throw new UserSuspendedException("활동 정지된 사용자입니다.");
-        }
+        userInfoService.userStatusValidator(dto.getAuthor());
+
         BoardFoodCommentEntity entity = new BoardFoodCommentEntity();
 
         BoardFoodEntity board = boardFoodDAO.findById(dto.getBoardId())

@@ -5,8 +5,6 @@ import com.example.notfound_backend.data.dao.UserAuthDAO;
 import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.BoardDTO;
 import com.example.notfound_backend.data.entity.*;
-import com.example.notfound_backend.exception.IllegalArgumentException;
-import com.example.notfound_backend.exception.UserSuspendedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,10 +84,8 @@ public class BoardFreeService {
 
     @Transactional
     public BoardDTO createBoard(BoardDTO boardDTO) {
-        UserStatus userStatus = userInfoDAO.getUserInfo(boardDTO.getAuthor()).getStatus();
-        if (userStatus != UserStatus.ACTIVE) {
-            throw new UserSuspendedException("활동 정지된 사용자입니다.");
-        }
+        userInfoService.userStatusValidator(boardDTO.getAuthor());
+
         BoardFreeEntity entity = new BoardFreeEntity();
         entity.setTitle(boardDTO.getTitle());
         entity.setBody(boardDTO.getBody());
@@ -111,10 +107,8 @@ public class BoardFreeService {
 
     @Transactional
     public BoardDTO updateBoard(Integer id, BoardDTO boardDTO) {
-        UserStatus userStatus = userInfoDAO.getUserInfo(boardDTO.getAuthor()).getStatus();
-        if (userStatus != UserStatus.ACTIVE) {
-            throw new UserSuspendedException("활동 정지된 사용자입니다.");
-        }
+        userInfoService.userStatusValidator(boardDTO.getAuthor());
+
         BoardFreeEntity entity = boardFreeDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
 
