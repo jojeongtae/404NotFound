@@ -66,6 +66,20 @@ public class UserInfoService {
         UserInfoEntity userInfoEntity = userInfoDAO.findByNickname(nickname);
         return userInfoEntity != null;
     }
+    // 닉네입으로 유저정보 찾기
+    public UserInfoDTO findUserInfoByNickname(String nickname) {
+        UserInfoEntity userInfoEntity = userInfoDAO.findByNickname(nickname);
+        if (userInfoEntity == null) {
+            throw new UserNotFoundException("일치하는 닉네임 찾을 수 없음.");
+        }
+        return UserInfoDTO.builder()
+                .username(userInfoEntity.getUsername().getUsername())
+                .nickname(userInfoEntity.getNickname())
+                .phone(userInfoEntity.getPhone())
+                .address(userInfoEntity.getAddress())
+                .grade(getUserGrade(userInfoEntity.getUsername().getUsername()))
+                .build();
+    }
 
     // 회원등급
     public String getUserGrade(String username) {

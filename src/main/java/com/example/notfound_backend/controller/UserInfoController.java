@@ -59,6 +59,10 @@ public class UserInfoController {
         boolean isExists = userInfoService.findByNickname(nickname);
         return ResponseEntity.ok(!isExists);
     }
-
+    @GetMapping(value = "/user/nickname/{nickname}")
+    public ResponseEntity<UserInfoDTO> findUserInfoByNickname(@PathVariable String nickname) {
+        UserInfoDTO userInfo = userInfoService.findUserInfoByNickname(nickname);
+        return ResponseEntity.status(HttpStatus.OK).body(userInfo);
+    }
 
 }
