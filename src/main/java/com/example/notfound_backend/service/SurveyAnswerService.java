@@ -65,7 +65,7 @@ public class SurveyAnswerService {
                 .answers(entity.getAnswers())
                 .createdAt(entity.getCreatedAt())
                 .parentId(entity.getParentId().getId())
-                .grade(userInfoService.getUserGrade(userInfoEntity))
+                .grade(userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername()))
                 .build();
     }
 }

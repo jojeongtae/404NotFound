@@ -39,7 +39,7 @@ public class BoardInfoService {
                 }
                 UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(boardInfoEntity.getAuthor().getUsername());
                 String userNickname = userInfoEntity.getNickname();
-                String userGrade = userInfoService.getUserGrade(userInfoEntity);
+                String userGrade = userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername());
                 boardInfoDTO.setAuthorNickname(userNickname); // 추가
                 boardInfoDTO.setGrade(userGrade);
                 boardInfoDTO.setRecommend(boardInfoEntity.getRecommend());
@@ -72,7 +72,7 @@ public class BoardInfoService {
                 entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
                 userNickname,
-                userInfoService.getUserGrade(userInfoEntity),
+                userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername()),
                 entity.getRecommend(),
                 entity.getViews(),
                 entity.getCategory(),

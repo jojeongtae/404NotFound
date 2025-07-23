@@ -71,7 +71,7 @@ public class BoardFoodCommentService {
                 .authorNickname(userInfoEntity.getNickname())
                 .content(entity.getContent())
                 .createdAt(entity.getCreatedAt())
-                .grade(userInfoService.getUserGrade(userInfoEntity))
+                .grade(userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername()))
                 .build();
     }
 

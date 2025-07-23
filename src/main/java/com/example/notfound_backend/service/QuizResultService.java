@@ -71,7 +71,7 @@ public class QuizResultService {
                 .userAnswer(entity.getUserAnswer())
                 .result(entity.getResult())
                 .solvedAt(entity.getSolvedAt())
-                .grade(userInfoService.getUserGrade(userInfoEntity))
+                .grade(userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername()))
                 .build();
     }
 

@@ -34,9 +34,8 @@ public class UserInfoController {
     }
     // 회원등급 찾기
     @GetMapping(value = "/user/user-grade")
-    public ResponseEntity<String> getUserGrade(@RequestParam String username) {
-        UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(username);
-        return ResponseEntity.status(HttpStatus.OK).body(userInfoService.getUserGrade(userInfoEntity));
+    public ResponseEntity<String> getUserGrade(@RequestParam(required = false) String username) {
+        return ResponseEntity.status(HttpStatus.OK).body(userInfoService.getUserGrade(username));
     }
 
     // 회원정보리스트 (관리자)
@@ -53,19 +52,12 @@ public class UserInfoController {
     @GetMapping(value = "/check-username/{username}")
     public ResponseEntity<Boolean> getUserInfoByUsername(@PathVariable String username) { // @PathVariable로 변경
         boolean isExists = userAuthService.findUserByUsername(username);
-        if (isExists) {
-            return ResponseEntity.ok(false); // 이미 사용 중 → 사용 불가
-        } else {
-            return ResponseEntity.ok(true);  // 사용 가능
-        }
+        return ResponseEntity.ok(!isExists);
     }
     @GetMapping(value = "/check-nickname/{nickname}")
     public ResponseEntity<Boolean> getUserInfoByNickname(@PathVariable String nickname) {
         boolean isExists = userInfoService.findByNickname(nickname);
-        if (isExists) {
-            return ResponseEntity.ok(false);
-        }
-        return ResponseEntity.ok(true);
+        return ResponseEntity.ok(!isExists);
     }
 
 

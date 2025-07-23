@@ -70,7 +70,7 @@ public class VotingAnswerService {
                 .reason(entity.getReason())
                 .createdAt(entity.getCreatedAt())
                 .parent(entity.getParent().getId())
-                .grade(userInfoService.getUserGrade(userInfoEntity))
+                .grade(userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername()))
                 .build();
     }
 

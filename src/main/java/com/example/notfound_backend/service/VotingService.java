@@ -37,7 +37,7 @@ public class VotingService {
             votingDTO.setAuthor(votingEntity.getAuthor().getUsername());
             UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(votingEntity.getAuthor().getUsername());
             String userNickname = userInfoEntity.getNickname();
-            String userGrade = userInfoService.getUserGrade(userInfoEntity);
+            String userGrade = userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername());
             votingDTO.setAuthorNickname(userNickname);
             votingDTO.setGrade(userGrade);
             votingDTO.setCreatedAt(votingEntity.getCreatedAt());
@@ -65,7 +65,7 @@ public class VotingService {
                 entity.getQuestion(),
                 entity.getAuthor().getUsername(),
                 userNickname,
-                userInfoService.getUserGrade(userInfoEntity),
+                userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername()),
                 entity.getCreatedAt(),
                 entity.getCategory(),
                 entity.getViews()

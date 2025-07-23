@@ -40,7 +40,7 @@ public class BoardFoodService {
                 }
                 UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(boardFoodEntity.getAuthor().getUsername());
                 String userNickname = userInfoEntity.getNickname();
-                String userGrade = userInfoService.getUserGrade(userInfoEntity);
+                String userGrade = userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername());
                 boardFoodDTO.setAuthorNickname(userNickname); // 추가
                 boardFoodDTO.setGrade(userGrade);
                 boardFoodDTO.setRecommend(boardFoodEntity.getRecommend());
@@ -73,7 +73,7 @@ public class BoardFoodService {
                 entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
                 userNickname,
-                userInfoService.getUserGrade(userInfoEntity),
+                userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername()),
                 entity.getRecommend(),
                 entity.getViews(),
                 entity.getCategory(),

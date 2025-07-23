@@ -40,7 +40,7 @@ public class BoardFreeService {
                 }
                 UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(boardFreeEntity.getAuthor().getUsername());
                 String userNickname = userInfoEntity.getNickname();
-                String userGrade = userInfoService.getUserGrade(userInfoEntity);
+                String userGrade = userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername());
                 boardFreeDTO.setAuthorNickname(userNickname); // 추가
                 boardFreeDTO.setGrade(userGrade);
                 boardFreeDTO.setRecommend(boardFreeEntity.getRecommend());
@@ -74,7 +74,7 @@ public class BoardFreeService {
                 entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
                 userNickname, // 추가
-                userInfoService.getUserGrade(userInfoEntity),
+                userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername()),
                 entity.getRecommend(),
                 entity.getViews(),
                 entity.getCategory(),
