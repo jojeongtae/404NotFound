@@ -47,7 +47,7 @@ public class MessageController {
     @GetMapping("/author")
     public ResponseEntity<List<MessageDTO>> findMessageByAuthor(Principal principal) {
         String username = principal.getName();  // 로그인한 사용자 이름
-        List<MessageEntity> messages = messageService.findMessageByReceiver(username);
+        List<MessageEntity> messages = messageService.findMessageByAuthor(username);
         List<MessageDTO> dtoList = messages.stream()
                 .map(messageService::toDTO)
                 .collect(Collectors.toList());
@@ -57,7 +57,7 @@ public class MessageController {
     @GetMapping("/receiver")
     public ResponseEntity<List<MessageDTO>> findMessageByReceiver(Principal principal) {
         String username = principal.getName();  // 로그인한 사용자 이름
-        List<MessageEntity> messages = messageService.findMessageByAuthor(username);
+        List<MessageEntity> messages = messageService.findMessageByReceiver(username);
         List<MessageDTO> dtoList = messages.stream()
                 .map(messageService::toDTO)
                 .collect(Collectors.toList());
