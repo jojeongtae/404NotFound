@@ -11,7 +11,7 @@ import PostUpdatePage from './pages/PostUpdatePage';
 import RankingPage from './pages/RankingPage';
 import AdminReportForm from './features/admin/AdminReportForm';
 import AdminUserListForm from './features/admin/AdminUserListForm';
-
+import DiceGamePage from './pages/DiceGamePage';
 
 function App() {
   return (
@@ -27,6 +27,7 @@ function App() {
             <Route path='board/admin/list' element={<AdminUserListForm />}></Route>
             <Route path='board/admin/report' element={<AdminReportForm />}></Route>
             <Route path='board/ranking/:type' element={<RankingPage />} />
+            <Route path='board/dice' element={<DiceGamePage />} />
             
             {/* 다른 페이지 라우트들 */}
           </Route>

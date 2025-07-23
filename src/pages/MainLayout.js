@@ -97,6 +97,7 @@ const MainLayout = () => {
             <li style={{ marginBottom: '10px' }}><Link to="/board/quiz">퀴즈 게시판</Link></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/voting">OX 게시판</Link></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/survey">설문조사 게시판</Link></li>
+            <li style={{ marginBottom: '10px' }}><Link to="/board/dice">다이스 도박</Link></li>
             <li style={{ marginBottom: '10px' }}><span>--광고주 링크--</span></li>
             <li style={{ marginBottom: '10px' }}><Link to="http://arirangtrail.duckdns.org/">아리랑 트레일</Link></li>
 
