@@ -6,7 +6,6 @@ import com.example.notfound_backend.data.dao.VotingAnswerDAO;
 import com.example.notfound_backend.data.dao.VotingDAO;
 import com.example.notfound_backend.data.dto.VotingAnswerDTO;
 import com.example.notfound_backend.data.entity.*;
-import com.example.notfound_backend.exception.UserSuspendedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
@@ -29,10 +28,7 @@ public class VotingAnswerService {
 
     @Transactional
     public VotingAnswerDTO submitAnswer(VotingAnswerDTO dto) {
-        UserStatus userStatus = userInfoDAO.getUserInfo(dto.getUsername()).getStatus();
-        if (userStatus != UserStatus.ACTIVE) {
-            throw new UserSuspendedException("활동 정지된 사용자입니다.");
-        }
+        userInfoService.userStatusValidator(dto.getUsername());
 
         VotingAnswerEntity entity = new VotingAnswerEntity();
 

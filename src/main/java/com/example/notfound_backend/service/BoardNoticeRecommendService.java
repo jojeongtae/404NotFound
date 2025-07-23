@@ -13,8 +13,10 @@ public class BoardNoticeRecommendService {
     private final BoardNoticeRecommendDAO boardNoticeRecommendDAO;
     private final BoardNoticeDAO boardNoticeDAO;
     private final UserAuthDAO userAuthDAO;
+    private final UserInfoService userInfoService;
 
     public void recommend(Integer boardId, String username) {
+        userInfoService.userStatusValidator(username);
 
         BoardNoticeEntity board = boardNoticeDAO.findById(boardId)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
