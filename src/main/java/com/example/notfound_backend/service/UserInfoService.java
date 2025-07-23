@@ -8,6 +8,7 @@ import com.example.notfound_backend.data.entity.UserAuthEntity;
 import com.example.notfound_backend.data.entity.UserInfoEntity;
 import com.example.notfound_backend.data.entity.UserStatus;
 import com.example.notfound_backend.exception.UserNotFoundException;
+import com.example.notfound_backend.exception.UserSuspendedException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
@@ -122,6 +123,18 @@ public class UserInfoService {
             throw new UserNotFoundException("일치하는 유저 없음");
         } else {
             throw new Exception("상태변경 실패");
+        }
+    }
+
+    // 회원 상태 체크
+    public void userStatusValidator(String username) {
+        UserStatus userStatus = userInfoDAO.getUserInfo(username).getStatus();
+        if (userStatus == UserStatus.SUSPENDED) {
+            throw new UserSuspendedException("활동 정지된 사용자 입니다.");
+        } else if (userStatus == UserStatus.BANNED) {
+            throw new UserSuspendedException("영구정지 사용자 입니다.");
+        } else if (userStatus == UserStatus.INACTIVE) {
+            throw new UserSuspendedException("비활성화된 계정 입니다.");
         }
     }
 

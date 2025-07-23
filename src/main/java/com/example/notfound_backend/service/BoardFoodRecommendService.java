@@ -14,8 +14,10 @@ public class BoardFoodRecommendService {
     private final BoardFoodRecommendDAO boardFoodRecommendDAO;
     private final BoardFoodDAO boardFoodDAO;
     private final UserAuthDAO userAuthDAO;
+    private final UserInfoService userInfoService;
 
     public void recommend(Integer boardId, String username) {
+        userInfoService.userStatusValidator(username);
 
         BoardFoodEntity board = boardFoodDAO.findById(boardId)
                 .orElseThrow(() -> new RuntimeException("Board not found"));

@@ -15,8 +15,10 @@ public class BoardFreeRecommendService {
     private final BoardFreeRecommendDAO boardFreeRecommendDAO;
     private final BoardFreeDAO boardFreeDAO;
     private final UserAuthDAO userAuthDAO;
+    private final UserInfoService userInfoService;
 
     public void recommend(Integer boardId, String username) {
+        userInfoService.userStatusValidator(username);
 
         BoardFreeEntity board = boardFreeDAO.findById(boardId)
                 .orElseThrow(() -> new RuntimeException("Board not found"));

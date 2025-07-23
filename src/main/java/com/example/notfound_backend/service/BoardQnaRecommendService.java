@@ -14,8 +14,10 @@ public class BoardQnaRecommendService {
     private final BoardQnaRecommendDAO boardQnaRecommendDAO;
     private final BoardQnaDAO boardQnaDAO;
     private final UserAuthDAO userAuthDAO;
+    private final UserInfoService userInfoService;
 
     public void recommend(Integer boardId, String username) {
+        userInfoService.userStatusValidator(username);
 
         BoardQnaEntity board = boardQnaDAO.findById(boardId)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
