@@ -28,6 +28,13 @@ apiClient.interceptors.response.use(
  (response) => response,
  async (error) =>{
     const originalRequest = error.config;
+
+    // 403 Forbidden 에러 처리
+    if (error.response?.status === 403) {
+      alert("정지처리된 상태입니다.");
+      return Promise.reject(error); // 에러를 계속 전파하여 호출한 곳에서 추가 처리할 수 있도록 함
+    }
+
     if(error.response?.status === 456 && !originalRequest._retry){
         originalRequest._retry = true;
         try{

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage';
 import { useSelector } from 'react-redux';
-import { fetchPostDetailAndComments , submitComment  } from '../features/board/boardService'; // 함수 임포트
+import { fetchPostDetailAndComments, submitComment } from '../features/board/boardService'; // 함수 임포트
 import { useDispatch } from 'react-redux';
 import apiClient from '../api/apiClient';
 import { useAuth } from '../context/AuthContext'; // useAuth 임포트
@@ -21,18 +21,18 @@ const PostDetailPage = () => {
   const navigate = useNavigate();
   const username = useSelector(state => state.user.username);
   const { isLoggedIn } = useAuth(); // isLoggedIn 상태 가져오기
-  const [comments,setComments] = useState([]);
+  const [comments, setComments] = useState([]);
   const [newCommentText, setNewCommentText] = useState(''); // 새 댓글 내용 상태
 
-  const handleDeletePost= async()=>{
+  const handleDeletePost = async () => {
     try {
       const result = window.confirm("정말 삭제하시겠습니까?");
-      if(result){
-      const res = await apiClient.delete(`/${boardId}/${postId}`);
-      console.log(res.data);
-      alert("삭제가 완료되었습니다");
-      navigate(-1);
-      }else{
+      if (result) {
+        const res = await apiClient.delete(`/${boardId}/${postId}`);
+        console.log(res.data);
+        alert("삭제가 완료되었습니다");
+        navigate(-1);
+      } else {
         return;
       }
     } catch (error) {
@@ -78,28 +78,25 @@ const PostDetailPage = () => {
     }
   }, [boardId, postId, dispatch, loadPostAndComments]);
 
-  const handleRecommend = async() => {
+  const handleRecommend = async () => {
     if (!isLoggedIn) {
       alert("로그인 후 추천할 수 있습니다.");
       return;
     }
 
     try {
-      let res;
-      if (isRecommended) { // 이미 추천한 상태라면 추천 취소
-        res = await apiClient.patch(`/${boardId}/${postId}/cancel_recommend`);
-        alert("추천이 취소되었습니다!");
-        setIsRecommended(false);
-        setPost(prevPost => ({ ...prevPost, recommend: prevPost.recommend - 1 })); // 추천수 감소
-      } else { // 추천하지 않은 상태라면 추천
-        res = await apiClient.patch(`/${boardId}/${postId}/recommend`);
-        alert("추천되었습니다!");
-        setIsRecommended(true);
-        setPost(prevPost => ({ ...prevPost, recommend: prevPost.recommend + 1 })); // 추천수 증가
-      }
+      const res = await apiClient.post(`/${boardId}/${postId}/recommend`);
+      // 추천하지 않은 상태라면 추천
+      alert("추천되었습니다!");
+      setIsRecommended(true);
+      setPost(prevPost => ({ ...prevPost, recommend: prevPost.recommend + 1 })); // 추천수 증가
       console.log(res.data);
+
     } catch (error) {
-      console.error("추천/추천 취소 실패:", error);
+      if (error.status === 500) {
+        alert("추천은 중복이 불가능합니다.");
+        setIsRecommended(true);
+      }
       alert("추천/추천 취소에 실패했습니다.");
     }
   }
@@ -160,14 +157,14 @@ const PostDetailPage = () => {
   if (!post) {
     return <NotFoundPage />;
   }
-  const handleReport = async() =>{
+  const handleReport = async () => {
     try {
-      const res = await apiClient.post("/user/report",{
-        reason:"간단신고",
-        reporter:username,
-        reported:post.author,
-        targetTable:`board_${boardId}`,
-        targetId:postId
+      const res = await apiClient.post("/user/report", {
+        reason: "간단신고",
+        reporter: username,
+        reported: post.author,
+        targetTable: `board_${boardId}`,
+        targetId: postId
       });
       console.log(res.data);
     } catch (err) {
@@ -175,7 +172,7 @@ const PostDetailPage = () => {
     }
   }
 
-  
+
   return (
     <>
       {boardId === 'quiz' ? (
@@ -195,8 +192,8 @@ const PostDetailPage = () => {
           <div dangerouslySetInnerHTML={{ __html: post.body }}></div>
 
           <hr />
-          <button onClick={handleRecommend}>
-            {isRecommended ? "추천 취소" : "추천"}
+          <button onClick={handleRecommend} disabled={isRecommended}>
+            {isRecommended ? "추천 완료" : "추천"}
           </button>
           <span>추천수 : {post.recommend}</span> <button onClick={handleReport}>🏮신고하기</button>
           <hr />
@@ -209,16 +206,16 @@ const PostDetailPage = () => {
               <CommentThread comments={comments} onCommentUpdate={loadPostAndComments} username={username} handleDeleteComment={handleDeleteComment} />
 
               <form onSubmit={handleCommentSubmit} style={{ marginTop: '20px' }}>
-                  <textarea
-                      value={newCommentText}
-                      onChange={(e) => setNewCommentText(e.target.value)}
-                      placeholder="댓글을 입력하세요..."
-                      rows="3"
-                      style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc' }}
-                  ></textarea>
-                  <button type="submit" className="nav-link">
-                      댓글 작성
-                  </button>
+                <textarea
+                  value={newCommentText}
+                  onChange={(e) => setNewCommentText(e.target.value)}
+                  placeholder="댓글을 입력하세요..."
+                  rows="3"
+                  style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc' }}
+                ></textarea>
+                <button type="submit" className="nav-link">
+                  댓글 작성
+                </button>
               </form>
             </>
           )}

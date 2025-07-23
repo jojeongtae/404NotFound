@@ -7,8 +7,11 @@ import PostDetailPage from './pages/PostDetailPage';
 import { AuthProvider } from './context/AuthContext'; 
 import NewBoardPage from './pages/NewBoardPage';
 import PostUpdatePage from './pages/PostUpdatePage';
-import AdminReportForm from './features/board/AdminReportForm';
+
 import RankingPage from './pages/RankingPage';
+import AdminReportForm from './features/admin/AdminReportForm';
+import AdminUserListForm from './features/admin/AdminUserListForm';
+
 
 function App() {
   return (
@@ -21,7 +24,8 @@ function App() {
             <Route path='board/:boardId/:postId' element={<PostDetailPage />} /> {/* 게시글 상세 페이지 */}
             <Route path='board/new' element={<NewBoardPage />} /> {/* 새 게시글 작성 페이지 */}
             <Route path='board/:boardId/:postId/edit' element={<PostUpdatePage />}></Route>
-            <Route path='board/admin-report' element={<AdminReportForm />}></Route>
+            <Route path='board/admin/list' element={<AdminUserListForm />}></Route>
+            <Route path='board/admin/report' element={<AdminReportForm />}></Route>
             <Route path='board/ranking/:type' element={<RankingPage />} />
             
             {/* 다른 페이지 라우트들 */}

@@ -67,7 +67,7 @@ const BoardPageForm = ({ boardId }) => { // boardId prop 다시 받기
                 <span className="header-item header-author">글쓴이</span>
                 <span className="header-item header-views">조회</span>
                 {pointBoard ? "" :
-                <span className="header-item header-recommend">추천</span>
+                    <span className="header-item header-recommend">추천</span>
                 }
             </div>
             {pointBoard ?
@@ -78,9 +78,9 @@ const BoardPageForm = ({ boardId }) => { // boardId prop 다시 받기
                                 <Link to={`/board/${boardId}/${post.id}`} className="post-link"> {/* 클래스 추가 */}
                                     <span className="post-item post-id">{post.id}</span>
                                     <span className="post-item post-title">{post.title}</span>
-                                    <span className="post-item post-author">{post.grade}{post.authorNickname}</span>
-                                    <span className="post-item post-views">{post.views}</span>
                                 </Link>
+                                    <span className="post-item post-author"><span className="user-grade">{post.grade}</span>{post.authorNickname}</span>
+                                    <span className="post-item post-views">{post.views}</span>
                             </li>
                         ))}
                     </ul>
@@ -97,10 +97,10 @@ const BoardPageForm = ({ boardId }) => { // boardId prop 다시 받기
                                 <Link to={`/board/${boardId}/${post.id}`} className="post-link"> {/* 클래스 추가 */}
                                     <span className="post-item post-id">{post.id}</span>
                                     <span className="post-item post-title">{post.title}</span>
-                                    <span className="post-item post-author">{[post.grade]}{post.authorNickname}</span>
+                                </Link>
+                                    <span className="post-item post-author"><span className="user-grade">{post.grade}</span>{post.authorNickname}</span>
                                     <span className="post-item post-views">{post.views}</span>
                                     <span className="post-item post-recommend">{post.recommend}</span> {/* 임시 추천 수 */}
-                                </Link>
                             </li>
                         ))}
                     </ul>

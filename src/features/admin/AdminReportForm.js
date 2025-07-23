@@ -14,7 +14,8 @@ const AdminReportForm = () => {
                 setLoading(true);
                 setError(null);
                 const res = await apiClient.get("/admin/report-list");
-                setReports(res.data);
+                console.log(res.data);
+                setReports(res.data.filter(user => user.status === "PENDING"));
             } catch (err) {
                 console.error("신고 목록 불러오기 실패:", err);
                 setError("신고 목록을 불러오는데 실패했습니다.");
@@ -48,7 +49,7 @@ const AdminReportForm = () => {
             console.log(err);
         }
     }
-    const handleAddReportUser = async (id) =>{
+    const handleAddReportUser = async (id,reporter,reported) =>{
         const body = {
             reportId:id,
             status:"ACCEPTED"
@@ -56,6 +57,16 @@ const AdminReportForm = () => {
         try {
             const res = await apiClient.patch(`/admin/report`,body);
             console.log(res.data);
+            if(res.status === 200){
+                const messageBody = {
+                    author:user.username,
+                    receiver:reporter,
+                    title:`신고접수안내`,
+                    message:`신고하신 내용이 접수되었습니다.`
+                }
+                const messageRes = await apiClient.post(`/message/send`,messageBody);
+                console.log(messageRes);
+            }
             alert("처리 완료")
             setReports(prevReports => prevReports.filter(report => report.id !== id));
         } catch (error) {
@@ -86,7 +97,7 @@ const AdminReportForm = () => {
                         <div style={{ marginBottom: '5px' }}><strong>신고 시간:</strong> {new Date(report.createdAt).toLocaleString()}</div>
                         {report.updatedAt && <div style={{ marginBottom: '5px' }}><strong>처리 시간:</strong> {new Date(report.updatedAt).toLocaleString()}</div>}
                         <button onClick={() => handleCancle(report.id)}>탈락 땅땅땅</button> &nbsp;
-                        <button onClick={()=> handleAddReportUser(report.id)}>처리완료 땅땅땅</button>
+                        <button onClick={()=> handleAddReportUser(report.id,report.reporter,report.reported)}>처리완료 땅땅땅</button>
                         {/* 여기에 신고 처리 버튼 (예: 게시글 숨기기, 사용자 경고 등) 추가 가능 */}
                     </li>
                 ))}

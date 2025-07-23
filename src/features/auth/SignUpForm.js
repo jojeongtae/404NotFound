@@ -23,26 +23,33 @@ const SignUpForm = ({ onClose }) => {
     }
     try {
       // /user/check-username/{username} 경로 사용 (경로 변수)
-      const response = await apiClient.get(`/user/check-username/${formData.username}`);
+      const response = await apiClient.get(`/check-username/${formData.username}`);
       // 응답이 성공적으로 왔다면 (200 OK), 해당 아이디가 존재한다는 의미
+      console.log(response.data);
       if (response.data === true) {
+        alert("사용 가능한 아이디입니다.");
+      } else { // 백엔드에서 false를 반환하면 이미 사용 중
         alert("이미 사용 중인 아이디입니다.");
         setFormData(prev => ({
           ...prev,
           username: ""
         }));
-
-      } else {
-        alert("사용 가능한 아이디입니다.");
       }
 
 
     } catch (error) {
-      // 오류가 발생했고, 404 Not Found라면 사용 가능한 아이디
-      if (error.response && error.response.status === 404) {
-        alert("사용 가능한 아이디입니다.");
+      console.error("Full error object:", error); // 항상 전체 error 객체 출력
+      if (error.response) {
+        if (error.response.status === 404) {
+          alert("사용 가능한 아이디입니다.");
+        } else { // 404가 아닌 다른 에러 상태 코드 (예: 409, 400 등)
+          alert("이미 사용 중인 아이디입니다."); // catch로 넘어왔고 404가 아니면 이미 존재하는 것으로 간주
+          setFormData(prev => ({
+            ...prev,
+            username: ""
+          }));
+        }
       } else {
-        console.error("상세 오류 (아이디 중복 확인):", error);
         alert("아이디 중복 확인 중 오류가 발생했습니다.");
       }
     }
@@ -54,21 +61,29 @@ const SignUpForm = ({ onClose }) => {
       return;
     }
     try {
-      const response = await apiClient.get(`/user/check-nickname/${formData.nickname}`);
+      const response = await apiClient.get(`/check-nickname/${formData.nickname}`);
       if (response.data === true) {
+        alert("사용 가능한 닉네임입니다.");
+      } else { // response.data가 false일 경우
         alert("이미 사용 중인 닉네임입니다.");
         setFormData(prev => ({
           ...prev,
           nickname: ""
         }));
-      } else {
-        alert("사용 가능한 닉네임입니다.");
       }
     } catch (error) {
-      if (error.response && error.response.status === 404) {
-        alert("사용 가능한 닉네임입니다.");
+      if (error.response) {
+        if (error.response.status === 404) {
+          alert("사용 가능한 닉네임입니다.");
+        } else { // 404가 아닌 다른 에러 상태 코드 (예: 409, 400 등)
+          alert("이미 사용 중인 닉네임입니다."); // catch로 넘어왔고 404가 아니면 이미 존재하는 것으로 간주
+          setFormData(prev => ({
+            ...prev,
+            nickname: ""
+          }));
+        }
       } else {
-        console.error("상세 오류 (닉네임 중복 확인):", error); // 괄호 닫기
+        console.error("상세 오류 (닉네임 중복 확인):", error);
         alert("닉네임 중복 확인 중 오류가 발생했습니다.");
       }
     }
