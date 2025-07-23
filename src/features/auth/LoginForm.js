@@ -46,21 +46,21 @@ const LoginForm = ({ onClose }) => {
             // { headers: { 'Authorization': token }}
 
           );
-          const gradeResponse = await apiClient.get(`/user/user-grade?username=${username}`);
+          // const gradeResponse = await apiClient.get(`/user/user-grade?username=${username}`);
 
-          let finalNickname = userDetailsResponse.data.nickname; // userDetailsResponse에서 nickname 가져오기
+          // let finalNickname = userDetailsResponse.data.nickname; // userDetailsResponse에서 nickname 가져오기
           console.log(userDetailsResponse.data);
-          console.log(gradeResponse.data.split(" ")[0]);
+          // console.log(gradeResponse.data.split(" ")[0]);
 
 
-          if (gradeResponse.data.split(" ")[0] === "500") {
-            finalNickname = "✨" + finalNickname; // nickname에 이모티콘 추가
-          }
+          // if (gradeResponse.data.split(" ")[0] === "500") {
+          //   finalNickname = "✨" + finalNickname; // nickname에 이모티콘 추가
+          // }
           // userDetailsResponse.data와 grade 정보를 합쳐서 setUser에 전달
           dispatch(setUser({
             ...userDetailsResponse.data, // 기존 사용자 상세 정보
-            nickname: finalNickname, // 이모티콘이 추가된 nickname
-            grade: gradeResponse.data, // grade는 원본 그대로 유지
+            // nickname: finalNickname, // 이모티콘이 추가된 nickname
+            // grade: gradeResponse.data, // grade는 원본 그대로 유지
           }));
 
           console.log("추가 사용자 정보 저장 완료:", userDetailsResponse.data);

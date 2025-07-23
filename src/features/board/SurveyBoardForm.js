@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import apiClient from '../../api/apiClient';
 import { useSelector } from 'react-redux';
+import { getFullGradeDescription } from "../common/GradeDescriptions";
 
 const SurveyBoardForm = () => {
     const { boardId, postId } = useParams();
@@ -116,7 +117,7 @@ const SurveyBoardForm = () => {
     return(
         <div style={{ padding: '20px' }}>
             <h2>제목 : {surveyData.title}</h2>
-            <p><strong>작성자 :</strong> {surveyData.grade}{surveyData.authorNickname}</p>
+            <p><strong>작성자 :</strong> {getFullGradeDescription(surveyData.grade)}{surveyData.authorNickname}</p>
             <h3>질문 : {surveyData.question}</h3>
 
             {hasParticipated ? (

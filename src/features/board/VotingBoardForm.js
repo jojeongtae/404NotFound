@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import apiClient from '../../api/apiClient';
 import { useSelector } from 'react-redux';
+import { getFullGradeDescription } from "../common/GradeDescriptions";
 
 const VotingBoardForm = () => {
     const { boardId, postId } = useParams();
@@ -112,7 +113,7 @@ const VotingBoardForm = () => {
         <div style={{ padding: '20px' }}>
             <h2>{votingData.title}</h2>
 
-            <p><strong>작성자:</strong> {votingData.grade}{votingData.authorNickname}</p>
+            <p><strong>작성자:</strong> {getFullGradeDescription(votingData.grade)}{votingData.authorNickname}</p>
             <h3>{votingData.question}</h3>
 
             {hasParticipated ? (

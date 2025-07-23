@@ -9,19 +9,20 @@ import UserInfoModal from '../features/auth/UserInfoModal'; // UserInfoModal 임
 import MailboxForm from '../features/mailbox/MailboxForm'; // MailboxForm 임포트
 import '../style/MainPage.css'; // 테마 CSS 파일 임포트
 import { useDispatch, useSelector } from 'react-redux';
+import { getFullGradeDescription } from '../features/common/GradeDescriptions';
 
-const gradeDescriptions = {
-    "👑 500": "500 Internal Server Error (운영진)",
-    "🐣 404": "404 Not Found (신규)",
-    "👍 200": "200 OK (일반 회원)",
-    "🚀 202": "202 Accepted (활동 회원)",
-    "💎 403": "403 Forbidden (우수 회원)",
-    "👻 401": "401 Unauthorized (손님)"
-};
+// const gradeDescriptions = {
+//     "👑 500": "500 Internal Server Error (운영진)",
+//     "🐣 404": "404 Not Found (신규)",
+//     "👍 200": "200 OK (일반 회원)",
+//     "🚀 202": "202 Accepted (활동 회원)",
+//     "💎 403": "403 Forbidden (우수 회원)",
+//     "👻 401": "401 Unauthorized (손님)"
+// };
 
-const getFullGradeDescription = (shortGrade) => {
-    return gradeDescriptions[shortGrade] || shortGrade; // 매핑된 값이 없으면 짧은 등급 그대로 반환
-};
+// export const getFullGradeDescription = (shortGrade) => {
+//     return gradeDescriptions[shortGrade] || shortGrade; // 매핑된 값이 없으면 짧은 등급 그대로 반환
+// };
 
 const MainLayout = () => {
   const { isLoggedIn, logout } = useAuth();
@@ -64,7 +65,7 @@ const MainLayout = () => {
       </header>
       {isLoggedIn ?
       <>
-          <span style={{textAlign :"left"}}>{user.grade} 이름 : {user.nickname}님 안녕하세요!</span> <span>현재 포인트 : {user.point}</span>
+          <span style={{textAlign :"left"}}>{getFullGradeDescription(user.grade)} 이름 : {user.nickname}님 안녕하세요!</span> <span>현재 포인트 : {user.point}</span>
       </>
       :
       <>

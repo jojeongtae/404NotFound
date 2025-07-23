@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import apiClient from '../api/apiClient';
+import { getFullGradeDescription } from '../features/common/GradeDescriptions';
 
 const RankingPage = () => {
   const { type } = useParams(); // URL 파라미터에서 랭킹 타입 (recommend 또는 comment)을 가져옴
@@ -56,7 +57,7 @@ const RankingPage = () => {
         <ol>
           {rankingData.map((item, index) => (
             <li key={index} style={{ marginBottom: '10px' }}>
-              <strong>{index + 1}.</strong>제목 : {item.title} (작성자: {/* authorNickname 변경예정 */}{item.grade} {item.authorNickname}, {type === 'recommend' ? `추천수 : ${item.recommend}` : `댓글수${item.commentCount}`})
+              <strong>{index + 1}.</strong>제목 : {item.title} (작성자: {/* authorNickname 변경예정 */}{getFullGradeDescription(item.grade)} {item.authorNickname}, {type === 'recommend' ? `추천수 : ${item.recommend}` : `댓글수${item.commentCount}`})
             </li>
           ))}
         </ol>

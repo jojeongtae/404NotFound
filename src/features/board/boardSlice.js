@@ -13,7 +13,7 @@ const boardSlice = createSlice({
         recommend:null,
         authorNickname:null,
         userNickname:null,
-
+        grade:null,
     },
     reducers: {
         setPostDetails: (state, action) => {
@@ -30,6 +30,7 @@ const boardSlice = createSlice({
                 state.recommend = null;
                 state.authorNickname = null;
                 state.userNickname = null;
+                state.grade = null;
         },
 
     },

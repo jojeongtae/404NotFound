@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import apiClient from '../../api/apiClient';
 import { Link } from 'react-router-dom'; // Link 임포트
+import { getFullGradeDescription } from '../common/GradeDescriptions';
 
 const BoardPageForm = ({ boardId }) => { // boardId prop 다시 받기
     const [posts, setPosts] = useState([]);
@@ -79,7 +80,7 @@ const BoardPageForm = ({ boardId }) => { // boardId prop 다시 받기
                                     <span className="post-item post-id">{post.id}</span>
                                     <span className="post-item post-title">{post.title}</span>
                                 </Link>
-                                    <span className="post-item post-author"><span className="user-grade">{post.grade}</span>{post.authorNickname}</span>
+                                    <span className="post-item post-author"><span className="user-grade">{getFullGradeDescription(post.grade)}</span>{post.authorNickname}</span>
                                     <span className="post-item post-views">{post.views}</span>
                             </li>
                         ))}
@@ -98,7 +99,7 @@ const BoardPageForm = ({ boardId }) => { // boardId prop 다시 받기
                                     <span className="post-item post-id">{post.id}</span>
                                     <span className="post-item post-title">{post.title}</span>
                                 </Link>
-                                    <span className="post-item post-author"><span className="user-grade">{post.grade}</span>{post.authorNickname}</span>
+                                    <span className="post-item post-author"><span className="user-grade">{getFullGradeDescription(post.grade)}</span>{post.authorNickname}</span>
                                     <span className="post-item post-views">{post.views}</span>
                                     <span className="post-item post-recommend">{post.recommend}</span> {/* 임시 추천 수 */}
                             </li>
