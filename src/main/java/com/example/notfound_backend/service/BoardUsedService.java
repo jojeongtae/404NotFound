@@ -39,7 +39,7 @@ public class BoardUsedService {
                 }
                 UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(boardUsedEntity.getAuthor().getUsername());
                 String userNickname = userInfoEntity.getNickname();
-                String userGrade = userInfoService.getUserGrade(userInfoEntity);
+                String userGrade = userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername());
                 boardUsedDTO.setAuthorNickname(userNickname); // 추가
                 boardUsedDTO.setGrade(userGrade);
                 boardUsedDTO.setRecommend(boardUsedEntity.getRecommend());
@@ -72,7 +72,7 @@ public class BoardUsedService {
                 entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
                 userNickname,
-                userInfoService.getUserGrade(userInfoEntity),
+                userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername()),
                 entity.getRecommend(),
                 entity.getViews(),
                 entity.getCategory(),

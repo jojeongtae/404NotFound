@@ -102,10 +102,7 @@ public class UserAuthService implements UserDetailsService {
 
     public boolean findUserByUsername(String username) {
         UserAuthEntity userAuthEntity = this.userAuthDAO.findByUsername(username);
-        if (userAuthEntity == null) {
-            return true;
-        }
-        return false;
+        return userAuthEntity != null;
     }
 
 

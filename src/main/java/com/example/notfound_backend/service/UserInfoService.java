@@ -22,6 +22,7 @@ public class UserInfoService {
     private final UserInfoDAO userInfoDAO;
     private final UserAuthDAO userAuthDAO;
     private final ConversionService conversionService;
+    private final UserAuthService userAuthService;
 
     // 회원정보 수정
     @Transactional // 실행중 예외발생시 자동으로 롤백
@@ -42,7 +43,7 @@ public class UserInfoService {
                 .nickname(updatedUserInfo.getNickname())
                 .phone(updatedUserInfo.getPhone())
                 .address(updatedUserInfo.getAddress())
-                .grade(getUserGrade(updatedUserInfo))
+                .grade(getUserGrade(updatedUserInfo.getUsername().getUsername()))
                 .build();
     }
 
@@ -57,36 +58,37 @@ public class UserInfoService {
                 .point(userInfoEntity.getPoint())
                 .warning(userInfoEntity.getWarning())
                 .status(userInfoEntity.getStatus())
-                .grade(getUserGrade(userInfoEntity))
+                .grade(getUserGrade(userInfoEntity.getUsername().getUsername()))
                 .build();
     }
     public boolean findByNickname(String nickname) {
         UserInfoEntity userInfoEntity = userInfoDAO.findByNickname(nickname);
-        if (userInfoEntity == null) {
-            return true;
-        }
-        return false;
+        return userInfoEntity != null;
     }
 
     // 회원등급
-    public String getUserGrade(UserInfoEntity user) {
-        String userRole = userAuthDAO.getRole(user.getUsername().getUsername());
-        if (userRole == null) {
-            return "알 수 없는 등급"; // 또는 적절한 기본값
+    public String getUserGrade(String username) {
+        if (username == null || username.isBlank()) {
+            return "👻 401"; // 401 Unauthorized(손님)
         }
-
-        if (userRole.equals("ROLE_ADMIN")) {
-            return "👑 500";
-        } else if (user.getPoint() < 25) {
-            return "🐣 404";
-         } else if (user.getPoint() >= 25 && user.getPoint() < 50) {
-            return "👍 200";
-        } else if (user.getPoint() >= 50 && user.getPoint() < 75) {
-            return "🚀 202";
-        } else if (user.getPoint() >= 75) {
-            return "💎 403";
+        UserInfoEntity userInfo = userInfoDAO.getUserInfo(username);
+        UserAuthEntity userAuth = userAuthDAO.findByUsername(username);
+        if (userInfo == null || userAuth == null) {
+            return "👻 401"; // 401 Unauthorized(존재하지 않는 사용자)
+        }
+        Integer point = userInfo.getPoint();
+        String role = userAuth.getRole();
+        if (role.equals("ROLE_ADMIN")) {
+            return "👑 500"; // 500 Internal Server Error (운영진)
+        }
+        if (point < 100) {
+            return "🐣 404"; // 404 Not Found (신규)
+         } else if (point < 200) {
+            return "👍 200"; // 200 OK (일반 회원)
+        } else if (point < 300) {
+            return "🚀 202"; // 202 Accepted (활동 회원)
         } else {
-            return "👻 401";
+            return "💎 403"; // 403 Forbidden (우수 회원)
         }
     }
 
@@ -103,7 +105,7 @@ public class UserInfoService {
                     .point(userInfoEntity.getPoint())
                     .warning(userInfoEntity.getWarning())
                     .status(userInfoEntity.getStatus())
-                    .grade(getUserGrade(userInfoEntity))
+                    .grade(getUserGrade(userInfoEntity.getUsername().getUsername()))
                     .build();
             userInfoDTOList.add(userInfoAllDTO);
         }

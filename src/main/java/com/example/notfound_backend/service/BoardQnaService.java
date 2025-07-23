@@ -39,7 +39,7 @@ public class BoardQnaService {
                 }
                 UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(boardQnaEntity.getAuthor().getUsername());
                 String userNickname = userInfoEntity.getNickname();
-                String userGrade = userInfoService.getUserGrade(userInfoEntity);
+                String userGrade = userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername());
                 boardQnaDTO.setAuthorNickname(userNickname); // 추가
                 boardQnaDTO.setGrade(userGrade);
                 boardQnaDTO.setRecommend(boardQnaEntity.getRecommend());
@@ -72,7 +72,7 @@ public class BoardQnaService {
                 entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
                 userNickname,
-                userInfoService.getUserGrade(userInfoEntity),
+                userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername()),
                 entity.getRecommend(),
                 entity.getViews(),
                 entity.getCategory(),

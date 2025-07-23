@@ -38,7 +38,7 @@ public class BoardNoticeService {
                 }
                 UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(boardNoticeEntity.getAuthor().getUsername());
                 String userNickname = userInfoEntity.getNickname();
-                String userGrade = userInfoService.getUserGrade(userInfoEntity);
+                String userGrade = userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername());
                 boardNoticeDTO.setAuthorNickname(userNickname); // 추가
                 boardNoticeDTO.setGrade(userGrade);
                 boardNoticeDTO.setRecommend(boardNoticeEntity.getRecommend());
@@ -71,7 +71,7 @@ public class BoardNoticeService {
                 entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
                 userNickname,
-                userInfoService.getUserGrade(userInfoEntity),
+                userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername()),
                 entity.getRecommend(),
                 entity.getViews(),
                 entity.getCategory(),
