@@ -31,11 +31,18 @@ public interface BoardFreeRepository extends JpaRepository<BoardFreeEntity, Inte
 
     Optional<BoardFreeEntity> findById(Integer id);
 
-    @Query("SELECT b FROM BoardFreeEntity b WHERE b.title LIKE %:keyword%")
+    @Query("SELECT b FROM BoardFreeEntity b WHERE b.title LIKE %:keyword% AND b.status='VISIBLE'")
     List<BoardFreeEntity> findByTitle(@Param("keyword") String keyword);
 
-    @Query("SELECT b FROM BoardFreeEntity b WHERE b.author.username LIKE %:keyword%")
-    List<BoardFreeEntity> findByAuthor(@Param("keyword") String keyword);
+    @Query(value = """
+    SELECT b.*
+    FROM board_free b
+    JOIN user_auth ua ON b.author = ua.username
+    JOIN user_info ui ON ua.username = ui.username
+    WHERE ui.nickname LIKE %:nickname%
+      AND b.status = 'VISIBLE'
+    """, nativeQuery = true)
+    List<BoardFreeEntity> findByAuthor(@Param("nickname") String nickname);
 
     @Query(value = """
         SELECT 

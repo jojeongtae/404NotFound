@@ -31,11 +31,18 @@ public interface BoardQnaRepository extends JpaRepository<BoardQnaEntity, Intege
 
     Optional<BoardQnaEntity> findById(Integer id);
 
-    @Query("SELECT b FROM BoardQnaEntity b WHERE b.title LIKE %:keyword%")
+    @Query("SELECT b FROM BoardQnaEntity b WHERE b.title LIKE %:keyword% AND b.status='VISIBLE'")
     List<BoardQnaEntity> findByTitle(@Param("keyword") String keyword);
 
-    @Query("SELECT b FROM BoardQnaEntity b WHERE b.author.username LIKE %:keyword%")
-    List<BoardQnaEntity> findByAuthor(@Param("keyword") String keyword);
+    @Query(value = """
+    SELECT b.*
+    FROM board_qna b
+    JOIN user_auth ua ON b.author = ua.username
+    JOIN user_info ui ON ua.username = ui.username
+    WHERE ui.nickname LIKE %:nickname%
+      AND b.status = 'VISIBLE'
+    """, nativeQuery = true)
+    List<BoardQnaEntity> findByAuthor(@Param("nickname") String nickname);
 
 
     @Query(value = """

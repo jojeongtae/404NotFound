@@ -147,6 +147,7 @@ public class BoardFoodService {
                 .collect(Collectors.toList());
     }
 
+
 //    public BoardDTO recommendBoard(Integer id) {
 //        boardFoodDAO.incrementRecommend(id);
 //        BoardFoodEntity entity= boardFoodDAO.findById(id)

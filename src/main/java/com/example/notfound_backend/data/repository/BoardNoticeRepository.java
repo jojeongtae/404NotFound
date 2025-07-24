@@ -29,10 +29,17 @@ public interface BoardNoticeRepository extends JpaRepository<BoardNoticeEntity, 
 
     Optional<BoardNoticeEntity> findById(Integer id);
 
-    @Query("SELECT b FROM BoardNoticeEntity b WHERE b.title LIKE %:keyword%")
+    @Query("SELECT b FROM BoardNoticeEntity b WHERE b.title LIKE %:keyword% AND b.status='VISIBLE'")
     List<BoardNoticeEntity> findByTitle(@Param("keyword") String keyword);
 
-    @Query("SELECT b FROM BoardNoticeEntity b WHERE b.author.username LIKE %:keyword%")
-    List<BoardNoticeEntity> findByAuthor(@Param("keyword") String keyword);
+    @Query(value = """
+    SELECT b.*
+    FROM board_notice b
+    JOIN user_auth ua ON b.author = ua.username
+    JOIN user_info ui ON ua.username = ui.username
+    WHERE ui.nickname LIKE %:nickname%
+      AND b.status = 'VISIBLE'
+    """, nativeQuery = true)
+    List<BoardNoticeEntity> findByAuthor(@Param("nickname") String nickname);
 
 }

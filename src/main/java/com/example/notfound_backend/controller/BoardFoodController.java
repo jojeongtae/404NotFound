@@ -124,4 +124,5 @@ public class BoardFoodController {
         List<BoardDTO> boardDTOList = boardFoodService.findByAuthor(author);
         return ResponseEntity.ok(boardDTOList);
     }
+
 }
