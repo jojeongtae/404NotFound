@@ -1,6 +1,7 @@
 package com.example.notfound_backend.data.repository;
 
 import com.example.notfound_backend.data.dto.BoardRankingDTO;
+import com.example.notfound_backend.data.entity.BoardFoodEntity;
 import com.example.notfound_backend.data.entity.BoardInfoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -29,6 +30,12 @@ public interface BoardInfoRepository extends JpaRepository<BoardInfoEntity, Inte
     void decrementRecommend(@Param("id") Integer id);
 
     Optional<BoardInfoEntity> findById(Integer id);
+
+    @Query("SELECT b FROM BoardInfoEntity b WHERE b.title LIKE %:keyword%")
+    List<BoardInfoEntity> findByTitle(@Param("keyword") String keyword);
+
+    @Query("SELECT b FROM BoardInfoEntity b WHERE b.author.username LIKE %:keyword%")
+    List<BoardInfoEntity> findByAuthor(@Param("keyword") String keyword);
 
     @Query(value = """
         SELECT 

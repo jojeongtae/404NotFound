@@ -52,4 +52,9 @@ public class BoardInfoDAO {
     public List<BoardRankingDTO> getTop5ByCommentsToday() {
         return boardInfoRepository.findTop5ByCommentsToday();
     }
+
+    public List<BoardInfoEntity> findByTitle(String title){ return boardInfoRepository.findByTitle(title); }
+
+    public List<BoardInfoEntity> findByAuthor(String author){ return boardInfoRepository.findByAuthor(author); }
+
 }

@@ -53,4 +53,8 @@ public class BoardFoodDAO {
         return boardFoodRepository.findTop5ByCommentsToday();
     }
 
+    public List<BoardFoodEntity> findByTitle(String title) { return boardFoodRepository.findByTitle(title); }
+
+    public List<BoardFoodEntity> findByAuthor(String author) { return boardFoodRepository.findByAuthor(author); }
+
 }

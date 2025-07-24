@@ -53,4 +53,8 @@ public class BoardQnaDAO {
     public List<BoardRankingDTO> getTop5ByCommentsToday() {
         return boardQnaRepository.findTop5ByCommentsToday();
     }
+
+    public List<BoardQnaEntity> findByTitle(String title) { return boardQnaRepository.findByTitle(title); }
+
+    public List<BoardQnaEntity> findByAuthor(String author) { return boardQnaRepository.findByAuthor(author); }
 }
