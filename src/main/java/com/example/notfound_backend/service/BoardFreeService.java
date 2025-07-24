@@ -6,12 +6,19 @@ import com.example.notfound_backend.data.dao.UserInfoDAO;
 import com.example.notfound_backend.data.dto.BoardDTO;
 import com.example.notfound_backend.data.entity.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +27,7 @@ public class BoardFreeService {
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
     private final UserInfoService userInfoService;
+    private final UploadImageService uploadImageService;
 
     public List<BoardDTO> findAll() {
         List<BoardFreeEntity> boardFreeEntityList = boardFreeDAO.findAllBoards();
@@ -83,41 +91,43 @@ public class BoardFreeService {
     }
 
     @Transactional
-    public BoardDTO createBoard(BoardDTO boardDTO) {
+    public BoardDTO createBoard(BoardDTO boardDTO, MultipartFile file) throws IOException {
         userInfoService.userStatusValidator(boardDTO.getAuthor());
+        String imgsrc = uploadImageService.uploadBoardImage(file); // 이미지파일 저장
 
-        BoardFreeEntity entity = new BoardFreeEntity();
-        entity.setTitle(boardDTO.getTitle());
-        entity.setBody(boardDTO.getBody());
-        entity.setImgsrc(boardDTO.getImgsrc());
-
-        UserAuthEntity author = userAuthDAO.findByUsername(boardDTO.getAuthor());
-        entity.setAuthor(author);
-
-        entity.setRecommend(0);
-        entity.setViews(0); // 새 글이니 조회수 0으로 시작
-        entity.setCategory("free");
-        entity.setStatus(Status.VISIBLE);
-        entity.setCreatedAt(Instant.now());
-        entity.setUpdatedAt(Instant.now());
+        BoardFreeEntity entity = BoardFreeEntity.builder()
+                .title(boardDTO.getTitle())
+                .body(boardDTO.getBody())
+                .imgsrc(imgsrc)
+                .author(userAuthDAO.findByUsername(boardDTO.getAuthor()))
+                .recommend(0)
+                .views(0)
+                .category("free")
+                .status(Status.VISIBLE)
+                .createdAt(Instant.now())
+                .updatedAt(Instant.now())
+                .build();
         BoardFreeEntity saved = boardFreeDAO.save(entity);
         userInfoDAO.updatePoint(boardDTO.getAuthor(), 3); // 3포인트증가
         return toDTO(saved);
     }
 
-    @Transactional
-    public BoardDTO updateBoard(Integer id, BoardDTO boardDTO) {
-        userInfoService.userStatusValidator(boardDTO.getAuthor());
 
+    @Transactional
+    public BoardDTO updateBoard(Integer id, BoardDTO boardDTO, MultipartFile file) throws IOException {
+        userInfoService.userStatusValidator(boardDTO.getAuthor());
+        
         BoardFreeEntity entity = boardFreeDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
+
+        String imgsrc = uploadImageService.updateBoardImage(file, entity.getImgsrc()); // 이미지파일 수정
 
         // 원하는 필드만 수정
         entity.setTitle(boardDTO.getTitle());
         entity.setBody(boardDTO.getBody());
-        entity.setImgsrc(boardDTO.getImgsrc());
-        entity.setRecommend(boardDTO.getRecommend());
-        entity.setCategory(boardDTO.getCategory());
+        entity.setImgsrc(imgsrc);
+//        entity.setRecommend(boardDTO.getRecommend());
+//        entity.setCategory(boardDTO.getCategory());
         entity.setStatus(boardDTO.getStatus() != null ? Status.valueOf(boardDTO.getStatus()) : entity.getStatus());
         entity.setUpdatedAt(Instant.now());
 
@@ -126,9 +136,10 @@ public class BoardFreeService {
     }
 
     @Transactional
-    public void deleteBoard(Integer id) {
+    public void deleteBoard(Integer id) throws IOException {
         BoardFreeEntity entity = boardFreeDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
+        uploadImageService.deleteBoardImage(entity.getImgsrc()); // 이미지파일 삭제
         boardFreeDAO.delete(entity);
     }
 
