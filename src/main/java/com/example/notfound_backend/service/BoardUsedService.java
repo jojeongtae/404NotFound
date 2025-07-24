@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -129,6 +130,20 @@ public class BoardUsedService {
         BoardUsedEntity entity = boardUsedDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
         boardUsedDAO.delete(entity);
+    }
+
+    public List<BoardDTO> findByTitle(String title) {
+        List<BoardUsedEntity> boardUsedEntities=boardUsedDAO.findByTitle(title);
+        return boardUsedEntities.stream()
+                .map(this::toDTO)  // toDTO 적용
+                .collect(Collectors.toList());
+    }
+
+    public List<BoardDTO> findByAuthor(String author) {
+        List<BoardUsedEntity> boardUsedEntities=boardUsedDAO.findByAuthor(author);
+        return boardUsedEntities.stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
 

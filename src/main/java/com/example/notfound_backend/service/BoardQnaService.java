@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -130,6 +131,21 @@ public class BoardQnaService {
                 .orElseThrow(() -> new RuntimeException("Board not found"));
         boardQnaDAO.delete(entity);
     }
+
+    public List<BoardDTO> findByTitle(String title) {
+        List<BoardQnaEntity> boardQnaEntities=boardQnaDAO.findByTitle(title);
+        return boardQnaEntities.stream()
+                .map(this::toDTO)  // toDTO 적용
+                .collect(Collectors.toList());
+    }
+
+    public List<BoardDTO> findByAuthor(String author) {
+        List<BoardQnaEntity> boardQnaEntities=boardQnaDAO.findByAuthor(author);
+        return boardQnaEntities.stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
 
 //    public BoardDTO recommendBoard(Integer id) {
 //        boardQnaDAO.incrementRecommend(id);

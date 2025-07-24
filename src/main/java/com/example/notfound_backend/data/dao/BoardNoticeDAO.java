@@ -44,4 +44,8 @@ public class BoardNoticeDAO {
         boardNoticeRepository.delete(boardNoticeEntity);
     }
 
+    public List<BoardNoticeEntity> findByTitle(String title) { return boardNoticeRepository.findByTitle(title);}
+
+    public List<BoardNoticeEntity> findByAuthor(String author) { return boardNoticeRepository.findByAuthor(author);}
+
 }

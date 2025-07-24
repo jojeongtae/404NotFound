@@ -30,6 +30,12 @@ public interface BoardFoodRepository extends JpaRepository<BoardFoodEntity, Inte
 
     Optional<BoardFoodEntity> findById(Integer id);
 
+    @Query("SELECT b FROM BoardFoodEntity b WHERE b.title LIKE %:keyword%")
+    List<BoardFoodEntity> findByTitle(@Param("keyword") String keyword);
+
+    @Query("SELECT b FROM BoardFoodEntity b WHERE b.author.username LIKE %:keyword%")
+    List<BoardFoodEntity> findByAuthor(@Param("keyword") String keyword);
+
     @Query(value = """
         SELECT 
             b.id AS id,

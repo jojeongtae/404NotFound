@@ -4,6 +4,7 @@ package com.example.notfound_backend.controller;
 import com.example.notfound_backend.data.dto.BoardCommentDTO;
 import com.example.notfound_backend.data.dto.BoardDTO;
 import com.example.notfound_backend.data.dto.BoardRankingDTO;
+import com.example.notfound_backend.data.entity.BoardFoodEntity;
 import com.example.notfound_backend.service.BoardFoodCommentService;
 import com.example.notfound_backend.service.BoardFoodRecommendService;
 import com.example.notfound_backend.service.BoardFoodService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -103,5 +105,23 @@ public class BoardFoodController {
     public ResponseEntity<?> recommend(@PathVariable Integer boardId, Principal principal) {
         boardFoodRecommendService.recommend(boardId, principal.getName());
         return ResponseEntity.ok("추천 완료");
+    }
+
+//    @GetMapping("/search/title")
+//    public ResponseEntity<List<BoardFoodEntity>> searchByTitle(@RequestParam("title") String title) {
+//        List<BoardFoodEntity> results = boardFoodService.findByTitle(title);
+//        return ResponseEntity.ok(results);
+//    }
+
+    @GetMapping("/search/title")
+    public ResponseEntity<List<BoardDTO>> searchByTitle(@RequestParam String title) {
+        List<BoardDTO> boardDTOList = boardFoodService.findByTitle(title);
+        return ResponseEntity.ok(boardDTOList);
+    }
+
+    @GetMapping("/search/author")
+    public ResponseEntity<List<BoardDTO>> searchByAuthor(@RequestParam String author) {
+        List<BoardDTO> boardDTOList = boardFoodService.findByAuthor(author);
+        return ResponseEntity.ok(boardDTOList);
     }
 }

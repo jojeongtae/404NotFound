@@ -52,4 +52,8 @@ public class BoardUsedDAO {
     public List<BoardRankingDTO> getTop5ByCommentsToday() {
         return boardUsedRepository.findTop5ByCommentsToday();
     }
+
+    public List<BoardUsedEntity> findByTitle(String title) { return boardUsedRepository.findByTitle(title); }
+
+    public List<BoardUsedEntity> findByAuthor(String author) { return boardUsedRepository.findByAuthor(author); }
 }

@@ -1,5 +1,6 @@
 package com.example.notfound_backend.data.repository;
 
+import com.example.notfound_backend.data.entity.BoardFoodEntity;
 import com.example.notfound_backend.data.entity.BoardNoticeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -27,4 +28,11 @@ public interface BoardNoticeRepository extends JpaRepository<BoardNoticeEntity, 
     void decrementRecommend(@Param("id") Integer id);
 
     Optional<BoardNoticeEntity> findById(Integer id);
+
+    @Query("SELECT b FROM BoardNoticeEntity b WHERE b.title LIKE %:keyword%")
+    List<BoardNoticeEntity> findByTitle(@Param("keyword") String keyword);
+
+    @Query("SELECT b FROM BoardNoticeEntity b WHERE b.author.username LIKE %:keyword%")
+    List<BoardNoticeEntity> findByAuthor(@Param("keyword") String keyword);
+
 }

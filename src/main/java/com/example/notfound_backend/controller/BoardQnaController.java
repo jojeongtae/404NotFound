@@ -103,4 +103,16 @@ public class BoardQnaController {
         boardQnaRecommendService.recommend(boardId, principal.getName());
         return ResponseEntity.ok("추천 완료");
     }
+
+    @GetMapping("/search/title")
+    public ResponseEntity<List<BoardDTO>> searchByTitle(@RequestParam String title) {
+        List<BoardDTO> boardDTOList = boardQnaService.findByTitle(title);
+        return ResponseEntity.ok(boardDTOList);
+    }
+
+    @GetMapping("/search/author")
+    public ResponseEntity<List<BoardDTO>> searchByAuthor(@RequestParam String author) {
+        List<BoardDTO> boardDTOList = boardQnaService.findByAuthor(author);
+        return ResponseEntity.ok(boardDTOList);
+    }
 }
