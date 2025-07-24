@@ -15,7 +15,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UploadedImageEntity {
+public class UploadImageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -39,5 +39,8 @@ public class UploadedImageEntity {
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "uploaded_at")
     private Instant uploadedAt;
+
+    @Column(name = "file_size")
+    private Long fileSize;
 
 }
