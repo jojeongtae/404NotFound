@@ -1,22 +1,27 @@
-import {useDispatch} from "react-redux";
 import apiClient from "../../api/apiClient";
+import {useState} from "react";
 
 //OX게시판
 const VotingBoardForm = () => {
-    const dispatch = useDispatch();
+    const [quizList, setQuizList] = useState([]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await apiClient.post("/api/board",{
-                title: e.target.title.value,
-                question: e.target.question.value,
-                answer: e.target.answer.value,
-                author: e.target.author.value,
-                created_at: e.target.date.value,
-                category: e.target.category.value,
-            })
-        }catch (error){
+        const newVoting = {
+            title: e.target.title.value,
+            question: e.target.question.value,
+            answer: e.target.answer.value,
+            author: e.target.author.value,
+            created_at: e.target.date.value,
+            category: e.target.category.value,
+        };
 
+        try {
+            const response = await apiClient.post("/api/voting/new", newVoting);
+            setQuizList([...quizList, response.data]);
+            e.target.reset();
+        }catch (error){
+            console.error("등록 실패: ", error);
         }
     }
     return(
