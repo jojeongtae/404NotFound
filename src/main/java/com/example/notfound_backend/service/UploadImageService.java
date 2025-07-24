@@ -63,7 +63,7 @@ public class UploadImageService { // 파일 저장 로직
             Files.createDirectories(filePath.getParent()); // 디렉토리 없으면 생성
             Files.write(filePath, file.getBytes()); // 파일 저장
 
-            return filePath.toString(); // 파일경로
+            return filePath.toString().replace("\\","/"); // 파일경로
         }
         return null;
     }
@@ -82,7 +82,7 @@ public class UploadImageService { // 파일 저장 로직
             String savedFileName = UUID.randomUUID().toString() + "_" + originalFilename;
             Path filePath = Paths.get(uploadDir, savedFileName);
             Files.write(filePath, file.getBytes()); // 파일 저장
-            return filePath.toString();
+            return filePath.toString().replace("\\","/");
         }
         return imagePath;
     }
