@@ -13,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -40,19 +42,22 @@ public class BoardInfoController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<BoardDTO> create(@RequestBody BoardDTO boardDTO) {
-        BoardDTO created = boardInfoService.createBoard(boardDTO);
+    public ResponseEntity<BoardDTO> create(@RequestPart("boardDTO") BoardDTO boardDTO,
+                                           @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+        BoardDTO created = boardInfoService.createBoard(boardDTO, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BoardDTO> update(@PathVariable Integer id, @RequestBody BoardDTO boardDTO) {
-        BoardDTO updated = boardInfoService.updateBoard(id, boardDTO);
+    public ResponseEntity<BoardDTO> update(@PathVariable Integer id,
+                                           @RequestPart("boardDTO") BoardDTO boardDTO,
+                                           @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+        BoardDTO updated = boardInfoService.updateBoard(id, boardDTO, file);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) throws IOException {
         boardInfoService.deleteBoard(id);
         return ResponseEntity.noContent().build();
     }

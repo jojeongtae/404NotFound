@@ -8,7 +8,9 @@ import com.example.notfound_backend.data.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ public class BoardInfoService {
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
     private final UserInfoService userInfoService;
+    private final UploadImageService uploadImageService;
 
     public List<BoardDTO> findAll() {
         List<BoardInfoEntity> boardInfoEntityList = boardInfoDAO.findAllBoards();
@@ -83,13 +86,14 @@ public class BoardInfoService {
     }
 
     @Transactional
-    public BoardDTO createBoard(BoardDTO boardDTO) {
+    public BoardDTO createBoard(BoardDTO boardDTO, MultipartFile file) throws IOException {
         userInfoService.userStatusValidator(boardDTO.getAuthor());
+        String imgsrc = uploadImageService.uploadBoardImage(file); // 이미지파일 저장
 
         BoardInfoEntity entity = new BoardInfoEntity();
         entity.setTitle(boardDTO.getTitle());
         entity.setBody(boardDTO.getBody());
-        entity.setImgsrc(boardDTO.getImgsrc());
+        entity.setImgsrc(imgsrc);
 
         UserAuthEntity author = userAuthDAO.findByUsername(boardDTO.getAuthor());
         entity.setAuthor(author);
@@ -106,18 +110,18 @@ public class BoardInfoService {
     }
 
     @Transactional
-    public BoardDTO updateBoard(Integer id, BoardDTO boardDTO) {
+    public BoardDTO updateBoard(Integer id, BoardDTO boardDTO, MultipartFile file) throws IOException {
         userInfoService.userStatusValidator(boardDTO.getAuthor());
 
         BoardInfoEntity entity = boardInfoDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
 
+        String imgsrc = uploadImageService.updateBoardImage(file, entity.getImgsrc()); // 이미지파일 수정
+
         // 원하는 필드만 수정
         entity.setTitle(boardDTO.getTitle());
         entity.setBody(boardDTO.getBody());
-        entity.setImgsrc(boardDTO.getImgsrc());
-        entity.setRecommend(boardDTO.getRecommend());
-        entity.setCategory(boardDTO.getCategory());
+        entity.setImgsrc(imgsrc);
         entity.setStatus(boardDTO.getStatus() != null ? Status.valueOf(boardDTO.getStatus()) : entity.getStatus());
         entity.setUpdatedAt(Instant.now());
 
@@ -126,10 +130,11 @@ public class BoardInfoService {
     }
 
     @Transactional
-    public void deleteBoard(Integer id) {
+    public void deleteBoard(Integer id) throws IOException {
         BoardInfoEntity entity = boardInfoDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
         boardInfoDAO.delete(entity);
+        uploadImageService.deleteBoardImage(entity.getImgsrc()); // 이미지파일 삭제
     }
 
     public List<BoardDTO> findByTitle(String title){
