@@ -31,11 +31,18 @@ public interface BoardUsedRepository extends JpaRepository<BoardUsedEntity, Inte
 
     Optional<BoardUsedEntity> findById(Integer id);
 
-    @Query("SELECT b FROM BoardUsedEntity b WHERE b.title LIKE %:keyword%")
+    @Query("SELECT b FROM BoardUsedEntity b WHERE b.title LIKE %:keyword% AND b.status='VISIBLE'")
     List<BoardUsedEntity> findByTitle(@Param("keyword") String keyword);
 
-    @Query("SELECT b FROM BoardUsedEntity b WHERE b.author.username LIKE %:keyword%")
-    List<BoardUsedEntity> findByAuthor(@Param("keyword") String keyword);
+    @Query(value = """
+    SELECT b.*
+    FROM board_used b
+    JOIN user_auth ua ON b.author = ua.username
+    JOIN user_info ui ON ua.username = ui.username
+    WHERE ui.nickname LIKE %:nickname%
+      AND b.status = 'VISIBLE'
+    """, nativeQuery = true)
+    List<BoardUsedEntity> findByAuthor(@Param("nickname") String nickname);
 
 
     @Query(value = """
