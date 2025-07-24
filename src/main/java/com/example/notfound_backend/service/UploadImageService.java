@@ -1,13 +1,57 @@
-//package com.example.notfound_backend.service;
-//
-//import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.stereotype.Service;
-//
-//@Service
-//public class FileStorageService { // 파일 저장 로직
-//
-//    @Value("${file.upload-dir}")
-//    private String uploadDir;
-//
-//
-//}
+package com.example.notfound_backend.service;
+
+import com.example.notfound_backend.data.dao.UploadImageDAO;
+import com.example.notfound_backend.data.dto.UploadImageDTO;
+import com.example.notfound_backend.data.entity.UploadImageEntity;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.Instant;
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class UploadImageService { // 파일 저장 로직
+    private final UploadImageDAO uploadImageDAO;
+
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
+    @Transactional
+    public UploadImageDTO uploadImage(MultipartFile file) throws IOException {
+        String originalFilename = Paths.get(file.getOriginalFilename()).getFileName().toString();
+        Long fileSize = file.getSize();
+        String savedFileName = UUID.randomUUID().toString() + "_" + originalFilename;
+        Path filePath = Paths.get(uploadDir, savedFileName);
+
+        Files.createDirectories(filePath.getParent()); // 디렉토리 없으면 생성
+        Files.write(filePath, file.getBytes()); // 파일 저장
+
+        // DB에 경로 저장
+        UploadImageEntity imageEntity = UploadImageEntity.builder()
+                .originalName(originalFilename)
+                .savedName(savedFileName)
+                .filePath(filePath.toString())
+                .uploadedAt(Instant.now())
+                .fileSize(fileSize)
+                .build();
+        UploadImageEntity uploadImageEntity = uploadImageDAO.uploadImage(imageEntity);
+        return UploadImageDTO.builder()
+                .id(uploadImageEntity.getId())
+                .originalName(uploadImageEntity.getOriginalName())
+                .savedName(uploadImageEntity.getSavedName())
+                .filePath(uploadImageEntity.getFilePath())
+                .uploadedAt(uploadImageEntity.getUploadedAt())
+                .fileSize(uploadImageEntity.getFileSize())
+                .build();
+    }
+
+
+}
