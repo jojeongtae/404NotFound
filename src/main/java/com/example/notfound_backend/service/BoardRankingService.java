@@ -79,7 +79,8 @@ public class BoardRankingService {
 
         // 추천 수 내림차순 정렬 후 상위 5개
         return combined.stream()
-                .sorted(Comparator.comparing(BoardRankingDTO::getRecommend).reversed())
+                .sorted(Comparator.comparing(BoardRankingDTO::getRecommend,
+                        Comparator.nullsLast(Comparator.naturalOrder())).reversed())
                 .limit(5)
                 .toList();
     }

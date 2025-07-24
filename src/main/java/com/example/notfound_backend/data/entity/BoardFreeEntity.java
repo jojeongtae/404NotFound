@@ -3,8 +3,7 @@ package com.example.notfound_backend.data.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
@@ -13,6 +12,10 @@ import java.time.Instant;
 @Setter
 @Entity
 @Table(name = "board_free")
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class BoardFreeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
