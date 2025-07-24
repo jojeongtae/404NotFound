@@ -18,11 +18,17 @@ import java.io.IOException;
 public class UploadImageController {
     private final UploadImageService uploadImageService;
 
+    // 이미지 업로드
     @PostMapping("/upload")
     public ResponseEntity<UploadImageDTO> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
-        return ResponseEntity.ok().body(uploadImageService.uploadImage(file));
+        UploadImageDTO result = uploadImageService.uploadImage(file);
+        return ResponseEntity.ok().body(result);
     }
 
-    // 수정, 삭제
+    // 수정
+
+    // 삭제
+
+
 
 }

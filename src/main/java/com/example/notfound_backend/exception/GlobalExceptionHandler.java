@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.io.IOException;
 import java.lang.IllegalArgumentException;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,6 +51,19 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+    // 입출력 오류
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<String> handleIOException(IOException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 저장 중 오류가 발생했습니다." + ex.getMessage());
+    }
+
+    // 일반 예외
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGenericException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("요청 처리 중 예기치 못한 오류가 발생했습니다. " + ex.getMessage());
+    }
+
 
     // 사용자정의 예외
     // ID중복
