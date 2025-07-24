@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -37,20 +39,23 @@ public class BoardNoticeController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<BoardDTO> create(@RequestBody BoardDTO boardDTO) {
-        BoardDTO created = boardNoticeService.createBoard(boardDTO);
+    public ResponseEntity<BoardDTO> create(@RequestPart("boardDTO") BoardDTO boardDTO,
+                                           @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+        BoardDTO created = boardNoticeService.createBoard(boardDTO, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BoardDTO> update(@PathVariable Integer id, @RequestBody BoardDTO boardDTO) {
-        BoardDTO updated = boardNoticeService.updateBoard(id, boardDTO);
+    public ResponseEntity<BoardDTO> update(@PathVariable Integer id,
+                                           @RequestPart("boardDTO") BoardDTO boardDTO,
+                                           @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+        BoardDTO updated = boardNoticeService.updateBoard(id, boardDTO, file);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id,
-                                       @AuthenticationPrincipal UserDetails userDetails) {
+                                       @AuthenticationPrincipal UserDetails userDetails) throws IOException {
         String username = userDetails.getUsername(); // 현재 로그인한 사용자 ID
         boardNoticeService.deleteBoard(id, username);
         return ResponseEntity.noContent().build();

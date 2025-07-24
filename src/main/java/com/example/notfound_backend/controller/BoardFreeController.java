@@ -39,11 +39,6 @@ public class BoardFreeController {
         return ResponseEntity.ok(dto);
     }
 
-//    @PostMapping("/new")
-//    public ResponseEntity<BoardDTO> create(@RequestBody BoardDTO boardDTO) {
-//        BoardDTO created = boardFreeService.createBoard(boardDTO);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(created);
-//    }
     @PostMapping("/new")
     public ResponseEntity<BoardDTO> create(@RequestPart("boardDTO") BoardDTO boardDTO,
                                            @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
@@ -51,14 +46,9 @@ public class BoardFreeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<BoardDTO> update(@PathVariable Integer id, @RequestBody BoardDTO boardDTO) {
-//        BoardDTO updated = boardFreeService.updateBoard(id, boardDTO);
-//        return ResponseEntity.ok(updated);
-//    }
     @PutMapping("/{id}")
     public ResponseEntity<BoardDTO> update(@PathVariable Integer id,
-                                           @RequestPart BoardDTO boardDTO,
+                                           @RequestPart("boardDTO") BoardDTO boardDTO,
                                            @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         BoardDTO updated = boardFreeService.updateBoard(id, boardDTO, file);
         return ResponseEntity.ok(updated);

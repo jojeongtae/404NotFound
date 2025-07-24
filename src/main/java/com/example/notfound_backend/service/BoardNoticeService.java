@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ public class BoardNoticeService {
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
     private final UserInfoService userInfoService;
+    private final UploadImageService uploadImageService;
 
     public List<BoardDTO> findAll() {
         List<BoardNoticeEntity> boardNoticeEntityList = boardNoticeDAO.findAllBoards();
@@ -83,16 +86,17 @@ public class BoardNoticeService {
     }
 
     @Transactional
-    public BoardDTO createBoard(BoardDTO boardDTO) {
+    public BoardDTO createBoard(BoardDTO boardDTO, MultipartFile file) throws IOException {
         UserAuthEntity author = userAuthDAO.findByUsername(boardDTO.getAuthor());
         if (!"ROLE_ADMIN".equals(author.getRole())) {
             throw new AccessDeniedException("관리자만 글을 작성할 수 있습니다.");
         }
+        String imgsrc = uploadImageService.uploadBoardImage(file); // 이미지파일 저장
 
         BoardNoticeEntity entity = new BoardNoticeEntity();
         entity.setTitle(boardDTO.getTitle());
         entity.setBody(boardDTO.getBody());
-        entity.setImgsrc(boardDTO.getImgsrc());
+        entity.setImgsrc(imgsrc);
         entity.setAuthor(author);
         entity.setRecommend(0);
         entity.setViews(0);
@@ -107,7 +111,7 @@ public class BoardNoticeService {
     }
 
     @Transactional
-    public BoardDTO updateBoard(Integer id, BoardDTO boardDTO) {
+    public BoardDTO updateBoard(Integer id, BoardDTO boardDTO, MultipartFile file) throws IOException {
 
         BoardNoticeEntity entity = boardNoticeDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
@@ -116,13 +120,11 @@ public class BoardNoticeService {
         if (!"ROLE_ADMIN".equals(author.getRole())) {
             throw new AccessDeniedException("관리자만 글을 작성할 수 있습니다.");
         }
-
+        String imgsrc = uploadImageService.updateBoardImage(file, entity.getImgsrc()); // 이미지파일 수정
         // 원하는 필드만 수정
         entity.setTitle(boardDTO.getTitle());
         entity.setBody(boardDTO.getBody());
-        entity.setImgsrc(boardDTO.getImgsrc());
-        entity.setRecommend(boardDTO.getRecommend());
-        entity.setCategory(boardDTO.getCategory());
+        entity.setImgsrc(imgsrc);
         entity.setStatus(boardDTO.getStatus() != null ? Status.valueOf(boardDTO.getStatus()) : entity.getStatus());
         entity.setUpdatedAt(Instant.now());
 
@@ -132,7 +134,7 @@ public class BoardNoticeService {
 
 
     @Transactional
-    public void deleteBoard(Integer id, String username) {
+    public void deleteBoard(Integer id, String username) throws IOException {
 
         BoardNoticeEntity entity = boardNoticeDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
@@ -142,6 +144,7 @@ public class BoardNoticeService {
             throw new AccessDeniedException("관리자만 삭제할 수 있습니다.");
         }
         boardNoticeDAO.delete(entity);
+        uploadImageService.deleteBoardImage(entity.getImgsrc()); // 이미지파일 삭제
     }
 
     public List<BoardDTO> findByTitle(String title) {

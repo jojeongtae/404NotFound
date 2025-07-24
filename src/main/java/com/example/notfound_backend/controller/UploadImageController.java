@@ -25,9 +25,6 @@ public class UploadImageController {
         return ResponseEntity.ok().body(result);
     }
 
-    // 수정
-
-    // 삭제
 
 
 

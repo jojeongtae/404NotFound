@@ -127,8 +127,6 @@ public class BoardFreeService {
         entity.setTitle(boardDTO.getTitle());
         entity.setBody(boardDTO.getBody());
         entity.setImgsrc(imgsrc);
-//        entity.setRecommend(boardDTO.getRecommend());
-//        entity.setCategory(boardDTO.getCategory());
         entity.setStatus(boardDTO.getStatus() != null ? Status.valueOf(boardDTO.getStatus()) : entity.getStatus());
         entity.setUpdatedAt(Instant.now());
 
@@ -140,8 +138,8 @@ public class BoardFreeService {
     public void deleteBoard(Integer id) throws IOException {
         BoardFreeEntity entity = boardFreeDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Board not found"));
-        uploadImageService.deleteBoardImage(entity.getImgsrc()); // 이미지파일 삭제
         boardFreeDAO.delete(entity);
+        uploadImageService.deleteBoardImage(entity.getImgsrc()); // 이미지파일 삭제
     }
 
     public List<BoardDTO> findByTitle(String title) {
