@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `notfound` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `notfound`;
 -- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
 --
 -- Host: localhost    Database: notfound
@@ -814,6 +816,34 @@ INSERT INTO `survey_answers` VALUES (1,'aaa','1','2025-07-18 09:06:21',1),(2,'bb
 UNLOCK TABLES;
 
 --
+-- Table structure for table `uploaded_image`
+--
+
+DROP TABLE IF EXISTS `uploaded_image`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `uploaded_image` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `original_name` varchar(255) NOT NULL,
+  `saved_name` varchar(255) NOT NULL,
+  `file_path` varchar(500) NOT NULL,
+  `uploaded_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `file_size` bigint DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `uploaded_image`
+--
+
+LOCK TABLES `uploaded_image` WRITE;
+/*!40000 ALTER TABLE `uploaded_image` DISABLE KEYS */;
+INSERT INTO `uploaded_image` VALUES (1,'image01.jpg','abd1325b-45da-4953-9b22-46f5a037a343.image01.jpg','uploads\\abd1325b-45da-4953-9b22-46f5a037a343.image01.jpg',NULL,NULL),(2,'image01.jpg','12cddfc2-08d6-43a2-8069-662bff00a04c.image01.jpg','uploads\\12cddfc2-08d6-43a2-8069-662bff00a04c.image01.jpg',NULL,NULL),(3,'image02.jpg','c4490e2b-06dd-49c4-93c2-218388cf1f8b.image02.jpg','uploads\\c4490e2b-06dd-49c4-93c2-218388cf1f8b.image02.jpg',NULL,NULL),(4,'image03.jpg','6e4629ec-2539-4d31-9cdd-a759514b316b.image03.jpg','uploads\\6e4629ec-2539-4d31-9cdd-a759514b316b.image03.jpg','2025-07-23 08:26:26',NULL),(5,'image04.jpg','6693ea2a-896d-478c-921e-61dba6e016e2.image04.jpg','uploads\\6693ea2a-896d-478c-921e-61dba6e016e2.image04.jpg','2025-07-23 08:52:08',NULL),(6,'image04.jpg','2850967e-5b6c-45b8-b20b-25c3597a36f1.image04.jpg','uploads\\2850967e-5b6c-45b8-b20b-25c3597a36f1.image04.jpg','2025-07-23 08:53:20',7387),(7,'image04.jpg','cdba222c-e0f4-458c-97d7-e85e56d276bb_image04.jpg','uploads\\cdba222c-e0f4-458c-97d7-e85e56d276bb_image04.jpg','2025-07-23 09:05:51',7387),(8,'image04.jpg','8b1ea622-4a3d-4573-a81f-f2263c0b01df_image04.jpg','uploads\\8b1ea622-4a3d-4573-a81f-f2263c0b01df_image04.jpg','2025-07-23 09:07:20',7387),(9,'image04.jpg','272672a9-f498-478c-8008-38debdbee587_image04.jpg','uploads\\272672a9-f498-478c-8008-38debdbee587_image04.jpg','2025-07-23 09:25:12',7387);
+/*!40000 ALTER TABLE `uploaded_image` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user_auth`
 --
 
@@ -941,4 +971,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-23 13:06:41
+-- Dump completed on 2025-07-23 18:34:01
