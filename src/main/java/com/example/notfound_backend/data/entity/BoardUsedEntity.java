@@ -34,6 +34,10 @@ public class BoardUsedEntity {
     private String imgsrc;
 
     @NotNull
+    @Column(name = "price", nullable = false)
+    private Integer price;
+
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "author", nullable = false)
     private UserAuthEntity author;

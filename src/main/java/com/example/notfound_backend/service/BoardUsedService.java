@@ -3,7 +3,7 @@ package com.example.notfound_backend.service;
 import com.example.notfound_backend.data.dao.BoardUsedDAO;
 import com.example.notfound_backend.data.dao.UserAuthDAO;
 import com.example.notfound_backend.data.dao.UserInfoDAO;
-import com.example.notfound_backend.data.dto.BoardDTO;
+import com.example.notfound_backend.data.dto.BoardUsedDTO;
 import com.example.notfound_backend.data.entity.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,16 +26,19 @@ public class BoardUsedService {
     private final UserInfoService userInfoService;
     private final UploadImageService uploadImageService;
 
-    public List<BoardDTO> findAll() {
+    public List<BoardUsedDTO> findAll() {
         List<BoardUsedEntity> boardUsedEntityList = boardUsedDAO.findAllBoards();
-        List<BoardDTO> boardDTOList =new ArrayList<>();
+        List<BoardUsedDTO> boardDTOList =new ArrayList<>();
         for(BoardUsedEntity boardUsedEntity : boardUsedEntityList) {
             if (boardUsedEntity.getStatus() == Status.VISIBLE) { // VISIBLE만 노출
-                BoardDTO boardUsedDTO = new BoardDTO();
+                BoardUsedDTO
+                        boardUsedDTO = new BoardUsedDTO
+                        ();
                 boardUsedDTO.setId(boardUsedEntity.getId());
                 boardUsedDTO.setTitle(boardUsedEntity.getTitle());
                 boardUsedDTO.setBody(boardUsedEntity.getBody());
                 boardUsedDTO.setImgsrc(boardUsedEntity.getImgsrc());
+                boardUsedDTO.setPrice(boardUsedEntity.getPrice());
 
                 if (boardUsedEntity.getAuthor() != null) {
                     boardUsedDTO.setAuthor(boardUsedEntity.getAuthor().getUsername());
@@ -58,21 +61,25 @@ public class BoardUsedService {
     }
 
     @Transactional
-    public BoardDTO viewBoard(Integer id) {
+    public BoardUsedDTO
+    viewBoard(Integer id) {
         boardUsedDAO.incrementViews(id);
         BoardUsedEntity entity= boardUsedDAO.findById(id)
                 .orElseThrow(()->new RuntimeException("Board not found"));
         return toDTO(entity);
     }
 
-    private BoardDTO toDTO(BoardUsedEntity entity) {
+    private BoardUsedDTO
+    toDTO(BoardUsedEntity entity) {
         UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(entity.getAuthor().getUsername());
         String userNickname = userInfoEntity.getNickname();
-        return new BoardDTO(
+        return new BoardUsedDTO
+                (
                 entity.getId(),
                 entity.getTitle(),
                 entity.getBody(),
                 entity.getImgsrc(),
+                entity.getPrice(),
                 entity.getAuthor().getUsername(),
                 userNickname,
                 userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername()),
@@ -86,7 +93,9 @@ public class BoardUsedService {
     }
 
     @Transactional
-    public BoardDTO createBoard(BoardDTO boardDTO, MultipartFile file) throws IOException {
+    public BoardUsedDTO
+    createBoard(BoardUsedDTO
+                        boardDTO, MultipartFile file) throws IOException {
         userInfoService.userStatusValidator(boardDTO.getAuthor());
         String imgsrc = uploadImageService.uploadBoardImage(file); // 이미지파일 저장
 
@@ -94,6 +103,7 @@ public class BoardUsedService {
         entity.setTitle(boardDTO.getTitle());
         entity.setBody(boardDTO.getBody());
         entity.setImgsrc(imgsrc);
+        entity.setPrice(boardDTO.getPrice());
 
         UserAuthEntity author = userAuthDAO.findByUsername(boardDTO.getAuthor());
         entity.setAuthor(author);
@@ -110,7 +120,9 @@ public class BoardUsedService {
     }
 
     @Transactional
-    public BoardDTO updateBoard(Integer id, BoardDTO boardDTO, MultipartFile file) throws IOException {
+    public BoardUsedDTO
+    updateBoard(Integer id, BoardUsedDTO
+            boardDTO, MultipartFile file) throws IOException {
         userInfoService.userStatusValidator(boardDTO.getAuthor());
 
         BoardUsedEntity entity = boardUsedDAO.findById(id)
@@ -121,6 +133,7 @@ public class BoardUsedService {
         entity.setTitle(boardDTO.getTitle());
         entity.setBody(boardDTO.getBody());
         entity.setImgsrc(imgsrc);
+        entity.setPrice(boardDTO.getPrice());
         entity.setStatus(boardDTO.getStatus() != null ? Status.valueOf(boardDTO.getStatus()) : entity.getStatus());
         entity.setUpdatedAt(Instant.now());
 
@@ -136,14 +149,16 @@ public class BoardUsedService {
         uploadImageService.deleteBoardImage(entity.getImgsrc()); // 이미지파일 삭제
     }
 
-    public List<BoardDTO> findByTitle(String title) {
+    public List<BoardUsedDTO
+            > findByTitle(String title) {
         List<BoardUsedEntity> boardUsedEntities=boardUsedDAO.findByTitle(title);
         return boardUsedEntities.stream()
                 .map(this::toDTO)  // toDTO 적용
                 .collect(Collectors.toList());
     }
 
-    public List<BoardDTO> findByAuthor(String author) {
+    public List<BoardUsedDTO
+            > findByAuthor(String author) {
         List<BoardUsedEntity> boardUsedEntities=boardUsedDAO.findByAuthor(author);
         return boardUsedEntities.stream()
                 .map(this::toDTO)
@@ -151,14 +166,16 @@ public class BoardUsedService {
     }
 
 
-//    public BoardDTO recommendBoard(Integer id) {
+//    public BoardUsedDTO
+//    recommendBoard(Integer id) {
 //        boardUsedDAO.incrementRecommend(id);
 //        BoardUsedEntity entity= boardUsedDAO.findById(id)
 //                .orElseThrow(() -> new RuntimeException("Board not found"));
 //        return toDTO(entity);
 //    }
 //
-//    public BoardDTO cancelRecommendBoard(Integer id) {
+//    public BoardUsedDTO
+//    cancelRecommendBoard(Integer id) {
 //        boardUsedDAO.decrementRecommend(id);
 //        BoardUsedEntity entity= boardUsedDAO.findById(id)
 //                .orElseThrow(() -> new RuntimeException("Board not found"));

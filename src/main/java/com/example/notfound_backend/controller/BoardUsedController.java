@@ -3,8 +3,8 @@ package com.example.notfound_backend.controller;
 
 import com.example.notfound_backend.data.dao.BoardUsedDAO;
 import com.example.notfound_backend.data.dto.BoardCommentDTO;
-import com.example.notfound_backend.data.dto.BoardDTO;
 import com.example.notfound_backend.data.dto.BoardRankingDTO;
+import com.example.notfound_backend.data.dto.BoardUsedDTO;
 import com.example.notfound_backend.data.dto.UserAuthDTO;
 import com.example.notfound_backend.data.entity.BoardUsedEntity;
 import com.example.notfound_backend.data.entity.UserAuthEntity;
@@ -30,30 +30,40 @@ public class BoardUsedController {
     private final BoardUsedRecommendService boardUsedRecommendService;
 
     @GetMapping("/list")
-    public List<BoardDTO> getAllBoards() {
-        List<BoardDTO> boardDtoList = boardUsedService.findAll();
+    public List<BoardUsedDTO
+            > getAllBoards() {
+        List<BoardUsedDTO
+                > boardDtoList = boardUsedService.findAll();
         System.out.println(boardDtoList.size());
         return boardDtoList;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BoardDTO> getBoard(@PathVariable Integer id){
-        BoardDTO dto= boardUsedService.viewBoard(id);
+    public ResponseEntity<BoardUsedDTO
+            > getBoard(@PathVariable Integer id){
+        BoardUsedDTO
+                dto= boardUsedService.viewBoard(id);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping("/new")
-    public ResponseEntity<BoardDTO> create(@RequestPart("boardDTO") BoardDTO boardDTO,
+    public ResponseEntity<BoardUsedDTO
+            > create(@RequestPart("boardDTO") BoardUsedDTO
+                                            boardDTO,
                                            @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
-        BoardDTO created = boardUsedService.createBoard(boardDTO,file);
+        BoardUsedDTO
+                created = boardUsedService.createBoard(boardDTO,file);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BoardDTO> update(@PathVariable Integer id,
-                                           @RequestPart("boardDTO") BoardDTO boardDTO,
+    public ResponseEntity<BoardUsedDTO
+            > update(@PathVariable Integer id,
+                                           @RequestPart("boardDTO") BoardUsedDTO
+                                                   boardDTO,
                                            @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
-        BoardDTO updated = boardUsedService.updateBoard(id, boardDTO, file);
+        BoardUsedDTO
+                updated = boardUsedService.updateBoard(id, boardDTO, file);
         return ResponseEntity.ok(updated);
     }
 
@@ -64,7 +74,8 @@ public class BoardUsedController {
     }
 
 //    @PatchMapping("/{id}/recommend")
-//    public ResponseEntity<BoardDTO> recommend(@PathVariable Integer id) {
+//    public ResponseEntity<BoardUsedDTO
+//    > recommend(@PathVariable Integer id) {
 //        BoardDTO updated= boardUsedService.recommendBoard(id);
 //        return ResponseEntity.ok(updated);
 //    }
@@ -112,14 +123,14 @@ public class BoardUsedController {
     }
 
     @GetMapping("/search/title")
-    public ResponseEntity<List<BoardDTO>> searchByTitle(@RequestParam String title) {
-        List<BoardDTO> boardDTOList = boardUsedService.findByTitle(title);
+    public ResponseEntity<List<BoardUsedDTO>> searchByTitle(@RequestParam String title) {
+        List<BoardUsedDTO> boardDTOList = boardUsedService.findByTitle(title);
         return ResponseEntity.ok(boardDTOList);
     }
 
     @GetMapping("/search/author")
-    public ResponseEntity<List<BoardDTO>> searchByAuthor(@RequestParam String author) {
-        List<BoardDTO> boardDTOList = boardUsedService.findByAuthor(author);
+    public ResponseEntity<List<BoardUsedDTO>> searchByAuthor(@RequestParam String author) {
+        List<BoardUsedDTO> boardDTOList = boardUsedService.findByAuthor(author);
         return ResponseEntity.ok(boardDTOList);
     }
 }
