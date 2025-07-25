@@ -3,8 +3,8 @@ import {store} from "../store/store";
 import { setToken } from "../features/auth/tokenSlice";
 
 const apiClient = axios.create({
-    // baseURL: "/api",
-    baseURL:"http://localhost:8080/api",
+    baseURL: "/api",
+    // baseURL:"http://localhost:8080/api",
     headers:{
         "Content-Type":"application/json"
     },
@@ -38,7 +38,7 @@ apiClient.interceptors.response.use(
     if(error.response?.status === 456 && !originalRequest._retry){
         originalRequest._retry = true;
         try{
-            const res = await axios.post("http://localhost:8080/api/reissue",null,{
+            const res = await axios.post("/api/reissue",null,{
                 withCredentials: true
             });
             const newAccessToken = res.headers["authorization"];
