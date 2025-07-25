@@ -95,6 +95,7 @@ const LoginForm = ({ onClose }) => {
   }
   const handleNaverLogin = () => {
     window.location.href = "/api/naver";
+    
   }
   return (
     <>
