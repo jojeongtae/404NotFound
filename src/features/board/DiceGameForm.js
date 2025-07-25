@@ -14,7 +14,7 @@ const DiceGame = ({ username, roomId }) => {
     // SockJS를 사용하여 WebSocket 연결을 생성합니다.
     // 백엔드의 WebSocketConfig에서 설정한 엔드포인트("/ws-game")와 일치해야 합니다.
     const client = new Client({
-      webSocketFactory: () => new SockJS("http://localhost:8080/ws-game"),
+      webSocketFactory: () => new SockJS(`${window.location.origin}/ws-game`),
       
       // Stomp 클라이언트가 성공적으로 연결되었을 때 실행되는 콜백 함수
       onConnect: () => {
