@@ -60,6 +60,7 @@ public class NaverLoginController {
 
         Boolean isApp=false;
 
+
         if(app!=null && !app.isEmpty()){
             isApp = app.equalsIgnoreCase("AndroidApp");
         }
