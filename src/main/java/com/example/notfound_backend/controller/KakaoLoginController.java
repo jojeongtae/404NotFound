@@ -131,7 +131,7 @@ public class KakaoLoginController {
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.SET_COOKIE, cookie.toString());
-        responseHeaders.set(HttpHeaders.LOCATION, "/test");
+        responseHeaders.set(HttpHeaders.LOCATION, "/");
 
         return ResponseEntity.status(HttpStatus.FOUND).headers(responseHeaders).build();
     }

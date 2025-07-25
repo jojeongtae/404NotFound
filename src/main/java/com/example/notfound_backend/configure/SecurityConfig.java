@@ -60,6 +60,7 @@ public class SecurityConfig {
                     corsConfiguration.addAllowedHeader("*"); //클라이언트가 요청을 보낼때 보낼수 있는 헤더
                     corsConfiguration.setExposedHeaders(List.of("Authorization"));
                     corsConfiguration.addAllowedOrigin("http://localhost:3000");
+                    corsConfiguration.addAllowedOrigin("http://404notfoundpage.duckdns.org");
                     corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")); // OPTIONS와 PATCH 추가
                     return corsConfiguration;
                 }))

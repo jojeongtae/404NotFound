@@ -133,7 +133,7 @@ public class NaverLoginController {
                 .sameSite("Lax")
                 .build();
 
-        String redirectUrl = "/test"; // 리다이렉트 대상 URL
+        String redirectUrl = "/"; // 리다이렉트 대상 URL
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.SET_COOKIE, cookie.toString());
