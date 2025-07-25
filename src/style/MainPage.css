@@ -1,0 +1,192 @@
+/* 
+  MainPage.css
+  Theme: "404 Not Found" - Bright Background with Glitch Attempt
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
+
+:root {
+  --bg-color: #FFFFFF; /* 흰색 배경 */
+  --text-color: #333; /* 어두운 텍스트 색상 */
+  --glitch-color-1: #f0f;
+  --glitch-color-2: #0ff;
+  --accent-color: #007bff; /* 버튼/링크 색상 */
+  --border-color: #ddd;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Source Code Pro', monospace;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  padding: 2rem;
+  text-align: center;
+}
+
+main {
+  margin-top: 40px; /* 본문 상단에 40px 간격 추가 */
+  width: 100%; /* 필요에 따라 너비 설정 */
+  padding: 20px; /* 내부 여백 */
+  box-sizing: border-box; /* 패딩이 너비에 포함되도록 */
+}
+
+header {
+  position: relative; /* 자식 요소의 절대 위치 지정을 위해 필요 */
+  width: 100%;
+  padding: 0 20px 20px 20px; /* 상단 패딩 0으로 설정 */
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* 네비게이션을 오른쪽 끝으로 보냄 */
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 20px; /* 헤더 아래 간격 추가 */
+}
+
+.header-title-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%); /* 정확히 가운데 정렬 */
+  z-index: 1; /* 다른 요소 위에 오도록 설정 (선택 사항) */
+}
+
+header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--text-color); /* 기본 텍스트 색상 */
+  margin: 0;
+  /* flex-grow와 text-align은 이제 필요 없습니다. */
+}
+
+.glitch-title {
+  font-size: 6rem;
+  font-weight: 700;
+  position: relative;
+  animation: glitch-skew 1s infinite linear alternate-reverse;
+  user-select: none;
+  color: var(--text-color); /* 기본 텍스트 색상 */
+}
+
+.glitch-title::before,
+.glitch-title::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-color); /* 배경색과 동일하게 설정 */
+  overflow: hidden;
+}
+
+.glitch-title::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--glitch-color-1);
+  animation: glitch-anim-1 2s infinite linear alternate-reverse;
+}
+
+.glitch-title::after {
+  left: -2px;
+  text-shadow: -2px 0 var(--glitch-color-2);
+  animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+.nav-links {
+  display: flex;
+  gap: 15px;
+  /* margin-left: auto는 이제 필요 없습니다. */
+}
+
+.nav-link {
+  background-color: var(--accent-color);
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.nav-link:hover {
+  background-color: #0056b3;
+}
+
+.page-message {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+}
+
+.sub-message {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+footer {
+  width: 100%;
+  padding: 20px;
+  border-top: 1px solid var(--border-color);
+  text-align: center;
+  color: #888;
+  font-size: 0.9rem;
+  background-color: #fff;
+}
+
+/* Keyframe Animations */
+@keyframes glitch-anim-1 {
+  0% { clip-path: inset(15% 0 80% 0); }
+  20% { clip-path: inset(95% 0 2% 0); }
+  40% { clip-path: inset(45% 0 45% 0); }
+  60% { clip-path: inset(10% 0 88% 0); }
+  80% { clip-path: inset(90% 0 5% 0); }
+  100% { clip-path: inset(60% 0 35% 0); }
+}
+
+@keyframes glitch-anim-2 {
+  0% { clip-path: inset(75% 0 10% 0); }
+  20% { clip-path: inset(5% 0 92% 0); }
+  40% { clip-path: inset(80% 0 5% 0); }
+  60% { clip-path: inset(35% 0 55% 0); }
+  80% { clip-path: inset(20% 0 75% 0); }
+  100% { clip-path: inset(90% 0 3% 0); }
+}
+
+@keyframes glitch-skew {
+  0% { transform: skewX(0deg); }
+  10% { transform: skewX(2deg); }
+  15% { transform: skewX(-5deg); }
+  20% { transform: skewX(0deg); }
+  60% { transform: skewX(8deg); }
+  65% { transform: skewX(-2deg); }
+  70% { transform: skewX(0deg); }
+  100% { transform: skewX(0deg); }
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+.user-grade {
+    margin-left: 10px;
+    font-weight: bold;
+    color: #007bff; /* 파란색 계열 */
+    white-space: nowrap; /* 등급이 한 줄에 표시되도록 */
+}

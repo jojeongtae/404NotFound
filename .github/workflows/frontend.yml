@@ -1,0 +1,50 @@
+name: Frontend build and deploy
+
+on:
+  push:
+    branches:
+      - frontend
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Frontend Dockerfile build
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/notfoundfrontend .
+      - name: Push Frontend Docker image
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/notfoundfrontend
+  
+
+  deploy:
+    needs: build_and_push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker pull and run
+        uses: appleboy/ssh-action@master
+        with:
+          username: ubuntu
+          host: ${{ secrets.LIVE_SERVER_IP }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            if [ "$(sudo docker ps -a -q -f name=notfoundfrontend)" ]; then
+              sudo docker rm -f notfoundfrontend
+            fi
+            if [ "$(sudo docker images -q ${{ secrets.DOCKERHUB_USERNAME }}/notfoundfrontend)" ]; then
+              sudo docker rmi -f ${{ secrets.DOCKERHUB_USERNAME }}/notfoundfrontend
+            fi          
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/notfoundfrontend         
+            sudo docker run -d -p 80:80 --name notfoundfrontend ${{ secrets.DOCKERHUB_USERNAME }}/notfoundfrontend
+            
+      
