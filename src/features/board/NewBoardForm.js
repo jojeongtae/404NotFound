@@ -8,6 +8,7 @@ import { setUser } from '../../features/auth/userSlice'; // setUser 임포트 (�
 const NewBoardForm = () => {
     const [title, setTitle] = useState("");
     const [textBody, setTextBody] = useState("");
+    const [price, setPrice] = useState("");
     const [quizQuestion, setQuizQuestion] = useState("");
     const [quizAnswer, setQuizAnswer] = useState("");
     const [surveyQuestion, setSurveyQuestion] = useState('');
@@ -69,6 +70,10 @@ const NewBoardForm = () => {
                 boardFormData.append('question', oxVotingQuestion);
                 boardFormData.append('answer', oxVotingCorrectAnswer);
                 boardFormData.append('category', boardId);
+            } else if (boardId === 'used') {
+                boardDTO.price = Number(price);
+
+
             }
             if (selectedImage) {
                 boardFormData.append("file", selectedImage);
@@ -77,6 +82,7 @@ const NewBoardForm = () => {
                 "boardDTO",
                 new Blob([JSON.stringify(boardDTO)], { type: "application/json" })
             );
+            console.log(boardFormData)
             console.log("게시글 데이터 전송 시작...");
             const res = await apiClient.post(`/${boardId}/new`, boardFormData, {
                 headers: {
@@ -178,10 +184,11 @@ const NewBoardForm = () => {
                             </label>
                         </div>
                     </>
-                ) : (
+                ) : boardId === 'used' ? (
                     <>
                         <input type='text' placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}></input> <br />
                         <textarea placeholder='내용' value={textBody} onChange={(e) => setTextBody(e.target.value)}></textarea><br></br>
+                      <input type='text' placeholder='가격' value={price} onChange={(e) => setPrice(e.target.value)} /><br />
                         <input
                             type='file'
                             accept="image/*"
@@ -194,6 +201,23 @@ const NewBoardForm = () => {
                         )}
                     </>
                 )
+
+                    : (
+                        <>
+                            <input type='text' placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}></input> <br />
+                            <textarea placeholder='내용' value={textBody} onChange={(e) => setTextBody(e.target.value)}></textarea><br></br>
+                            <input
+                                type='file'
+                                accept="image/*"
+                                onChange={handleImageChange}
+                            /><br />
+                            {imagePreviewUrl && (
+                                <div>
+                                    <img src={imagePreviewUrl} alt="Image Preview" style={{ maxWidth: '200px', maxHeight: '200px', marginTop: '10px' }} />
+                                </div>
+                            )}
+                        </>
+                    )
                 }
                 <input type="submit" value="전송" />
             </form>
