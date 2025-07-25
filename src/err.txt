@@ -1,1 +1,12 @@
-"/upload/uploads\5fd583de-76f4-4dfd-8c3d-67241bc8f18c_favicon-32x32.png"
+Cannot access 'loadPostAndComments' before initialization
+ReferenceError: Cannot access 'loadPostAndComments' before initialization
+    at PostDetailPage (http://localhost:3000/static/js/bundle.js:59635:34)
+    at react-stack-bottom-frame (http://localhost:3000/static/js/bundle.js:25972:18)
+    at renderWithHooks (http://localhost:3000/static/js/bundle.js:16182:20)
+    at updateFunctionComponent (http://localhost:3000/static/js/bundle.js:17875:17)
+    at beginWork (http://localhost:3000/static/js/bundle.js:18461:16)
+    at runWithFiberInDEV (http://localhost:3000/static/js/bundle.js:13953:68)
+    at performUnitOfWork (http://localhost:3000/static/js/bundle.js:20534:93)
+    at workLoopSync (http://localhost:3000/static/js/bundle.js:20427:38)
+    at renderRootSync (http://localhost:3000/static/js/bundle.js:20411:7)
+    at performWorkOnRoot (http://localhost:3000/static/js/bundle.js:20175:42)

@@ -2,14 +2,17 @@ import axios from "axios";
 import {store} from "../store/store";
 import { setToken } from "../features/auth/tokenSlice";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const apiClient = axios.create({
-    baseURL: "/api",
+    baseURL: `${API_BASE_URL}/api`,
     // baseURL:"http://localhost:8080/api",
     headers:{
         "Content-Type":"application/json"
     },
     withCredentials:true
 });
+console.log("✅ API_BASE_URL:", API_BASE_URL); // 값 확인
 
 apiClient.interceptors.request.use(
     (config) =>{
@@ -38,7 +41,7 @@ apiClient.interceptors.response.use(
     if(error.response?.status === 456 && !originalRequest._retry){
         originalRequest._retry = true;
         try{
-            const res = await axios.post("/api/reissue",null,{
+            const res = await axios.post("/reissue",null,{
                 withCredentials: true
             });
             const newAccessToken = res.headers["authorization"];

@@ -10,6 +10,8 @@ import MailboxForm from '../features/mailbox/MailboxForm'; // MailboxForm 임포
 import '../style/MainPage.css'; // 테마 CSS 파일 임포트
 import { useDispatch, useSelector } from 'react-redux';
 import { getFullGradeDescription } from '../features/common/GradeDescriptions';
+import apiClient from '../api/apiClient';
+import { setUser } from '../features/auth/userSlice';
 
 // const gradeDescriptions = {
 //     "👑 500": "500 Internal Server Error (운영진)",
@@ -30,7 +32,7 @@ const MainLayout = () => {
   const [modalType, setModalType] = useState(null);
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
-
+  // const [currentUser,setCurrentUser] = useState(user);
   const openModal = (type) => {
     setModalType(type);
     setShowModal(true);
@@ -40,6 +42,21 @@ const MainLayout = () => {
     setShowModal(false);
     setModalType(null);
   };
+
+  useEffect(() => {
+    // 로그인 상태이고, 사용자 정보가 Redux 스토어에 없거나 업데이트가 필요한 경우
+    if (isLoggedIn && user.username) { // user.username이 있을 때만 API 호출
+      const fetchUserInfo = async () => { // async 함수로 변경
+        try {
+          const res = await apiClient.get(`/user/user-info?username=${user.username}`); // await 추가
+          dispatch(setUser(res.data)); // Redux 스토어 업데이트
+        } catch (error) {
+          console.error("Failed to fetch user info:", error); // console.log 대신 console.error 사용
+        }
+      };
+      fetchUserInfo();
+    }
+  }, [isLoggedIn, user.username, dispatch]); // 의존성 배열에 user.username 추가
 
   return (
     <div className="main-container">
