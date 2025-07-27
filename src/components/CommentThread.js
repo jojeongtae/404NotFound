@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { submitComment } from '../features/board/boardService';
 import { useParams } from 'react-router-dom';
+import { getFullGradeDescription } from '../features/common/GradeDescriptions';
 
 const Comment = ({ comment, onReply, username, handleDeleteComment }) => {
   const [replying, setReplying] = useState(false);
@@ -23,7 +24,7 @@ const Comment = ({ comment, onReply, username, handleDeleteComment }) => {
   return (
     <li style={{ borderBottom: '1px solid #eee', padding: '10px 0', marginLeft: comment.parentId ? '20px' : '0' }}>
       {/* authorNickname 변경예정 */}
-      <div><strong>작성자 :</strong> {comment.grade}{comment.authorNickname}</div>
+      <div><strong>작성자 :</strong> {getFullGradeDescription(comment.grade)}{comment.authorNickname}</div>
       <div><strong>내용 :</strong> {comment.content}</div>
       <div style={{ textAlign: 'right', fontSize: '0.8em', color: '#666' }}>작성시간 : {new Date(comment.createdAt).toLocaleString()}</div>
       {username && <button onClick={() => setReplying(!replying)}>답글 달기</button>}

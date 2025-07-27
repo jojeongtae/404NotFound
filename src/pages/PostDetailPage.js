@@ -1,15 +1,16 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import NotFoundPage from './NotFoundPage';
-import { useSelector } from 'react-redux';
-import { fetchPostDetailAndComments, submitComment } from '../features/board/boardService'; // 함수 임포트
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux'; // useDispatch 추가
+import { fetchPostDetailAndComments, submitComment } from '../features/board/boardService';
 import apiClient from '../api/apiClient';
-import { useAuth } from '../context/AuthContext'; // useAuth 임포트
-import QuizPostDisplay from '../features/board/QuizPostDisplay'; // QuizPostDisplay 임포트
-import SurveyBoardForm from '../features/board/SurveyBoardForm'; // SurveyBoardForm 임포트
-import CommentThread from '../components/CommentThread'; // CommentThread 임포트
-import VotingBoardForm from '../features/board/VotingBoardForm'; // VotingBoardForm 임포트
+import { useAuth } from '../context/AuthContext';
+import QuizPostDisplay from '../features/board/QuizPostDisplay';
+import SurveyBoardForm from '../features/board/SurveyBoardForm';
+import CommentThread from '../components/CommentThread';
+import VotingBoardForm from '../features/board/VotingBoardForm';
+import { getFullGradeDescription } from '../features/common/GradeDescriptions';
+import { setUser } from '../features/auth/userSlice'; // setUser 임포트
 
 const PostDetailPage = () => {
   const { boardId, postId } = useParams();
@@ -20,9 +21,10 @@ const PostDetailPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const username = useSelector(state => state.user.username);
-  const { isLoggedIn } = useAuth(); // isLoggedIn 상태 가져오기
+  const { isLoggedIn } = useAuth();
   const [comments, setComments] = useState([]);
-  const [newCommentText, setNewCommentText] = useState(''); // 새 댓글 내용 상태
+  const [newCommentText, setNewCommentText] = useState('');
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
   const handleDeletePost = async () => {
     try {
@@ -45,12 +47,8 @@ const PostDetailPage = () => {
       setLoading(true);
       setError(null);
 
-      // 퀴즈, 설문, 투표 게시판은 댓글을 불러오지 않음
       if (boardId === 'quiz' || boardId === 'survey' || boardId === 'voting') {
-        setPost(null); // 게시글 정보는 불러와야 하므로, 이 부분은 별도로 처리 필요
-        // 현재는 fetchPostDetailAndComments에서 게시글과 댓글을 함께 가져오므로,
-        // 댓글만 제외하는 로직을 추가하거나, 백엔드에서 게시글만 가져오는 API를 분리해야 합니다.
-        // 여기서는 일단 댓글만 빈 배열로 설정하고, 게시글 정보는 그대로 진행합니다.
+        setPost(null);
         const postResponse = await apiClient.get(`/${boardId}/${postId}`);
         setPost(postResponse.data);
         setComments([]);
@@ -86,10 +84,9 @@ const PostDetailPage = () => {
 
     try {
       const res = await apiClient.post(`/${boardId}/${postId}/recommend`);
-      // 추천하지 않은 상태라면 추천
       alert("추천되었습니다!");
       setIsRecommended(true);
-      setPost(prevPost => ({ ...prevPost, recommend: prevPost.recommend + 1 })); // 추천수 증가
+      setPost(prevPost => ({ ...prevPost, recommend: prevPost.recommend + 1 }));
       console.log(res.data);
 
     } catch (error) {
@@ -113,13 +110,25 @@ const PostDetailPage = () => {
     }
 
     try {
-      // submitComment 함수 호출 (parentId는 null로 전달하여 최상위 댓글로 추가)
       await submitComment(boardId, postId, username, newCommentText, null);
-      setNewCommentText(''); // 입력 필드 초기화
-      // 댓글 목록 새로고침 (다시 불러오기)
+      setNewCommentText('');
       const { comments: updatedComments } = await fetchPostDetailAndComments(boardId, postId, dispatch);
       setComments(updatedComments);
       alert("댓글이 작성되었습니다!");
+
+      // --- 추가된 부분: 사용자 정보 업데이트 ---
+      const fetchUserInfo = async () => {
+        try {
+          const userInfoRes = await apiClient.get(`/user/user-info?username=${username}`);
+          dispatch(setUser(userInfoRes.data));
+          console.log("User info updated after comment submission:", userInfoRes.data);
+        } catch (userInfoError) {
+          console.error("Failed to fetch user info after comment submission:", userInfoError);
+        }
+      };
+      fetchUserInfo();
+      // --- 추가된 부분 끝 ---
+
     } catch (err) {
       console.error("댓글 작성 실패:", err);
       alert(err.message || "댓글 작성에 실패했습니다.");
@@ -132,12 +141,9 @@ const PostDetailPage = () => {
       if (!confirmDelete) {
         return;
       }
-      // TODO: 댓글 삭제 API 경로 확인 및 수정
-      // 예시: await apiClient.delete(`/comments/${commentId}`);
-      // 예시: await apiClient.delete(`/board/${boardId}/posts/${postId}/comments/${commentId}`);
-      await apiClient.delete(`${boardId}/comments/${commentId}`); // 이 경로가 404가 났던 경로입니다. 백엔드 API에 맞게 수정해주세요.
+
+      await apiClient.delete(`${boardId}/comments/${commentId}`);
       alert("댓글이 삭제되었습니다.");
-      // 댓글 목록 새로고침
       const { comments: updatedComments } = await fetchPostDetailAndComments(boardId, postId, dispatch);
       setComments(updatedComments);
     } catch (err) {
@@ -184,11 +190,19 @@ const PostDetailPage = () => {
       ) : (
         <div style={{ padding: '20px' }}>
           <h2>제목: {post.title}</h2>
-          {/* authorNickname 변경예정 */}
-          <p><strong>작성자:</strong> {post.grade}{post.authorNickname}</p>
+          <p><strong>작성자:</strong> {getFullGradeDescription(post.grade)}{post.authorNickname}</p>
           <p className="post-date"><strong>작성일:</strong> {new Date(post.createdAt).toLocaleDateString()}</p>
           <p>조회수: {post.views}</p>
           <hr />
+          {post.imgsrc && (
+            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+              <img
+                src={`${API_BASE_URL}/${post.imgsrc}`}
+                alt={post.title || '게시글 이미지'}
+                style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
+              />
+            </div>
+          )}
           <div dangerouslySetInnerHTML={{ __html: post.body }}></div>
 
           <hr />

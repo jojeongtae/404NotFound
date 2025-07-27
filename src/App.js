@@ -12,6 +12,8 @@ import RankingPage from './pages/RankingPage';
 import AdminReportForm from './features/admin/AdminReportForm';
 import AdminUserListForm from './features/admin/AdminUserListForm';
 import DiceGamePage from './pages/DiceGamePage';
+import SelectUserBoard from './features/user/SelectUserBoard';
+import SelectUserInfo from './features/user/SelectUserInfo';
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
             <Route path='board/admin/report' element={<AdminReportForm />}></Route>
             <Route path='board/ranking/:type' element={<RankingPage />} />
             <Route path='board/dice' element={<DiceGamePage />} />
+            <Route path='user/userinfo/:username' element={<SelectUserInfo />}></Route>
+            <Route path='user/board/:username' element={<SelectUserBoard />}></Route>
             
             {/* 다른 페이지 라우트들 */}
           </Route>
@@ -39,3 +43,13 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+// asdasdasdas
+
