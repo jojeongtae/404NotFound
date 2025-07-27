@@ -14,10 +14,7 @@ const boardSlice = createSlice({
         authorNickname:null,
         userNickname:null,
         grade:null,
-<<<<<<< HEAD
-=======
         imgsrc:null,
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
     },
     reducers: {
         setPostDetails: (state, action) => {
@@ -35,13 +32,9 @@ const boardSlice = createSlice({
                 state.authorNickname = null;
                 state.userNickname = null;
                 state.grade = null;
-<<<<<<< HEAD
-        },
-=======
                 state.imgsrc = null;
 
             },
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
 
     },
 

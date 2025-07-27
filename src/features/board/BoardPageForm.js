@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-import React, { useEffect, useState } from 'react'
-import apiClient from '../../api/apiClient';
-import { Link } from 'react-router-dom'; // Link 임포트
-import { getFullGradeDescription } from '../common/GradeDescriptions';
-
-const BoardPageForm = ({ boardId }) => { // boardId prop 다시 받기
-=======
 import React, { useEffect, useState, useRef, useCallback } from 'react'
 import apiClient from '../../api/apiClient';
 import { Link, useNavigate } from 'react-router-dom'; // useNavigate 임포트
@@ -13,7 +5,6 @@ import { getFullGradeDescription } from '../common/GradeDescriptions';
 import SearchBoardForm from './SearchBoardForm'; // SearchBoardForm 임포트
 
 const BoardPageForm = ({ boardId }) => {
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -128,66 +119,43 @@ const BoardPageForm = ({ boardId }) => {
                 setSearchOption={setSearchOption}
                 onSearchSubmit={handleSearchSubmit}
             />
-            <div className="post-list-header">
-                <span className="header-item header-id">번호</span>
-                <span className="header-item header-title">제목</span>
-                <span className="header-item header-author">글쓴이</span>
-                <span className="header-item header-views">조회</span>
-                {pointBoard ? "" :
-                    <span className="header-item header-recommend">추천</span>
-                }
-            </div>
-            {pointBoard ?
-                posts.length > 0 ?
-                    <ul className="post-list">
-                        {posts.map(post => (
-                            <li key={post.id} className="post-list-item">
-                                <Link to={`/board/${boardId}/${post.id}`} className="post-link">
-                                    <span className="post-item post-id">{post.id}</span>
-                                    <span className="post-item post-title">{post.title}</span>
-                                </Link>
-                                    <span
-                                        className="post-item post-author"
-                                        style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                                        onClick={(e) => handleNicknameClick(e, { nickname: post.authorNickname, id: post.author, grade: post.grade })}
-                                    >
-                                        <span className="user-grade">{getFullGradeDescription(post.grade)}</span>
-                                        {post.authorNickname}
-                                    </span>
-                                    <span className="post-item post-views">{post.views}</span>
-                            </li>
-                        ))}
-                    </ul>
-                    :
-                    (
-                        <p>게시글이 없습니다.</p>
-                    )
-                :
-                posts.length > 0 ? (
-
-                    <ul className="post-list">
-                        {posts.map(post => (
-                            <li key={post.id} className="post-list-item">
-                                <Link to={`/board/${boardId}/${post.id}`} className="post-link">
-                                    <span className="post-item post-id">{post.id}</span>
-                                    <span className="post-item post-title">{post.title}</span>
-                                </Link>
-                                    <span
-                                        className="post-item post-author"
-                                        style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                                        onClick={(e) => handleNicknameClick(e, { nickname: post.authorNickname, id: post.author, grade: post.grade })}
-                                    >
-                                        <span className="user-grade">{getFullGradeDescription(post.grade)}</span>
-                                        {post.authorNickname}
-                                    </span>
-                                    <span className="post-item post-views">{post.views}</span>
-                                    <span className="post-item post-recommend">{post.recommend}</span>
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>게시글이 없습니다.</p>
-                )}
+            <table className="post-list">
+                <thead>
+                    <tr>
+                        <th className="header-item header-id">번호</th>
+                        <th className="header-item header-title">제목</th>
+                        <th className="header-item header-author">글쓴이</th>
+                        <th className="header-item header-views">조회</th>
+                        {!pointBoard && <th className="header-item header-recommend">추천</th>}
+                    </tr>
+                </thead>
+                <tbody>
+                    {posts.length > 0 ? (
+                        posts.map(post => (
+                            <tr key={post.id} className="post-list-item">
+                                <td className="post-item post-id" onClick={() => navigate(`/board/${boardId}/${post.id}`)} style={{ cursor: 'pointer' }}>{post.id}</td>
+                                <td className="post-item post-title" onClick={() => navigate(`/board/${boardId}/${post.id}`)} style={{ cursor: 'pointer' }}>{post.title}</td>
+                                <td
+                                    className="post-item post-author"
+                                    style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                                    onClick={(e) => handleNicknameClick(e, { nickname: post.authorNickname, id: post.author, grade: post.grade })}
+                                >
+                                    <span className="user-grade">{getFullGradeDescription(post.grade)}</span>
+                                    {post.authorNickname}
+                                </td>
+                                <td className="post-item post-views">{post.views}</td>
+                                {!pointBoard && <td className="post-item post-recommend">{post.recommend}</td>}
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan={!pointBoard ? 5 : 4} className="no-posts" style={{ textAlign: 'center' }}>
+                                게시글이 없습니다.
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
             {/* 드롭다운 메뉴 */}
             {showDropdown && selectedUser && (
                 <div

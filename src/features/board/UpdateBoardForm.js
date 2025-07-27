@@ -8,21 +8,12 @@ const UpdateBoardForm = () => {
   const { boardId, postId } = useParams(); // URL 파라미터에서 boardId와 postId 가져오기
   const navigate = useNavigate();
   const loggedInUsername = useSelector(state => state.user.username); // 로그인된 사용자 이름
-<<<<<<< HEAD
-const dispatch = useDispatch();
-=======
   const dispatch = useDispatch();
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [originalAuthor, setOriginalAuthor] = useState(null); // 게시글 원본 작성자
-<<<<<<< HEAD
-
-  useEffect(() => {
-    const fetchPost = async () => {
-=======
   const [selectedImage, setSelectedImage] = useState(null);
   const [imagePreviewUrl, setImagePreviewUrl] = useState('');
 
@@ -45,7 +36,6 @@ const dispatch = useDispatch();
 
     const fetchPost = async () => {
 
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
       try {
         setLoading(true);
         setError(null);
@@ -83,19 +73,13 @@ const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-<<<<<<< HEAD
-=======
     let imageUrl = null; // 이미지 URL을 저장할 변수
 
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
     if (!title.trim() || !body.trim()) {
       alert('제목과 내용을 입력해주세요.');
       return;
     }
 
-<<<<<<< HEAD
-    try {
-=======
 
     try {
       if (selectedImage) {
@@ -119,21 +103,11 @@ const dispatch = useDispatch();
           throw new Error("이미지 URL을 받아오지 못했습니다.");
         }
       }
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
       setLoading(true);
       const updatedPost = {
         title,
         body,
         author: originalAuthor, // 작성자는 변경되지 않음
-<<<<<<< HEAD
-      };
-      // TODO: 게시글 수정 API 경로 확인 (PUT 또는 PATCH)
-      await apiClient.put(`/${boardId}/${postId}`, updatedPost);
-      dispatch(setPostDetails({...updatedPost, id:postId}))
-      alert('게시글이 성공적으로 수정되었습니다!');
-      navigate(`/board/${boardId}/${postId}`); // 수정된 게시글 상세 페이지로 이동
-      
-=======
         imgsrc:imageUrl
       };
       // TODO: 게시글 수정 API 경로 확인 (PUT 또는 PATCH)
@@ -142,7 +116,6 @@ const dispatch = useDispatch();
       alert('게시글이 성공적으로 수정되었습니다!');
       navigate(`/board/${boardId}/${postId}`); // 수정된 게시글 상세 페이지로 이동
 
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
     } catch (err) {
       console.error('게시글 수정 실패:', err);
       setError('게시글 수정에 실패했습니다.');
@@ -186,8 +159,6 @@ const dispatch = useDispatch();
             style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
           ></textarea>
         </div>
-<<<<<<< HEAD
-=======
         <div>
           <input
             type='file'
@@ -200,7 +171,6 @@ const dispatch = useDispatch();
             </div>
           )}
         </div>
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
         <button type="submit" className="nav-link" disabled={loading}>
           수정 완료
         </button>

@@ -46,30 +46,12 @@ const LoginForm = ({ onClose }) => {
             // { headers: { 'Authorization': token }}
 
           );
-<<<<<<< HEAD
-          // const gradeResponse = await apiClient.get(`/user/user-grade?username=${username}`);
-
-          // let finalNickname = userDetailsResponse.data.nickname; // userDetailsResponse에서 nickname 가져오기
-          console.log(userDetailsResponse.data);
-          // console.log(gradeResponse.data.split(" ")[0]);
-
-
-          // if (gradeResponse.data.split(" ")[0] === "500") {
-          //   finalNickname = "✨" + finalNickname; // nickname에 이모티콘 추가
-          // }
-          // userDetailsResponse.data와 grade 정보를 합쳐서 setUser에 전달
-          dispatch(setUser({
-            ...userDetailsResponse.data, // 기존 사용자 상세 정보
-            // nickname: finalNickname, // 이모티콘이 추가된 nickname
-            // grade: gradeResponse.data, // grade는 원본 그대로 유지
-=======
 
           console.log(userDetailsResponse.data);
 
 
           dispatch(setUser({
             ...userDetailsResponse.data, // 기존 사용자 상세 정보
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
           }));
 
           console.log("추가 사용자 정보 저장 완료:", userDetailsResponse.data);
@@ -103,9 +85,6 @@ const LoginForm = ({ onClose }) => {
       }
     }
   };
-<<<<<<< HEAD
-
-=======
   // const handleGoogleLogin = () => {
   //   window.location.href = "/api/google";  //이렇게 쓰면 주소표시줄만 바꿈
   // }
@@ -118,7 +97,6 @@ const LoginForm = ({ onClose }) => {
     window.location.href = "/api/naver";
     
   }
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -137,13 +115,10 @@ const LoginForm = ({ onClose }) => {
         /> <br />
         <input type='submit' value="로그인" />
       </form>
-<<<<<<< HEAD
-=======
       <div>
         <button onClick={handleNaverLogin}>네이버 로그인</button>
         <button onClick={handleKakaoLogin}>카카오 로그인</button>
       </div>
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
     </>
   );
 };

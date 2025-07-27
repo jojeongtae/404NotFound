@@ -1,12 +1,31 @@
-Cannot access 'loadPostAndComments' before initialization
-ReferenceError: Cannot access 'loadPostAndComments' before initialization
-    at PostDetailPage (http://localhost:3000/static/js/bundle.js:59635:34)
-    at react-stack-bottom-frame (http://localhost:3000/static/js/bundle.js:25972:18)
-    at renderWithHooks (http://localhost:3000/static/js/bundle.js:16182:20)
-    at updateFunctionComponent (http://localhost:3000/static/js/bundle.js:17875:17)
-    at beginWork (http://localhost:3000/static/js/bundle.js:18461:16)
-    at runWithFiberInDEV (http://localhost:3000/static/js/bundle.js:13953:68)
-    at performUnitOfWork (http://localhost:3000/static/js/bundle.js:20534:93)
-    at workLoopSync (http://localhost:3000/static/js/bundle.js:20427:38)
-    at renderRootSync (http://localhost:3000/static/js/bundle.js:20411:7)
-    at performWorkOnRoot (http://localhost:3000/static/js/bundle.js:20175:42)
+NewBoardForm.js:89 
+ POST http://localhost:8080/api/quiz/new 400 (Bad Request)
+NewBoardForm.js:116 글 작성 실패: 
+AxiosError {message: 'Request failed with status code 400', name: 'AxiosError', code: 'ERR_BAD_REQUEST', config: {…}, request: XMLHttpRequest, …}
+code
+: 
+"ERR_BAD_REQUEST"
+config
+: 
+{transitional: {…}, adapter: Array(3), transformRequest: Array(1), transformResponse: Array(1), timeout: 0, …}
+message
+: 
+"Request failed with status code 400"
+name
+: 
+"AxiosError"
+request
+: 
+XMLHttpRequest {onreadystatechange: null, readyState: 4, timeout: 0, withCredentials: true, upload: XMLHttpRequestUpload, …}
+response
+: 
+{data: '요청 처리 중 예기치 못한 오류가 발생했습니다. The given id must not be null', status: 400, statusText: '', headers: AxiosHeaders, config: {…}, …}
+status
+: 
+400
+stack
+: 
+"AxiosError: Request failed with status code 400\n    at settle (http://localhost:3000/static/js/bundle.js:7407:12)\n    at XMLHttpRequest.onloadend (http://localhost:3000/static/js/bundle.js:6034:66)\n    at Axios.request (http://localhost:3000/static/js/bundle.js:6533:41)\n    at async handleNewBoard (http://localhost:3000/static/js/bundle.js:54711:15)"
+[[Prototype]]
+: 
+Error
