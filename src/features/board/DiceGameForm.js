@@ -75,11 +75,7 @@ const DiceGame = ({ username, roomId }) => {
         clientRef.current.deactivate(); // Stomp 클라이언트 연결을 해제합니다.
       }
     };
-<<<<<<< HEAD
-  }, [roomId]); // roomId가 변경될 때마다 useEffect를 다시 실행합니다.
-=======
   }, [roomId, username, dispatch]); // roomId, username, dispatch가 변경될 때마다 useEffect를 다시 실행합니다.
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
 
   // 주사위를 굴리는 함수
   const rollDice = () => {

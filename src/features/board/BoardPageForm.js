@@ -18,9 +18,6 @@ const BoardPageForm = ({ boardId }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [pointBoard, setPointBoard] = useState(false);
-<<<<<<< HEAD
-    // boardId를 한글 이름으로 매핑하는 객체
-=======
     const [showDropdown, setShowDropdown] = useState(false);
     const [dropdownPosition, setDropdownPosition] = useState({ x: 0, y: 0 });
     const [selectedUser, setSelectedUser] = useState(null);
@@ -30,7 +27,6 @@ const BoardPageForm = ({ boardId }) => {
     const dropdownRef = useRef(null);
     const navigate = useNavigate(); // useNavigate 훅 사용
 
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
     const boardNames = {
         free: '자유 게시판',
         notice: '공지사항',
@@ -43,12 +39,6 @@ const BoardPageForm = ({ boardId }) => {
         voting: "OX 게시판"
     };
 
-<<<<<<< HEAD
-    // boardId에 해당하는 한글 게시판 이름 또는 기본값 설정
-    const displayBoardName = boardNames[boardId] || `${boardId} 게시판`;
-
-    useEffect(() => {
-=======
     const displayBoardName = boardNames[boardId] || `${boardId} 게시판`;
 
     useEffect(() => {
@@ -96,7 +86,6 @@ const BoardPageForm = ({ boardId }) => {
     }, [searchText, searchOption]);
 
     useEffect(() => {
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
         const fetchBoardPosts = async () => {
             if (!boardId) {
                 setLoading(false);
@@ -110,16 +99,12 @@ const BoardPageForm = ({ boardId }) => {
             try {
                 setLoading(true);
                 setError(null);
-<<<<<<< HEAD
-                const res = await apiClient.get(`/${boardId}/list`);
-=======
                 let url = `/${boardId}/list`;
                 // API 호출 시 디바운싱된 검색어 사용
                 if (debouncedSearchText && searchOption) {
                     url = `/${boardId}/search/${searchOption}?${searchOption}=${searchText}`;
                 }
                 const res = await apiClient.get(url);
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
                 setPosts(res.data);
                 console.log(`게시판 ${boardId}의 게시글:`, res.data);
             } catch (err) {
@@ -129,23 +114,6 @@ const BoardPageForm = ({ boardId }) => {
                 setLoading(false);
             }
         };
-<<<<<<< HEAD
-        fetchBoardPosts();
-    }, [boardId]); // boardId가 변경될 때마다 다시 불러옴
-
-    if (loading) {
-        return <div>게시글을 불러오는 중...</div>;
-    }
-
-    if (error) {
-        return <div style={{ color: 'red' }}>{error}</div>;
-    }
-    console.log(posts);
-    return (
-        <div>
-            <h3>{displayBoardName}</h3> {/* 한글 게시판 이름 사용 */}
-            <div className="post-list-header"> {/* 헤더 추가 */}
-=======
         // boardId, 디바운싱된 검색어, 검색 옵션이 변경될 때마다 다시 불러옴
         fetchBoardPosts();
     }, [boardId, debouncedSearchText, searchOption]); // boardId, debouncedSearchText, searchOption이 변경될 때마다 다시 불러옴
@@ -161,7 +129,6 @@ const BoardPageForm = ({ boardId }) => {
                 onSearchSubmit={handleSearchSubmit}
             />
             <div className="post-list-header">
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
                 <span className="header-item header-id">번호</span>
                 <span className="header-item header-title">제목</span>
                 <span className="header-item header-author">글쓴이</span>
@@ -172,16 +139,6 @@ const BoardPageForm = ({ boardId }) => {
             </div>
             {pointBoard ?
                 posts.length > 0 ?
-<<<<<<< HEAD
-                    <ul className="post-list"> {/* 클래스 추가 */}
-                        {posts.map(post => (
-                            <li key={post.id} className="post-list-item"> {/* 클래스 추가 */}
-                                <Link to={`/board/${boardId}/${post.id}`} className="post-link"> {/* 클래스 추가 */}
-                                    <span className="post-item post-id">{post.id}</span>
-                                    <span className="post-item post-title">{post.title}</span>
-                                </Link>
-                                    <span className="post-item post-author"><span className="user-grade">{getFullGradeDescription(post.grade)}</span>{post.authorNickname}</span>
-=======
                     <ul className="post-list">
                         {posts.map(post => (
                             <li key={post.id} className="post-list-item">
@@ -197,7 +154,6 @@ const BoardPageForm = ({ boardId }) => {
                                         <span className="user-grade">{getFullGradeDescription(post.grade)}</span>
                                         {post.authorNickname}
                                     </span>
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
                                     <span className="post-item post-views">{post.views}</span>
                             </li>
                         ))}
@@ -209,18 +165,6 @@ const BoardPageForm = ({ boardId }) => {
                 :
                 posts.length > 0 ? (
 
-<<<<<<< HEAD
-                    <ul className="post-list"> {/* 클래스 추가 */}
-                        {posts.map(post => (
-                            <li key={post.id} className="post-list-item"> {/* 클래스 추가 */}
-                                <Link to={`/board/${boardId}/${post.id}`} className="post-link"> {/* 클래스 추가 */}
-                                    <span className="post-item post-id">{post.id}</span>
-                                    <span className="post-item post-title">{post.title}</span>
-                                </Link>
-                                    <span className="post-item post-author"><span className="user-grade">{getFullGradeDescription(post.grade)}</span>{post.authorNickname}</span>
-                                    <span className="post-item post-views">{post.views}</span>
-                                    <span className="post-item post-recommend">{post.recommend}</span> {/* 임시 추천 수 */}
-=======
                     <ul className="post-list">
                         {posts.map(post => (
                             <li key={post.id} className="post-list-item">
@@ -238,22 +182,12 @@ const BoardPageForm = ({ boardId }) => {
                                     </span>
                                     <span className="post-item post-views">{post.views}</span>
                                     <span className="post-item post-recommend">{post.recommend}</span>
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
                             </li>
                         ))}
                     </ul>
                 ) : (
                     <p>게시글이 없습니다.</p>
                 )}
-<<<<<<< HEAD
-
-
-        </div>
-    )
-}
-
-export default BoardPageForm
-=======
             {/* 드롭다운 메뉴 */}
             {showDropdown && selectedUser && (
                 <div
@@ -281,4 +215,3 @@ export default BoardPageForm
     )
 }
 export default BoardPageForm;
->>>>>>> 2422581d9c642c9b19c9bf40394aaee9f4fdc780
