@@ -1,13 +1,12 @@
 package com.example.notfound_backend.component;
 
-import com.example.notfound_backend.data.dto.CustomOAuth2User;
+import com.example.notfound_backend.data.dto.login.CustomOAuth2User;
 import com.example.notfound_backend.jwt.JwtUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
