@@ -7,6 +7,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -33,8 +34,25 @@ public class JwtLoginFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
-        String username = obtainUsername(request);
-        String password = obtainPassword(request);
+        String username;
+        String password;
+
+        // Content-Type에 따라 요청 본문 파싱 방식 변경
+        if (request.getContentType() != null && request.getContentType().contains("application/json")) {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                Map<String, String> loginRequest = objectMapper.readValue(request.getInputStream(), Map.class);
+                username = loginRequest.get("username");
+                password = loginRequest.get("password");
+            } catch (IOException e) {
+                throw new AuthenticationServiceException("Error parsing login request JSON", e);
+            }
+        } else {
+            // 기본 Form Data 파싱
+            username = obtainUsername(request);
+            password = obtainPassword(request);
+        }
+
         UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, password, null);
         return authenticationManager.authenticate(authRequest);
     }

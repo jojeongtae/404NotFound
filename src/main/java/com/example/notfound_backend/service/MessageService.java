@@ -54,7 +54,11 @@ public class MessageService {
     }
 
     public MessageDTO sendMessage(MessageDTO messageDTO) {
-        UserStatus userStatus=userInfoDAO.getUserInfo(messageDTO.getAuthor()).getStatus();
+        UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(messageDTO.getAuthor());
+        if (userInfoEntity == null) {
+            throw new UsernameNotFoundException("사용자 정보를 찾을 수 없습니다: " + messageDTO.getAuthor());
+        }
+        UserStatus userStatus = userInfoEntity.getStatus();
         if (userStatus!=UserStatus.ACTIVE){
             throw new UserSuspendedException("활동 정지된 사용자입니다.");
         }

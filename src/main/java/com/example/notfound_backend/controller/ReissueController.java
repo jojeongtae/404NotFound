@@ -55,7 +55,7 @@ public class ReissueController {
     @DeleteMapping(value = "/reissue")
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
         Cookie cookie = new Cookie("refresh", null);
-        cookie.setPath("/reissue");
+        cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
