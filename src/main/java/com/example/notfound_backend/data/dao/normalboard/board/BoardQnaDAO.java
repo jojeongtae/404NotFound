@@ -2,6 +2,7 @@ package com.example.notfound_backend.data.dao.normalboard.board;
 
 
 import com.example.notfound_backend.data.dto.normalboard.BoardRankingDTO;
+import com.example.notfound_backend.data.entity.enumlist.Status;
 import com.example.notfound_backend.data.entity.normalboard.board.BoardQnaEntity;
 import com.example.notfound_backend.data.repository.normalboard.board.BoardQnaRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,13 @@ public class BoardQnaDAO {
 
     public List<BoardQnaEntity> findAllBoards() {
         return boardQnaRepository.findAll();
+    }
+
+    public List<BoardQnaEntity> findAllByStatus(Status status) {
+        return boardQnaRepository.findAllByStatus(status);
+    }
+    public List<BoardQnaEntity> findAllBoardsByUser(String username) {
+        return boardQnaRepository.findAllByUser(username);
     }
 
     public BoardQnaEntity save(BoardQnaEntity boardQnaEntity) {

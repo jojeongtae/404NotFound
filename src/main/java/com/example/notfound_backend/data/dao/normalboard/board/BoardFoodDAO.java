@@ -1,6 +1,7 @@
 package com.example.notfound_backend.data.dao.normalboard.board;
 
 import com.example.notfound_backend.data.dto.normalboard.BoardRankingDTO;
+import com.example.notfound_backend.data.entity.enumlist.Status;
 import com.example.notfound_backend.data.entity.normalboard.board.BoardFoodEntity;
 import com.example.notfound_backend.data.repository.normalboard.board.BoardFoodRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,14 @@ public class BoardFoodDAO {
 
     public List<BoardFoodEntity> findAllBoards() {
         return boardFoodRepository.findAll();
+    }
+
+    public List<BoardFoodEntity> findAllByStatus(Status status) {
+        return boardFoodRepository.findAllByStatus(status);
+    }
+
+    public List<BoardFoodEntity> findAllBoardsByUser(String username) {
+        return boardFoodRepository.findAllByUser(username);
     }
 
     public BoardFoodEntity save(BoardFoodEntity boardFoodEntity) {

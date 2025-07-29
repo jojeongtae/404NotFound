@@ -1,6 +1,7 @@
 package com.example.notfound_backend.data.dao.normalboard.board;
 
 import com.example.notfound_backend.data.dto.normalboard.BoardRankingDTO;
+import com.example.notfound_backend.data.entity.enumlist.Status;
 import com.example.notfound_backend.data.entity.normalboard.board.BoardFreeEntity;
 import com.example.notfound_backend.data.repository.normalboard.board.BoardFreeRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,12 @@ public class BoardFreeDAO {
 
     public List<BoardFreeEntity> findAllBoards() {
         return boardFreeRepository.findAll();
+    }
+    public List<BoardFreeEntity> findAllByStatus(Status status) {
+        return boardFreeRepository.findAllByStatus(status);
+    }
+    public List<BoardFreeEntity> findAllBoardsByUser(String username) {
+        return boardFreeRepository.findAllByUser(username);
     }
 
     public BoardFreeEntity save(BoardFreeEntity boardFreeEntity) {

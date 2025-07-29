@@ -3,11 +3,13 @@ package com.example.notfound_backend.service.normalboard.board;
 import com.example.notfound_backend.data.dao.normalboard.board.BoardUsedDAO;
 import com.example.notfound_backend.data.dao.login.UserAuthDAO;
 import com.example.notfound_backend.data.dao.admin.UserInfoDAO;
+import com.example.notfound_backend.data.dto.admin.UserInfoAllDTO;
 import com.example.notfound_backend.data.dto.normalboard.BoardUsedDTO;
 import com.example.notfound_backend.data.entity.admin.UserInfoEntity;
 import com.example.notfound_backend.data.entity.enumlist.Status;
 import com.example.notfound_backend.data.entity.login.UserAuthEntity;
 import com.example.notfound_backend.data.entity.normalboard.board.BoardUsedEntity;
+import com.example.notfound_backend.exception.UnauthorizedAccessException;
 import com.example.notfound_backend.service.utility.UploadImageService;
 import com.example.notfound_backend.service.admin.UserInfoService;
 import lombok.RequiredArgsConstructor;
@@ -31,55 +33,71 @@ public class BoardUsedService {
     private final UserInfoService userInfoService;
     private final UploadImageService uploadImageService;
 
+    // 외부인용 (VISIBLE만 조회)
     public List<BoardUsedDTO> findAll() {
-        List<BoardUsedEntity> boardUsedEntityList = boardUsedDAO.findAllBoards();
-        List<BoardUsedDTO> boardDTOList =new ArrayList<>();
-        for(BoardUsedEntity boardUsedEntity : boardUsedEntityList) {
-            if (boardUsedEntity.getStatus() == Status.VISIBLE) { // VISIBLE만 노출
-                BoardUsedDTO
-                        boardUsedDTO = new BoardUsedDTO
-                        ();
-                boardUsedDTO.setId(boardUsedEntity.getId());
-                boardUsedDTO.setTitle(boardUsedEntity.getTitle());
-                boardUsedDTO.setBody(boardUsedEntity.getBody());
-                boardUsedDTO.setImgsrc(boardUsedEntity.getImgsrc());
-                boardUsedDTO.setPrice(boardUsedEntity.getPrice());
-
-                if (boardUsedEntity.getAuthor() != null) {
-                    boardUsedDTO.setAuthor(boardUsedEntity.getAuthor().getUsername());
-                }
-                UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(boardUsedEntity.getAuthor().getUsername());
-                String userNickname = userInfoEntity.getNickname();
-                String userGrade = userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername());
-                boardUsedDTO.setAuthorNickname(userNickname); // 추가
-                boardUsedDTO.setGrade(userGrade);
-                boardUsedDTO.setRecommend(boardUsedEntity.getRecommend());
-                boardUsedDTO.setViews(boardUsedEntity.getViews());
-                boardUsedDTO.setCategory(boardUsedEntity.getCategory());
-                boardUsedDTO.setCreatedAt(boardUsedEntity.getCreatedAt());
-                boardUsedDTO.setUpdatedAt(boardUsedEntity.getUpdatedAt());
-                boardUsedDTO.setStatus(boardUsedEntity.getStatus().name());
-                boardDTOList.add(boardUsedDTO);
-            }
+        List<BoardUsedEntity> entityList = boardUsedDAO.findAllByStatus(Status.VISIBLE);
+        List<BoardUsedDTO> boardUsedDTOList = new ArrayList<>();
+        for(BoardUsedEntity entity : entityList){
+            boardUsedDTOList.add(convertToBoardUsedDTO(entity));
         }
-        return boardDTOList;
+        return boardUsedDTOList;
+    }
+
+    // 유저용 (VISIBLE + 자신의 PRIVATE 조회)
+    public List<BoardUsedDTO> findAllByUser(String username) {
+        List<BoardUsedEntity> entityList = boardUsedDAO.findAllBoardsByUser(username);
+        List<BoardUsedDTO> boardUsedDTOList = new ArrayList<>();
+        for(BoardUsedEntity entity : entityList){
+            boardUsedDTOList.add(convertToBoardUsedDTO(entity));
+        }
+        return boardUsedDTOList;
+    }
+
+    // 관리자용 (모든상태 게시글 조회)
+    public List<BoardUsedDTO> findAllByAdmin(String username) {
+        if(!userAuthDAO.isAdmin(username)) {
+            throw new UnauthorizedAccessException("관리자만 접근가능합니다.");
+        }
+        List<BoardUsedEntity> entityList = boardUsedDAO.findAllBoards();
+        List<BoardUsedDTO> boardUsedDTOList = new ArrayList<>();
+        for(BoardUsedEntity entity : entityList) {
+            boardUsedDTOList.add(convertToBoardUsedDTO(entity));
+        }
+        return boardUsedDTOList;
+    }
+
+    private BoardUsedDTO convertToBoardUsedDTO(BoardUsedEntity entity) {
+        UserInfoAllDTO userInfo = userInfoService.getUserInfo(entity.getAuthor().getUsername());
+        return BoardUsedDTO.builder()
+                .id(entity.getId())
+                .title(entity.getTitle())
+                .body(entity.getBody())
+                .imgsrc(entity.getImgsrc())
+                .price(entity.getPrice())
+                .author(entity.getAuthor().getUsername())
+                .authorNickname(userInfo.getNickname())
+                .grade(userInfo.getGrade())
+                .recommend(entity.getRecommend())
+                .views(entity.getViews())
+                .category(entity.getCategory())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
+                .status(entity.getStatus().name())
+                .build();
     }
 
     @Transactional
-    public BoardUsedDTO
-    viewBoard(Integer id) {
+    public BoardUsedDTO viewBoard(Integer id) {
         boardUsedDAO.incrementViews(id);
         BoardUsedEntity entity= boardUsedDAO.findById(id)
                 .orElseThrow(()->new RuntimeException("Board not found"));
         return toDTO(entity);
     }
 
-    private BoardUsedDTO
-    toDTO(BoardUsedEntity entity) {
+    private BoardUsedDTO toDTO(BoardUsedEntity entity) {
         UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(entity.getAuthor().getUsername());
         String userNickname = userInfoEntity.getNickname();
-        return new BoardUsedDTO
-                (
+        return new BoardUsedDTO(
                 entity.getId(),
                 entity.getTitle(),
                 entity.getBody(),
@@ -98,8 +116,7 @@ public class BoardUsedService {
     }
 
     @Transactional
-    public BoardUsedDTO
-    createBoard(BoardUsedDTO
+    public BoardUsedDTO createBoard(BoardUsedDTO
                         boardDTO, MultipartFile file) throws IOException {
         userInfoService.userStatusValidator(boardDTO.getAuthor());
         String imgsrc = uploadImageService.uploadBoardImage(file); // 이미지파일 저장
@@ -125,9 +142,7 @@ public class BoardUsedService {
     }
 
     @Transactional
-    public BoardUsedDTO
-    updateBoard(Integer id, BoardUsedDTO
-            boardDTO, MultipartFile file) throws IOException {
+    public BoardUsedDTO updateBoard(Integer id, BoardUsedDTO boardDTO, MultipartFile file) throws IOException {
         userInfoService.userStatusValidator(boardDTO.getAuthor());
 
         BoardUsedEntity entity = boardUsedDAO.findById(id)
@@ -154,22 +169,40 @@ public class BoardUsedService {
         uploadImageService.deleteBoardImage(entity.getImgsrc()); // 이미지파일 삭제
     }
 
-    public List<BoardUsedDTO
-            > findByTitle(String title) {
+    public List<BoardUsedDTO> findByTitle(String title) {
         List<BoardUsedEntity> boardUsedEntities=boardUsedDAO.findByTitle(title);
         return boardUsedEntities.stream()
                 .map(this::toDTO)  // toDTO 적용
                 .collect(Collectors.toList());
     }
 
-    public List<BoardUsedDTO
-            > findByAuthor(String author) {
+    public List<BoardUsedDTO> findByAuthor(String author) {
         List<BoardUsedEntity> boardUsedEntities=boardUsedDAO.findByAuthor(author);
         return boardUsedEntities.stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 
+    // 게시판 상태변경 (본인, 관리자)
+    @Transactional
+    public BoardUsedDTO updateBoardStatus(Integer id, BoardUsedDTO boardUsedDTO) { // boardUsedDTO(author,status)
+        userInfoService.userStatusValidator(boardUsedDTO.getAuthor());
+
+        BoardUsedEntity entity = boardUsedDAO.findById(id).orElseThrow(()->new RuntimeException("Board not found"));
+
+        String author = boardUsedDTO.getAuthor();
+        if (author == null || (!author.equals(entity.getAuthor().getUsername()) && !userAuthDAO.getRole(author).equals("ROLE_ADMIN"))) { // 본인아니고, admin도 아니면
+            throw new UnauthorizedAccessException("해당 게시글을 수정할 권한이 없습니다. 작성자 또는 관리자만 수정 가능");
+        }
+        try {
+            entity.setStatus(Status.valueOf(boardUsedDTO.getStatus()));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("올바르지 않은 상태 값입니다: " + boardUsedDTO.getStatus());
+        }
+        entity.setUpdatedAt(Instant.now());
+        BoardUsedEntity saved = boardUsedDAO.save(entity);
+        return toDTO(saved);
+    }
 
 //    public BoardUsedDTO
 //    recommendBoard(Integer id) {

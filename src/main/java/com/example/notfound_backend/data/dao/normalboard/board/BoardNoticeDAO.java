@@ -1,6 +1,7 @@
 package com.example.notfound_backend.data.dao.normalboard.board;
 
 
+import com.example.notfound_backend.data.entity.enumlist.Status;
 import com.example.notfound_backend.data.entity.normalboard.board.BoardNoticeEntity;
 import com.example.notfound_backend.data.repository.normalboard.board.BoardNoticeRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,13 @@ public class BoardNoticeDAO {
 
     public List<BoardNoticeEntity> findAllBoards() {
         return boardNoticeRepository.findAll();
+    }
+
+    public List<BoardNoticeEntity> findAllByStatus(Status status) {
+        return boardNoticeRepository.findAllByStatus(status);
+    }
+    public List<BoardNoticeEntity> findAllBoardsByUser(String username) {
+        return boardNoticeRepository.findAllByUser(username);
     }
 
     public BoardNoticeEntity save(BoardNoticeEntity boardNoticeEntity) {

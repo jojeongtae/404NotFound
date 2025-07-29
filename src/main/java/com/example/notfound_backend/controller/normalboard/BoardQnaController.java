@@ -27,11 +27,24 @@ public class BoardQnaController {
     private final BoardRankingService boardRankingService;
     private final BoardQnaRecommendService boardQnaRecommendService;
 
+    // 외부인용 (VISIBLE만 조회)
     @GetMapping("/list")
     public List<BoardDTO> getAllBoards() {
         List<BoardDTO> boardDtoList = boardQnaService.findAll();
         System.out.println(boardDtoList.size());
         return boardDtoList;
+    }
+    // 유저용 (VISIBLE + 자신의 PRIVATE 조회)
+    @GetMapping("/list/user")
+    public ResponseEntity<List<BoardDTO>> getAllBoardsByUser(@RequestParam String username) {
+        List<BoardDTO> boardDTOList = boardQnaService.findAllByUser(username);
+        return ResponseEntity.ok(boardDTOList);
+    }
+    // 관리자용 (모든상태 게시글 조회)
+    @GetMapping("/list/admin")
+    public ResponseEntity<List<BoardDTO>> getAllBoardsByAdmin(@RequestParam String username) {
+        List<BoardDTO> boardDTOList = boardQnaService.findAllByAdmin(username);
+        return ResponseEntity.ok(boardDTOList);
     }
 
     @GetMapping("/{id}")
@@ -53,6 +66,13 @@ public class BoardQnaController {
                                            @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         BoardDTO updated = boardQnaService.updateBoard(id, boardDTO, file);
         return ResponseEntity.ok(updated);
+    }
+
+    // 게시판 상태변경(본인, 관리자)
+    @PutMapping("/status/{id}")
+    public ResponseEntity<BoardDTO> updateStatus(@PathVariable Integer id, @RequestBody BoardDTO boardDTO) { // boardDTO(author,status)
+        BoardDTO updatedBoardDTO = boardQnaService.updateBoardStatus(id, boardDTO);
+        return ResponseEntity.ok(updatedBoardDTO);
     }
 
     @DeleteMapping("/{id}")

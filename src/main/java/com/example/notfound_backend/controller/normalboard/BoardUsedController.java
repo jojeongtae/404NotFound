@@ -2,6 +2,7 @@ package com.example.notfound_backend.controller.normalboard;
 
 
 import com.example.notfound_backend.data.dto.normalboard.BoardCommentDTO;
+import com.example.notfound_backend.data.dto.normalboard.BoardDTO;
 import com.example.notfound_backend.data.dto.normalboard.BoardRankingDTO;
 import com.example.notfound_backend.data.dto.normalboard.BoardUsedDTO;
 import com.example.notfound_backend.service.normalboard.board.BoardRankingService;
@@ -27,42 +28,52 @@ public class BoardUsedController {
     private final BoardRankingService boardRankingService;
     private final BoardUsedRecommendService boardUsedRecommendService;
 
+    // 외부인용 (VISIBLE만 조회)
     @GetMapping("/list")
-    public List<BoardUsedDTO
-            > getAllBoards() {
-        List<BoardUsedDTO
-                > boardDtoList = boardUsedService.findAll();
+    public List<BoardUsedDTO> getAllBoards() {
+        List<BoardUsedDTO> boardDtoList = boardUsedService.findAll();
         System.out.println(boardDtoList.size());
         return boardDtoList;
     }
+    // 유저용 (VISIBLE + 자신의 PRIVATE 조회)
+    @GetMapping("/list/user")
+    public ResponseEntity<List<BoardUsedDTO>> getAllBoardsByUser(@RequestParam String username) {
+        List<BoardUsedDTO> boardDTOList = boardUsedService.findAllByUser(username);
+        return ResponseEntity.ok(boardDTOList);
+    }
+    // 관리자용 (모든상태 게시글 조회)
+    @GetMapping("/list/admin")
+    public ResponseEntity<List<BoardUsedDTO>> getAllBoardsByAdmin(@RequestParam String username) {
+        List<BoardUsedDTO> boardDTOList = boardUsedService.findAllByAdmin(username);
+        return ResponseEntity.ok(boardDTOList);
+    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BoardUsedDTO
-            > getBoard(@PathVariable Integer id){
-        BoardUsedDTO
-                dto= boardUsedService.viewBoard(id);
+    public ResponseEntity<BoardUsedDTO> getBoard(@PathVariable Integer id){
+        BoardUsedDTO dto= boardUsedService.viewBoard(id);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping("/new")
-    public ResponseEntity<BoardUsedDTO
-            > create(@RequestPart("boardDTO") BoardUsedDTO
-                                            boardDTO,
+    public ResponseEntity<BoardUsedDTO> create(@RequestPart("boardDTO") BoardUsedDTO boardDTO,
                                            @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
-        BoardUsedDTO
-                created = boardUsedService.createBoard(boardDTO,file);
+        BoardUsedDTO created = boardUsedService.createBoard(boardDTO,file);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BoardUsedDTO
-            > update(@PathVariable Integer id,
-                                           @RequestPart("boardDTO") BoardUsedDTO
-                                                   boardDTO,
-                                           @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
-        BoardUsedDTO
-                updated = boardUsedService.updateBoard(id, boardDTO, file);
+    public ResponseEntity<BoardUsedDTO> update(@PathVariable Integer id,
+                                               @RequestPart("boardDTO") BoardUsedDTO boardDTO,
+                                               @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+        BoardUsedDTO updated = boardUsedService.updateBoard(id, boardDTO, file);
         return ResponseEntity.ok(updated);
+    }
+
+    // 게시판 상태변경(본인, 관리자)
+    @PutMapping("/status/{id}")
+    public ResponseEntity<BoardUsedDTO> updateStatus(@PathVariable Integer id, @RequestBody BoardUsedDTO boardUsedDTO) { // boardUsedDTO(author,status)
+        BoardUsedDTO updatedBoardUsedDTO = boardUsedService.updateBoardStatus(id, boardUsedDTO);
+        return ResponseEntity.ok(updatedBoardUsedDTO);
     }
 
     @DeleteMapping("/{id}")

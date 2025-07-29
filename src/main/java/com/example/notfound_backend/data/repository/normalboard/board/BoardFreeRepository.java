@@ -1,6 +1,7 @@
 package com.example.notfound_backend.data.repository.normalboard.board;
 
 import com.example.notfound_backend.data.dto.normalboard.BoardRankingDTO;
+import com.example.notfound_backend.data.entity.enumlist.Status;
 import com.example.notfound_backend.data.entity.normalboard.board.BoardFreeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -15,6 +16,12 @@ import java.util.Optional;
 public interface BoardFreeRepository extends JpaRepository<BoardFreeEntity, Integer> {
 
     List<BoardFreeEntity> findAll();
+
+    @Query("select b from BoardFreeEntity b where b.status = :status")
+    List<BoardFreeEntity> findAllByStatus(@Param("status") Status status);
+
+    @Query("select b from BoardFreeEntity b where b.status = 'VISIBLE' or (b.status = 'PRIVATE' and b.author.username = :username)")
+    List<BoardFreeEntity> findAllByUser(@Param("username") String username);
 
     @Modifying
     @Query("UPDATE BoardFreeEntity b SET b.views=b.views+1 WHERE b.id=:id")

@@ -3,11 +3,13 @@ package com.example.notfound_backend.service.normalboard.board;
 import com.example.notfound_backend.data.dao.normalboard.board.BoardInfoDAO;
 import com.example.notfound_backend.data.dao.login.UserAuthDAO;
 import com.example.notfound_backend.data.dao.admin.UserInfoDAO;
+import com.example.notfound_backend.data.dto.admin.UserInfoAllDTO;
 import com.example.notfound_backend.data.dto.normalboard.BoardDTO;
 import com.example.notfound_backend.data.entity.admin.UserInfoEntity;
 import com.example.notfound_backend.data.entity.enumlist.Status;
 import com.example.notfound_backend.data.entity.login.UserAuthEntity;
 import com.example.notfound_backend.data.entity.normalboard.board.BoardInfoEntity;
+import com.example.notfound_backend.exception.UnauthorizedAccessException;
 import com.example.notfound_backend.service.utility.UploadImageService;
 import com.example.notfound_backend.service.admin.UserInfoService;
 import lombok.RequiredArgsConstructor;
@@ -32,34 +34,53 @@ public class BoardInfoService {
     private final UploadImageService uploadImageService;
 
     public List<BoardDTO> findAll() {
-        List<BoardInfoEntity> boardInfoEntityList = boardInfoDAO.findAllBoards();
-        List<BoardDTO> boardDTOList =new ArrayList<>();
-        for(BoardInfoEntity boardInfoEntity : boardInfoEntityList){
-            if (boardInfoEntity.getStatus() == Status.VISIBLE) { // VISIBLE만 노출
-                BoardDTO boardInfoDTO = new BoardDTO();
-                boardInfoDTO.setId(boardInfoEntity.getId());
-                boardInfoDTO.setTitle(boardInfoEntity.getTitle());
-                boardInfoDTO.setBody(boardInfoEntity.getBody());
-                boardInfoDTO.setImgsrc(boardInfoEntity.getImgsrc());
-
-                if (boardInfoEntity.getAuthor() != null) {
-                    boardInfoDTO.setAuthor(boardInfoEntity.getAuthor().getUsername());
-                }
-                UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(boardInfoEntity.getAuthor().getUsername());
-                String userNickname = userInfoEntity.getNickname();
-                String userGrade = userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername());
-                boardInfoDTO.setAuthorNickname(userNickname); // 추가
-                boardInfoDTO.setGrade(userGrade);
-                boardInfoDTO.setRecommend(boardInfoEntity.getRecommend());
-                boardInfoDTO.setViews(boardInfoEntity.getViews());
-                boardInfoDTO.setCategory(boardInfoEntity.getCategory());
-                boardInfoDTO.setCreatedAt(boardInfoEntity.getCreatedAt());
-                boardInfoDTO.setUpdatedAt(boardInfoEntity.getUpdatedAt());
-                boardInfoDTO.setStatus(boardInfoEntity.getStatus().name());
-                boardDTOList.add(boardInfoDTO);
-            }
+        List<BoardInfoEntity> entityList = boardInfoDAO.findAllByStatus(Status.VISIBLE);
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        for(BoardInfoEntity entity : entityList){
+            boardDTOList.add(convertToBoardDTO(entity));
         }
         return boardDTOList;
+    }
+    // 유저용 (VISIBLE + 자신의 PRIVATE 조회)
+    public List<BoardDTO> findAllByUser(String username) {
+        List<BoardInfoEntity> entityList = boardInfoDAO.findAllBoardsByUser(username);
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        for(BoardInfoEntity entity : entityList){
+            boardDTOList.add(convertToBoardDTO(entity));
+        }
+        return boardDTOList;
+    }
+
+    // 관리자용 (모든상태 게시글 조회)
+    public List<BoardDTO> findAllByAdmin(String username) {
+        if(!userAuthDAO.isAdmin(username)) {
+            throw new UnauthorizedAccessException("관리자만 접근가능합니다.");
+        }
+        List<BoardInfoEntity> entityList = boardInfoDAO.findAllBoards();
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        for(BoardInfoEntity entity : entityList) {
+            boardDTOList.add(convertToBoardDTO(entity));
+        }
+        return boardDTOList;
+    }
+
+    private BoardDTO convertToBoardDTO(BoardInfoEntity entity) {
+        UserInfoAllDTO userInfo = userInfoService.getUserInfo(entity.getAuthor().getUsername());
+        return BoardDTO.builder()
+                .id(entity.getId())
+                .title(entity.getTitle())
+                .body(entity.getBody())
+                .imgsrc(entity.getImgsrc())
+                .author(entity.getAuthor().getUsername())
+                .authorNickname(userInfo.getNickname())
+                .grade(userInfo.getGrade())
+                .recommend(entity.getRecommend())
+                .views(entity.getViews())
+                .category(entity.getCategory())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
+                .status(entity.getStatus().name())
+                .build();
     }
 
     @Transactional
@@ -154,6 +175,27 @@ public class BoardInfoService {
         return boardInfoEntityList.stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    // 게시판 상태변경 (본인, 관리자)
+    @Transactional
+    public BoardDTO updateBoardStatus(Integer id, BoardDTO boardDTO) { // boardDTO(author,status)
+        userInfoService.userStatusValidator(boardDTO.getAuthor());
+
+        BoardInfoEntity entity = boardInfoDAO.findById(id).orElseThrow(()->new RuntimeException("Board not found"));
+
+        String author = boardDTO.getAuthor();
+        if (author == null || (!author.equals(entity.getAuthor().getUsername()) && !userAuthDAO.getRole(author).equals("ROLE_ADMIN"))) { // 본인아니고, admin도 아니면
+            throw new UnauthorizedAccessException("해당 게시글을 수정할 권한이 없습니다. 작성자 또는 관리자만 수정 가능");
+        }
+        try {
+            entity.setStatus(Status.valueOf(boardDTO.getStatus()));
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("올바르지 않은 상태 값입니다: " + boardDTO.getStatus());
+        }
+        entity.setUpdatedAt(Instant.now());
+        BoardInfoEntity saved = boardInfoDAO.save(entity);
+        return toDTO(saved);
     }
 
 //    public BoardDTO recommendBoard(Integer id) {

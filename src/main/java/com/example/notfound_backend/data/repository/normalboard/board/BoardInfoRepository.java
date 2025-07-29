@@ -1,6 +1,7 @@
 package com.example.notfound_backend.data.repository.normalboard.board;
 
 import com.example.notfound_backend.data.dto.normalboard.BoardRankingDTO;
+import com.example.notfound_backend.data.entity.enumlist.Status;
 import com.example.notfound_backend.data.entity.normalboard.board.BoardInfoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -15,6 +16,12 @@ import java.util.Optional;
 public interface BoardInfoRepository extends JpaRepository<BoardInfoEntity, Integer> {
 
     List<BoardInfoEntity> findAll();
+
+    @Query("select b from BoardInfoEntity b where b.status = :status")
+    List<BoardInfoEntity> findAllByStatus(@Param("status") Status status);
+
+    @Query("select b from BoardInfoEntity b where b.status = 'VISIBLE' or (b.status = 'PRIVATE' and b.author.username = :username)")
+    List<BoardInfoEntity> findAllByUser(@Param("username") String username);
 
     @Modifying
     @Query("UPDATE BoardInfoEntity b SET b.views=b.views+1 WHERE b.id=:id")
