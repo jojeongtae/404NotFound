@@ -52,6 +52,10 @@ public class SurveyEntity {
     @Column(name = "column5")
     private String column5;
 
+    @Size(max = 255)
+    @Column(name = "imgsrc")
+    private String imgsrc;
+
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "author", nullable = false)

@@ -36,6 +36,10 @@ public class QuizEntity {
     @Column(name = "answer", nullable = false)
     private String answer;
 
+    @Size(max = 255)
+    @Column(name = "imgsrc")
+    private String imgsrc;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author")
     private UserAuthEntity author;

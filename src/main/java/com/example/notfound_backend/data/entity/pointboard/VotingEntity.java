@@ -30,6 +30,10 @@ public class VotingEntity {
     @Column(name = "question", nullable = false)
     private String question;
 
+    @Size(max = 255)
+    @Column(name = "imgsrc")
+    private String imgsrc;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author")
     private UserAuthEntity author;

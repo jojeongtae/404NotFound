@@ -15,6 +15,7 @@ public class VotingDTO {
     private Integer id;
     private String title;
     private String question;
+    private String imgsrc;
     private String author;
     private String authorNickname;
     private String grade;

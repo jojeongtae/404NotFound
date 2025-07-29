@@ -16,6 +16,7 @@ public class QuizDTO {
     private String title;
     private String question;
     private String answer;
+    private String imgsrc;
     private String author;
     private String authorNickname;
     private String grade;
