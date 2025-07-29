@@ -8,10 +8,13 @@ import com.example.notfound_backend.data.entity.login.UserAuthEntity;
 import com.example.notfound_backend.data.entity.admin.UserInfoEntity;
 import com.example.notfound_backend.data.entity.pointboard.VotingEntity;
 import com.example.notfound_backend.service.admin.UserInfoService;
+import com.example.notfound_backend.service.utility.UploadImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,7 @@ public class VotingService {
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
     private final UserInfoService userInfoService;
+    private final UploadImageService uploadImageService;
 
     public List<VotingDTO> findAll(){
         List<VotingEntity> votingEntities=votingDAO.findAllVoting();
@@ -32,6 +36,7 @@ public class VotingService {
             votingDTO.setId(votingEntity.getId());
             votingDTO.setTitle(votingEntity.getTitle());
             votingDTO.setQuestion(votingEntity.getQuestion());
+            votingDTO.setImgsrc(votingEntity.getImgsrc());
             votingDTO.setAuthor(votingEntity.getAuthor().getUsername());
             UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(votingEntity.getAuthor().getUsername());
             String userNickname = userInfoEntity.getNickname();
@@ -61,6 +66,7 @@ public class VotingService {
                 entity.getId(),
                 entity.getTitle(),
                 entity.getQuestion(),
+                entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
                 userNickname,
                 userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername()),
@@ -71,42 +77,47 @@ public class VotingService {
     }
 
     @Transactional
-    public VotingDTO createVoting(VotingDTO dto){
+    public VotingDTO createVoting(VotingDTO dto, MultipartFile file) throws IOException {
         userInfoService.userStatusValidator(dto.getAuthor());
+        String imgsrc=uploadImageService.uploadBoardImage(file);
 
         VotingEntity entity=new VotingEntity();
         entity.setTitle(dto.getTitle());
         entity.setQuestion(dto.getQuestion());
+        entity.setImgsrc(imgsrc);
 
         UserAuthEntity author=userAuthDAO.findByUsername(dto.getAuthor());
         entity.setAuthor(author);
 
         entity.setCreatedAt(Instant.now());
-        entity.setCategory("VOTING");
+        entity.setCategory("voting");
         entity.setViews(0);
         VotingEntity newEntity=votingDAO.save(entity);
         return toDTO(newEntity);
     }
 
     @Transactional
-    public VotingDTO updateVoting(Integer id, VotingDTO dto){
+    public VotingDTO updateVoting(Integer id, VotingDTO dto, MultipartFile file) throws IOException {
         userInfoService.userStatusValidator(dto.getAuthor());
 
         VotingEntity entity=votingDAO.findById(id)
                 .orElseThrow(()->new RuntimeException("Voting not found"));
 
+        String imgsrc=uploadImageService.updateBoardImage(file, entity.getImgsrc());
         entity.setTitle(dto.getTitle());
         entity.setQuestion(dto.getQuestion());
+        entity.setImgsrc(imgsrc);
 
         VotingEntity updated=votingDAO.save(entity);
         return toDTO(updated);
     }
 
     @Transactional
-    public void deleteVoting(Integer id){
+    public void deleteVoting(Integer id) throws IOException {
         VotingEntity entity=votingDAO.findById(id)
                 .orElseThrow(()->new RuntimeException("Voting not found"));
         votingDAO.delete(entity);
+        uploadImageService.deleteBoardImage(entity.getImgsrc());
     }
 
 

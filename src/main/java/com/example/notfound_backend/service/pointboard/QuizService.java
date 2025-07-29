@@ -9,10 +9,13 @@ import com.example.notfound_backend.data.entity.enumlist.Type;
 import com.example.notfound_backend.data.entity.login.UserAuthEntity;
 import com.example.notfound_backend.data.entity.pointboard.QuizEntity;
 import com.example.notfound_backend.service.admin.UserInfoService;
+import com.example.notfound_backend.service.utility.UploadImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +27,7 @@ public class QuizService {
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
     private final UserInfoService userInfoService;
-
+    private final UploadImageService uploadImageService;
 
     public List<QuizDTO> findAll() {
         List<QuizEntity> quizEntities = quizDAO.findAllBoards();
@@ -35,6 +38,7 @@ public class QuizService {
             quizDTO.setTitle(quizEntity.getTitle());
             quizDTO.setQuestion(quizEntity.getQuestion());
             quizDTO.setAnswer(quizEntity.getAnswer());
+            quizDTO.setImgsrc(quizEntity.getImgsrc());
 
             if (quizEntity.getAuthor() != null) {
                 quizDTO.setAuthor(quizEntity.getAuthor().getUsername());
@@ -70,6 +74,7 @@ public class QuizService {
                 entity.getTitle(),
                 entity.getQuestion(),
                 entity.getAnswer(),
+                entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
                 userNickname,
                 userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername()),
@@ -82,20 +87,22 @@ public class QuizService {
     }
 
     @Transactional
-    public QuizDTO createBoard(QuizDTO quizDTO) {
+    public QuizDTO createBoard(QuizDTO quizDTO, MultipartFile file) throws IOException {
         userInfoService.userStatusValidator(quizDTO.getAuthor());
+        String imgsrc=uploadImageService.uploadBoardImage(file);
 
         QuizEntity entity = new QuizEntity();
         entity.setTitle(quizDTO.getTitle());
         entity.setQuestion(quizDTO.getQuestion());
         entity.setAnswer(quizDTO.getAnswer());
+        entity.setImgsrc(imgsrc);
 
         UserAuthEntity author = userAuthDAO.findByUsername(quizDTO.getAuthor());
         entity.setAuthor(author);
 
         entity.setCreatedAt(Instant.now());
         entity.setLevel(quizDTO.getLevel());
-        entity.setCategory("QUIZ");
+        entity.setCategory("quiz");
         entity.setType(Type.valueOf(quizDTO.getType()));
         entity.setViews(0); // 새 글이니 조회수 0으로 시작
         QuizEntity saved = quizDAO.save(entity);
@@ -104,12 +111,13 @@ public class QuizService {
     }
 
     @Transactional
-    public QuizDTO updateBoard(Integer id, QuizDTO quizDTO) {
+    public QuizDTO updateBoard(Integer id, QuizDTO quizDTO, MultipartFile file) throws IOException {
         userInfoService.userStatusValidator(quizDTO.getAuthor());
 
         QuizEntity entity = quizDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Quiz not found"));
 
+        String imgsrc=uploadImageService.updateBoardImage(file, entity.getImgsrc());
         // 원하는 필드만 수정
         entity.setTitle(quizDTO.getTitle());
         entity.setQuestion(quizDTO.getQuestion());
@@ -122,9 +130,10 @@ public class QuizService {
     }
 
     @Transactional
-    public void deleteBoard(Integer id) {
+    public void deleteBoard(Integer id) throws IOException {
         QuizEntity entity = quizDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Quiz not found"));
         quizDAO.delete(entity);
+        uploadImageService.deleteBoardImage(entity.getImgsrc());
     }
 }
