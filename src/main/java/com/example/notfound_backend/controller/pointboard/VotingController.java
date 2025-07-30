@@ -30,7 +30,7 @@ public class VotingController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<VotingDTO> createVoting(@RequestPart("votingDTO") VotingDTO votingDTO,
+    public ResponseEntity<VotingDTO> createVoting(@RequestPart("boardDTO") VotingDTO votingDTO,
                                                   @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         VotingDTO created=votingService.createVoting(votingDTO, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
@@ -38,7 +38,7 @@ public class VotingController {
 
     @PutMapping("/{id}")
     public ResponseEntity<VotingDTO> updateVoting(@PathVariable Integer id,
-                                                  @RequestPart("votingDTO") VotingDTO votingDTO,
+                                                  @RequestPart("boardDTO") VotingDTO votingDTO,
                                                   @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         VotingDTO updated=votingService.updateVoting(id, votingDTO, file);
         return ResponseEntity.ok(updated);

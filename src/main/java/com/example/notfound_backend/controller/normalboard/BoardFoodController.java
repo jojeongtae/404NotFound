@@ -93,13 +93,13 @@ public class BoardFoodController {
 
     @GetMapping("/ranking/comments")
     public List<BoardRankingDTO> getRankingByCommentsToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getFoodTop5ByCommentsToday();
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getFoodTop5ByCommentsInLast7Days();
         return boardRankingDTOList;
     }
 
     @GetMapping("/ranking/recommend")
     public List<BoardRankingDTO> getRecommendByRecommendToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getFoodTop5ByRecommendToday();
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getFoodTop5ByRecommendInLast7Days();
         return boardRankingDTOList;
     }
 

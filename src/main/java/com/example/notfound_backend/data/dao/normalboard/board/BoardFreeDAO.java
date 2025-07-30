@@ -44,12 +44,16 @@ public class BoardFreeDAO {
         boardFreeRepository.delete(boardFreeEntity);
     }
 
-    public List<BoardRankingDTO> getTop5ByRecommendToday() {
-        return boardFreeRepository.findTop5ByRecommendToday();
+    public List<BoardRankingDTO> getTop5ByRecommendInLast7Days() {
+        return boardFreeRepository.findTop5ByRecommendInLast7Days();
     }
 
-    public List<BoardRankingDTO> getTop5ByCommentsToday() {
-        return boardFreeRepository.findTop5ByCommentsToday();
+    public List<BoardRankingDTO> getTop5ByCommentsInLast7Days() {
+        return boardFreeRepository.findTop5ByCommentsInLast7Days();
+    }
+
+    public List<BoardRankingDTO> getTop5ByRecommend(){
+        return boardFreeRepository.findTop5ByRecommend();
     }
 
     public List<BoardFreeEntity> findByTitle(String title) { return boardFreeRepository.findByTitle(title); }

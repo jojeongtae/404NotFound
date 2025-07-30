@@ -45,12 +45,16 @@ public class BoardFoodDAO {
         boardFoodRepository.delete(boardFoodEntity);
     }
 
-    public List<BoardRankingDTO> getTop5ByRecommendToday() {
-        return boardFoodRepository.findTop5ByRecommendToday();
+    public List<BoardRankingDTO> getTop5ByRecommendInLast7Days() {
+        return boardFoodRepository.findTop5ByRecommendInLast7Days();
     }
 
-    public List<BoardRankingDTO> getTop5ByCommentsToday() {
-        return boardFoodRepository.findTop5ByCommentsToday();
+    public List<BoardRankingDTO> getTop5ByCommentsInLast7Days() {
+        return boardFoodRepository.findTop5ByCommentsInLast7Days();
+    }
+
+    public List<BoardRankingDTO> getTop5ByRecommend(){
+        return boardFoodRepository.findTop5ByRecommend();
     }
 
     public List<BoardFoodEntity> findByTitle(String title) { return boardFoodRepository.findByTitle(title); }
