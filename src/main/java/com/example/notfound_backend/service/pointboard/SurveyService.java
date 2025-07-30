@@ -8,10 +8,13 @@ import com.example.notfound_backend.data.entity.admin.UserInfoEntity;
 import com.example.notfound_backend.data.entity.login.UserAuthEntity;
 import com.example.notfound_backend.data.entity.pointboard.SurveyEntity;
 import com.example.notfound_backend.service.admin.UserInfoService;
+import com.example.notfound_backend.service.utility.UploadImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +26,7 @@ public class SurveyService {
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
     private final UserInfoService userInfoService;
+    private final UploadImageService uploadImageService;
 
     public List<SurveyDTO> findAll() {
         List<SurveyEntity> surveyEntities=surveyDAO.findAllBoards();
@@ -37,6 +41,7 @@ public class SurveyService {
             surveyDTO.setColumn3(surveyEntity.getColumn3());
             surveyDTO.setColumn4(surveyEntity.getColumn4());
             surveyDTO.setColumn5(surveyEntity.getColumn5());
+            surveyDTO.setImgsrc(surveyEntity.getImgsrc());
             surveyDTO.setAuthor(surveyEntity.getAuthor().getUsername());
             UserInfoEntity userInfoEntity = userInfoDAO.getUserInfo(surveyEntity.getAuthor().getUsername());
             String userNickname = userInfoEntity.getNickname();
@@ -71,6 +76,7 @@ public class SurveyService {
                 entity.getColumn3(),
                 entity.getColumn4(),
                 entity.getColumn5(),
+                entity.getImgsrc(),
                 entity.getAuthor().getUsername(),
                 userNickname,
                 userInfoService.getUserGrade(userInfoEntity.getUsername().getUsername()),
@@ -81,8 +87,9 @@ public class SurveyService {
     }
 
     @Transactional
-    public SurveyDTO createBoard(SurveyDTO surveyDTO){
+    public SurveyDTO createBoard(SurveyDTO surveyDTO, MultipartFile file) throws IOException {
         userInfoService.userStatusValidator(surveyDTO.getAuthor());
+        String imgsrc=uploadImageService.uploadBoardImage(file);
 
         SurveyEntity entity=new SurveyEntity();
         entity.setTitle(surveyDTO.getTitle());
@@ -92,12 +99,13 @@ public class SurveyService {
         entity.setColumn3(surveyDTO.getColumn3());
         entity.setColumn4(surveyDTO.getColumn4());
         entity.setColumn5(surveyDTO.getColumn5());
+        entity.setImgsrc(imgsrc);
 
         UserAuthEntity author=userAuthDAO.findByUsername(surveyDTO.getAuthor());
         entity.setAuthor(author);
 
         entity.setCreatedAt(Instant.now());
-        entity.setCategory("SURVEY");
+        entity.setCategory("survey");
         entity.setViews(0);
         SurveyEntity saved=surveyDAO.save(entity);
         userInfoDAO.updatePoint(surveyDTO.getAuthor(), 1); // 1포인트증가
@@ -105,12 +113,13 @@ public class SurveyService {
     }
 
     @Transactional
-    public SurveyDTO updateBoard(Integer id, SurveyDTO surveyDTO) {
+    public SurveyDTO updateBoard(Integer id, SurveyDTO surveyDTO, MultipartFile file) throws IOException {
         userInfoService.userStatusValidator(surveyDTO.getAuthor());
 
         SurveyEntity entity = surveyDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Quiz not found"));
 
+        String imgsrc=uploadImageService.updateBoardImage(file, entity.getImgsrc());
         // 원하는 필드만 수정
         entity.setTitle(surveyDTO.getTitle());
         entity.setQuestion(surveyDTO.getQuestion());
@@ -119,15 +128,17 @@ public class SurveyService {
         entity.setColumn3(surveyDTO.getColumn3());
         entity.setColumn4(surveyDTO.getColumn4());
         entity.setColumn5(surveyDTO.getColumn5());
+        entity.setImgsrc(imgsrc);
 
         SurveyEntity updated = surveyDAO.save(entity);
         return toDTO(updated);
     }
 
     @Transactional
-    public void deleteBoard(Integer id) {
+    public void deleteBoard(Integer id) throws IOException {
         SurveyEntity entity = surveyDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Quiz not found"));
         surveyDAO.delete(entity);
+        uploadImageService.deleteBoardImage(entity.getImgsrc());
     }
 }

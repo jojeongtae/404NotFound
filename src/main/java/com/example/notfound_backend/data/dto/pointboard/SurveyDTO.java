@@ -20,6 +20,7 @@ public class SurveyDTO {
     private String column3;
     private String column4;
     private String column5;
+    private String imgsrc;
     private String author;
     private String authorNickname;
     private String grade;

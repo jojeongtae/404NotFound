@@ -6,7 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -28,19 +30,22 @@ public class VotingController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<VotingDTO> createVoting(@RequestBody VotingDTO dto) {
-        VotingDTO created=votingService.createVoting(dto);
+    public ResponseEntity<VotingDTO> createVoting(@RequestPart("boardDTO") VotingDTO votingDTO,
+                                                  @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+        VotingDTO created=votingService.createVoting(votingDTO, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<VotingDTO> updateVoting(@PathVariable Integer id, @RequestBody VotingDTO dto) {
-        VotingDTO updated=votingService.updateVoting(id, dto);
+    public ResponseEntity<VotingDTO> updateVoting(@PathVariable Integer id,
+                                                  @RequestPart("boardDTO") VotingDTO votingDTO,
+                                                  @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+        VotingDTO updated=votingService.updateVoting(id, votingDTO, file);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<VotingDTO> deleteVoting(@PathVariable Integer id) {
+    public ResponseEntity<VotingDTO> deleteVoting(@PathVariable Integer id) throws IOException {
         votingService.deleteVoting(id);
         return  ResponseEntity.noContent().build();
     }

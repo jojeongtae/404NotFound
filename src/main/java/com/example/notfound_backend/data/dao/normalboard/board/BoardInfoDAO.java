@@ -54,12 +54,16 @@ public class BoardInfoDAO {
         boardInfoRepository.delete(boardInfoEntity);
     }
 
-    public List<BoardRankingDTO> getTop5ByRecommendToday() {
-        return boardInfoRepository.findTop5ByRecommendToday();
+    public List<BoardRankingDTO> getTop5ByRecommendInLast7Days() {
+        return boardInfoRepository.findTop5ByRecommendInLast7Days();
     }
 
-    public List<BoardRankingDTO> getTop5ByCommentsToday() {
-        return boardInfoRepository.findTop5ByCommentsToday();
+    public List<BoardRankingDTO> getTop5ByCommentsInLast7Days() {
+        return boardInfoRepository.findTop5ByCommentsInLast7Days();
+    }
+
+    public List<BoardRankingDTO> getTop5ByRecommend(){
+        return boardInfoRepository.findTop5ByRecommend();
     }
 
     public List<BoardInfoEntity> findByTitle(String title){ return boardInfoRepository.findByTitle(title); }

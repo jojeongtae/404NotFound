@@ -113,13 +113,13 @@ public class BoardQnaController {
 
     @GetMapping("/ranking/comments")
     public List<BoardRankingDTO> getRankingByCommentsToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getQnaTop5ByCommentsToday();
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getQnaTop5ByCommentsInLast7Days();
         return boardRankingDTOList;
     }
 
     @GetMapping("/ranking/recommend")
     public List<BoardRankingDTO> getRecommendByRecommendToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getQnaTop5ByRecommendToday();
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getQnaTop5ByRecommendInLast7Days();
         return boardRankingDTOList;
     }
 
