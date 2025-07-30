@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getFullGradeDescription } from '../features/common/GradeDescriptions';
 import apiClient from '../api/apiClient';
 import { setUser } from '../features/auth/userSlice';
+import SignUpWithCaptcha from '../features/auth/SignUpWithCaptcha.js';
 
 // const gradeDescriptions = {
 //     "👑 500": "500 Internal Server Error (운영진)",
@@ -101,7 +102,7 @@ const MainLayout = () => {
             <li style={{ marginBottom: '10px' }}><Link to="/board/admin/report">신고 목록 조회</Link></li>
             </>:
             ""}
-            <li style={{ marginBottom: '10px' }}><span>--오늘의 개추--</span></li>
+            <li style={{ marginBottom: '10px' }}><span>--주간 랭킹--</span></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/ranking/recommend">Best404추천수</Link></li>
             <li style={{ marginBottom: '10px' }}><Link to="/board/ranking/comment">Best404댓글수</Link></li>
             <li style={{ marginBottom: '10px' }}><span>--일반 게시판 목록--</span></li>
@@ -135,7 +136,7 @@ const MainLayout = () => {
       {showModal && (
         <Modal onClose={closeModal}>
           {modalType === 'login' && <LoginForm onClose={closeModal} />}
-          {modalType === 'signup' && <SignUpForm onClose={closeModal} />}
+          {modalType === 'signup' && <SignUpWithCaptcha onClose={closeModal} />}
           {modalType === 'userInfo' && <UserInfoModal onClose={closeModal} />} {/* UserInfoModal 렌더링 추가 */}
           {modalType === 'mailbox' && <MailboxForm onClose={closeModal} />} {/* 이 줄을 추가합니다. */}
         </Modal>

@@ -9,11 +9,9 @@ const HomePage = () => {
             <p>왼쪽 게시판 목록을 통해 이동해주세요.</p>
             <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '20px' }}>
                 <div style={{ flex: 1, marginRight: '10px' }}>
-                    <RankingPage type="recommend" />
+                    <RankingPage props="all" />
                 </div>
-                <div style={{ flex: 1, marginLeft: '10px' }}>
-                    <RankingPage type="comment" />
-                </div>
+                
             </div>
         </div>
     );

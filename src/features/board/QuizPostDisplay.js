@@ -8,6 +8,8 @@ const QuizPostDisplay = ({ post }) => {
   const [isAnswerChecked, setIsAnswerChecked] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const user = useSelector(state => state.user);
+  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
   const handleAnswerSubmit = async(e) => {
     e.preventDefault();
     setIsAnswerChecked(true);
@@ -30,7 +32,7 @@ const QuizPostDisplay = ({ post }) => {
     } else {
       const res = await apiClient.post("/quiz-answers/new",{
         username: user.username,
-        userAnswer:userAnswer.toLocaleUpperCase,
+        userAnswer:userAnswer.toLocaleUpperCase(),
         quiz_id:post.id,
         result:0
       })
@@ -53,6 +55,14 @@ const QuizPostDisplay = ({ post }) => {
       </div>
 
       <form onSubmit={handleAnswerSubmit}>
+        {post.imgsrc &&(
+<img
+                src={`${API_BASE_URL}/${post.imgsrc}`}
+                alt={post.title || '게시글 이미지'}
+                style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
+              />
+        )}
+         
         <input
           type="text"
           value={userAnswer}
