@@ -136,6 +136,7 @@ const MainLayout = () => {
                   <li><Link to="/board/info">정보 게시판</Link></li>
                   <li><Link to="/board/used">중고거래 게시판</Link></li>
                   <li><Link to="/board/food">먹거리 게시판</Link></li>
+                  <li><Link to="/board/user/report">신고 게시판</Link></li>
                 </ul>
                 <h3>포인트 게시판</h3>
                 <ul className="nav-list">
