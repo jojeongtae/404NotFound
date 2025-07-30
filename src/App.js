@@ -1,5 +1,6 @@
 import { BrowserRouter, Route,  Routes } from 'react-router-dom';
-import './App.css';
+// import './App.css';
+import './style/default.css';
 import MainLayout from "./pages/MainLayout";
 import HomePage from './pages/HomePage';
 import BoardPage from './pages/BoardPage';
@@ -45,11 +46,4 @@ function App() {
 export default App;
 
 
-
-
-
-
-
-
-// asdasdasdas
 
