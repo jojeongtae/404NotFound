@@ -50,7 +50,7 @@ const BoardPageForm = ({ boardId }) => {
         const rect = event.currentTarget.getBoundingClientRect();
         setDropdownPosition({
             x: rect.left + window.scrollX,
-            y: rect.bottom + window.scrollY
+            y: rect.top + window.scrollY
         });
         setShowDropdown(prev => !prev); // 토글
     };
@@ -119,7 +119,15 @@ const BoardPageForm = ({ boardId }) => {
                 setSearchOption={setSearchOption}
                 onSearchSubmit={handleSearchSubmit}
             />
-            <table className="post-list">
+
+            <table className="table post-list">
+                <colgroup>
+                    <col width="10%"/>
+                    <col width="auto"/>
+                    <col width="20%"/>
+                    <col width="10%"/>
+                    <col width="10%"/>
+                </colgroup>
                 <thead>
                     <tr>
                         <th className="header-item header-id">번호</th>
@@ -160,23 +168,16 @@ const BoardPageForm = ({ boardId }) => {
             {showDropdown && selectedUser && (
                 <div
                     ref={dropdownRef}
+                    className="user-info-dropdown"
                     style={{
                         position: 'absolute',
-                        top: dropdownPosition.y,
-                        left: dropdownPosition.x,
-                        border: '1px solid #ccc',
-                        background: 'white',
-                        padding: '10px',
-                        zIndex: 1000,
-                        boxShadow: '0px 8px 16px 0px rgba(0,0,0,0.2)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '5px'
+                        top: dropdownPosition.y - 180,
+                        left: dropdownPosition.x + 30
                     }}
                 >
-                    <p style={{ margin: '0 0 5px 0', fontWeight: 'bold' }}>{selectedUser.nickname}</p>
-                    <Link to={`/user/board/${selectedUser.id}`} onClick={() => setShowDropdown(false)}>작성글 보기</Link>
-                    <Link to={`/user/userinfo/${selectedUser.id}`} onClick={() => setShowDropdown(false)}>유저 정보 보기</Link>
+                    <div className="title">{selectedUser.nickname}</div>
+                    <Link className="btn small" to={`/user/board/${selectedUser.id}`} onClick={() => setShowDropdown(false)}>작성글 보기</Link>
+                    <Link className="btn small" to={`/user/userinfo/${selectedUser.id}`} onClick={() => setShowDropdown(false)}>유저 정보 보기</Link>
                 </div>
             )}
         </div>

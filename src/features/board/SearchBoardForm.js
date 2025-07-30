@@ -9,24 +9,23 @@ const SearchBoardForm = ({ searchText, setSearchText, searchOption, setSearchOpt
     };
 
     return (
-        <form onSubmit={handleSearch} style={{ marginBottom: '20px', display: 'flex', gap: '10px' }}>
-            <select value={searchOption} onChange={(e) => setSearchOption(e.target.value)}
-                    style={{ padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}>
-                <option value="">제목 또는 닉네임</option>
-                <option value="title">제목</option>
-                <option value="author">닉네임</option>
-            </select>
-            <input
-                type="text"
-                placeholder="검색어를 입력하세요"
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-                style={{ flexGrow: 1, padding: '8px', borderRadius: '4px', border: '1px solid #ccc' }}
-            />
-            <button type="submit" style={{ padding: '8px 15px', borderRadius: '4px', border: 'none', backgroundColor: '#007bff', color: 'white', cursor: 'pointer' }}>
-                검색
-            </button>
-        </form>
+        <div className="search-board-form">
+            <form onSubmit={handleSearch}>
+                <select value={searchOption} onChange={(e) => setSearchOption(e.target.value)}>
+                    <option value="">제목 또는 닉네임</option>
+                    <option value="title">제목</option>
+                    <option value="author">닉네임</option>
+                </select>
+                <input
+                    type="text"
+                    placeholder="검색어를 입력하세요"
+                    className="search-input"
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                />
+                <button type="submit" className="btn type2 submit">검색</button>
+            </form>
+        </div>
     );
 };
 

@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+/* 공통 */
+
+/* 게시판 목록 */
+.user-info-dropdown{position:absolute;z-index:1000;padding:10px 10px 10px;border:1px solid var(--border-color);border-radius:6px;background-color:#fff;box-shadow:5px 5px 10px rgba(0,0,0,0.2);}
+.user-info-dropdown .title{margin-bottom:8px;font-size:16px;font-weight:600;color:var(--text-color);}
+.user-info-dropdown a:first-of-type{margin-left:0;}
+
+.search-board-form{margin-bottom:30px;}
+.search-board-form form{display:flex;}
+.search-board-form .search-input{flex-grow:1;}
+.search-board-form .submit{min-width:70px;}
+
+/* 게시판 상세 */
+.board-detail{}
