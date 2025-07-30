@@ -79,8 +79,13 @@ public class BoardRankingService {
         combined.addAll(getQnaTop5ByCommentsInLast7Days());
 
         // 댓글 수 내림차순 정렬 후 상위 5개
+//        return combined.stream()
+//                .sorted(Comparator.comparing(dto -> dto.getCommentCount()))
+//                .limit(5)
+//                .toList();
         return combined.stream()
-                .sorted(Comparator.comparing(dto -> dto.getCommentCount()))
+                .sorted(Comparator.comparing(BoardRankingDTO::getCommentCount,
+                        Comparator.nullsLast(Comparator.naturalOrder())).reversed())
                 .limit(5)
                 .toList();
     }
