@@ -67,11 +67,12 @@ public interface BoardQnaRepository extends JpaRepository<BoardQnaEntity, Intege
         FROM board_qna b
                 JOIN user_auth ua ON b.author = ua.username 
             JOIN user_info u ON ua.username = u.username 
-        WHERE DATE(b.created_at) = CURRENT_DATE AND b.status = 'VISIBLE'
+        WHERE DATE(b.created_at) BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND CURRENT_DATE 
+                AND b.status = 'VISIBLE'
         ORDER BY commentCount DESC
         LIMIT 5
         """, nativeQuery = true)
-    List<BoardRankingDTO> findTop5ByCommentsToday(); //댓글 top5
+    List<BoardRankingDTO> findTop5ByCommentsInLast7Days(); //댓글 top5
 
     @Query(value = """
     SELECT 
@@ -89,10 +90,30 @@ public interface BoardQnaRepository extends JpaRepository<BoardQnaEntity, Intege
     FROM board_qna b
         JOIN user_auth ua ON b.author = ua.username 
             JOIN user_info u ON ua.username = u.username 
-    WHERE DATE(b.created_at) = CURRENT_DATE AND b.status = 'VISIBLE'
+    WHERE DATE(b.created_at) BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND CURRENT_DATE 
+        AND b.status = 'VISIBLE'
     ORDER BY b.recommend DESC
     LIMIT 5
     """, nativeQuery = true)
-    List<BoardRankingDTO> findTop5ByRecommendToday();
+    List<BoardRankingDTO> findTop5ByRecommendInLast7Days();
+
+    @Query(value = """
+    SELECT\s
+        b.id AS id,
+        b.title AS title,
+        b.author AS author,
+        u.nickname AS authorNickname,
+        b.recommend AS recommend,
+        b.views AS views,
+        b.category AS category,
+        b.created_at AS createdAt
+    FROM board_food b
+    JOIN user_auth ua ON b.author = ua.username\s
+    JOIN user_info u ON ua.username = u.username\s
+    WHERE b.status = 'VISIBLE'
+    ORDER BY b.recommend DESC
+    LIMIT 5
+    """, nativeQuery = true)
+    List<BoardRankingDTO> findTop5ByRecommend();
 
 }

@@ -54,12 +54,16 @@ public class BoardQnaDAO {
         boardQnaRepository.delete(boardQnaEntity);
     }
 
-    public List<BoardRankingDTO> getTop5ByRecommendToday() {
-        return boardQnaRepository.findTop5ByRecommendToday();
+    public List<BoardRankingDTO> getTop5ByRecommendInLast7Days() {
+        return boardQnaRepository.findTop5ByRecommendInLast7Days();
     }
 
-    public List<BoardRankingDTO> getTop5ByCommentsToday() {
-        return boardQnaRepository.findTop5ByCommentsToday();
+    public List<BoardRankingDTO> getTop5ByCommentsInLast7Days() {
+        return boardQnaRepository.findTop5ByCommentsInLast7Days();
+    }
+
+    public List<BoardRankingDTO> getTop5ByRecommend(){
+        return boardQnaRepository.findTop5ByRecommend();
     }
 
     public List<BoardQnaEntity> findByTitle(String title) { return boardQnaRepository.findByTitle(title); }

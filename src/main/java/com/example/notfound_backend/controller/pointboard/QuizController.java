@@ -31,7 +31,7 @@ public class QuizController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<QuizDTO> create(@RequestPart("quizDTO") QuizDTO quizDTO,
+    public ResponseEntity<QuizDTO> create(@RequestPart("boardDTO") QuizDTO quizDTO,
                                           @RequestPart(value = "file",  required = false) MultipartFile file) throws IOException {
         QuizDTO created = quizService.createBoard(quizDTO, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
@@ -39,7 +39,7 @@ public class QuizController {
 
     @PutMapping("/{id}")
     public ResponseEntity<QuizDTO> update(@PathVariable Integer id,
-                                          @RequestPart("quizDTO") QuizDTO quizDTO,
+                                          @RequestPart("boardDTO") QuizDTO quizDTO,
                                           @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         QuizDTO updated = quizService.updateBoard(id, quizDTO, file);
         return ResponseEntity.ok(updated);

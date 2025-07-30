@@ -18,48 +18,65 @@ public class BoardRankingService {
     private final BoardInfoDAO boardInfoDAO;
     private final BoardUsedDAO boardUsedDAO;
 
-    // 각 게시판별 댓글 top5
-    public List<BoardRankingDTO> getFreeTop5ByCommentsToday() {
-        return boardFreeDAO.getTop5ByCommentsToday();
+    // 각 게시판별 댓글 top5(최근 7일간)
+    public List<BoardRankingDTO> getFreeTop5ByCommentsInLast7Days() {
+        return boardFreeDAO.getTop5ByCommentsInLast7Days();
     }
-    public List<BoardRankingDTO> getInfoTop5ByCommentsToday() {
-        return boardInfoDAO.getTop5ByCommentsToday();
+    public List<BoardRankingDTO> getInfoTop5ByCommentsInLast7Days() {
+        return boardInfoDAO.getTop5ByCommentsInLast7Days();
     }
-    public List<BoardRankingDTO> getFoodTop5ByCommentsToday() {
-        return boardFoodDAO.getTop5ByCommentsToday();
+    public List<BoardRankingDTO> getFoodTop5ByCommentsInLast7Days() {
+        return boardFoodDAO.getTop5ByCommentsInLast7Days();
     }
-    public List<BoardRankingDTO> getUsedTop5ByCommentsToday() {
-        return boardUsedDAO.getTop5ByCommentsToday();
+    public List<BoardRankingDTO> getUsedTop5ByCommentsInLast7Days() {
+        return boardUsedDAO.getTop5ByCommentsInLast7Days();
     }
-    public List<BoardRankingDTO> getQnaTop5ByCommentsToday() {
-        return boardQnaDAO.getTop5ByCommentsToday();
+    public List<BoardRankingDTO> getQnaTop5ByCommentsInLast7Days() {
+        return boardQnaDAO.getTop5ByCommentsInLast7Days();
+    }
+
+    // 각 게시판별 추천 top5(최근 7일간)
+    public List<BoardRankingDTO> getFreeTop5ByRecommendInLast7Days() {
+        return boardFreeDAO.getTop5ByRecommendInLast7Days();
+    }
+    public List<BoardRankingDTO> getInfoTop5ByRecommendInLast7Days() {
+        return boardInfoDAO.getTop5ByRecommendInLast7Days();
+    }
+    public List<BoardRankingDTO> getFoodTop5ByRecommendInLast7Days() {
+        return boardFoodDAO.getTop5ByRecommendInLast7Days();
+    }
+    public List<BoardRankingDTO> getUsedTop5ByRecommendInLast7Days() {
+        return boardUsedDAO.getTop5ByRecommendInLast7Days();
+    }
+    public List<BoardRankingDTO> getQnaTop5ByRecommendInLast7Days() {
+        return boardQnaDAO.getTop5ByRecommendInLast7Days();
     }
 
     // 각 게시판별 추천 top5
-    public List<BoardRankingDTO> getFreeTop5ByRecommendToday() {
-        return boardFreeDAO.getTop5ByRecommendToday();
+    public List<BoardRankingDTO> getFreeTop5ByRecommend(){
+        return boardFreeDAO.getTop5ByRecommend();
     }
-    public List<BoardRankingDTO> getInfoTop5ByRecommendToday() {
-        return boardInfoDAO.getTop5ByRecommendToday();
+    public List<BoardRankingDTO> getInfoTop5ByRecommend(){
+        return boardInfoDAO.getTop5ByRecommend();
     }
-    public List<BoardRankingDTO> getFoodTop5ByRecommendToday() {
-        return boardFoodDAO.getTop5ByRecommendToday();
+    public List<BoardRankingDTO> getFoodTop5ByRecommend(){
+        return boardFoodDAO.getTop5ByRecommend();
     }
-    public List<BoardRankingDTO> getUsedTop5ByRecommendToday() {
-        return boardUsedDAO.getTop5ByRecommendToday();
+    public List<BoardRankingDTO> getUsedTop5ByRecommend(){
+        return boardUsedDAO.getTop5ByRecommend();
     }
-    public List<BoardRankingDTO> getQnaTop5ByRecommendToday() {
-        return boardQnaDAO.getTop5ByRecommendToday();
+    public List<BoardRankingDTO> getQnaTop5ByRecommend(){
+        return boardQnaDAO.getTop5ByRecommend();
     }
 
     // 메인 화면에서 5개 게시판 전체 통합 댓글 top5
-    public List<BoardRankingDTO> getAllBoardsTop5ByCommentsToday() {
+    public List<BoardRankingDTO> getAllBoardsTop5ByCommentsInLast7Days() {
         List<BoardRankingDTO> combined = new ArrayList<>();
-        combined.addAll(getFreeTop5ByCommentsToday());
-        combined.addAll(getInfoTop5ByCommentsToday());
-        combined.addAll(getFoodTop5ByCommentsToday());
-        combined.addAll(getUsedTop5ByCommentsToday());
-        combined.addAll(getQnaTop5ByCommentsToday());
+        combined.addAll(getFreeTop5ByCommentsInLast7Days());
+        combined.addAll(getInfoTop5ByCommentsInLast7Days());
+        combined.addAll(getFoodTop5ByCommentsInLast7Days());
+        combined.addAll(getUsedTop5ByCommentsInLast7Days());
+        combined.addAll(getQnaTop5ByCommentsInLast7Days());
 
         // 댓글 수 내림차순 정렬 후 상위 5개
         return combined.stream()
@@ -69,15 +86,30 @@ public class BoardRankingService {
     }
 
     // 메인 화면에서 5개 게시판 전체 통합 추천 top5
-    public List<BoardRankingDTO> getAllBoardsTop5ByRecommendToday() {
+    public List<BoardRankingDTO> getAllBoardsTop5ByRecommendInLast7Days() {
         List<BoardRankingDTO> combined = new ArrayList<>();
-        combined.addAll(getFreeTop5ByRecommendToday());
-        combined.addAll(getInfoTop5ByRecommendToday());
-        combined.addAll(getFoodTop5ByRecommendToday());
-        combined.addAll(getUsedTop5ByRecommendToday());
-        combined.addAll(getQnaTop5ByRecommendToday());
+        combined.addAll(getFreeTop5ByRecommendInLast7Days());
+        combined.addAll(getInfoTop5ByRecommendInLast7Days());
+        combined.addAll(getFoodTop5ByRecommendInLast7Days());
+        combined.addAll(getUsedTop5ByRecommendInLast7Days());
+        combined.addAll(getQnaTop5ByRecommendInLast7Days());
 
         // 추천 수 내림차순 정렬 후 상위 5개
+        return combined.stream()
+                .sorted(Comparator.comparing(BoardRankingDTO::getRecommend,
+                        Comparator.nullsLast(Comparator.naturalOrder())).reversed())
+                .limit(5)
+                .toList();
+    }
+
+    public List<BoardRankingDTO> getAllBoardsTop5ByRecommend(){
+        List<BoardRankingDTO> combined = new ArrayList<>();
+        combined.addAll(getFreeTop5ByRecommend());
+        combined.addAll(getInfoTop5ByRecommend());
+        combined.addAll(getFoodTop5ByRecommend());
+        combined.addAll(getUsedTop5ByRecommend());
+        combined.addAll(getQnaTop5ByRecommend());
+
         return combined.stream()
                 .sorted(Comparator.comparing(BoardRankingDTO::getRecommend,
                         Comparator.nullsLast(Comparator.naturalOrder())).reversed())

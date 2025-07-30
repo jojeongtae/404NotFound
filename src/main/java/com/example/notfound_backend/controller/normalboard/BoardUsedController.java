@@ -115,13 +115,13 @@ public class BoardUsedController {
 
     @GetMapping("/ranking/comments")
     public List<BoardRankingDTO> getRankingByCommentsToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getUsedTop5ByCommentsToday();
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getUsedTop5ByCommentsInLast7Days();
         return boardRankingDTOList;
     }
 
     @GetMapping("/ranking/recommend")
     public List<BoardRankingDTO> getRecommendByRecommendToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getUsedTop5ByRecommendToday();
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getUsedTop5ByRecommendInLast7Days();
         return boardRankingDTOList;
     }
 

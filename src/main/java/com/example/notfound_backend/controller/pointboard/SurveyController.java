@@ -31,7 +31,7 @@ public class SurveyController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<SurveyDTO> create(@RequestPart("surveyDTO") SurveyDTO surveyDTO,
+    public ResponseEntity<SurveyDTO> create(@RequestPart("boardDTO") SurveyDTO surveyDTO,
                                             @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         SurveyDTO created = surveyService.createBoard(surveyDTO, file);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
@@ -39,7 +39,7 @@ public class SurveyController {
 
     @PutMapping("/{id}")
     public ResponseEntity<SurveyDTO> update(@PathVariable Integer id,
-                                            @RequestPart("surveyDTO") SurveyDTO surveyDTO,
+                                            @RequestPart("boardDTO") SurveyDTO surveyDTO,
                                             @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         SurveyDTO updated = surveyService.updateBoard(id, surveyDTO, file);
         return ResponseEntity.ok(updated);

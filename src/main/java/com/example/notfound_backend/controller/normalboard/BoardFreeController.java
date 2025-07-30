@@ -112,13 +112,13 @@ public class BoardFreeController {
 
     @GetMapping("/ranking/comments")
     public List<BoardRankingDTO> getRankingByCommentsToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getFreeTop5ByCommentsToday();
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getFreeTop5ByCommentsInLast7Days();
         return boardRankingDTOList;
     }
 
     @GetMapping("/ranking/recommend")
     public List<BoardRankingDTO> getRecommendByRecommendToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getFreeTop5ByRecommendToday();
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getFreeTop5ByRecommendInLast7Days();
         return boardRankingDTOList;
     }
 

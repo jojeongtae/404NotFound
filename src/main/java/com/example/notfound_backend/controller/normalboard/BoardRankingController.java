@@ -15,15 +15,21 @@ import java.util.List;
 public class BoardRankingController {
     private final BoardRankingService boardRankingService;
 
-    @GetMapping("/comments")
-    public List<BoardRankingDTO> findTop5ByCommentsToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getAllBoardsTop5ByCommentsToday();
+    @GetMapping("/comments/week")
+    public List<BoardRankingDTO> findTop5ByCommentsInLast7Days() {
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getAllBoardsTop5ByCommentsInLast7Days();
         return boardRankingDTOList;
     }
 
-    @GetMapping("/recommend")
-    public List<BoardRankingDTO> findTop5ByRecommend() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getAllBoardsTop5ByRecommendToday();
+    @GetMapping("/recommend/week")
+    public List<BoardRankingDTO> findTop5ByRecommendInLast7Days() {
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getAllBoardsTop5ByRecommendInLast7Days();
+        return boardRankingDTOList;
+    }
+
+    @GetMapping("/recommend/all")
+    public List<BoardRankingDTO> findTop5ByRecommend(){
+        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getAllBoardsTop5ByRecommend();
         return boardRankingDTOList;
     }
 }
