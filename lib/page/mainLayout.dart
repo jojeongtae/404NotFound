@@ -316,7 +316,7 @@ class _MainLayoutState extends State<MainLayout> {
                                   '[${displayCategory}] ${item['title'] ?? '제목 없음'}',
                                 ),
                                 subtitle: Text(
-                                  '등급: ${_getGradeDisplayName(item['grade'] ?? '')} 닉네임: ${item['authorNickname'] ?? '알 수 없음'} | 댓글 수: ${item['count'] ?? 0}',
+                                  '등급: ${_getGradeDisplayName(item['grade'] ?? '')} 닉네임: ${item['authorNickname'] ?? '알 수 없음'} | 댓글 수: ${item['commentCount'] ?? 0}',
                                 ),
                                 onTap: () {
                                   Navigator.pushNamed(
@@ -359,7 +359,7 @@ class _MainLayoutState extends State<MainLayout> {
                                   '[${displayCategory}] ${item['title'] ?? '제목 없음'}',
                                 ),
                                 subtitle: Text(
-                                  '등급: ${_getGradeDisplayName(item['grade'] ?? '')} 닉네임: ${item['authorNickname'] ?? '알 수 없음'} | 추천 수: ${item['count'] ?? 0}',
+                                  '등급: ${_getGradeDisplayName(item['grade'] ?? '')} 닉네임: ${item['authorNickname'] ?? '알 수 없음'} | 추천 수: ${item['recommend'] ?? 0}',
                                 ),
                                 onTap: () {
                                   Navigator.pushNamed(
@@ -427,7 +427,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   Future<List<dynamic>> _fetchRanking(String type) async {
     final url = Uri.parse(
-      'http://192.168.0.26:8080/api/ranking/$type',
+      'http://192.168.0.26:8080/api/ranking/$type/week',
     ); // TODO: 실제 백엔드 IP로 변경
     try {
       final response = await http.get(url);
