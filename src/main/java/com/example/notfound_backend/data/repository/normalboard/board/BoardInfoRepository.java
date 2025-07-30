@@ -106,7 +106,7 @@ public interface BoardInfoRepository extends JpaRepository<BoardInfoEntity, Inte
         b.views AS views,
         b.category AS category,
         b.created_at AS createdAt
-    FROM board_food b
+    FROM board_info b
     JOIN user_auth ua ON b.author = ua.username\s
     JOIN user_info u ON ua.username = u.username\s
     WHERE b.status = 'VISIBLE'
