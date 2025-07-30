@@ -16,7 +16,7 @@ const RankingPage = ({ props }) => {
       setLoading(true);
       setError(null);
       try {
-        if(type === "comment"){
+        if(type === "comments"){
         const response = await apiClient.get(`/ranking/comments/week`);
         console.log("Original Data (before sort):", response.data);
         // 댓글 수 기준으로 내림차순 정렬
@@ -69,7 +69,7 @@ const RankingPage = ({ props }) => {
         <ol>
           {rankingData.map((item, index) => (
             <li key={index} style={{ marginBottom: '10px' }}>
-              <strong>{index + 1}.</strong>제목 : {item.title} |게시판종류 : {GetBoardName((item.category || '').toLowerCase())}| (작성자:{getFullGradeDescription(item.grade)} | {item.authorNickname}, {type === 'comment' ? `댓글수 : ${item.commentCount}` : `추천수${item.recommend}`})
+              <strong>{index + 1}.</strong>제목 : {item.title} |게시판종류 : {GetBoardName((item.category || '').toLowerCase())}| (작성자:{getFullGradeDescription(item.grade)} | {item.authorNickname}, {type === 'comments' ? `댓글수 : ${item.commentCount}` : type === 'recommend' ? `추천수${item.recommend}` : `전체 추천수 : ${item.recommend}`})
             </li>
           ))}
         </ol>
