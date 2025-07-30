@@ -188,10 +188,11 @@ const PostDetailPage = () => {
       ) : boardId === 'voting' ? (
         <VotingBoardForm />
       ) : (
-        <div style={{ padding: '20px' }}>
-          <h2>제목: {post.title}</h2>
-          <p><strong>작성자:</strong> {getFullGradeDescription(post.grade)}{post.authorNickname}</p>
-          <p className="post-date"><strong>작성일:</strong> {new Date(post.createdAt).toLocaleDateString()}</p>
+        <div className="board-detail">
+          <h3>{post.title}</h3>
+
+          <p>작성자: {getFullGradeDescription(post.grade)}{post.authorNickname}</p>
+          <p className="post-date">작성일: {new Date(post.createdAt).toLocaleDateString()}</p>
           <p>조회수: {post.views}</p>
           <hr />
           {post.imgsrc && (

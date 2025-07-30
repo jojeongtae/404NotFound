@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -7,11 +6,15 @@ import LoginForm from '../features/auth/LoginForm';
 import SignUpForm from '../features/auth/SignUpForm';
 import UserInfoModal from '../features/auth/UserInfoModal'; // UserInfoModal 임포트
 import MailboxForm from '../features/mailbox/MailboxForm'; // MailboxForm 임포트
-import '../style/MainPage.css'; // 테마 CSS 파일 임포트
 import { useDispatch, useSelector } from 'react-redux';
 import { getFullGradeDescription } from '../features/common/GradeDescriptions';
 import apiClient from '../api/apiClient';
 import { setUser } from '../features/auth/userSlice';
+
+// import '../style/MainPage.css'; // 테마 CSS 파일 임포트
+import '../style/layout.css';
+import '../style/template.css';
+import '../style/common.css';
 
 // const gradeDescriptions = {
 //     "👑 500": "500 Internal Server Error (운영진)",
@@ -59,88 +62,116 @@ const MainLayout = () => {
   }, [isLoggedIn, user.username, dispatch]); // 의존성 배열에 user.username 추가
 
   return (
-    <div className="main-container">
-      <header>
-        <Link to="/" className="header-title-container" style={{ textDecoration: 'none' }}>
-          <h1 className="glitch-title" data-text="404NotFound">404NotFound</h1>
-        </Link>
-        <nav className="nav-links">
-          {isLoggedIn ? (
-            <>
-              <Link to="/board/new" className="nav-link">글쓰기</Link>
-              <button onClick={() => openModal('userInfo')} className='nav-link'>내 정보 수정</button> {/* 버튼으로 변경 */}
-              <button onClick={() => openModal('mailbox')} className='nav-link'>우편함</button> {/* 이 줄을 추가합니다. */}
-              <button onClick={logout} className="nav-link">Logout</button>
-            </>
-          ) : (
-            <>
-              <button onClick={() => openModal('login')} className="nav-link">Login</button>
-              <button onClick={() => openModal('signup')} className="nav-link">SignUp</button>
-            </>
-          )}
-        </nav>
-      </header>
-      {isLoggedIn ?
-      <>
-          <span style={{textAlign :"left"}}>{getFullGradeDescription(user.grade)} 이름 : {user.nickname}님 안녕하세요!</span> <span>현재 포인트 : {user.point}</span>
-      </>
-      :
-      <>
-          <span style={{textAlign :"left"}}>{user?.grade ?? "👻 401"} 이름 : {user?.nickname ??"이름없는 방문자"}님 안녕하세요!</span> <span>현재 포인트 : {user?.point ?? "zero"}</span>
-      </>
-      }
-      <main style={{ display: 'flex', flexGrow: 1 }}>
-        <nav style={{ width: '200px', padding: '20px', borderRight: '1px solid #eee', overflowY: 'auto' }}>
-          <h3>게시판 목록</h3><br />
-          <ul style={{ listStyle: 'none', padding: 0 }}>
-            <li style={{ marginBottom: '10px' }}><span>--운영자 게시판 목록--</span></li>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/notice">공지사항</Link></li>
-            {user.role === "ROLE_ADMIN" ?
-            <>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/admin/list">유저 정보 조회</Link></li>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/admin/report">신고 목록 조회</Link></li>
-            </>:
-            ""}
-            <li style={{ marginBottom: '10px' }}><span>--오늘의 개추--</span></li>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/ranking/recommend">Best404추천수</Link></li>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/ranking/comment">Best404댓글수</Link></li>
-            <li style={{ marginBottom: '10px' }}><span>--일반 게시판 목록--</span></li>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/free">자유 게시판</Link></li>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/qna">Q&A 게시판</Link></li>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/info">정보 게시판</Link></li>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/used">중고거래 게시판</Link></li>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/food">먹거리 게시판</Link></li>
-            <li style={{ marginBottom: '10px' }}><span>--포인트 게시판 종류--</span></li>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/quiz">퀴즈 게시판</Link></li>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/voting">OX 게시판</Link></li>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/survey">설문조사 게시판</Link></li>
-            <li style={{ marginBottom: '10px' }}><Link to="/board/dice">다이스 도박</Link></li>
-            <li style={{ marginBottom: '10px' }}><span>--광고주 링크--</span></li>
-            <li style={{ marginBottom: '10px' }}><Link to="http://arirangtrail.duckdns.org/">아리랑 트레일</Link></li>
+      <div className="main-container">
+        <header>
+          <div className="wrap">
+            <div className="main-header">
+              <Link to="/" className="header-title-container" style={{ textDecoration: 'none' }}>
+                <h1 className="glitch-title" data-text="404NotFound">404NotFound</h1>
+              </Link>
+            </div>
 
-          </ul>
-        </nav>
-
-        <div style={{ flexGrow: 1, padding: '20px', overflowY: 'auto' }}>
-          <Outlet />
+            <nav className="nav-links">
+              {isLoggedIn ? (
+                  <>
+                    <Link to="/board/new" className="btn type2 nav-link">글쓰기</Link>
+                    <button onClick={() => openModal('userInfo')} className='nav-link'>내 정보 수정</button> {/* 버튼으로 변경 */}
+                    <button onClick={() => openModal('mailbox')} className='nav-link'>우편함</button> {/* 이 줄을 추가합니다. */}
+                    <button onClick={logout} className="nav-link">Logout</button>
+                  </>
+              ) : (
+                  <>
+                    <button onClick={() => openModal('login')} className="btn type2">Login</button>
+                    <button onClick={() => openModal('signup')} className="btn">SignUp</button>
+                  </>
+              )}
+            </nav>
+          </div>
+        </header>
+        <div className="user-intro">
+          <div className="wrap">
+            {isLoggedIn ?
+                <>
+                  <span className="user-grade">{getFullGradeDescription(user.grade)}</span>
+                  <span className="user-message">{user.nickname}님 안녕하세요!</span>
+                  <span>현재 포인트 : {user.point}</span>
+                </>
+                :
+                <>
+                  <span className="user-grade">{user?.grade ?? "👻 401"}</span>
+                  <span className="user-message">{user?.nickname ?? "이름없는 방문자"}님 안녕하세요!</span>
+                  <span>현재 포인트 : {user?.point ?? "zero"}</span>
+                </>
+            }
+          </div>
         </div>
-      </main>
 
-      <footer>
-        <p className="subtitle">
-          A digital space for the lost and found<span className="blinking-cursor"></span>
-        </p>
-      </footer>
+        <div id="container">
+          <div className="wrap">
+            <aside>
+              <div className="aside-title">
+                <h2>메뉴</h2>
+              </div>
+              <nav>
+                <h3>운영자 게시판</h3>
+                <ul className="nav-list">
+                  <li><Link to="/board/notice">공지사항</Link></li>
+                  {user.role === "ROLE_ADMIN" ?
+                      <>
+                        <li><Link to="/board/admin/list">유저 정보 조회</Link></li>
+                        <li><Link to="/board/admin/report">신고 목록 조회</Link></li>
+                      </>:
+                      ""}
+                </ul>
+                <h3>오늘의</h3>
+                <ul className="nav-list">
+                  <li><Link to="/board/ranking/recommend">Best404추천수</Link></li>
+                  <li><Link to="/board/ranking/comment">Best404댓글수</Link></li>
+                </ul>
+                <h3>일반 게시판</h3>
+                <ul className="nav-list">
+                  <li><Link to="/board/free">자유 게시판</Link></li>
+                  <li><Link to="/board/qna">Q&A 게시판</Link></li>
+                  <li><Link to="/board/info">정보 게시판</Link></li>
+                  <li><Link to="/board/used">중고거래 게시판</Link></li>
+                  <li><Link to="/board/food">먹거리 게시판</Link></li>
+                </ul>
+                <h3>포인트 게시판</h3>
+                <ul className="nav-list">
+                  <li><Link to="/board/quiz">퀴즈 게시판</Link></li>
+                  <li><Link to="/board/voting">OX 게시판</Link></li>
+                  <li><Link to="/board/survey">설문조사 게시판</Link></li>
+                  <li><Link to="/board/dice">주사위 게임</Link></li>
+                </ul>
+                <h3>자매 사이트</h3>
+                <ul className="nav-list">
+                  <li><Link to="http://arirangtrail.duckdns.org/" target="_blank">아리랑 트레일</Link></li>
+                </ul>
+              </nav>
+            </aside>
+            <main>
+              <Outlet />
+            </main>
+          </div>
+        </div>
 
-      {showModal && (
-        <Modal onClose={closeModal}>
-          {modalType === 'login' && <LoginForm onClose={closeModal} />}
-          {modalType === 'signup' && <SignUpForm onClose={closeModal} />}
-          {modalType === 'userInfo' && <UserInfoModal onClose={closeModal} />} {/* UserInfoModal 렌더링 추가 */}
-          {modalType === 'mailbox' && <MailboxForm onClose={closeModal} />} {/* 이 줄을 추가합니다. */}
-        </Modal>
-      )}
-    </div>
+        <footer>
+          <div className="wrap">
+            <p className="subtitle">A digital space for the lost and found.<span className="blinking-cursor"></span></p>
+            <p>404Project JJT | CSA | JHY | JSL</p>
+            <p>&copy; 2025 404 Not Found. All rights reserved.</p>
+          </div>
+        </footer>
+
+        {showModal && (
+            <Modal onClose={closeModal}>
+              {modalType === 'login' && <LoginForm onClose={closeModal} />}
+              {modalType === 'signup' && <SignUpForm onClose={closeModal} />}
+              {modalType === 'userInfo' && <UserInfoModal onClose={closeModal} />} {/* UserInfoModal 렌더링 추가 */}
+              {modalType === 'mailbox' && <MailboxForm onClose={closeModal} />} {/* 이 줄을 추가합니다. */}
+            </Modal>
+        )}
+      </div>
   );
 };
 

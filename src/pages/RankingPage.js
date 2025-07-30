@@ -50,7 +50,7 @@ const RankingPage = () => {
 
   return (
     <div>
-      <h2>{type === 'recommend' ? '추천수 랭킹' : '댓글수 랭킹'}</h2>
+      <h3>{type === 'recommend' ? '추천수 랭킹' : '댓글수 랭킹'}</h3>
       {rankingData.length === 0 ? (
         <p>랭킹 데이터가 없습니다.</p>
       ) : (
