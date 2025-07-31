@@ -25,20 +25,20 @@ jobs:
       - name: Build MySQL Docker image
         working-directory: db
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/notfounddb:latest .
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/notfounddb .
 
       - name: Push MySQL Docker image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/notfounddb:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/notfounddb
 
       # 4. Backend Docker 이미지 빌드 및 푸시
       - name: Build Backend Docker image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/notfoundbackend:latest .
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/notfoundbackend .
 
       - name: Push Backend Docker image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/notfoundbackend:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/notfoundbackend
 
   deploy:
     needs: build_and_push
@@ -59,19 +59,19 @@ jobs:
             sudo docker volume rm notfounddb_volume || true
 
             echo "===== Remove old images ====="
-            sudo docker rmi -f ${{ secrets.DOCKERHUB_USERNAME }}/notfounddb:latest || true
-            sudo docker rmi -f ${{ secrets.DOCKERHUB_USERNAME }}/notfoundbackend:latest || true
+            sudo docker rmi -f ${{ secrets.DOCKERHUB_USERNAME }}/notfounddb || true
+            sudo docker rmi -f ${{ secrets.DOCKERHUB_USERNAME }}/notfoundbackend || true
 
             echo "===== Pull new images ====="
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/notfounddb:latest
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/notfoundbackend:latest
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/notfounddb
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/notfoundbackend
 
             echo "===== Run new MySQL container ====="
             sudo docker run -d \
               --name notfounddb \
               -p 3306:3306 \
               -v notfounddb_volume:/var/lib/mysql \
-              ${{ secrets.DOCKERHUB_USERNAME }}/notfounddb:latest
+              ${{ secrets.DOCKERHUB_USERNAME }}/notfounddb
 
             echo "===== Run new Backend container ====="
             sudo docker run -d \
@@ -81,4 +81,4 @@ jobs:
               -e NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }} \
               -e KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }} \
               -e KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_CLIENT_SECRET }} \
-              ${{ secrets.DOCKERHUB_USERNAME }}/notfoundbackend:latest
+              ${{ secrets.DOCKERHUB_USERNAME }}/notfoundbackend
