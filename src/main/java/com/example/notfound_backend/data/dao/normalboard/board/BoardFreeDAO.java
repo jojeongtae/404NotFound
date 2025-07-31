@@ -63,6 +63,10 @@ public class BoardFreeDAO {
         return boardFreeRepository.findTop5ByRecommend();
     }
 
+    public List<BoardRankingDTO> getTop5ByViewsInLast7Days(){
+        return boardFreeRepository.findTop5ByViewsInLast7Days();
+    }
+
     public List<BoardFreeEntity> findByTitle(String title) { return boardFreeRepository.findByTitle(title); }
 
     public List<BoardFreeEntity> findByAuthor(String author) { return boardFreeRepository.findByAuthor(author); }

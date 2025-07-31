@@ -4,6 +4,7 @@ package com.example.notfound_backend.controller.normalboard;
 import com.example.notfound_backend.data.dto.normalboard.BoardCommentDTO;
 import com.example.notfound_backend.data.dto.normalboard.BoardDTO;
 import com.example.notfound_backend.data.dto.normalboard.BoardRankingDTO;
+import com.example.notfound_backend.data.dto.normalboard.BoardRankingResponse;
 import com.example.notfound_backend.service.normalboard.comment.BoardInfoCommentService;
 import com.example.notfound_backend.service.normalboard.recommend.BoardInfoRecommendService;
 import com.example.notfound_backend.service.normalboard.board.BoardInfoService;
@@ -81,18 +82,6 @@ public class BoardInfoController {
         return ResponseEntity.noContent().build();
     }
 
-//    @PatchMapping("/{id}/recommend")
-//    public ResponseEntity<BoardDTO> recommend(@PathVariable Integer id) {
-//        BoardDTO updated= boardInfoService.recommendBoard(id);
-//        return ResponseEntity.ok(updated);
-//    }
-//
-//    @PatchMapping("/{id}/cancel_recommend")
-//    public ResponseEntity<BoardDTO> cancelRecommend(@PathVariable Integer id) {
-//        BoardDTO updated= boardInfoService.cancelRecommendBoard(id);
-//        return ResponseEntity.ok(updated);
-//    }
-
     @GetMapping("/comments/{boardId}")
     public List<BoardCommentDTO> getComments(@PathVariable Integer boardId) {
         List<BoardCommentDTO> boardDtoList=boardInfoCommentService.getCommentsByBoardId(boardId);
@@ -111,16 +100,10 @@ public class BoardInfoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/ranking/comments")
-    public List<BoardRankingDTO> getRankingByCommentsToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getInfoTop5ByCommentsInLast7Days();
-        return boardRankingDTOList;
-    }
-
     @GetMapping("/ranking/recommend")
-    public List<BoardRankingDTO> getRecommendByRecommendToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getInfoTop5ByRecommendInLast7Days();
-        return boardRankingDTOList;
+    public List<BoardRankingResponse> getInfoTop5ByRecommendInLast7Days(){
+        List<BoardRankingResponse> rankingList=boardInfoService.getInfoTop5ByRecommendInLast7Days();
+        return rankingList;
     }
 
     @PostMapping("/{boardId}/recommend")

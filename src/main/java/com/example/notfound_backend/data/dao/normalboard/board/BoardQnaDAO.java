@@ -66,6 +66,10 @@ public class BoardQnaDAO {
         return boardQnaRepository.findTop5ByRecommend();
     }
 
+    public List<BoardRankingDTO> getTop5ByViewsInLast7Days(){
+        return boardQnaRepository.findTop5ByViewsInLast7Days();
+    }
+
     public List<BoardQnaEntity> findByTitle(String title) { return boardQnaRepository.findByTitle(title); }
 
     public List<BoardQnaEntity> findByAuthor(String author) { return boardQnaRepository.findByAuthor(author); }

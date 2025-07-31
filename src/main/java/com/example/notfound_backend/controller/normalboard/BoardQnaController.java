@@ -4,6 +4,7 @@ package com.example.notfound_backend.controller.normalboard;
 import com.example.notfound_backend.data.dto.normalboard.BoardCommentDTO;
 import com.example.notfound_backend.data.dto.normalboard.BoardDTO;
 import com.example.notfound_backend.data.dto.normalboard.BoardRankingDTO;
+import com.example.notfound_backend.data.dto.normalboard.BoardRankingResponse;
 import com.example.notfound_backend.service.normalboard.comment.BoardQnaCommentService;
 import com.example.notfound_backend.service.normalboard.recommend.BoardQnaRecommendService;
 import com.example.notfound_backend.service.normalboard.board.BoardQnaService;
@@ -81,18 +82,6 @@ public class BoardQnaController {
         return ResponseEntity.noContent().build();
     }
 
-//    @PatchMapping("/{id}/recommend")
-//    public ResponseEntity<BoardDTO> recommend(@PathVariable Integer id) {
-//        BoardDTO updated= boardQnaService.recommendBoard(id);
-//        return ResponseEntity.ok(updated);
-//    }
-//
-//    @PatchMapping("/{id}/cancel_recommend")
-//    public ResponseEntity<BoardDTO> cancelRecommend(@PathVariable Integer id) {
-//        BoardDTO updated= boardQnaService.cancelRecommendBoard(id);
-//        return ResponseEntity.ok(updated);
-//    }
-
     @GetMapping("/comments/{boardId}")
     public List<BoardCommentDTO> getComments(@PathVariable Integer boardId) {
         List<BoardCommentDTO> boardDtoList=boardQnaCommentService.getCommentsByBoardId(boardId);
@@ -111,16 +100,10 @@ public class BoardQnaController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/ranking/comments")
-    public List<BoardRankingDTO> getRankingByCommentsToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getQnaTop5ByCommentsInLast7Days();
-        return boardRankingDTOList;
-    }
-
     @GetMapping("/ranking/recommend")
-    public List<BoardRankingDTO> getRecommendByRecommendToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getQnaTop5ByRecommendInLast7Days();
-        return boardRankingDTOList;
+    public List<BoardRankingResponse> getQnaTop5ByRecommendInLast7Days(){
+        List<BoardRankingResponse> rankingList=boardQnaService.getQnaTop5ByRecommendInLast7Days();
+        return rankingList;
     }
 
     @PostMapping("/{boardId}/recommend")
