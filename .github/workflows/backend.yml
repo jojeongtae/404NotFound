@@ -10,75 +10,74 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. DockerHub 로그인
+      # 1.DockerHub login 코드
       - name: Login to DockerHub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # 2. 코드 체크아웃
+        #2.checkout 코드
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 3. MySQL Docker 이미지 빌드 및 푸시
+        #3. MYSQL Docker 이미지 빌드 및 푸쉬
       - name: Build MySQL Docker image
-        working-directory: db
+        working-directory: db #db 폴더로 이동
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/notfounddb .
 
       - name: Push MySQL Docker image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/notfounddb
+          docker push ${{secrets.DOCKERHUB_USERNAME}}/notfounddb
 
-      # 4. Backend Docker 이미지 빌드 및 푸시
+        #4.BACKEND DOCKER 이미지 빌드 및 푸쉬
       - name: Build Backend Docker image
         run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/notfoundbackend .
-
+          docker build -t ${{secrets.DOCKERHUB_USERNAME}}/notfoundbackend .
       - name: Push Backend Docker image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/notfoundbackend
-
+          docker push ${{secrets.DOCKERHUB_USERNAME}}/notfoundbackend
   deploy:
     needs: build_and_push
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to EC2
+      - name: Docker pull and run
         uses: appleboy/ssh-action@master
         with:
           username: ubuntu
-          host: ${{ secrets.LIVE_SERVER_IP }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          host: ${{secrets.LIVE_SERVER_IP}}
+          key: ${{secrets.EC2_SSH_KEY}}
           script: |
-            echo "===== Remove old containers ====="
-            sudo docker rm -f notfounddb || true
-            sudo docker rm -f notfoundbackend || true
+            if [ "$(sudo docker ps -a -q -f name=notfounddb)" ]; then
+              sudo docker rm -f notfounddb
+            fi
+            
+            if [ "$(sudo docker ps -a -q -f name=notfoundbackend)" ]; then
+              sudo docker rm -f notfoundbackend
+            fi
+            if [ "$(sudo docker volume ls -q -f name=notfounddb_volume)" ]; then
+              sudo docker volume rm notfounddb_volume
+            fi
+            
+            
+            if [ "$(sudo docker images -q ${{secrets.DOCKERHUB_USERNAME}}/notfounddb)" ]; then
+              sudo docker rmi -f ${{secrets.DOCKERHUB_USERNAME}}/notfounddb
+            fi
+            
+            if [ "$(sudo docker images -q ${{secrets.DOCKERHUB_USERNAME}}/notfoundbackend)" ]; then
+              sudo docker rmi -f ${{secrets.DOCKERHUB_USERNAME}}/notfoundbackend
+            fi
+            
+            
+            sudo docker pull ${{secrets.DOCKERHUB_USERNAME}}/notfounddb
+            sudo docker run -d -p 3306:3306 --name notfounddb -v notfounddb_volume:/var/lib/mysql ${{secrets.DOCKERHUB_USERNAME}}/notfounddb
 
-            echo "===== Remove old DB volume (full reset) ====="
-            sudo docker volume rm notfounddb_volume || true
-
-            echo "===== Remove old images ====="
-            sudo docker rmi -f ${{ secrets.DOCKERHUB_USERNAME }}/notfounddb || true
-            sudo docker rmi -f ${{ secrets.DOCKERHUB_USERNAME }}/notfoundbackend || true
-
-            echo "===== Pull new images ====="
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/notfounddb
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/notfoundbackend
-
-            echo "===== Run new MySQL container ====="
-            sudo docker run -d \
-              --name notfounddb \
-              -p 3306:3306 \
-              -v notfounddb_volume:/var/lib/mysql \
-              ${{ secrets.DOCKERHUB_USERNAME }}/notfounddb
-
-            echo "===== Run new Backend container ====="
-            sudo docker run -d \
-              --name notfoundbackend \
-              -p 8080:8080 \
-              -e NAVER_CLIENT_ID=${{ secrets.NAVER_CLIENT_ID }} \
-              -e NAVER_CLIENT_SECRET=${{ secrets.NAVER_CLIENT_SECRET }} \
-              -e KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }} \
-              -e KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_CLIENT_SECRET }} \
-              ${{ secrets.DOCKERHUB_USERNAME }}/notfoundbackend
+            sudo docker pull ${{secrets.DOCKERHUB_USERNAME}}/notfoundbackend
+            sudo docker run -d -p 8080:8080 --name notfoundbackend \
+            -e NAVER_CLIENT_ID=${{secrets.NAVER_CLIENT_ID}} \
+            -e NAVER_CLIENT_SECRET=${{secrets.NAVER_CLIENT_SECRET}} \
+            -e KAKAO_CLIENT_ID=${{secrets.KAKAO_CLIENT_ID}} \
+            -e KAKAO_CLIENT_SECRET=${{secrets.KAKAO_CLIENT_SECRET}} \
+                ${{secrets.DOCKERHUB_USERNAME}}/notfoundbackend
+            
