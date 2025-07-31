@@ -532,7 +532,6 @@ CREATE TABLE `board_used` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `status` enum('VISIBLE','DELETED','PRIVATE','BLOCKED') DEFAULT 'VISIBLE',
-  `price` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `board_used_ibfk_1_idx` (`author`),
   CONSTRAINT `board_used_ibfk_1` FOREIGN KEY (`author`) REFERENCES `user_auth` (`username`) ON DELETE CASCADE
