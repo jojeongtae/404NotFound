@@ -8,7 +8,7 @@ const QuizPostDisplay = ({ post }) => {
   const [isAnswerChecked, setIsAnswerChecked] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
   const user = useSelector(state => state.user);
-  const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 
   const handleAnswerSubmit = async(e) => {
     e.preventDefault();
@@ -57,7 +57,7 @@ const QuizPostDisplay = ({ post }) => {
       <form onSubmit={handleAnswerSubmit}>
         {post.imgsrc &&(
 <img
-                src={`${API_BASE_URL}/${post.imgsrc}`}
+                src={`http://404notfoundpage.duckdns.org/${post.imgsrc}`}
                 alt={post.title || '게시글 이미지'}
                 style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
               />
