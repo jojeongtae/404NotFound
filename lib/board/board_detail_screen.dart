@@ -52,7 +52,7 @@ class _BoardDetailScreenState extends State<BoardDetailScreen> {
     try {
       // TODO: 실제 서버 주소와 API 엔드포인트로 변경해야 합니다.
       final url = Uri.parse(
-        'http://192.168.0.26:8080/api/${widget.boardType}/${widget.postId}',
+        'http://404notfoundpage.duckdns.org:8080/api/${widget.boardType}/${widget.postId}',
       );
       final response = await http.get(url);
 
@@ -148,7 +148,7 @@ class _BoardDetailScreenState extends State<BoardDetailScreen> {
 
     // TODO: 실제 서버 주소와 API 엔드포인트로 변경해야 합니다.
     final url = Uri.parse(
-      'http://192.168.0.26:8080/api/${widget.boardType}/${widget.postId}',
+      'http://404notfoundpage.duckdns.org:8080/api/${widget.boardType}/${widget.postId}',
     ); // 예시 API 엔드포인트
 
     try {
@@ -196,7 +196,7 @@ class _BoardDetailScreenState extends State<BoardDetailScreen> {
       return;
     }
     try {
-      final url = Uri.parse('http://192.168.0.26:8080/api/user/report');
+      final url = Uri.parse('http://404notfoundpage.duckdns.org:8080/api/user/report');
       final body = jsonEncode({
         'reporter': userInfo.username,
         'reported': reportedUser,
@@ -233,7 +233,7 @@ class _BoardDetailScreenState extends State<BoardDetailScreen> {
 
     try {
       final url = Uri.parse(
-        'http://192.168.0.26:8080/api/${widget.boardType}/${widget.postId}/recommend',
+        'http://404notfoundpage.duckdns.org:8080/api/${widget.boardType}/${widget.postId}/recommend',
       );
       final response = await http.post(
         url,
@@ -376,7 +376,7 @@ class _BoardDetailScreenState extends State<BoardDetailScreen> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: Image.network(
-                        'http://192.168.0.26:8080/${_postDetail!.imgSrc}', // 백엔드에서 제공하는 완전한 이미지 URL 사용
+                        'http://404notfoundpage.duckdns.org:8080/${_postDetail!.imgSrc}', // 백엔드에서 제공하는 완전한 이미지 URL 사용
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
                           print('Failed to load image from: ${_postDetail!.imgSrc}');

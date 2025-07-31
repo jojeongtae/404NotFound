@@ -20,7 +20,7 @@ class _MessageComposeScreenState extends State<MessageComposeScreen> {
   final TextEditingController _messageController = TextEditingController();
 
   Future<String?> _getUsernameFromNickname(String nickname) async {
-    final url = Uri.parse('http://192.168.0.26:8080/api/user/nickname/$nickname');
+    final url = Uri.parse('http://404notfoundpage.duckdns.org:8080/api/user/nickname/$nickname');
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
@@ -65,7 +65,7 @@ class _MessageComposeScreenState extends State<MessageComposeScreen> {
         return;
       }
 
-      final url = Uri.parse('http://192.168.0.26:8080/api/message/send'); // TODO: 실제 백엔드 IP로 변경
+      final url = Uri.parse('http://404notfoundpage.duckdns.org:8080/api/message/send'); // TODO: 실제 백엔드 IP로 변경
 
       try {
         final response = await http.post(

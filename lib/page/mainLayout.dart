@@ -226,7 +226,7 @@ class _MainLayoutState extends State<MainLayout> {
 
                             try {
                               final url = Uri.parse(
-                                'http://192.168.0.26:8080/api/reissue',
+                                'http://404notfoundpage.duckdns.org:8080/api/reissue',
                               );
                               final token = Provider.of<Token>(
                                 context,
@@ -427,7 +427,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   Future<List<dynamic>> _fetchRanking(String type) async {
     final url = Uri.parse(
-      'http://192.168.0.26:8080/api/ranking/$type/week',
+      'http://404notfoundpage.duckdns.org:8080/api/ranking/$type/week',
     ); // TODO: 실제 백엔드 IP로 변경
     try {
       final response = await http.get(url);

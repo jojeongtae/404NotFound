@@ -20,7 +20,7 @@ class CommentProvider extends ChangeNotifier {
 
     try {
       // TODO: 실제 서버 주소와 API 엔드포인트로 변경해야 합니다.
-      final url = Uri.parse('http://192.168.0.26:8080/api/${boardType}/comments/${postId}');
+      final url = Uri.parse('hthttp://404notfoundpage.duckdns.org:8080/api/${boardType}/comments/${postId}');
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
@@ -82,7 +82,7 @@ class CommentProvider extends ChangeNotifier {
 
     try {
       // TODO: 실제 서버 주소와 API 엔드포인트로 변경해야 합니다.
-      final url = Uri.parse('http://192.168.0.26:8080/api/${boardType}/comments/new');
+      final url = Uri.parse('http://404notfoundpage.duckdns.org:8080/api/${boardType}/comments/new');
       final Map<String, dynamic> body = {
         'content': content,
         'author': author,

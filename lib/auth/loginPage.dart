@@ -22,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
     try {
       // 사용자 정보 요청
       final infoUrl = Uri.parse(
-          'http://192.168.0.26:8080/api/user/user-info?username=$username');
+          'http://404notfoundpage.duckdns.org:8080/api/user/user-info?username=$username');
       final infoRes = await http.get(infoUrl, headers: {
         'Authorization': 'Bearer $token',
       });
@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
 
       // 등급 요청
       final gradeUrl = Uri.parse(
-          'http://192.168.0.26:8080/api/user/user-grade?username=$username');
+          'http://404notfoundpage.duckdns.org:8080/api/user/user-grade?username=$username');
       final gradeResponse = await http.get(gradeUrl, headers: {
         'Authorization': 'Bearer $token',
       });
@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
       final String username = _usernameController.text;
       final String password = _passwordController.text;
 
-      final url = Uri.parse('http://192.168.0.26:8080/api/login');
+      final url = Uri.parse('http://404notfoundpage.duckdns.org:8080/api/login');
 
       try {
         final response = await http.post(

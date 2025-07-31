@@ -41,7 +41,7 @@ class _MessageListScreenState extends State<MessageListScreen> {
       return;
     }
 
-    final url = Uri.parse('http://192.168.0.26:8080/api/message/receiver'); // TODO: 실제 백엔드 IP로 변경
+    final url = Uri.parse('hthttp://404notfoundpage.duckdns.org:8080/api/message/receiver'); // TODO: 실제 백엔드 IP로 변경
     try {
       final response = await http.get(
         url,
@@ -75,7 +75,7 @@ class _MessageListScreenState extends State<MessageListScreen> {
 
   Future<void> _deleteMessage(int messageId) async {
     final token = Provider.of<Token>(context, listen: false).accessToken;
-    final url = Uri.parse('http://192.168.0.26:8080/api/message/$messageId'); // Backend DELETE endpoint
+    final url = Uri.parse('http://404notfoundpage.duckdns.org:8080/api/message/$messageId'); // Backend DELETE endpoint
 
     try {
       final response = await http.delete(

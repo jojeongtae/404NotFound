@@ -51,7 +51,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
       }
 
       // TODO: 실제 서버 주소와 API 엔드포인트로 변경해야 합니다。
-      final url = Uri.parse('http://192.168.0.26:8080/api/user/user-info'); // 예시 API 엔드포인트
+      final url = Uri.parse('http://404notfoundpage.duckdns.org:8080/api/user/user-info'); // 예시 API 엔드포인트
 
       try {
         final response = await http.put(

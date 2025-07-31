@@ -330,7 +330,7 @@ class _BoardScreenState extends State<BoardScreen> {
                 Navigator.pop(context); // Drawer 닫기
                 // 백엔드 로그아웃 요청
                 try {
-                  final url = Uri.parse('http://192.168.0.26:8080/api/reissue'); // TODO: 실제 백엔드 로그아웃 엔드포인트로 변경
+                  final url = Uri.parse('http://404notfoundpage.duckdns.org:8080/api/reissue'); // TODO: 실제 백엔드 로그아웃 엔드포인트로 변경
                   final token = Provider.of<Token>(context, listen: false).accessToken;
                   final response = await http.delete(
                     url,
