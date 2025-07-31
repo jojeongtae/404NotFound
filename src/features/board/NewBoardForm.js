@@ -61,7 +61,7 @@ const NewBoardForm = () => {
                 if (boardId === 'quiz') {
                     requestData.question = quizQuestion;
                     requestData.answer = quizAnswer.toLocaleUpperCase();
-                    requestData.type = quizId;
+                    requestData.type = quizId.toUpperCase();
                 } else if (boardId === 'survey') {
                     requestData.question = surveyQuestion;
                     requestData.column1 = surveyColumn1;
@@ -92,14 +92,14 @@ const NewBoardForm = () => {
                 if (selectedImage) {
                     boardFormData.append("file", selectedImage);
                 }
-                
+                console.log("boardDTO JSON:", JSON.stringify(boardDTO));
+
                 console.log("FormData (with boardDTO) 전송 시작...");
-                res = await apiClient.post(`/${boardId}/new`, boardFormData, {
-                    headers: {
-                        'Content-Type': undefined
-                    }
-                });
-            
+               res = await apiClient.post(`/${boardId}/new`, boardFormData, {
+  headers: {
+    'Content-Type': undefined, // <- Axios가 multipart로 자동 설정
+  },
+});
 
             console.log("게시글 작성 응답:", res.data);
             alert('글이 성공적으로 작성되었습니다!');

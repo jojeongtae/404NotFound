@@ -115,7 +115,7 @@ const VotingBoardForm = () => {
             <h2>{votingData.title}</h2>
 
             <p><strong>작성자:</strong> {getFullGradeDescription(votingData.grade)}{votingData.authorNickname}</p>
-            {votingData &&(
+            {votingData.imgsrc &&(
             <img
                 src={`${API_BASE_URL}/${votingData.imgsrc}`}
                 alt={votingData.title || '게시글 이미지'}

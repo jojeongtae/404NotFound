@@ -42,7 +42,6 @@ const SurveyCreationForm = ({
             placeholder={col.placeholder}
             value={col.value}
             onChange={(e) => col.setter(e.target.value)}
-            required
           />
           <br />
         </React.Fragment>
