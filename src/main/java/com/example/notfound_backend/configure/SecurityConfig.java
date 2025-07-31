@@ -46,6 +46,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .formLogin(formLogin -> formLogin.disable())
                 .httpBasic(httpBasic -> httpBasic.disable())
+                .logout(logout -> logout.disable())
                 // 요청별 권한
                 .authorizeHttpRequests(requests -> {
                     requests.anyRequest().permitAll(); // 인증 무력화 (임시)
