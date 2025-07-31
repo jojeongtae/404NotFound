@@ -12,5 +12,34 @@
 .search-board-form .search-input{flex-grow:1;}
 .search-board-form .submit{min-width:70px;}
 
+
 /* 게시판 상세 */
 .board-detail{}
+.board-detail-header{padding-bottom:24px;border-bottom:1px solid var(--text-color2);}
+.board-detail-header li:nth-child(n+2){margin-top:4px;}
+.board-detail-body{min-height:200px;padding:30px 0 20px;}
+
+.board-detail-footer{display:flex;justify-content:center;align-items:center;gap:10px; padding-top:20px;border-top:1px solid var(--text-color2);text-align:center;}
+.board-detail-footer .recommend > *{vertical-align:middle;}
+.board-detail-footer .recommend button{margin-right:6px;}
+.board-detail-footer .recommend span{margin-right:6px;}
+.board-detail-footer .report{position:relative;padding-left:15px;}
+.board-detail-footer .report:before{display:block;content:'';position:absolute;top:calc(50% - 10px);left:0;width:1px;height:20px;background-color:#888;}
+
+.board-detail .comment{margin:20px 0 20px;}
+.board-detail .comment-list{margin-bottom:20px;font-size:15px;line-height:1.4em;}
+.board-detail .comment-list > .comment-item{position:relative;padding:12px 0;border-bottom:1px solid var(--border-color);}
+.board-detail .reply-comment-list{}
+.board-detail .reply-comment-list > .comment-item{position:relative;padding:8px 0 0px 25px;}
+.board-detail .reply-comment-list > .comment-item:before{display:block;content:'';position:absolute;top:21px;left:4px;width:10px;height:2px;background-color:var(--text-color2);}
+.board-detail .reply-comment-list > .comment-item:after{display:block;content:'';position:absolute;top:13px;left:4px;width:2px;height:10px;background-color:var(--text-color2);}
+
+.board-detail .comment-item .user-grade{line-height:1.5em;}
+.board-detail .comment-item .comment-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.board-detail .comment-item .comment-header .time{font-size:14px;letter-spacing:-0.08em;}
+.board-detail .comment-item .comment-header .btn_box{margin-left:auto;margin-right:12px;}
+.board-detail .comment-item .comment-body{display:flex;justify-content:space-between;align-items:center; padding-left:5px;}
+.board-detail .comment-item .comment-body{}
+.board-detail .new-comment{display:flex;margin-top:10px;}
+.board-detail .new-comment input[type="text"]{flex-grow:1;margin-left:0;}
+
