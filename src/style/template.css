@@ -4,27 +4,35 @@
 
 :root {
     --bg-color: #fff; /* 흰색 배경 */
-    --bg-color-light: #f3f3f3;
+    --bg-color-light: #eee;
     --text-color: #333; /* 텍스트 */
     --text-color2: #6C757D;
-    --accent-color: #007bff; /* 버튼/링크 색상 */
-    --accent-color-hover: #0056D2;
+    --accent-color: #374151; /* 버튼/링크 색상 */
+    --accent-color-hover: #4B5563;
     --border-color: #E0E0E0;
-    --caution-color: #FFC107;
-    --warning-color: #DC3545;
-    --glitch-color-1: #f0f;
-    --glitch-color-2: #0ff;
+    --success-color: #10B981;
+    --caution-color: #F59E0B;
+    --warning-color: #EF4444;
+
+
+    --main-color: #1F2937;
+    --glitch-color-1: #00e6e6;
+    --glitch-color-2:  #ff33cc;
 
     --font-arial:Arial,Helvetica,sans-serif;
     --font-default:'Source Code Pro', monospace;
 }
 
 /* title */
-main h3{margin-bottom:20px;font-size:22px;font-weight:600;}
+main h3{margin-bottom:25px;font-size:22px;font-weight:600;}
+main h4{margin-bottom:10px;font-size:20px;font-weight:600;}
 
 /* button */
-button, .btn {display: inline-block;position: relative;padding: 5px 10px;min-width: 50px;border: 1px solid var(--border-color);border-radius: 5px;background-color: #fff;text-align: center;vertical-align: top;color: var(--text-color);font-size: 15px;font-weight: 400;line-height: 1.4em;text-decoration: none;cursor: pointer;transition: all 250ms;font-family:var(--font-arial);}
+button, .btn{display: inline-block;position: relative;padding: 5px 10px;min-width: 50px;border: 1px solid var(--border-color);border-radius: 5px;background-color: #fff;text-align: center;vertical-align: top;color: var(--text-color);font-size: 15px;font-weight: 400;line-height: 1.4em;text-decoration: none;cursor: pointer;transition: all 250ms;font-family:var(--font-arial);}
 button:hover, .btn:hover {border-color:var(--accent-color);background-color:var(--accent-color);color: var(--bg-color);}
+/* red */
+button.red, .btn.red{border-color:var(--warning-color);color: var(--warning-color);}
+button.red:hover, .btn.red:hover{background-color:var(--warning-color);color:var(--bg-color);}
 /* type2 */
 button.type2, .btn.type2{border:1px solid var(--accent-color);background-color:var(--accent-color);color: #fff;}
 button.type2:hover, .btn.type2:hover{border-color:var(--accent-color-hover);background-color:var(--accent-color-hover);}
