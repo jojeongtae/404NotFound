@@ -39,7 +39,7 @@ CREATE TABLE `board_food` (
   PRIMARY KEY (`id`),
   KEY `board_food_ibfk_1_idx` (`author`),
   CONSTRAINT `board_food_ibfk_1` FOREIGN KEY (`author`) REFERENCES `user_auth` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,7 +48,6 @@ CREATE TABLE `board_food` (
 
 LOCK TABLES `board_food` WRITE;
 /*!40000 ALTER TABLE `board_food` DISABLE KEYS */;
-INSERT INTO `board_food` VALUES (1,'bulgogi','jonmattang',NULL,'aaa',0,0,'FOOD','2025-07-21 12:17:17','2025-07-21 12:17:17','VISIBLE'),(2,'제목','글내용',NULL,'aaa',0,0,'FOOD','2025-07-21 07:49:44','2025-07-21 07:49:44','VISIBLE'),(3,'dfd','dsfd',NULL,'bbb',3,1,'FOOD','2025-07-22 12:34:05','2025-07-22 12:50:03','VISIBLE'),(4,'dds','hello',NULL,'aaa',0,1,'FOOD','2025-07-22 03:39:05','2025-07-22 12:49:56','VISIBLE');
 /*!40000 ALTER TABLE `board_food` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,7 +80,6 @@ CREATE TABLE `board_food_comments` (
 
 LOCK TABLES `board_food_comments` WRITE;
 /*!40000 ALTER TABLE `board_food_comments` DISABLE KEYS */;
-INSERT INTO `board_food_comments` VALUES (1,1,NULL,'bbb','ㅋㅋㅇㅈ','2025-07-21 03:36:41',NULL),(2,1,NULL,'aaa','댓글내용','2025-07-21 07:52:32',NULL),(3,3,NULL,'aaa','dsf','2025-07-22 12:34:45','VISIBLE'),(4,3,NULL,'bbb','dfgddgg','2025-07-22 12:34:45','VISIBLE'),(5,3,NULL,'aaa','dfgddfgdf','2025-07-22 12:34:45','VISIBLE'),(6,4,NULL,'bbb','agree','2025-07-22 03:41:41',NULL),(7,4,NULL,'aaa','ddagree','2025-07-22 03:52:01','VISIBLE'),(8,4,NULL,'aaa','ddagreedfsd','2025-07-22 03:52:42','VISIBLE');
 /*!40000 ALTER TABLE `board_food_comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -105,7 +103,7 @@ CREATE TABLE `board_food_recommend` (
   KEY `board_food_recommend_ibfk_2_idx` (`username`),
   CONSTRAINT `board_food_recommend_ibfk_1` FOREIGN KEY (`board_id`) REFERENCES `board_food` (`id`),
   CONSTRAINT `board_food_recommend_ibfk_2` FOREIGN KEY (`username`) REFERENCES `user_auth` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -139,7 +137,7 @@ CREATE TABLE `board_free` (
   PRIMARY KEY (`id`),
   KEY `author` (`author`),
   CONSTRAINT `board_free_ibfk_1` FOREIGN KEY (`author`) REFERENCES `user_auth` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,7 +146,6 @@ CREATE TABLE `board_free` (
 
 LOCK TABLES `board_free` WRITE;
 /*!40000 ALTER TABLE `board_free` DISABLE KEYS */;
-INSERT INTO `board_free` VALUES (5,'제목','글내용',NULL,'bbb',6,0,'NORMAL','2025-07-21 07:28:07','2025-07-22 16:06:34','VISIBLE'),(8,'제목','글내용',NULL,'aaa',3,0,'NORMAL','2025-07-21 07:48:25','2025-07-22 16:06:40','VISIBLE'),(9,'제목','글내용',NULL,'aaa',1,0,'NORMAL','2025-07-21 07:48:42','2025-07-22 16:08:25','BLOCKED'),(10,'제목','글내용',NULL,'ccc',2,0,'NORMAL','2025-07-22 07:04:46','2025-07-22 16:08:52','BLOCKED'),(11,'제목','글내용22',NULL,'ddd',0,0,'NORMAL','2025-07-22 07:05:02','2025-07-22 07:05:02','VISIBLE'),(12,'제목','글내용22',NULL,'eee',10,0,'NORMAL','2025-07-22 07:05:05','2025-07-22 16:07:01','VISIBLE'),(13,'제목33','글내용22',NULL,'eee',3,0,'NORMAL','2025-07-22 07:05:07','2025-07-22 16:27:11','VISIBLE');
 /*!40000 ALTER TABLE `board_free` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,7 +170,7 @@ CREATE TABLE `board_free_comments` (
   KEY `board_free_comments_ibfk_3` (`author`),
   CONSTRAINT `board_free_comments_ibfk_1` FOREIGN KEY (`board_id`) REFERENCES `board_free` (`id`) ON DELETE CASCADE,
   CONSTRAINT `board_free_comments_ibfk_3` FOREIGN KEY (`author`) REFERENCES `user_auth` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -182,7 +179,6 @@ CREATE TABLE `board_free_comments` (
 
 LOCK TABLES `board_free_comments` WRITE;
 /*!40000 ALTER TABLE `board_free_comments` DISABLE KEYS */;
-INSERT INTO `board_free_comments` VALUES (1,5,NULL,'ccc','댓글내용','2025-07-22 07:24:21','VISIBLE'),(2,5,NULL,'ccc','댓글내용22','2025-07-22 07:24:27','VISIBLE'),(3,8,NULL,'bbb','댓글내용22','2025-07-22 07:24:57','BLOCKED'),(4,9,NULL,'ccc','asdfasdf','2025-07-22 07:25:10','VISIBLE'),(5,9,NULL,'ccc','fsdfsdadf','2025-07-22 07:25:15','VISIBLE'),(6,10,NULL,'eee','fsdfsdadf','2025-07-22 07:25:24','VISIBLE'),(7,10,NULL,'eee','fsdfsdadf','2025-07-22 07:25:25','VISIBLE');
 /*!40000 ALTER TABLE `board_free_comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -206,7 +202,7 @@ CREATE TABLE `board_free_recommend` (
   KEY `board_free_recommend_ibfk_2_idx` (`username`),
   CONSTRAINT `board_free_recommend_ibfk_1` FOREIGN KEY (`board_id`) REFERENCES `board_free` (`id`),
   CONSTRAINT `board_free_recommend_ibfk_2` FOREIGN KEY (`username`) REFERENCES `user_auth` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -338,7 +334,7 @@ CREATE TABLE `board_notice` (
   PRIMARY KEY (`id`),
   KEY `board_food_ibfk_1_idx` (`author`),
   CONSTRAINT `board_notice_ibfk_1` FOREIGN KEY (`author`) REFERENCES `user_auth` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -347,7 +343,6 @@ CREATE TABLE `board_notice` (
 
 LOCK TABLES `board_notice` WRITE;
 /*!40000 ALTER TABLE `board_notice` DISABLE KEYS */;
-INSERT INTO `board_notice` VALUES (1,'제목','글내용',NULL,'aaa',0,0,'NORMAL','2025-07-21 07:53:02','2025-07-21 07:53:02','VISIBLE');
 /*!40000 ALTER TABLE `board_notice` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -446,7 +441,6 @@ CREATE TABLE `board_qna` (
 
 LOCK TABLES `board_qna` WRITE;
 /*!40000 ALTER TABLE `board_qna` DISABLE KEYS */;
-INSERT INTO `board_qna` VALUES (1,'제목','글내용',NULL,'aaa',0,0,'FOOD','2025-07-21 07:53:59','2025-07-21 07:53:59','VISIBLE');
 /*!40000 ALTER TABLE `board_qna` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -533,10 +527,11 @@ CREATE TABLE `board_used` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `status` enum('VISIBLE','DELETED','PRIVATE','BLOCKED') DEFAULT 'VISIBLE',
+  `price` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `board_used_ibfk_1_idx` (`author`),
   CONSTRAINT `board_used_ibfk_1` FOREIGN KEY (`author`) REFERENCES `user_auth` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -545,7 +540,6 @@ CREATE TABLE `board_used` (
 
 LOCK TABLES `board_used` WRITE;
 /*!40000 ALTER TABLE `board_used` DISABLE KEYS */;
-INSERT INTO `board_used` VALUES (1,'제목','글내용',NULL,'aaa',0,0,'USED','2025-07-21 07:54:15','2025-07-21 07:54:15','VISIBLE');
 /*!40000 ALTER TABLE `board_used` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -569,7 +563,7 @@ CREATE TABLE `board_used_comments` (
   KEY `board_used_comments_ibfk_2_idx` (`author`),
   CONSTRAINT `board_used_comments_ibfk_1` FOREIGN KEY (`board_id`) REFERENCES `board_used` (`id`),
   CONSTRAINT `board_used_comments_ibfk_2` FOREIGN KEY (`author`) REFERENCES `user_auth` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -601,7 +595,7 @@ CREATE TABLE `board_used_recommend` (
   KEY `board_used_recommend_ibfk_2_idx` (`username`),
   CONSTRAINT `board_used_recommend_ibfk_1` FOREIGN KEY (`board_id`) REFERENCES `board_used` (`id`),
   CONSTRAINT `board_used_recommend_ibfk_2` FOREIGN KEY (`username`) REFERENCES `user_auth` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -641,7 +635,6 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
-INSERT INTO `message` VALUES (2,'asd','sddsfd','aaa','bbb','2025-07-23 13:06:15'),(3,'dsf','sdfsww','ccc','ddd','2025-07-23 13:06:15');
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -676,7 +669,6 @@ CREATE TABLE `quiz` (
 
 LOCK TABLES `quiz` WRITE;
 /*!40000 ALTER TABLE `quiz` DISABLE KEYS */;
-INSERT INTO `quiz` VALUES (1,'test','who am i','seonah','aaa','2025-07-21 09:49:30',1,NULL,'SUBJECTIVE',NULL),(2,'test2','hi','ok','aaa','2025-07-21 00:55:22',2,'QUIZ','SUBJECTIVE',0),(3,'제목','문제','답','aaa','2025-07-21 07:57:41',1,'QUIZ','MULTI',0);
 /*!40000 ALTER TABLE `quiz` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -708,7 +700,6 @@ CREATE TABLE `quiz_results` (
 
 LOCK TABLES `quiz_results` WRITE;
 /*!40000 ALTER TABLE `quiz_results` DISABLE KEYS */;
-INSERT INTO `quiz_results` VALUES (1,1,'bbb','ok',0,'2025-07-21 15:07:36');
 /*!40000 ALTER TABLE `quiz_results` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -744,7 +735,6 @@ CREATE TABLE `report` (
 
 LOCK TABLES `report` WRITE;
 /*!40000 ALTER TABLE `report` DISABLE KEYS */;
-INSERT INTO `report` VALUES (1,'비방','비방을 너무무 많이이 해요!!','ccc','ddd','board_free',2,'PENDING','2025-07-21 17:39:04',NULL),(2,'비방','비방을 너무무 많이이 해요!!','ccc','eee','board_free',2,'PENDING','2025-07-21 17:39:08',NULL),(3,'비방','비방을 너무무 많이이 해요!!','eee','ddd','board_free',2,'REJECTED','2025-07-21 17:39:15','2025-07-22 10:19:31'),(4,'비방','비방을 너무무 많이이 해요!!','eee','bbb','board_free',2,'ACCEPTED','2025-07-21 17:39:19','2025-07-22 10:19:14'),(5,'비방','비방을 너무무 많이이 해요!!','eee','aaa','board_free',2,'ACCEPTED','2025-07-21 17:39:23','2025-07-22 10:18:56');
 /*!40000 ALTER TABLE `report` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -780,7 +770,6 @@ CREATE TABLE `survey` (
 
 LOCK TABLES `survey` WRITE;
 /*!40000 ALTER TABLE `survey` DISABLE KEYS */;
-INSERT INTO `survey` VALUES (1,'hey','num','1','2','3','4',NULL,'aaa','2025-07-18 18:02:19','SURVEY',0);
 /*!40000 ALTER TABLE `survey` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -811,7 +800,6 @@ CREATE TABLE `survey_answers` (
 
 LOCK TABLES `survey_answers` WRITE;
 /*!40000 ALTER TABLE `survey_answers` DISABLE KEYS */;
-INSERT INTO `survey_answers` VALUES (1,'aaa','1','2025-07-18 09:06:21',1),(2,'bbb','2','2025-07-18 09:06:56',1);
 /*!40000 ALTER TABLE `survey_answers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -830,7 +818,7 @@ CREATE TABLE `uploaded_image` (
   `uploaded_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `file_size` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -839,7 +827,6 @@ CREATE TABLE `uploaded_image` (
 
 LOCK TABLES `uploaded_image` WRITE;
 /*!40000 ALTER TABLE `uploaded_image` DISABLE KEYS */;
-INSERT INTO `uploaded_image` VALUES (1,'image01.jpg','abd1325b-45da-4953-9b22-46f5a037a343.image01.jpg','uploads\\abd1325b-45da-4953-9b22-46f5a037a343.image01.jpg',NULL,NULL),(2,'image01.jpg','12cddfc2-08d6-43a2-8069-662bff00a04c.image01.jpg','uploads\\12cddfc2-08d6-43a2-8069-662bff00a04c.image01.jpg',NULL,NULL),(3,'image02.jpg','c4490e2b-06dd-49c4-93c2-218388cf1f8b.image02.jpg','uploads\\c4490e2b-06dd-49c4-93c2-218388cf1f8b.image02.jpg',NULL,NULL),(4,'image03.jpg','6e4629ec-2539-4d31-9cdd-a759514b316b.image03.jpg','uploads\\6e4629ec-2539-4d31-9cdd-a759514b316b.image03.jpg','2025-07-23 08:26:26',NULL),(5,'image04.jpg','6693ea2a-896d-478c-921e-61dba6e016e2.image04.jpg','uploads\\6693ea2a-896d-478c-921e-61dba6e016e2.image04.jpg','2025-07-23 08:52:08',NULL),(6,'image04.jpg','2850967e-5b6c-45b8-b20b-25c3597a36f1.image04.jpg','uploads\\2850967e-5b6c-45b8-b20b-25c3597a36f1.image04.jpg','2025-07-23 08:53:20',7387),(7,'image04.jpg','cdba222c-e0f4-458c-97d7-e85e56d276bb_image04.jpg','uploads\\cdba222c-e0f4-458c-97d7-e85e56d276bb_image04.jpg','2025-07-23 09:05:51',7387),(8,'image04.jpg','8b1ea622-4a3d-4573-a81f-f2263c0b01df_image04.jpg','uploads\\8b1ea622-4a3d-4573-a81f-f2263c0b01df_image04.jpg','2025-07-23 09:07:20',7387),(9,'image04.jpg','272672a9-f498-478c-8008-38debdbee587_image04.jpg','uploads\\272672a9-f498-478c-8008-38debdbee587_image04.jpg','2025-07-23 09:25:12',7387);
 /*!40000 ALTER TABLE `uploaded_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -897,7 +884,7 @@ CREATE TABLE `user_info` (
 
 LOCK TABLES `user_info` WRITE;
 /*!40000 ALTER TABLE `user_info` DISABLE KEYS */;
-INSERT INTO `user_info` VALUES (1,'aaa','janghy','0000000','서울특별시 강남구 어딘가22233',27,1,'ACTIVE'),(2,'bbb','jang','01012341234','서울특별시 강남구 어딘가',82,1,'ACTIVE'),(3,'ccc','asdf','01012341234','전라도도도',7,0,'ACTIVE'),(4,'ddd','asdf','01012341234','전라도도도',3,0,'ACTIVE'),(5,'eee','asdf','01012341234','전라도도도',8,0,'ACTIVE'),(6,'fff','asdf','01012341234','전라도도도',0,0,'ACTIVE'),(7,'ggg','asdf','01012341234','서울',0,0,NULL),(8,'hhh','asdf','01012341234','서울',0,0,'ACTIVE');
+INSERT INTO `user_info` VALUES (1,'aaa','janghy','0000000','서울특별시 강남구 어딘가22233',101,1,'ACTIVE'),(2,'bbb','jang','01012341234','서울특별시 강남구 어딘가',92,1,'ACTIVE'),(3,'ccc','asdf','01012341234','전라도도도',7,0,'ACTIVE'),(4,'ddd','asdf','01012341234','전라도도도',3,0,'ACTIVE'),(5,'eee','asdf','01012341234','전라도도도',8,0,'ACTIVE'),(6,'fff','asdf','01012341234','전라도도도',0,0,'ACTIVE'),(7,'ggg','asdf','01012341234','서울',0,0,NULL),(8,'hhh','asdf','01012341234','서울',0,0,'ACTIVE');
 /*!40000 ALTER TABLE `user_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -971,4 +958,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-23 18:34:01
+-- Dump completed on 2025-07-25 17:36:24
