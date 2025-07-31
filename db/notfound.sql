@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `notfound` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `notfound`;
 -- MySQL dump 10.13  Distrib 8.0.42, for Win64 (x86_64)
 --
 -- Host: localhost    Database: notfound
@@ -39,7 +37,7 @@ CREATE TABLE `board_food` (
   PRIMARY KEY (`id`),
   KEY `board_food_ibfk_1_idx` (`author`),
   CONSTRAINT `board_food_ibfk_1` FOREIGN KEY (`author`) REFERENCES `user_auth` (`username`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,7 +46,7 @@ CREATE TABLE `board_food` (
 
 LOCK TABLES `board_food` WRITE;
 /*!40000 ALTER TABLE `board_food` DISABLE KEYS */;
-INSERT INTO `board_food` VALUES (8,'오늘 먹을 점심 메뉴','예상임 근데','uploads/30000a32-5b17-48bd-9c52-47962c461e1d_kfc.jpg','bbb',0,1,'food','2025-07-31 02:03:20','2025-07-31 11:03:30','VISIBLE');
+INSERT INTO `board_food` VALUES (8,'오늘 먹을 점심 메뉴','예상임 근데','uploads/30000a32-5b17-48bd-9c52-47962c461e1d_kfc.jpg','bbb',0,1,'food','2025-07-26 02:03:20','2025-07-26 02:03:20','VISIBLE'),(9,'오늘 점심은 불고기!','진짜 맛있게 먹었어요. 다음엔 사진도 찍어봐야지.',NULL,'aaa',0,0,'food','2025-07-27 09:30:00','2025-07-27 09:30:00','VISIBLE'),(10,'혼밥하기 좋은 식당 추천','서울 홍대 근처에 괜찮은 식당 있을까요?',NULL,'bbb',0,0,'food','2025-07-27 10:45:00','2025-07-27 10:45:00','VISIBLE'),(11,'편의점 신상 먹어봤음','세븐 신라면볶음밥 맛있어요ㅋㅋ',NULL,'ccc',0,0,'food','2025-07-27 12:00:00','2025-07-27 12:00:00','VISIBLE'),(12,'야식 뭐 먹지?','치킨 or 떡볶이 고민 중입니다.',NULL,'ddd',0,0,'food','2025-07-27 13:15:00','2025-07-27 13:15:00','VISIBLE'),(13,'요즘 빠진 과자','포카칩 갈릭버터맛 미쳤음.',NULL,'eee',0,0,'food','2025-07-27 14:30:00','2025-07-27 14:30:00','VISIBLE'),(14,'카페 추천해주세요','인스타 감성 카페 찾는 중!',NULL,'fff',0,0,'food','2025-07-28 09:00:00','2025-07-28 09:00:00','VISIBLE'),(15,'마라탕 처음 먹어봤어요','의외로 괜찮네요 ㅋㅋ',NULL,'ggg',0,0,'food','2025-07-28 10:30:00','2025-07-28 10:30:00','VISIBLE'),(16,'도시락 싸봤어요','비주얼은 별로인데 맛있음!',NULL,'hhh',0,0,'food','2025-07-28 11:45:00','2025-07-28 11:45:00','VISIBLE'),(17,'불닭볶음면 신제품','맵찔이인데 먹을만했어요.',NULL,'iii',0,0,'food','2025-07-28 13:00:00','2025-07-28 13:00:00','VISIBLE'),(18,'브런치 카페 다녀왔어요','팬케이크 퀄리티가 미쳤음. 사진은 귀찮아서 안 찍음.',NULL,'jjj',0,0,'food','2025-07-28 14:30:00','2025-07-28 14:30:00','VISIBLE');
 /*!40000 ALTER TABLE `board_food` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,7 +136,7 @@ CREATE TABLE `board_free` (
   PRIMARY KEY (`id`),
   KEY `author` (`author`),
   CONSTRAINT `board_free_ibfk_1` FOREIGN KEY (`author`) REFERENCES `user_auth` (`username`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -147,6 +145,7 @@ CREATE TABLE `board_free` (
 
 LOCK TABLES `board_free` WRITE;
 /*!40000 ALTER TABLE `board_free` DISABLE KEYS */;
+INSERT INTO `board_free` VALUES (18,'오늘 하루 어땠나요?','그냥 심심해서 써봅니다. 다들 뭐하고 지내세요?',NULL,'aaa',0,0,'free','2025-07-25 15:45:14','2025-07-25 15:45:14','VISIBLE'),(19,'자유롭게 글 남겨요','이 게시판엔 아무 얘기나 남겨도 되죠?',NULL,'bbb',0,0,'free','2025-07-25 16:25:14','2025-07-25 16:25:14','VISIBLE'),(20,'날씨 너무 덥다','에어컨 없으면 못 살겠어요. 다들 어떻게 지냄?',NULL,'ccc',0,0,'free','2025-07-25 18:12:14','2025-07-25 18:12:14','VISIBLE'),(21,'새로 가입했어요!','앞으로 잘 부탁드립니다~',NULL,'ddd',0,0,'free','2025-07-25 18:45:14','2025-07-25 18:45:14','VISIBLE'),(22,'주말에 뭐하세요?','혼자 영화 보러 갈까 고민 중입니다.',NULL,'eee',0,0,'free','2025-07-25 20:21:14','2025-07-25 20:21:14','VISIBLE'),(23,'요즘 너무 추운듯','보이는 에어컨 다 끄고 다니고 있음 ㅋㅋ 다 죽어봐라',NULL,'fff',0,0,'free','2025-07-26 10:45:14','2025-07-26 10:45:14','VISIBLE'),(24,'오늘의 명언','인생은 속도가 아니라 방향이다.',NULL,'ggg',0,0,'free','2025-07-26 15:57:14','2025-07-26 15:57:14','VISIBLE'),(25,'하루종일 누워있기 성공','생산성 0의 하루였음',NULL,'hhh',0,0,'free','2025-07-27 16:40:14','2025-07-27 16:40:14','VISIBLE'),(26,'자기 전 고민들','요즘 진로 고민이 많네요.',NULL,'iii',0,0,'free','2025-07-29 09:23:14','2025-07-29 09:23:14','VISIBLE'),(27,'출석체크!','출석합니다~ 좋은 하루 되세요.',NULL,'jjj',0,0,'free','2025-07-29 13:49:14','2025-07-29 13:49:14','VISIBLE');
 /*!40000 ALTER TABLE `board_free` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,7 +236,7 @@ CREATE TABLE `board_info` (
   PRIMARY KEY (`id`),
   KEY `board_info_ibfk_1_idx` (`author`),
   CONSTRAINT `board_info_ibfk_1` FOREIGN KEY (`author`) REFERENCES `user_auth` (`username`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -246,6 +245,7 @@ CREATE TABLE `board_info` (
 
 LOCK TABLES `board_info` WRITE;
 /*!40000 ALTER TABLE `board_info` DISABLE KEYS */;
+INSERT INTO `board_info` VALUES (3,'청년 정책 모음','2025년 기준 지원금 관련 정리해봤습니다.',NULL,'aaa',0,0,'info','2025-07-28 09:30:00','2025-07-28 09:30:00','VISIBLE'),(4,'자격증 공부법 공유','한 달만에 합격한 썰 풉니다.',NULL,'bbb',0,0,'info','2025-07-28 10:45:00','2025-07-28 10:45:00','VISIBLE'),(5,'갤럭시 vs 아이폰','요즘 어떤 게 더 나은가요?',NULL,'ccc',0,0,'info','2025-07-28 12:00:00','2025-07-28 12:00:00','VISIBLE'),(6,'면접 팁 모음','HR 담당자가 알려준 포인트 정리',NULL,'ddd',0,0,'info','2025-07-28 13:15:00','2025-07-28 13:15:00','VISIBLE'),(7,'노트북 추천해줘요','코딩용으로 100만 원 이하 괜찮을까요?',NULL,'eee',0,0,'info','2025-07-28 14:30:00','2025-07-28 14:30:00','VISIBLE'),(8,'스터디 모집 중입니다','온라인 Java 스터디 구해요.',NULL,'fff',0,0,'info','2025-07-29 09:00:00','2025-07-29 09:00:00','VISIBLE'),(9,'MBTI별 공부법','INTP는 계획부터 안 짬',NULL,'ggg',0,0,'info','2025-07-29 10:30:00','2025-07-29 10:30:00','VISIBLE'),(10,'공부 시간 집중법','타이머 돌려놓는 거 진짜 도움됨',NULL,'hhh',0,0,'info','2025-07-29 11:45:00','2025-07-29 11:45:00','VISIBLE'),(11,'유용한 사이트 공유','PDF 병합, PPT 템플릿, 무료 이미지 등 모음',NULL,'iii',0,0,'info','2025-07-29 13:00:00','2025-07-29 13:00:00','VISIBLE'),(12,'도서 추천 받아요','자기계발서나 에세이 계열로요.',NULL,'jjj',0,0,'info','2025-07-29 14:30:00','2025-07-29 14:30:00','VISIBLE');
 /*!40000 ALTER TABLE `board_info` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -344,7 +344,7 @@ CREATE TABLE `board_notice` (
 
 LOCK TABLES `board_notice` WRITE;
 /*!40000 ALTER TABLE `board_notice` DISABLE KEYS */;
-INSERT INTO `board_notice` VALUES (4,'404NotFound 첫 공지','방문해주신 여러분들 잘 부탁드립니다. ',NULL,'aaa',1,2,'notice','2025-07-31 02:00:59','2025-07-31 11:01:34','VISIBLE');
+INSERT INTO `board_notice` VALUES (4,'404NotFound 첫 공지','방문해주신 여러분들 잘 부탁드립니다. ',NULL,'aaa',1,2,'notice','2025-07-25 02:00:59','2025-07-25 02:00:59','VISIBLE');
 /*!40000 ALTER TABLE `board_notice` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -436,7 +436,7 @@ CREATE TABLE `board_qna` (
   PRIMARY KEY (`id`),
   KEY `board_qna_ibfk_1_idx` (`author`),
   CONSTRAINT `board_qna_ibfk_1` FOREIGN KEY (`author`) REFERENCES `user_auth` (`username`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -445,6 +445,7 @@ CREATE TABLE `board_qna` (
 
 LOCK TABLES `board_qna` WRITE;
 /*!40000 ALTER TABLE `board_qna` DISABLE KEYS */;
+INSERT INTO `board_qna` VALUES (4,'스프링 시큐리티 질문','JWT 토큰 만료되면 자동 로그아웃 어떻게 하나요?',NULL,'aaa',0,0,'qna','2025-07-29 09:30:00','2025-07-29 09:30:00','VISIBLE'),(5,'이직 준비 어떻게?','비전공자인데 포트폴리오 어떻게 준비하셨나요?',NULL,'bbb',0,0,'qna','2025-07-29 10:45:00','2025-07-29 10:45:00','VISIBLE'),(6,'면접 질문 도움 요청','팀 프로젝트에서 맡은 역할을 어떻게 어필해야 할까요?',NULL,'ccc',0,0,'qna','2025-07-29 12:00:00','2025-07-29 12:00:00','VISIBLE'),(7,'DB 설계 관련 질문입니다','다대다 관계일 때 조인 테이블 구조 어떻게 잡나요?',NULL,'ddd',0,0,'qna','2025-07-29 13:15:00','2025-07-29 13:15:00','VISIBLE'),(8,'운영체제 공부 어떻게 하세요?','개념이 너무 헷갈려요ㅠㅠ',NULL,'eee',0,0,'qna','2025-07-29 14:30:00','2025-07-29 14:30:00','VISIBLE'),(9,'리눅스 명령어 정리 어디서 보시나요?','좋은 문서 있으면 공유 부탁드려요',NULL,'fff',0,0,'qna','2025-07-30 09:00:00','2025-07-30 09:00:00','VISIBLE'),(10,'웹소켓 질문','React랑 연결해서 실시간 처리하고 싶은데 어떻게?',NULL,'ggg',0,0,'qna','2025-07-30 10:30:00','2025-07-30 10:30:00','VISIBLE'),(11,'Spring Batch 사용해본 분?','대용량 처리할 때 성능 괜찮은가요?',NULL,'hhh',0,0,'qna','2025-07-30 11:45:00','2025-07-30 11:45:00','VISIBLE'),(12,'코딩 테스트 어디서 준비해요?','백준/프로그래머스 말고 괜찮은 곳 있나요?',NULL,'iii',0,0,'qna','2025-07-30 13:00:00','2025-07-30 13:00:00','VISIBLE'),(13,'API 응답속도 개선 팁','속도가 너무 느려서 고민입니다.',NULL,'jjj',0,0,'qna','2025-07-30 14:30:00','2025-07-30 14:30:00','VISIBLE');
 /*!40000 ALTER TABLE `board_qna` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -535,7 +536,7 @@ CREATE TABLE `board_used` (
   PRIMARY KEY (`id`),
   KEY `board_used_ibfk_1_idx` (`author`),
   CONSTRAINT `board_used_ibfk_1` FOREIGN KEY (`author`) REFERENCES `user_auth` (`username`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -544,6 +545,7 @@ CREATE TABLE `board_used` (
 
 LOCK TABLES `board_used` WRITE;
 /*!40000 ALTER TABLE `board_used` DISABLE KEYS */;
+INSERT INTO `board_used` VALUES (6,'아이패드 미니 팝니다','거의 새 제품이고 구성품 다 있습니다.',NULL,350000,'aaa',0,0,'used','2025-07-30 09:30:00','2025-07-30 09:30:00','VISIBLE'),(7,'중고 모니터 구매 원해요','27인치 이상 모니터 찾습니다.',NULL,150000,'bbb',0,0,'used','2025-07-30 10:45:00','2025-07-30 10:45:00','VISIBLE'),(8,'책장 나눔해요','직접 가지러 오셔야 해요. 서울 성북구입니다.',NULL,0,'ccc',0,0,'used','2025-07-30 12:00:00','2025-07-30 12:00:00','VISIBLE'),(9,'게이밍 키보드 팝니다','리니어 축 사용, 상태 A급',NULL,50000,'ddd',0,0,'used','2025-07-30 13:15:00','2025-07-30 13:15:00','VISIBLE'),(10,'공기청정기 팔아요','1년 썼습니다. 필터 교체했어요.',NULL,120000,'eee',0,0,'used','2025-07-30 14:30:00','2025-07-30 14:30:00','VISIBLE'),(11,'노트북 스탠드 나눔','가져가실 분 계신가요?',NULL,0,'fff',0,0,'used','2025-07-31 09:00:00','2025-07-31 09:00:00','VISIBLE'),(12,'닌텐도 스위치 OLED 팝니다','케이스 포함이고 흠집 없습니다.',NULL,280000,'ggg',0,0,'used','2025-07-31 10:30:00','2025-07-31 10:30:00','VISIBLE'),(13,'중고 책 대량 판매','한 권에 3000원 정도로 계산해드려요.',NULL,30000,'hhh',0,0,'used','2025-07-31 11:45:00','2025-07-31 11:45:00','VISIBLE'),(14,'의자 팝니다','허먼밀러는 아니고 그냥 편한 의자예요.',NULL,40000,'iii',0,0,'used','2025-07-31 13:00:00','2025-07-31 13:00:00','VISIBLE'),(15,'전자레인지 판매','고장 전혀 없고 깨끗해요.',NULL,60000,'jjj',0,0,'used','2025-07-31 14:30:00','2025-07-31 14:30:00','VISIBLE');
 /*!40000 ALTER TABLE `board_used` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -630,7 +632,7 @@ CREATE TABLE `message` (
   KEY `message_ibfk_2_idx` (`receiver`),
   CONSTRAINT `message_ibfk_1` FOREIGN KEY (`author`) REFERENCES `user_auth` (`username`),
   CONSTRAINT `message_ibfk_2` FOREIGN KEY (`receiver`) REFERENCES `user_auth` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -639,6 +641,7 @@ CREATE TABLE `message` (
 
 LOCK TABLES `message` WRITE;
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
+INSERT INTO `message` VALUES (5,'안녕하세요!','혹시 중고책 아직 판매 중이신가요?','aaa','bbb','2025-07-31 15:50:05'),(6,'답장 드립니다','네 아직 있어요! 연락 주세요.','bbb','aaa','2025-07-31 15:50:05'),(7,'궁금한 점이 있어요','게시판에 쓴 글 잘 봤습니다. 질문이 있어요.','ccc','ddd','2025-07-31 15:50:05'),(8,'중고거래 관련 문의','공기청정기 직거래 가능할까요?','eee','fff','2025-07-31 15:50:05'),(9,'감사합니다','덕분에 좋은 정보 얻었어요!','ggg','hhh','2025-07-31 15:50:05'),(10,'글 잘 읽었습니다','추천 누르고 갑니다~','iii','jjj','2025-07-31 15:50:05'),(11,'거래 희망합니다','닌텐도 관심 있는데 연락드려요.','jjj','ggg','2025-07-31 15:50:05'),(12,'책 관련 문의','어떤 책들이 포함돼 있나요?','hhh','ccc','2025-07-31 15:50:05'),(13,'의자 구매하고 싶어요','편한 의자면 좋겠네요! 쪽지 주세요.','bbb','iii','2025-07-31 15:50:05'),(14,'도움 주셔서 감사합니다','질문에 친절히 답변해주셔서 감사해요.','ddd','ccc','2025-07-31 15:50:05');
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -968,4 +971,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-07-31 11:54:25
+-- Dump completed on 2025-07-31 17:27:26
