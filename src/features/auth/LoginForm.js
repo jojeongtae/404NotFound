@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setToken } from '../../features/auth/tokenSlice';
 import { setUser } from '../../features/auth/userSlice';
 
+
 const LoginForm = ({ onClose }) => {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -97,30 +98,28 @@ const LoginForm = ({ onClose }) => {
     window.location.href = "/api/naver";
     
   }
-  return (
-    <>
+ return (
+  <>
+    
       <form onSubmit={handleSubmit}>
         <h2>로그인</h2>
         <input
-          type='text'
-          placeholder='아이디 입력칸'
+          type="text"
+          placeholder="아이디 입력칸"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         /> <br />
         <input
           type="password"
-          placeholder='비밀번호 입력칸'
+          placeholder="비밀번호 입력칸"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         /> <br />
-        <input type='submit' value="로그인" />
+        <input type="submit" value="로그인" />
       </form>
-      <div>
-        <button onClick={handleNaverLogin}>네이버 로그인</button>
-        <button onClick={handleKakaoLogin}>카카오 로그인</button>
-      </div>
-    </>
-  );
+   
+  </>
+);
 };
 
 export default LoginForm;

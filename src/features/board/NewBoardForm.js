@@ -47,8 +47,6 @@ const NewBoardForm = () => {
       const handleNewBoard = async () => {
         try {
             let res;
-            const specialBoards = ['voting', 'survey', 'quiz'];
-
             // 1. 모든 게시판 유형에 공통적인 기본 데이터 객체를 먼저 생성합니다.
             const commonData = {
                 author: user.username,
@@ -56,7 +54,7 @@ const NewBoardForm = () => {
                 body: textBody,
             };
 
-            if (specialBoards.includes(boardId)) {
+            
                 // 2. JSON 전용 게시판의 경우, 공통 데이터에 특정 필드를 추가합니다.
                 const requestData = { ...commonData };
 
@@ -78,12 +76,8 @@ const NewBoardForm = () => {
                     requestData.category = boardId;
                 }
                 
-                console.log("JSON 데이터 전송 시작...", requestData);
-                res = await apiClient.post(`/${boardId}/new`, requestData);
-
-            } else {
                 // 3. Multipart/form-data를 사용하는 게시판의 경우, 공통 데이터를 DTO로 사용합니다.
-                const boardDTO = { ...commonData };
+                const boardDTO = { ...requestData };
                 const boardFormData = new FormData();
                 
                 if (boardId === 'used') {
@@ -105,7 +99,7 @@ const NewBoardForm = () => {
                         'Content-Type': undefined
                     }
                 });
-            }
+            
 
             console.log("게시글 작성 응답:", res.data);
             alert('글이 성공적으로 작성되었습니다!');
@@ -204,16 +198,8 @@ const NewBoardForm = () => {
                         <input type='text' placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}></input> <br />
                         <textarea placeholder='내용' value={textBody} onChange={(e) => setTextBody(e.target.value)}></textarea><br></br>
                       <input type='text' placeholder='가격' value={price} onChange={(e) => setPrice(e.target.value)} /><br />
-                        <input
-                            type='file'
-                            accept="image/*"
-                            onChange={handleImageChange}
-                        /><br />
-                        {imagePreviewUrl && (
-                            <div>
-                                <img src={imagePreviewUrl} alt="Image Preview" style={{ maxWidth: '200px', maxHeight: '200px', marginTop: '10px' }} />
-                            </div>
-                        )}
+                
+                       
                     </>
                 )
 
@@ -221,19 +207,20 @@ const NewBoardForm = () => {
                         <>
                             <input type='text' placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}></input> <br />
                             <textarea placeholder='내용' value={textBody} onChange={(e) => setTextBody(e.target.value)}></textarea><br></br>
-                            <input
-                                type='file'
-                                accept="image/*"
-                                onChange={handleImageChange}
-                            /><br />
-                            {imagePreviewUrl && (
-                                <div>
-                                    <img src={imagePreviewUrl} alt="Image Preview" style={{ maxWidth: '200px', maxHeight: '200px', marginTop: '10px' }} />
-                                </div>
-                            )}
                         </>
                     )
                 }
+                <br />
+                <input
+                    type='file'
+                    accept="image/*"
+                    onChange={handleImageChange}
+                /><br />
+                    {imagePreviewUrl && (
+                        <div>
+                            <img src={imagePreviewUrl} alt="Image Preview" style={{ maxWidth: '200px', maxHeight: '200px', marginTop: '10px' }} />
+                        </div>
+                            )}
                 <input type="submit" value="전송" />
             </form>
         </>

@@ -199,16 +199,16 @@ const PostDetailPage = () => {
           </div>
           <div className="board-detail-body">
             {post.imgsrc && (
-              <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                <img
-                  src={`${API_BASE_URL}/${post.imgsrc}`}
-                  alt={post.title || '게시글 이미지'}
-                  style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
-                />
-                          {boardId === 'used' && post.price && (
-              <p><strong>가격:</strong> {post.price.toLocaleString()}원</p>
+                <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                  <img
+                      src={`${API_BASE_URL}/${post.imgsrc}`}
+                      alt={post.title || '게시글 이미지'}
+                      style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
+                  />
+                </div>
             )}
-              </div>
+            {boardId === 'used' && post.price && (
+                <p><strong>가격:</strong> {post.price.toLocaleString()}원</p>
             )}
             <div dangerouslySetInnerHTML={{ __html: post.body }}></div>
           </div>

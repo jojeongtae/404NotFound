@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getFullGradeDescription } from '../features/common/GradeDescriptions';
 import apiClient from '../api/apiClient';
 import { setUser } from '../features/auth/userSlice';
+import SignUpWithCaptcha from '../features/auth/SignUpWithCaptcha.js';
 
 // import '../style/MainPage.css'; // 테마 CSS 파일 임포트
 import '../style/layout.css';
@@ -126,7 +127,7 @@ const MainLayout = () => {
                 <h3>오늘의</h3>
                 <ul className="nav-list">
                   <li><Link to="/board/ranking/recommend">Best404추천수</Link></li>
-                  <li><Link to="/board/ranking/comment">Best404댓글수</Link></li>
+                  <li><Link to="/board/ranking/comments">Best404댓글수</Link></li>
                 </ul>
                 <h3>일반 게시판</h3>
                 <ul className="nav-list">
@@ -135,6 +136,7 @@ const MainLayout = () => {
                   <li><Link to="/board/info">정보 게시판</Link></li>
                   <li><Link to="/board/used">중고거래 게시판</Link></li>
                   <li><Link to="/board/food">먹거리 게시판</Link></li>
+                  <li><Link to="/board/user/report">신고 게시판</Link></li>
                 </ul>
                 <h3>포인트 게시판</h3>
                 <ul className="nav-list">
@@ -163,15 +165,15 @@ const MainLayout = () => {
           </div>
         </footer>
 
-        {showModal && (
-            <Modal onClose={closeModal}>
-              {modalType === 'login' && <LoginForm onClose={closeModal} />}
-              {modalType === 'signup' && <SignUpForm onClose={closeModal} />}
-              {modalType === 'userInfo' && <UserInfoModal onClose={closeModal} />} {/* UserInfoModal 렌더링 추가 */}
-              {modalType === 'mailbox' && <MailboxForm onClose={closeModal} />} {/* 이 줄을 추가합니다. */}
-            </Modal>
-        )}
-      </div>
+      {showModal && (
+        <Modal onClose={closeModal}>
+          {modalType === 'login' && <LoginForm onClose={closeModal} />}
+          {modalType === 'signup' && <SignUpWithCaptcha onClose={closeModal} />}
+          {modalType === 'userInfo' && <UserInfoModal onClose={closeModal} />} {/* UserInfoModal 렌더링 추가 */}
+          {modalType === 'mailbox' && <MailboxForm onClose={closeModal} />} {/* 이 줄을 추가합니다. */}
+        </Modal>
+      )}
+    </div>
   );
 };
 
