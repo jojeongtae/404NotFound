@@ -117,7 +117,7 @@ const VotingBoardForm = () => {
             <p><strong>작성자:</strong> {getFullGradeDescription(votingData.grade)}{votingData.authorNickname}</p>
             {votingData.imgsrc &&(
             <img
-                src={`http://404notfoundpage.duckdns.org/${votingData.imgsrc}`}
+                src={`http://404notfoundpage.duckdns.org:8080/${votingData.imgsrc}`}
                 alt={votingData.title || '게시글 이미지'}
                 style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
               />

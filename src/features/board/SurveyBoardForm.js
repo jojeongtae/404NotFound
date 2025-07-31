@@ -149,7 +149,7 @@ const SurveyBoardForm = () => {
                 <form onSubmit={handleSubmit}>
                     {surveyData.imgsrc &&(
             <img
-                src={`http://404notfoundpage.duckdns.org/${surveyData.imgsrc}`}
+                src={`http://404notfoundpage.duckdns.org:8080/${surveyData.imgsrc}`}
                 alt={surveyData.title || '게시글 이미지'}
                 style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
               />
