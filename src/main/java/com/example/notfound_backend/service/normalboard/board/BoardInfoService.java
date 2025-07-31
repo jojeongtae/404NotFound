@@ -5,6 +5,8 @@ import com.example.notfound_backend.data.dao.login.UserAuthDAO;
 import com.example.notfound_backend.data.dao.admin.UserInfoDAO;
 import com.example.notfound_backend.data.dto.admin.UserInfoAllDTO;
 import com.example.notfound_backend.data.dto.normalboard.BoardDTO;
+import com.example.notfound_backend.data.dto.normalboard.BoardRankingDTO;
+import com.example.notfound_backend.data.dto.normalboard.BoardRankingResponse;
 import com.example.notfound_backend.data.entity.admin.UserInfoEntity;
 import com.example.notfound_backend.data.entity.enumlist.Status;
 import com.example.notfound_backend.data.entity.login.UserAuthEntity;
@@ -20,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -198,18 +201,28 @@ public class BoardInfoService {
         return toDTO(saved);
     }
 
-//    public BoardDTO recommendBoard(Integer id) {
-//        boardInfoDAO.incrementRecommend(id);
-//        BoardInfoEntity entity= boardInfoDAO.findById(id)
-//                .orElseThrow(() -> new RuntimeException("Board not found"));
-//        return toDTO(entity);
-//    }
-//
-//    public BoardDTO cancelRecommendBoard(Integer id) {
-//        boardInfoDAO.decrementRecommend(id);
-//        BoardInfoEntity entity= boardInfoDAO.findById(id)
-//                .orElseThrow(() -> new RuntimeException("Board not found"));
-//        return toDTO(entity);
-//    }
+    public List<BoardRankingResponse> getInfoTop5ByRecommendInLast7Days(){
+        List<BoardRankingDTO> dtos = boardInfoDAO.getTop5ByRecommend();
+
+        List<BoardRankingResponse> result = dtos.stream()
+                .map(dto -> new BoardRankingResponse(
+                        dto.getId(),
+                        dto.getTitle(),
+                        dto.getAuthor(),
+                        dto.getRecommend(),
+                        dto.getViews(),
+                        dto.getCategory(),
+                        dto.getCreatedAt(),
+                        dto.getCommentCount(),
+                        dto.getAuthorNickname(),
+                        userInfoService.getUserGrade(dto.getAuthor())
+                ))
+                .sorted(Comparator.comparing(BoardRankingResponse::getRecommend,
+                        Comparator.nullsLast(Comparator.naturalOrder())).reversed())
+                .limit(5)
+                .collect(Collectors.toList());
+
+        return result;
+    }
 
 }

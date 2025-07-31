@@ -1,10 +1,7 @@
 package com.example.notfound_backend.controller.normalboard;
 
 
-import com.example.notfound_backend.data.dto.normalboard.BoardCommentDTO;
-import com.example.notfound_backend.data.dto.normalboard.BoardDTO;
-import com.example.notfound_backend.data.dto.normalboard.BoardRankingDTO;
-import com.example.notfound_backend.data.dto.normalboard.BoardUsedDTO;
+import com.example.notfound_backend.data.dto.normalboard.*;
 import com.example.notfound_backend.service.normalboard.board.BoardRankingService;
 import com.example.notfound_backend.service.normalboard.board.BoardUsedService;
 import com.example.notfound_backend.service.normalboard.comment.BoardUsedCommentService;
@@ -82,19 +79,6 @@ public class BoardUsedController {
         return ResponseEntity.noContent().build();
     }
 
-//    @PatchMapping("/{id}/recommend")
-//    public ResponseEntity<BoardUsedDTO
-//    > recommend(@PathVariable Integer id) {
-//        BoardDTO updated= boardUsedService.recommendBoard(id);
-//        return ResponseEntity.ok(updated);
-//    }
-//
-//    @PatchMapping("/{id}/cancel_recommend")
-//    public ResponseEntity<BoardDTO> cancelRecommend(@PathVariable Integer id) {
-//        BoardDTO updated= boardUsedService.cancelRecommendBoard(id);
-//        return ResponseEntity.ok(updated);
-//    }
-
     @GetMapping("/comments/{boardId}")
     public List<BoardCommentDTO> getComments(@PathVariable Integer boardId) {
         List<BoardCommentDTO> boardDtoList=boardUsedCommentService.getCommentsByBoardId(boardId);
@@ -113,16 +97,10 @@ public class BoardUsedController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/ranking/comments")
-    public List<BoardRankingDTO> getRankingByCommentsToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getUsedTop5ByCommentsInLast7Days();
-        return boardRankingDTOList;
-    }
-
     @GetMapping("/ranking/recommend")
-    public List<BoardRankingDTO> getRecommendByRecommendToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getUsedTop5ByRecommendInLast7Days();
-        return boardRankingDTOList;
+    public List<BoardRankingResponse> getUsedTop5ByRecommendInLast7Days(){
+        List<BoardRankingResponse> rankingList=boardUsedService.getUsedTop5ByRecommendInLast7Days();
+        return rankingList;
     }
 
     @PostMapping("/{boardId}/recommend")

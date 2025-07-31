@@ -4,6 +4,7 @@ package com.example.notfound_backend.controller.normalboard;
 import com.example.notfound_backend.data.dto.normalboard.BoardCommentDTO;
 import com.example.notfound_backend.data.dto.normalboard.BoardDTO;
 import com.example.notfound_backend.data.dto.normalboard.BoardRankingDTO;
+import com.example.notfound_backend.data.dto.normalboard.BoardRankingResponse;
 import com.example.notfound_backend.service.normalboard.comment.BoardFoodCommentService;
 import com.example.notfound_backend.service.normalboard.recommend.BoardFoodRecommendService;
 import com.example.notfound_backend.service.normalboard.board.BoardFoodService;
@@ -111,16 +112,10 @@ public class BoardFoodController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/ranking/comments")
-    public List<BoardRankingDTO> getRankingByCommentsToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getFoodTop5ByCommentsInLast7Days();
-        return boardRankingDTOList;
-    }
-
     @GetMapping("/ranking/recommend")
-    public List<BoardRankingDTO> getRecommendByRecommendToday() {
-        List<BoardRankingDTO> boardRankingDTOList=boardRankingService.getFoodTop5ByRecommendInLast7Days();
-        return boardRankingDTOList;
+    public List<BoardRankingResponse> getFoodTop5ByRecommendInLast7Days(){
+        List<BoardRankingResponse> rankingList=boardFoodService.getFoodTop5ByRecommendInLast7Days();
+        return rankingList;
     }
 
     @PostMapping("/{boardId}/recommend")
@@ -128,12 +123,6 @@ public class BoardFoodController {
         boardFoodRecommendService.recommend(boardId, principal.getName());
         return ResponseEntity.ok("추천 완료");
     }
-
-//    @GetMapping("/search/title")
-//    public ResponseEntity<List<BoardFoodEntity>> searchByTitle(@RequestParam("title") String title) {
-//        List<BoardFoodEntity> results = boardFoodService.findByTitle(title);
-//        return ResponseEntity.ok(results);
-//    }
 
     @GetMapping("/search/title")
     public ResponseEntity<List<BoardDTO>> searchByTitle(@RequestParam String title) {

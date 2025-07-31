@@ -115,4 +115,24 @@ public interface BoardInfoRepository extends JpaRepository<BoardInfoEntity, Inte
     """, nativeQuery = true)
     List<BoardRankingDTO> findTop5ByRecommend();
 
+    @Query(value = """
+    SELECT 
+       b.id AS id,
+       b.title AS title,
+       b.author AS author,
+       u.nickname AS authorNickname,
+       b.recommend AS recommend,
+       b.views AS views,
+       b.category AS category,
+       b.created_at AS createdAt
+    FROM board_info b
+    JOIN user_auth ua ON b.author=ua.username
+    JOIN user_info u ON ua.username=u.username
+    WHERE DATE(b.created_at) BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND CURRENT_DATE
+        AND b.status = 'VISIBLE'
+    ORDER BY b.views DESC 
+    LIMIT 5
+    """, nativeQuery = true)
+    List<BoardRankingDTO> findTop5ByViewsInLast7Days();
+
 }

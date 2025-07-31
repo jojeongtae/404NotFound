@@ -66,6 +66,10 @@ public class BoardUsedDAO {
         return boardUsedRepository.findTop5ByRecommend();
     }
 
+    public List<BoardRankingDTO> getTop5ByViewsInLast7Days() {
+        return boardUsedRepository.findTop5ByViewsInLast7Days();
+    }
+
     public List<BoardUsedEntity> findByTitle(String title) { return boardUsedRepository.findByTitle(title); }
 
     public List<BoardUsedEntity> findByAuthor(String author) { return boardUsedRepository.findByAuthor(author); }
