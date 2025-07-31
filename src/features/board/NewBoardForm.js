@@ -54,6 +54,14 @@ const NewBoardForm = () => {
                 body: textBody,
             };
 
+            if(commonData.title === ""){
+                alert('제목을 입력해 주세요.');
+                return;
+            }
+            // if(commonData.body === "") {
+            //     alert('내용을 입력해 주세요.');
+            //     return;
+            // }
             
                 // 2. JSON 전용 게시판의 경우, 공통 데이터에 특정 필드를 추가합니다.
                 const requestData = { ...commonData };
@@ -81,6 +89,10 @@ const NewBoardForm = () => {
                 const boardFormData = new FormData();
                 
                 if (boardId === 'used') {
+                    if (price === "") {
+                        alert("가격을 입력해 주세요");
+                        return;
+                    }
                     boardDTO.price = Number(price);
                 }
 
@@ -123,17 +135,16 @@ const NewBoardForm = () => {
     }
 
     return (
-        <>
+        <div className="new-board">
             <form onSubmit={(e) => {
                 e.preventDefault();
                 handleNewBoard();
             }}>
+                <h3>글쓰기</h3>
                 {/* 게시판 선택 드롭다운 */}
                 <select id="boardSelect" onChange={(e) => setBoardId(e.target.value)}>
-                    <option value="">게시판을 선택</option>
-                    {user.role === "ROLE_ADMIN" && (
-                        <option value="notice">공지 사항</option>
-                    )}
+                    <option value="">게시판 선택</option>
+                    {user.role === "ROLE_ADMIN" && (<option value="notice">공지 사항</option>)}
                     <option value="free">자유 게시판</option>
                     <option value="food">먹거리 게시판</option>
                     <option value="info">정보 게시판</option>
@@ -143,7 +154,6 @@ const NewBoardForm = () => {
                     <option value="survey">설문조사 게시판</option>
                     <option value="voting">OX게시판</option>
                 </select>
-                <br />
 
                 {boardId === 'survey' ? (
                     <SurveyCreationForm
@@ -156,21 +166,25 @@ const NewBoardForm = () => {
                         column5={surveyColumn5} setColumn5={setSurveyColumn5}
                     />
                 ) : boardId === 'quiz' ? (
-                    <>
-                        <input type='text' placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}></input> <br />
-                        <select id='quizSelect' onChange={(e) => setQuizId(e.target.value)}>
-                            <option value="MULTI">객관식</option>
-                            <option value="SUBJECTIVE">주관식</option>
-                            <option value="OX">OX</option>
-                        </select>
-                        <input type='text' placeholder='퀴즈 문제' value={quizQuestion} onChange={(e) => setQuizQuestion(e.target.value)}></input> <br />
-                        <input type='text' placeholder='퀴즈 정답' value={quizAnswer} onChange={(e) => setQuizAnswer(e.target.value)}></input>
-                    </>
-                                ) : boardId === "voting" ? (
-                    <>
-                        <input type='text' placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}></input> <br />
-                        <input type='text' placeholder='OX 문제' value={oxVotingQuestion} onChange={(e) => setOxVotingQuestion(e.target.value)}></input> <br />
-                        <div>
+                    // 퀴즈
+                    <div className="new-board-quiz">
+                        <input type='text' className="board-title" placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}></input>
+                        <div className="row">
+                            <select id='quizSelect' onChange={(e) => setQuizId(e.target.value)}>
+                                <option value="MULTI">객관식</option>
+                                <option value="SUBJECTIVE">주관식</option>
+                                <option value="OX">OX</option>
+                            </select>
+                            <input type='text' className="quiz-question" placeholder='퀴즈 문제' value={quizQuestion} onChange={(e) => setQuizQuestion(e.target.value)}></input>
+                        </div>
+                        <input type='text' className="quiz-answer" placeholder='퀴즈 정답' value={quizAnswer} onChange={(e) => setQuizAnswer(e.target.value)}></input>
+                    </div>
+                ) : boardId === "voting" ? (
+                    <div className="new-board-voting">
+                        <input type='text' className="board-title" placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}></input> <br />
+                        <input type='text' className="voting-question" placeholder='OX 문제' value={oxVotingQuestion} onChange={(e) => setOxVotingQuestion(e.target.value)}></input> <br />
+                        <div className="voting-answer">
+                            <strong>정답: </strong>
                             <label>
                                 <input
                                     type="radio"
@@ -178,52 +192,51 @@ const NewBoardForm = () => {
                                     value="O"
                                     checked={oxVotingCorrectAnswer === 'O'}
                                     onChange={(e) => setOxVotingCorrectAnswer(e.target.value)}
-                                />
-                                O
+                                /> ⭕
                             </label>
-                            <label style={{ marginLeft: '10px' }}>
+                            <label style={{ marginLeft: '14px' }}>
                                 <input
                                     type="radio"
                                     name="oxAnswer"
                                     value="X"
                                     checked={oxVotingCorrectAnswer === 'X'}
                                     onChange={(e) => setOxVotingCorrectAnswer(e.target.value)}
-                                />
-                                X
+                                /> ❌
                             </label>
                         </div>
-                    </>
+                    </div>
                 ) : boardId === 'used' ? (
-                    <>
-                        <input type='text' placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}></input> <br />
-                        <textarea placeholder='내용' value={textBody} onChange={(e) => setTextBody(e.target.value)}></textarea><br></br>
-                      <input type='text' placeholder='가격' value={price} onChange={(e) => setPrice(e.target.value)} /><br />
-                
-                       
-                    </>
-                )
+                        <>
+                            <input type='text' className="board-title" placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}></input>
+                            <textarea className="board-body" placeholder='내용' value={textBody} onChange={(e) => setTextBody(e.target.value)}></textarea>
+                            <div className="price-wrap">
+                                <input type='number' className="board-price" placeholder='가격' value={price} onChange={(e) => setPrice(e.target.value)} /> <span className="unit">원</span>
+                            </div>
+                        </>
+                    )
 
                     : (
                         <>
-                            <input type='text' placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}></input> <br />
-                            <textarea placeholder='내용' value={textBody} onChange={(e) => setTextBody(e.target.value)}></textarea><br></br>
+                            <input type='text' className="board-title" placeholder='제목' value={title} onChange={(e) => setTitle(e.target.value)}></input>
+                            <textarea className="board-body" placeholder='내용' value={textBody} onChange={(e) => setTextBody(e.target.value)}></textarea>
                         </>
                     )
                 }
-                <br />
-                <input
-                    type='file'
-                    accept="image/*"
-                    onChange={handleImageChange}
-                /><br />
+                <div className="new-board-image">
+                    <input
+                        type='file'
+                        accept="image/*"
+                        onChange={handleImageChange}
+                    />
                     {imagePreviewUrl && (
-                        <div>
-                            <img src={imagePreviewUrl} alt="Image Preview" style={{ maxWidth: '200px', maxHeight: '200px', marginTop: '10px' }} />
+                        <div className="img-wrapper">
+                            <img src={imagePreviewUrl} alt="Image Preview" style={{ maxWidth: '200px', maxHeight: '200px'}} />
                         </div>
-                            )}
-                <input type="submit" value="전송" />
+                    )}
+                </div>
+                <button type="submit" className="btn type2 large">글쓰기</button>
             </form>
-        </>
+        </div>
     )
 }
 

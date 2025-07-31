@@ -75,7 +75,7 @@ const MailboxForm = ({ onClose }) => {
 
       {currentView === 'inbox' ? (
         <>
-          <h2>우편함</h2>
+          <h3>우편함</h3>
           {loading ? (
             <div style={{ textAlign: 'center', padding: '50px' }}>메시지를 불러오는 중...</div>
           ) : error ? (

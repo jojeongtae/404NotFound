@@ -9,7 +9,7 @@
     --text-color2: #6C757D;
     --accent-color: #374151; /* 버튼/링크 색상 */
     --accent-color-hover: #4B5563;
-    --border-color: #E0E0E0;
+    --border-color: #b6b6b6;
     --success-color: #10B981;
     --caution-color: #F59E0B;
     --warning-color: #EF4444;
@@ -24,8 +24,8 @@
 }
 
 /* title */
-main h3{margin-bottom:25px;font-size:22px;font-weight:600;}
-main h4{margin-bottom:10px;font-size:20px;font-weight:600;}
+h3{margin-bottom:25px;font-size:22px;font-weight:600;}
+h4{margin-bottom:10px;font-size:20px;font-weight:600;}
 
 /* button */
 button, .btn{display: inline-block;position: relative;padding: 5px 10px;min-width: 50px;border: 1px solid var(--border-color);border-radius: 5px;background-color: #fff;text-align: center;vertical-align: top;color: var(--text-color);font-size: 15px;font-weight: 400;line-height: 1.4em;text-decoration: none;cursor: pointer;transition: all 250ms;font-family:var(--font-arial);}
@@ -38,9 +38,11 @@ button.type2, .btn.type2{border:1px solid var(--accent-color);background-color:v
 button.type2:hover, .btn.type2:hover{border-color:var(--accent-color-hover);background-color:var(--accent-color-hover);}
 /* small */
 button.small, .btn.small{padding:3px 6px 2px;font-size:14px;}
+/* big */
+button.large, .btn.large{padding:8px 12px;min-width:100px;font-size:16px;}
 
 button:nth-child(n+2), .btn:nth-child(n+2) {margin-left: 8px;}
-
+button.large:nth-child(n+2), .btn.large:nth-child(n+2) {margin-left:10px;}
 
 
 /* table */

@@ -109,7 +109,7 @@ const BoardPageForm = ({ boardId }) => {
         fetchBoardPosts();
     }, [boardId, debouncedSearchText, searchOption]); // boardId, debouncedSearchText, searchOption이 변경될 때마다 다시 불러옴
     return (
-        <div>
+        <div className="board-view">
             <h3>{displayBoardName}</h3>
             {/* SearchBoardForm 컴포넌트 사용 */}
             <SearchBoardForm
@@ -126,7 +126,7 @@ const BoardPageForm = ({ boardId }) => {
                     <col width="auto"/>
                     <col width="20%"/>
                     <col width="10%"/>
-                    <col width="10%"/>
+                    {!pointBoard && <col width="10%"/>}
                 </colgroup>
                 <thead>
                     <tr>
@@ -145,7 +145,7 @@ const BoardPageForm = ({ boardId }) => {
                                 <td className="post-item post-title" onClick={() => navigate(`/board/${boardId}/${post.id}`)} style={{ cursor: 'pointer' }}>{post.title}</td>
                                 <td
                                     className="post-item post-author"
-                                    style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                                    style={{ cursor: 'pointer' }}
                                     onClick={(e) => handleNicknameClick(e, { nickname: post.authorNickname, id: post.author, grade: post.grade })}
                                 >
                                     <span className="user-grade">{getFullGradeDescription(post.grade)}</span>
@@ -157,9 +157,7 @@ const BoardPageForm = ({ boardId }) => {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan={!pointBoard ? 5 : 4} className="no-posts" style={{ textAlign: 'center' }}>
-                                게시글이 없습니다.
-                            </td>
+                            <td colSpan={!pointBoard ? 5 : 4} className="no-posts">💬게시글이 없습니다.</td>
                         </tr>
                     )}
                 </tbody>
