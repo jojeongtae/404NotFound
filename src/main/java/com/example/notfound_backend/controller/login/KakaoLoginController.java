@@ -100,17 +100,19 @@ public class KakaoLoginController {
                     .header(HttpHeaders.LOCATION, "/login-error")
                     .build();
         }
+        Map<String, Object> body = userInfoResponse.getBody();
+        Long kakaoId = ((Number) body.get("id")).longValue();  // 카카오 고유 ID
 
         Map<String, Object> kakaoAccount = (Map<String, Object>) ((Map) userInfoResponse.getBody().get("kakao_account"));
         Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
 
         String email = (String) kakaoAccount.get("email");
-        String name = (String) profile.get("nickname");
+        String nickname = (String) profile.get("nickname");
         String role = "ROLE_USER";
-
+        String username = (email != null) ? email : "kakao_" + kakaoId;
         // Step 5: JWT 생성 및 쿠키 전달
-        String access = this.jwtUtil.createToken("access", name, role, 60*10*1000L);
-        String refresh = this.jwtUtil.createToken("refresh", name, role, 24*60*60*1000L);
+        String access = this.jwtUtil.createToken("access", username, role, 60*10*1000L);
+        String refresh = this.jwtUtil.createToken("refresh", username, role, 24*60*60*1000L);
 
 
         if(isApp){
@@ -125,14 +127,14 @@ public class KakaoLoginController {
                 .httpOnly(true)
                 .secure(false) // 운영환경에서는 true
                 .path("/")
-                .maxAge(600)
+                .maxAge(24*60*60)
                 .sameSite("Lax")
                 .build();
         Map<String, String> responseBody = new HashMap<>();
-        responseBody.put("email",email);
-        responseBody.put("name",name);
-        responseBody.put("role",role);
-        responseBody.put("access_token","Bearer "+access);
+        responseBody.put("email", email);
+        responseBody.put("role", role);
+        responseBody.put("username", username);
+        responseBody.put("nickname", nickname);
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.SET_COOKIE, cookie.toString());
