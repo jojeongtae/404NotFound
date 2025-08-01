@@ -10,6 +10,10 @@ const DiceGamePage = () => {
   if (!user || !user.username) {
     return <div>로그인이 필요합니다.</div>;
   }
+  //포인트 부족시 
+  if(user.point < 10){
+    return <div>포인트가 모자랍니다</div>
+  }
 
   return (
     <div>

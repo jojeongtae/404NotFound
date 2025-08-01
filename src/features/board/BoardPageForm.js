@@ -41,7 +41,7 @@ const BoardPageForm = ({ boardId }) => {
         const fetchTopPost = async () => {
             try {
                 const response = await apiClient.get(`${boardId}/ranking/recommend`);
-                setTopPosts(response.data.slice(0,3));
+                setTopPosts(response.data.slice(0, 3));
             } catch (e) {
                 console.log(e);
             }
@@ -112,7 +112,7 @@ const BoardPageForm = ({ boardId }) => {
                     url = `/${boardId}/search/${searchOption}?${searchOption}=${searchText}`;
                 }
                 const res = await apiClient.get(url);
-                setPosts(res.data);
+                setPosts([...res.data].reverse());
                 console.log(`게시판 ${boardId}의 게시글:`, res.data);
             } catch (err) {
                 console.error(`게시판 ${boardId} 게시글 불러오기 실패:`, err);
@@ -173,8 +173,9 @@ const BoardPageForm = ({ boardId }) => {
                             <td className="post-item post-views">{post.views}</td>
                             <td className="post-item post-recommend">{post.recommend}</td>
                         </tr>
+
                     ))}
-                    <hr />
+
                     {currentPosts.length > 0 ? (
                         currentPosts.map(post => (
                             <tr key={post.id} className="post-list-item">
