@@ -59,32 +59,32 @@ const LoginForm = ({ onClose }) => {
   };
 
   // 🔹 카카오 로그인 콜백 처리
-  React.useEffect(() => {
-    const url = new URL(window.location.href);
-    const code = url.searchParams.get("code");
+ React.useEffect(() => {
+  const url = new URL(window.location.href);
+  const code = url.searchParams.get("code");
 
-    if (code) {
-      // Step2: 카카오 토큰 + 유저 정보 받기
-      apiClient.get(`/login/oauth2/code/kakao?code=${code}`, { withCredentials: true })
-        .then(res => {
-          if (res.data?.username) {
-            dispatch(setUser(res.data));
-            login();
-            onClose();
-            navigate('/');
-            console.log(res.data);
-          }
-        })
-        .catch(err => {
-          console.error("카카오 로그인 실패:", err);
-          alert("카카오 로그인 실패");
-        });
-    }
-  }, [dispatch, login, navigate, onClose]);
+  if (code) {
+    apiClient.get(`/login/oauth2/code/kakao?code=${code}`, { withCredentials: true })
+      .then(res => {
+        if (res.data?.username) {
+          // Redux 상태 갱신
+          dispatch(setUser(res.data));
+          login();
 
-  const handleNaverLogin = () => {
-    window.location.href = "/api/naver";
-  };
+          // URL 정리 (code 제거)
+          window.history.replaceState({}, document.title, window.location.pathname);
+
+          console.log("카카오 로그인 성공:", res.data);
+          onClose();
+          navigate('/');
+        }
+      })
+      .catch(err => {
+        console.error("카카오 로그인 실패:", err);
+        alert("카카오 로그인 실패");
+      });
+  }
+}, [dispatch, login, navigate, onClose]);
 
   return (
     <>
