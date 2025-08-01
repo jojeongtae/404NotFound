@@ -41,7 +41,7 @@ const BoardPageForm = ({ boardId }) => {
         const fetchTopPost = async () => {
             try {
                 const response = await apiClient.get(`${boardId}/ranking/recommend`);
-                setTopPosts(response.data);
+                setTopPosts(response.data.slice(0,3));
             } catch (e) {
                 console.log(e);
             }
@@ -174,6 +174,7 @@ const BoardPageForm = ({ boardId }) => {
                             <td className="post-item post-recommend">{post.recommend}</td>
                         </tr>
                     ))}
+                    <hr />
                     {currentPosts.length > 0 ? (
                         currentPosts.map(post => (
                             <tr key={post.id} className="post-list-item">

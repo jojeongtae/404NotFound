@@ -166,7 +166,7 @@ const PostDetailPage = () => {
   const handleReport = async () => {
     try {
       const res = await apiClient.post("/user/report", {
-        reason: "간단신고",
+        reason: "게시글 빠른 신고",
         reporter: username,
         reported: post.author,
         targetTable: `board_${boardId}`,
