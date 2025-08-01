@@ -31,7 +31,7 @@ public class BoardRankingController {
 
     @GetMapping("/comments/week")
     public List<BoardRankingResponse> getAllBoardsTop5ByCommentsInLast7Days() {
-        List<BoardRankingResponse> rankingList=boardRankingService.getAllBoardsTop5ByRecommendInLast7Days();
+        List<BoardRankingResponse> rankingList=boardRankingService.getAllBoardsTop5ByCommentsInLast7Days();
         return rankingList;
     }
 
