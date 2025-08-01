@@ -49,7 +49,7 @@ public class KakaoLoginController {
     // Step 2: 카카오 인증 후 전달된 code 처리
     @GetMapping("/login/oauth2/code/kakao")
     public ResponseEntity<?> handleKakaoCallback(@RequestParam String code,
-                                                 @RequestHeader(value = "andriodApp", required = false) String app) {
+                                                 @RequestHeader(value = "androidApp", required = false) String app) {
 
         Boolean isApp=false;
         if(app!=null && !app.isEmpty()){
