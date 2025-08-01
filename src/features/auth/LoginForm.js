@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import apiClient from '../../api/apiClient';
@@ -13,17 +13,7 @@ const LoginForm = ({ onClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  // 🔹 페이지 로드시 쿠키 기반 유저 정보 확인
-  useEffect(() => {
-    apiClient.get("/user/me", { withCredentials: true })
-      .then(res => {
-        if (res.data?.username) {
-          dispatch(setUser(res.data));
-        }
-      })
-      .catch(() => {});
-  }, [dispatch]);
-
+  // 🔹 일반 로그인 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -62,10 +52,35 @@ const LoginForm = ({ onClose }) => {
     }
   };
 
-  // 🔹 소셜 로그인
+  // 🔹 카카오 로그인
   const handleKakaoLogin = () => {
+    // Step1: 카카오 로그인 페이지 이동
     window.location.href = "/api/kakao";
   };
+
+  // 🔹 카카오 로그인 콜백 처리
+  React.useEffect(() => {
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get("code");
+
+    if (code) {
+      // Step2: 카카오 토큰 + 유저 정보 받기
+      apiClient.get(`/login/oauth2/code/kakao?code=${code}`, { withCredentials: true })
+        .then(res => {
+          if (res.data?.username) {
+            dispatch(setUser(res.data));
+            login();
+            onClose();
+            navigate('/');
+          }
+        })
+        .catch(err => {
+          console.error("카카오 로그인 실패:", err);
+          alert("카카오 로그인 실패");
+        });
+    }
+  }, [dispatch, login, navigate, onClose]);
+
   const handleNaverLogin = () => {
     window.location.href = "/api/naver";
   };
