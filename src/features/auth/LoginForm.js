@@ -15,7 +15,7 @@ const LoginForm = ({ onClose }) => {
 
   // 🔹 페이지 로드시 쿠키 기반 유저 정보 확인
   useEffect(() => {
-    apiClient.get("/api/user/me", { withCredentials: true })
+    apiClient.get("/user/me", { withCredentials: true })
       .then(res => {
         if (res.data?.username) {
           dispatch(setUser(res.data));
