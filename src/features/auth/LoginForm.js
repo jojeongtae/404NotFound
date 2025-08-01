@@ -45,16 +45,16 @@ const LoginForm = ({ onClose }) => {
       login();
       onClose();
       navigate('/');
-
     } catch (error) {
       const errorMessage = error.response?.data?.message || '로그인 실패';
       alert(errorMessage);
     }
   };
 
-  // 🔹 카카오 로그인 버튼
+  // 🔹 카카오 로그인 버튼 (Client ID 제거)
   const handleKakaoLogin = () => {
-    window.location.href = "/api/kakao"; // --추가된부분-- (navigate → 직접 이동)
+    // --수정된부분--: 서버 경유해서 카카오 인증
+    window.location.href = "/api/kakao"; 
   };
 
   // 🔹 카카오 OAuth 콜백 처리
@@ -71,17 +71,19 @@ const LoginForm = ({ onClose }) => {
 
           if (res.data?.username) {
             // Redux 상태 갱신
-            dispatch(setToken(res.data.accessToken)); // --추가된부분--
+            dispatch(setToken("Bearer " + res.data.accessToken)); // --수정된부분--
             dispatch(setUser({
               username: res.data.username,
               role: res.data.role,
               nickname: res.data.nickname,
+              phone: "01011112222",
+              address: '카카오로그인 주소',
             }));
 
             login();
 
             // URL 정리 (code 제거)
-            window.history.replaceState({}, document.title, window.location.pathname);
+            window.history.replaceState({}, document.title, window.location.pathname); // --추가된부분--
 
             onClose();
             navigate('/');
