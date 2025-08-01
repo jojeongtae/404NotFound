@@ -128,6 +128,7 @@ const MainLayout = () => {
                 <ul className="nav-list">
                   <li><Link to="/board/ranking/recommend">Best404추천수</Link></li>
                   <li><Link to="/board/ranking/comments">Best404댓글수</Link></li>
+                  <li><Link to="/board/ranking/view">Best404조회수</Link></li>
                 </ul>
                 <h3>일반 게시판</h3>
                 <ul className="nav-list">

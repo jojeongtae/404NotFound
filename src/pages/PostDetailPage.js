@@ -166,7 +166,7 @@ const PostDetailPage = () => {
   const handleReport = async () => {
     try {
       const res = await apiClient.post("/user/report", {
-        reason: "간단신고",
+        reason: "게시글 빠른 신고",
         reporter: username,
         reported: post.author,
         targetTable: `board_${boardId}`,
@@ -201,7 +201,7 @@ const PostDetailPage = () => {
             {post.imgsrc && (
                 <div style={{ textAlign: 'center', marginBottom: '20px' }}>
                   <img
-                      src={`${API_BASE_URL}/${post.imgsrc}`}
+                      src={`http://404notfoundpage.duckdns.org:8080/${post.imgsrc}`}
                       alt={post.title || '게시글 이미지'}
                       style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
                   />
