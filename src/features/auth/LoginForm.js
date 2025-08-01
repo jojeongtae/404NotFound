@@ -118,8 +118,8 @@ const LoginForm = ({ onClose }) => {
         <input type="submit" value="로그인" />
 
       </form>
-        <button type='button' onClick={handleKakaoLogin()}>카카오 로그인</button>
-        <button type='button' onClick={handleNaverLogin()}>네이버 로그인</button>   
+        <button type='button' onClick={handleKakaoLogin}>카카오 로그인</button>
+        <button type='button' onClick={handleNaverLogin}>네이버 로그인</button>   
   </>
 );
 };
