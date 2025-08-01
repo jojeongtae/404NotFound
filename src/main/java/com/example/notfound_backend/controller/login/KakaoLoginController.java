@@ -106,7 +106,7 @@ public class KakaoLoginController {
 
         String email = (String) kakaoAccount.get("email");
         String name = (String) profile.get("nickname");
-        String role = "ROLE_ADMIN";
+        String role = "ROLE_USER";
 
         // Step 5: JWT 생성 및 쿠키 전달
         String access = this.jwtUtil.createToken("access", name, role, 60*10*1000L);
@@ -128,11 +128,16 @@ public class KakaoLoginController {
                 .maxAge(600)
                 .sameSite("Lax")
                 .build();
+        Map<String, String> responseBody = new HashMap<>();
+        responseBody.put("email",email);
+        responseBody.put("name",name);
+        responseBody.put("role",role);
+        responseBody.put("access_token","Bearer "+access);
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.SET_COOKIE, cookie.toString());
         responseHeaders.set(HttpHeaders.LOCATION, "/");
 
-        return ResponseEntity.status(HttpStatus.FOUND).headers(responseHeaders).build();
+        return ResponseEntity.status(HttpStatus.FOUND).headers(responseHeaders).body(responseBody);
     }
 }

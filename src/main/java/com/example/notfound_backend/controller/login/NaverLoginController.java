@@ -134,11 +134,15 @@ public class NaverLoginController {
                 .build();
 
         String redirectUrl = "/"; // 리다이렉트 대상 URL
-
+        Map<String, String> resBody = new HashMap<>();
+        resBody.put("email",email);
+        resBody.put("name",name);
+        resBody.put("role",role);
+        resBody.put("access_token","Bearer "+access);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.SET_COOKIE, cookie.toString());
         responseHeaders.set(HttpHeaders.LOCATION, redirectUrl);
 
-        return ResponseEntity.status(HttpStatus.FOUND).headers(responseHeaders).build();
+        return ResponseEntity.status(HttpStatus.FOUND).headers(responseHeaders).body(resBody);
     }
 }
