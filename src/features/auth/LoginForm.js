@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // --수정된부분--
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import apiClient from '../../api/apiClient';
@@ -52,42 +52,52 @@ const LoginForm = ({ onClose }) => {
     }
   };
 
-  // 🔹 카카오 로그인
+  // 🔹 카카오 로그인 버튼
   const handleKakaoLogin = () => {
-    // Step1: 카카오 로그인 페이지 이동
-    window.location.href = "/api/kakao";
+    window.location.href = "/api/kakao"; // --추가된부분-- (navigate → 직접 이동)
   };
 
-  // 🔹 카카오 로그인 콜백 처리
- React.useEffect(() => {
-  const url = new URL(window.location.href);
-  const code = url.searchParams.get("code");
+  // 🔹 카카오 OAuth 콜백 처리
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get("code");
 
-  if (code) {
-    apiClient.get(`/login/oauth2/code/kakao?code=${code}`, { withCredentials: true })
-      .then(res => {
-        if (res.data?.username) {
-          // Redux 상태 갱신
-          dispatch(setUser(res.data));
-          login();
+    if (code) {
+      console.log("카카오 인가 코드 감지:", code); // --추가된부분--
 
-          // URL 정리 (code 제거)
-          window.history.replaceState({}, document.title, window.location.pathname);
+      apiClient.get(`/login/oauth2/code/kakao?code=${code}`, { withCredentials: true }) // --수정된부분--
+        .then(res => {
+          console.log("카카오 로그인 응답:", res.data); // --추가된부분--
 
-          console.log("카카오 로그인 성공:", res.data);
-          onClose();
-          navigate('/');
-        }
-      })
-      .catch(err => {
-        console.error("카카오 로그인 실패:", err);
-        alert("카카오 로그인 실패");
-      });
-  }
-}, [dispatch, login, navigate, onClose]);
-const handleNaverLogin = () => {
-  console.log("Naver Login Clicked");
-};
+          if (res.data?.username) {
+            // Redux 상태 갱신
+            dispatch(setToken(res.data.accessToken)); // --추가된부분--
+            dispatch(setUser({
+              username: res.data.username,
+              role: res.data.role,
+              nickname: res.data.nickname,
+            }));
+
+            login();
+
+            // URL 정리 (code 제거)
+            window.history.replaceState({}, document.title, window.location.pathname);
+
+            onClose();
+            navigate('/');
+          }
+        })
+        .catch(err => {
+          console.error("카카오 로그인 실패:", err);
+          alert("카카오 로그인 실패");
+        });
+    }
+  }, [dispatch, login, navigate, onClose]);
+
+  const handleNaverLogin = () => {
+    console.log("Naver Login Clicked");
+  };
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -106,8 +116,10 @@ const handleNaverLogin = () => {
         /><br />
         <input type="submit" value="로그인" />
       </form>
-      <button type='button' onClick={handleKakaoLogin}>카카오 로그인</button>
-      <button type='button' onClick={handleNaverLogin}>네이버 로그인</button>
+      <div>
+        <button type='button' onClick={handleKakaoLogin}>카카오 로그인</button>
+        <button type='button' onClick={handleNaverLogin}>네이버 로그인</button>
+      </div>
     </>
   );
 };
