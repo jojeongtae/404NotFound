@@ -56,7 +56,7 @@ jobs:
             if [ "$(sudo docker ps -a -q -f name=notfoundbackend)" ]; then
               sudo docker rm -f notfoundbackend
             fi
-#            나중에 이건 지우고 하면됨
+          #나중에 이건 지우고 하면됨
             if [ "$(sudo docker volume ls -q -f name=notfounddb_volume)" ]; then
               sudo docker volume rm notfounddb_volume
             fi
