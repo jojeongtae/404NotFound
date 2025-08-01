@@ -72,6 +72,7 @@ const LoginForm = ({ onClose }) => {
             login();
             onClose();
             navigate('/');
+            console.log(res.data);
           }
         })
         .catch(err => {
