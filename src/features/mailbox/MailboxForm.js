@@ -55,22 +55,22 @@ const MailboxForm = ({ onClose }) => {
       {currentView === 'inbox' ? (
         <div className="tab-container message-box">
           {loading ? (
-            <div style={{ textAlign: 'center', padding: '50px' }}>메시지를 불러오는 중...</div>
+            <p className="notice">메시지를 불러오는 중...</p>
           ) : error ? (
-            <div style={{ textAlign: 'center', padding: '50px', color: 'red' }}>{error}</div>
+            <p className="notice red">{error}</p>
           ) : messages.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '50px' }}>받은 메시지가 없습니다.</div>
+            <p className="notice">받은 메시지가 없습니다.</p>
           ) : (
             <ul className="message-list">
               {messages.map((msg) => (
                 <li className="message-item">
                   <ul>
-                    <li><strong>보낸 사람:</strong> <span className="user-grade">{msg.authorNickname || msg.author}</span> <br /></li>
-                    <li><strong>제목:</strong> {msg.title}<br /></li>
-                    <li><strong>내용:</strong> {msg.message}<br /></li>
+                    <li><em>보낸 사람:</em> <span className="user-grade">{msg.authorNickname || msg.author}</span> <br /></li>
+                    <li><em>제목:</em> {msg.title}<br /></li>
+                    <li><em>내용:</em> {msg.message}<br /></li>
                     <li><span className="time">{new Date(msg.createdAt).toLocaleString()}</span></li>
-                    <li><button className="btn red" onClick={() => handleMessageDelete(msg.id)}>삭제하기</button></li>
                   </ul>
+                  <button className="btn red small delete" onClick={() => handleMessageDelete(msg.id)}>삭제</button>
                 </li>
               ))}
             </ul>
@@ -79,7 +79,7 @@ const MailboxForm = ({ onClose }) => {
       ) : (
         <ComposeMessageForm onMessageSent={() => setCurrentView('inbox')} /> // 쪽지 전송 후 우편함으로 돌아가기
       )}
-      <button onClick={onClose} style={{ marginTop: '20px' }}>닫기</button>
+      {/*<button onClick={onClose} style={{ marginTop: '20px' }}>닫기</button>*/}
     </div>
   );
 };
