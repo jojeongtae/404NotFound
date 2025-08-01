@@ -18,6 +18,12 @@ import java.util.List;
 public class ReportController {
     private final ReportService reportService;
 
+    // 나의 신고 리스트
+    @GetMapping(value = "/user/report/{username}")
+    public ResponseEntity<List<ReportResponseDTO>> getReport(@PathVariable String username) {
+        return ResponseEntity.status(HttpStatus.OK).body(reportService.findByReporter(username));
+    }
+
     // 신고
     @PostMapping(value = "/user/report")
     public ResponseEntity<ReportResponseDTO> addReport(@RequestBody ReportAddDTO reportAddDTO) {

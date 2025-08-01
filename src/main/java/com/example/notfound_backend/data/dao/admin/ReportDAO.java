@@ -2,6 +2,7 @@ package com.example.notfound_backend.data.dao.admin;
 
 import com.example.notfound_backend.data.entity.admin.ReportEntity;
 import com.example.notfound_backend.data.entity.enumlist.ReportStatus;
+import com.example.notfound_backend.data.entity.login.UserAuthEntity;
 import com.example.notfound_backend.data.repository.admin.ReportRepository;
 import com.example.notfound_backend.exception.ReportNotFoundException;
 import com.example.notfound_backend.exception.UserNotFoundException;
@@ -15,6 +16,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReportDAO {
     private final ReportRepository reportRepository;
+
+    // 나의 신고 리스트
+    public List<ReportEntity> findByRporter(String reporter) {
+        return reportRepository.findByReporter(reporter);
+    }
 
     // 신고
     public ReportEntity addReport(ReportEntity reportEntity) {

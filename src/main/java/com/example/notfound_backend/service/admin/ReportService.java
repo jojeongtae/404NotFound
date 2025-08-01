@@ -27,6 +27,29 @@ public class ReportService {
     private final UserAuthDAO userAuthDAO;
     private final UserInfoDAO userInfoDAO;
 
+    // 나의 신고 리스트
+    public List<ReportResponseDTO> findByReporter(String reporter) {
+        List<ReportEntity> reportEntityList = reportDAO.findByRporter(reporter);
+
+        List<ReportResponseDTO> reportResponseDTOList = new ArrayList<>();
+        for (ReportEntity reportEntity : reportEntityList) {
+            ReportResponseDTO responseDTO = ReportResponseDTO.builder()
+                    .id(reportEntity.getId())
+                    .reason(reportEntity.getReason())
+                    .description(reportEntity.getDescription())
+                    .reporter(reportEntity.getReporter().getUsername())
+                    .reported(reportEntity.getReported().getUsername())
+                    .targetTable(reportEntity.getTargetTable())
+                    .targetId(reportEntity.getTargetId())
+                    .status(reportEntity.getStatus())
+                    .createdAt(reportEntity.getCreatedAt())
+                    .updatedAt(reportEntity.getUpdatedAt())
+                    .build();
+            reportResponseDTOList.add(responseDTO);
+        }
+        return reportResponseDTOList;
+    }
+
     // 신고
     public ReportResponseDTO addReport(ReportAddDTO reportAddDTO) {
         UserAuthEntity reporter = userAuthDAO.findByUsername(reportAddDTO.getReporter());
