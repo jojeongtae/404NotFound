@@ -7,7 +7,7 @@ const UserInfoModal = ({ onClose }) => {
 
   return (
     <div className="userinfo-modal">
-      <div className="userinfo-tab">
+      <div className="modal-tab">
         <button onClick={() => setView('info')} className={view === 'info' ? 'btn type2' : "btn"}>내 정보 수정</button>
         <button onClick={() => setView('password')} className={view === 'password' ? 'btn type2' : "btn"}>비밀번호 변경</button>
       </div>

@@ -47,7 +47,7 @@ const PasswordChangeForm = ({ onSwitchToInfo, onClose }) => {
   };
 
   return (
-      <div className="tab-container">
+      <div className="tab-container password">
         <form onSubmit={handleSubmit}>
           <ul>
             <li>
@@ -83,7 +83,7 @@ const PasswordChangeForm = ({ onSwitchToInfo, onClose }) => {
           </ul>
           {error && <p style={{ color: 'red' }}>{error}</p>}
           {success && <p style={{ color: 'green' }}>{success}</p>}
-          <button type="submit">비밀번호 변경</button>
+          <button type="submit" className="btn">비밀번호 변경</button>
           {/*<button type="button" onClick={onSwitchToInfo}>내 정보 수정으로 돌아가기</button>*/}
         </form>
       </div>

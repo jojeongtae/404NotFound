@@ -44,7 +44,7 @@ const UserInfoForm = ({ onClose }) => { // onClose prop 추가
     }
 
     return (
-        <div className="tab-container">
+        <div className="tab-container user-info">
             <form onSubmit={handleSubmit}>
                 <ul>
                     <li>
