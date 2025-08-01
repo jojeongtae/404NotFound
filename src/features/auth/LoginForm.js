@@ -85,7 +85,9 @@ const LoginForm = ({ onClose }) => {
       });
   }
 }, [dispatch, login, navigate, onClose]);
-
+const handleNaverLogin = () => {
+  console.log("Naver Login Clicked");
+};
   return (
     <>
       <form onSubmit={handleSubmit}>
