@@ -116,10 +116,10 @@ const LoginForm = ({ onClose }) => {
           onChange={(e) => setPassword(e.target.value)}
         /> <br />
         <input type="submit" value="로그인" />
-        <button type='button' onClick={handleKakaoLogin()}>카카오 로그인</button>
-        <button type='button' onClick={handleNaverLogin()}>네이버 로그인</button>
+
       </form>
-   
+        <button type='button' onClick={handleKakaoLogin()}>카카오 로그인</button>
+        <button type='button' onClick={handleNaverLogin()}>네이버 로그인</button>   
   </>
 );
 };

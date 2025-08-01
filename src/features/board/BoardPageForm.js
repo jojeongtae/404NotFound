@@ -103,6 +103,7 @@ const BoardPageForm = ({ boardId }) => {
             } else {
                 setPointBoard(false);
             }
+            setCurrentPage(1);
             try {
                 setLoading(true);
                 setError(null);
