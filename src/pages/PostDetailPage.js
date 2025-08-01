@@ -215,7 +215,7 @@ const PostDetailPage = () => {
           <div className="board-detail-footer">
             <div className="recommend">
               <button onClick={handleRecommend} disabled={isRecommended}>
-                {isRecommended ? "추천 완료" : `추천👍${post.recommend}`}
+                {isRecommended ? `추천함👍${post.recommend}` : `추천👍${post.recommend}`}
               </button>
             </div>
             <div className="report">
@@ -226,7 +226,7 @@ const PostDetailPage = () => {
           {/* 댓글 섹션 시작 */}
           {boardId !== 'quiz' && boardId !== 'survey' && boardId !== 'voting' && (
             <div className="comment">
-              <h4>💬댓글</h4>
+              <h4 className="comment-title">💬댓글</h4>
               {comments.length === 0 && <p>댓글이 없습니다. 첫번째 댓글을 입력해 보세요.</p>}
                 <CommentThread comments={comments} onCommentUpdate={loadPostAndComments} username={username} handleDeleteComment={handleDeleteComment} />
               <form onSubmit={handleCommentSubmit}>
@@ -242,12 +242,11 @@ const PostDetailPage = () => {
       )}
       <div>
         {username === post.author && (
-          <button onClick={() => navigate(`/board/${boardId}/${postId}/edit`)} className='nav-link'>게시글 수정</button>
-
+          <button className='btn large' onClick={() => navigate(`/board/${boardId}/${postId}/edit`)}>게시글 수정</button>
         )}
         {username === post.author && (
 
-          <button className='nav-link' onClick={handleDeletePost}>게시글 삭제</button>
+          <button className='btn red large' onClick={handleDeletePost}>게시글 삭제</button>
         )}
       </div>
     </>

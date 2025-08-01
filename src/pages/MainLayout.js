@@ -77,7 +77,7 @@ const MainLayout = () => {
                   <>
                     <Link to="/board/new" className="btn type2 nav-link">글쓰기</Link>
                     <button onClick={() => openModal('userInfo')} className='nav-link'>내 정보 수정</button> {/* 버튼으로 변경 */}
-                    <button onClick={() => openModal('mailbox')} className='nav-link'>우편함</button> {/* 이 줄을 추가합니다. */}
+                    <button onClick={() => openModal('mailbox')} className='nav-link'>메시지</button> {/* 이 줄을 추가합니다. */}
                     <button onClick={logout} className="nav-link">Logout</button>
                   </>
               ) : (

@@ -44,33 +44,37 @@ const UserInfoForm = ({ onClose }) => { // onClose prop 추가
     }
 
     return (
-        <>
+        <div className="tab-container user-info">
             <form onSubmit={handleSubmit}>
-                <div>
-                <span>닉네임 : </span>
-
-                    <input name="nickname" value={userData.nickname} onChange={handleChange} placeholder="닉네임" />
-                   
-                </div>
-                <div>
-                <span>전화번호 : </span>
-
-                    <input name="phone" value={userData.phone} onChange={handleChange} placeholder="전화번호" />
-                </div>
-                <div>
-                <span>주소 :</span>
-
-                    <input name="address" value={userData.address} onChange={handleChange} placeholder="주소" />
-                </div>
-                <span>포인트 :</span>
-                 <input
-                        name="point"
-                        readOnly={true}
-                        placeholder={userInfo.point}
-                    />
-                <button type="submit">정보 수정</button>
+                <ul>
+                    <li>
+                        <label>
+                            <span>닉네임</span>
+                            <input type="text" name="nickname" value={userData.nickname} onChange={handleChange} placeholder="닉네임"/>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <span>전화번호</span>
+                            <input type="text" name="phone" value={userData.phone} onChange={handleChange} placeholder="전화번호"/>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <span>주소</span>
+                            <input type="text" name="address" value={userData.address} onChange={handleChange} placeholder="주소"/>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <span>포인트</span>
+                            <input type="text" name="point" readOnly={true} placeholder={userInfo.point}/>
+                        </label>
+                    </li>
+                </ul>
+                <button type="submit" className="btn">정보 수정</button>
             </form>
-        </>
+        </div>
     );
 }
 

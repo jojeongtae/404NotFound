@@ -106,7 +106,7 @@ header .header-title-container{display:inline-block;padding-bottom:20px;text-dec
 header .nav-links{position:absolute;right:0;bottom:0;font-size:0;line-height:0;}
 
 
-.user-intro{display:block;padding:6px 0;border-bottom:1px solid var(--border-color);}
+.user-intro{display:block;padding:8px 0;border-bottom:1px solid var(--border-color);}
 .user-intro .user-message{position:relative;margin-right:12px;padding-right:13px;}
 .user-intro .user-message:before{display:block;content:'';position:absolute;top:calc(50% - 7px);right:0;width:1px;height:16px;background-color:#888;}
 
@@ -132,21 +132,7 @@ aside nav .nav-list li a:hover{background-color:var(--bg-color-light);}
 
 
 /* main */
-main{flex-grow:1;padding:20px 0 0 50px;}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+main{flex-grow:1;padding:20px 0 40px 50px;}
 
 
 
