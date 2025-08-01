@@ -55,6 +55,12 @@ button.large:nth-child(n+2), .btn.large:nth-child(n+2) {margin-left:10px;}
 .table tr:nth-last-child(n+2){border-bottom:1px solid var(--border-color-light);}
 .table td, .table th {padding:10px 10px;text-align:center;}
 
+/* admin용 테이블 */
+.admin-table{border-collapse:collapse;border-spacing:0;}
+.admin-table th,
+.admin-table td{border:1px solid var(--border-color);padding:10px 4px;text-align:center;vertical-align:middle;}
+.admin-table thead{background-color:var(--bg-color-light)}
+
 /* form */
 input[type="text"],input[type="number"],input[type="password"],textarea,
 select{vertical-align:top;min-height:33px;padding:5px 6px 5px 10px;box-sizing:border-box;border:1px solid var(--border-color);border-radius:5px;font-size:14px;line-height:1.4em;font-family:var(--font-arial);}

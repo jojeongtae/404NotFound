@@ -1,7 +1,7 @@
 import {useSelector} from "react-redux";
 import apiClient from "../../api/apiClient";
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 //신고게시판
 const ReportBoardForm = () => {
@@ -32,7 +32,8 @@ const ReportBoardForm = () => {
             };
             const response = await apiClient.post("/user/report", formData);
             console.log("신고 성공: ", response.data);
-            alert("신고가 정상접수 되었습니다.");
+            alert("신고가 접수 되었습니다.");
+            navigate(`/board/user/report/${user.username}`);
         }catch (error){
             console.error("신고 실패: ", error);
         }
@@ -61,17 +62,18 @@ const ReportBoardForm = () => {
                     <li>
                         <label>
                             <span>신고대상</span>
-                            <input type="text" name="reported" placeholder="신고자 ID 또는 이름" value={formData.reported} onChange={handleChange}/>
+                            <input type="text" name="reported" placeholder="신고자 ID 또는 이름" value={formData.reported} onChange={handleChange} />
                         </label>
                     </li>
                     <li>
                         <label>
                         <span>신고글이 있는 게시판</span>
                             <select name="targetTable" value={formData.targetTable} onChange={handleChange}>
+                                <option value="">게시판 선택</option>
                                 <option value="board_free">자유 게시판</option>
                                 <option value="board_qna">Q&A 게시판</option>
                                 <option value="board_info">정보 게시판</option>
-                                <option value="board_used">중고거래 게시</option>
+                                <option value="board_used">중고거래 게시판</option>
                                 <option value="board_food">먹거리 게시판</option>
                                 <option value="quiz">퀴즈 게시판</option>
                                 <option value="voting">O/X 게시판</option>
@@ -82,7 +84,7 @@ const ReportBoardForm = () => {
                     <li>
                         <label>
                             <span>신고 게시물 ID</span>
-                            <input type="number" name="targetId" value={formData.targetId} onChange={handleChange}/>
+                            <input type="number" name="targetId" value={formData.targetId} onChange={handleChange} />
                         </label>
                     </li>
                     <li>
@@ -92,7 +94,10 @@ const ReportBoardForm = () => {
                         </label>
                     </li>
                 </ul>
-                <button type="submit" className="btn type2 large">신고하기</button>
+                <div className="btn_wrap">
+                    <button type="submit" className="btn type2 large">신고하기</button>
+                    <Link to={`/board/user/report/${user.username}`} className="btn large">나의 신고 보기</Link>
+                </div>
             </form>
         </div>
     );

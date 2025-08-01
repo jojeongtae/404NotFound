@@ -29,8 +29,8 @@ function App() {
             <Route path='board/:boardId/:postId' element={<PostDetailPage />} /> {/* 게시글 상세 페이지 */}
             <Route path='board/new' element={<NewBoardPage />} /> {/* 새 게시글 작성 페이지 */}
             <Route path='board/:boardId/:postId/edit' element={<PostUpdatePage />}></Route>
-            <Route path='board/user/report' element={<ReportBoardForm />}></Route>
-            <Route path="/board/user/report/:username" element={<ReportMy/>}></Route>
+            <Route path='board/user/report' element={<ReportBoardForm />}></Route>{/* 신고하기 */}
+            <Route path="/board/user/report/:username" element={<ReportMy/>}></Route>{/* 나의 신고 내역 */}
             <Route path='board/admin/list' element={<AdminUserListForm />}></Route>
             <Route path='board/admin/report' element={<AdminReportForm />}></Route>
             <Route path='board/ranking/:type' element={<RankingPage />} />
