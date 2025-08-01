@@ -64,10 +64,10 @@ const LoginForm = ({ onClose }) => {
 
   // 🔹 소셜 로그인
   const handleKakaoLogin = () => {
-    window.location.href = "https://404notfoundpage.duckdns.org:8080/api/kakao";
+    window.location.href = "/api/kakao";
   };
   const handleNaverLogin = () => {
-    window.location.href = "https://404notfoundpage.duckdns.org:8080/api/naver";
+    window.location.href = "/api/naver";
   };
 
   return (
