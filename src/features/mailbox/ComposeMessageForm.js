@@ -28,13 +28,13 @@ const ComposeMessageForm = ({ onMessageSent }) => {
         title: title,
         message: message,
       });
-      console.log('쪽지 전송 성공:', response.data);
-      alert('쪽지가 성공적으로 전송되었습니다!');
-      onMessageSent(); // 쪽지 전송 후 부모 컴포넌트에 알림
+      console.log('메시지 전송 성공:', response.data);
+      alert('메시지가 성공적으로 전송되었습니다!');
+      onMessageSent(); // 메시지 전송 후 부모 컴포넌트에 알림
     } catch (err) {
-      console.error('쪽지 전송 실패:', err);
-      setError(err.response?.data?.message || '쪽지 전송에 실패했습니다.');
-      alert(err.response?.data?.message || '쪽지 전송에 실패했습니다.');
+      console.error('메시지 전송 실패:', err);
+      setError(err.response?.data?.message || '메시지 전송에 실패했습니다.');
+      alert(err.response?.data?.message || '메시지 전송에 실패했습니다.');
     } finally {
       setSending(false);
     }
@@ -52,46 +52,45 @@ const ComposeMessageForm = ({ onMessageSent }) => {
   }
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>쪽지 쓰기</h2>
+    <div className="tab-container send-message">
       <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '10px' }}>
-          <label htmlFor="receiver">받는 사람 (닉네임):</label> <button type="button" onClick={()=>{handleNicknameUsername(receiverNickname)}}>닉네임 체크</button>
-          <input
-            type="text"
-            id="receiver"
-            value={receiverNickname}
-            onChange={(e) => setReceiverNickname(e.target.value)}
-            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-            disabled={sending}
-          />
-        </div>
-        <div style={{ marginBottom: '10px' }}>
+        <ul className="send-list">
+          <li className="send-item nickname">
+            <label htmlFor="receiver">받는 사람 (닉네임):</label>
+            <button type="button" onClick={()=>{handleNicknameUsername(receiverNickname)}}>닉네임 체크</button>
+            <input
+                type="text"
+                id="receiver"
+                value={receiverNickname}
+                onChange={(e) => setReceiverNickname(e.target.value)}
+                disabled={sending}
+            />
+          </li>
+          <li className="send-item">
           <label htmlFor="title">제목:</label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-            disabled={sending}
-          />
-        </div>
-        <div style={{ marginBottom: '10px' }}>
+            <input
+                type="text"
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                disabled={sending}
+            />
+          </li>
+          <li className="send-item">
           <label htmlFor="message">내용:</label>
-          <textarea
-            id="message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            rows="5"
-            style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-            disabled={sending}
-          ></textarea>
-        </div>
+            <textarea
+                id="message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                rows="5"
+                disabled={sending}
+            ></textarea>
+          </li>
+        </ul>
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit" disabled={sending} style={{ padding: '10px 20px', cursor: 'pointer' }}>
-          {sending ? '전송 중...' : '쪽지 보내기'}
-        </button>
+        <div className="btn_wrap">
+          <button type="submit" disabled={sending} className="send-btn">{sending ? '전송 중...' : '보내기'}</button>
+        </div>
       </form>
     </div>
   );

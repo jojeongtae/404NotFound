@@ -99,26 +99,38 @@ const LoginForm = ({ onClose }) => {
     
   }
  return (
-  <>
-    
+  <div className="login-modal">
       <form onSubmit={handleSubmit}>
-        <h2>로그인</h2>
-        <input
-          type="text"
-          placeholder="아이디 입력칸"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        /> <br />
-        <input
-          type="password"
-          placeholder="비밀번호 입력칸"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        /> <br />
-        <input type="submit" value="로그인" />
+        <h3>로그인</h3>
+        <ul className="login-list">
+          <li className="login-item">
+            <label>
+              <span>아이디:</span>
+              <input
+                  type="text"
+                  placeholder="아이디 입력"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+              />
+            </label>
+          </li>
+          <li className="login-item">
+            <label>
+              <span>비밀번호:</span>
+              <input
+                  type="password"
+                  placeholder="비밀번호 입력"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+              />
+            </label>
+          </li>
+        </ul>
+        <div className="btn_wrap">
+          <button type="submit" className="btn type2">로그인</button>
+        </div>
       </form>
-   
-  </>
+  </div>
 );
 };
 

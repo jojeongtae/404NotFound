@@ -16,6 +16,7 @@ import DiceGamePage from './pages/DiceGamePage';
 import SelectUserBoard from './features/user/SelectUserBoard';
 import SelectUserInfo from './features/user/SelectUserInfo';
 import ReportBoardForm from './features/board/ReportBoardForm';
+import ReportMy from "./features/board/ReportMy";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path='board/new' element={<NewBoardPage />} /> {/* 새 게시글 작성 페이지 */}
             <Route path='board/:boardId/:postId/edit' element={<PostUpdatePage />}></Route>
             <Route path='board/user/report' element={<ReportBoardForm />}></Route>
+            <Route path="/board/user/report/:username" element={<ReportMy/>}></Route>
             <Route path='board/admin/list' element={<AdminUserListForm />}></Route>
             <Route path='board/admin/report' element={<AdminReportForm />}></Route>
             <Route path='board/ranking/:type' element={<RankingPage />} />
