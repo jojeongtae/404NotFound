@@ -48,14 +48,13 @@ public class KakaoLoginController {
 
     // Step 2: 카카오 인증 후 전달된 code 처리
     @GetMapping("/login/oauth2/code/kakao")
-    public ResponseEntity<?> handleKakaoCallback(@RequestParam String code,
-                                                 @RequestHeader(value = "androidApp", required = false) String app) {
+    public ResponseEntity<Map<String, String>> handleKakaoCallback(
+            @RequestParam String code,
+            @RequestHeader(value = "androidApp", required = false) String app) {
 
-        Boolean isApp=false;
-        if(app!=null && !app.isEmpty()){
-            isApp = app.equalsIgnoreCase("AndroidApp");
-        }
-        // Step 3: 토큰 요청
+        boolean isApp = app != null && app.equalsIgnoreCase("AndroidApp");
+
+        // 1️⃣ 카카오 토큰 요청
         HttpHeaders tokenHeaders = new HttpHeaders();
         tokenHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
@@ -65,81 +64,63 @@ public class KakaoLoginController {
                 "&redirect_uri=" + redirectUri +
                 "&code=" + code;
 
-        HttpEntity<String> tokenRequest = new HttpEntity<>(tokenRequestBody, tokenHeaders);
-
         ResponseEntity<Map> tokenResponse = restTemplate.exchange(
-                KAKAO_TOKEN_URL,
-                HttpMethod.POST,
-                tokenRequest,
+                KAKAO_TOKEN_URL, HttpMethod.POST,
+                new HttpEntity<>(tokenRequestBody, tokenHeaders),
                 Map.class
         );
 
         if (!tokenResponse.getStatusCode().is2xxSuccessful()) {
-            return ResponseEntity.status(HttpStatus.FOUND)
-                    .header(HttpHeaders.LOCATION, "/login-error")
-                    .build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        String accessToken = (String) tokenResponse.getBody().get("access_token");
+        String kakaoAccessToken = (String) tokenResponse.getBody().get("access_token");
 
-        // Step 4: 사용자 정보 요청
+        // 2️⃣ 사용자 정보 요청
         HttpHeaders userHeaders = new HttpHeaders();
-        userHeaders.setBearerAuth(accessToken);
-
-        HttpEntity<Void> userRequest = new HttpEntity<>(userHeaders);
-
+        userHeaders.setBearerAuth(kakaoAccessToken);
         ResponseEntity<Map> userInfoResponse = restTemplate.exchange(
-                KAKAO_USERINFO_URL,
-                HttpMethod.GET,
-                userRequest,
-                Map.class
+                KAKAO_USERINFO_URL, HttpMethod.GET,
+                new HttpEntity<>(userHeaders), Map.class
         );
 
         if (!userInfoResponse.getStatusCode().is2xxSuccessful()) {
-            return ResponseEntity.status(HttpStatus.FOUND)
-                    .header(HttpHeaders.LOCATION, "/login-error")
-                    .build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
-        Map<String, Object> body = userInfoResponse.getBody();
-        Long kakaoId = ((Number) body.get("id")).longValue();  // 카카오 고유 ID
 
-        Map<String, Object> kakaoAccount = (Map<String, Object>) ((Map) userInfoResponse.getBody().get("kakao_account"));
+        Map<String, Object> body = userInfoResponse.getBody();
+        Long kakaoId = ((Number) body.get("id")).longValue();
+        Map<String, Object> kakaoAccount = (Map<String, Object>) body.get("kakao_account");
         Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
 
         String email = (String) kakaoAccount.get("email");
         String nickname = (String) profile.get("nickname");
         String role = "ROLE_USER";
         String username = (email != null) ? email : "kakao_" + kakaoId;
-        // Step 5: JWT 생성 및 쿠키 전달
-        String access = this.jwtUtil.createToken("access", username, role, 60*10*1000L);
-        String refresh = this.jwtUtil.createToken("refresh", username, role, 24*60*60*1000L);
 
+        // 3️⃣ JWT 생성
+        String access = jwtUtil.createToken("access", username, role, 60*10*1000L); // --추가된부분--
+        String refresh = jwtUtil.createToken("refresh", username, role, 24*60*60*1000L); // --추가된부분--
 
-        if(isApp){
-            Map<String, String> token = new HashMap<>();
-            token.put("access_token", "Bearer "+access);
-            token.put("refresh_token", refresh);
-
-            return ResponseEntity.status(HttpStatus.OK).body(token);
-        }
-
-        ResponseCookie cookie = ResponseCookie.from("refresh", refresh) //최초 refresh토큰만 전달하여 다시 access토큰을 요청하도록 함
+        // 4️⃣ 쿠키 세팅 (RefreshToken)
+        ResponseCookie cookie = ResponseCookie.from("refresh", refresh) // --추가된부분--
                 .httpOnly(true)
-                .secure(false) // 운영환경에서는 true
+                .secure(false)
                 .path("/")
                 .maxAge(24*60*60)
                 .sameSite("Lax")
                 .build();
+
+        // 5️⃣ JSON Body 반환
         Map<String, String> responseBody = new HashMap<>();
-        responseBody.put("email", email);
-        responseBody.put("role", role);
-        responseBody.put("username", username);
-        responseBody.put("nickname", nickname);
+        responseBody.put("username", username);       // --추가된부분--
+        responseBody.put("role", role);               // --추가된부분--
+        responseBody.put("nickname", nickname);       // --추가된부분--
+        responseBody.put("accessToken", access);      // --수정된부분-- (카카오 토큰 → 내 JWT)
 
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add(HttpHeaders.SET_COOKIE, cookie.toString());
-        responseHeaders.set(HttpHeaders.LOCATION, "/");
-
-        return ResponseEntity.status(HttpStatus.FOUND).headers(responseHeaders).body(responseBody);
+        return ResponseEntity.ok() // --추가된부분--
+                .header(HttpHeaders.SET_COOKIE, cookie.toString()) // --추가된부분--
+                .body(responseBody); // --추가된부분--
     }
+
 }
