@@ -30,7 +30,11 @@ const KakaoRedirectHandler = () => {
             dispatch(setToken(token));
             dispatch(setUser({ username, role, nickname }));
             login();
-            navigate('/', { replace: true });
+
+            // navigate를 setTimeout으로 감싸서 100ms 지연
+            setTimeout(() => {
+                navigate('/', { replace: true });
+            }, 100);
         } else {
             console.error("카카오 로그인 데이터가 URL에 없습니다.");
             alert("카카오 로그인 실패");
