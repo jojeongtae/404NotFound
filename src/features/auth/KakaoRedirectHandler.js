@@ -29,11 +29,8 @@ const KakaoRedirectHandler = () => {
             // URL 파라미터에서 받은 데이터를 Redux에 저장
             dispatch(setToken(token));
             dispatch(setUser({ username, role, nickname }));
-             console.log("로그인 함수 호출 전");
-            // 전역 로그인 상태를 업데이트하고 홈으로 이동
             login();
-            console.log("로그인 함수 호출 후")
-            // navigate('/', { replace: true });
+            navigate('/', { replace: true });
         } else {
             console.error("카카오 로그인 데이터가 URL에 없습니다.");
             alert("카카오 로그인 실패");

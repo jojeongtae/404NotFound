@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   const login = () => {
+    setIsLoggedIn(true);
     console.log("로그인 성공: 상태 업데이트");
   };
 
