@@ -1,4 +1,3 @@
-// src/components/LoginForm.js
 
 import React, { useState } from 'react'; // useEffect 제거
 import { useNavigate } from 'react-router-dom';
