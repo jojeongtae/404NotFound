@@ -48,7 +48,7 @@ public class KakaoLoginController {
 
     // Step 2: 카카오 인증 후 전달된 code 처리
     @GetMapping("/login/oauth2/code/kakao")
-    public ResponseEntity<Map<String, String>> handleKakaoCallback(
+    public ResponseEntity<Void> handleKakaoCallback(
             @RequestParam String code,
             @RequestHeader(value = "androidApp", required = false) String app) {
 
@@ -111,16 +111,18 @@ public class KakaoLoginController {
                 .sameSite("Lax")
                 .build();
 
-        // 5️⃣ JSON Body 반환
-        Map<String, String> responseBody = new HashMap<>();
-        responseBody.put("username", username);       // --추가된부분--
-        responseBody.put("role", role);               // --추가된부분--
-        responseBody.put("nickname", nickname);       // --추가된부분--
-        responseBody.put("accessToken", access);      // --수정된부분-- (카카오 토큰 → 내 JWT)
+        // 5️⃣ 프론트엔드로 리디렉션
+        String frontendUrl = UriComponentsBuilder.fromHttpUrl("http://404notfoundpage.duckdns.org/")
+                .queryParam("token", access)
+                .queryParam("username", username)
+                .queryParam("role", role)
+                .queryParam("nickname", nickname)
+                .toUriString();
 
-        return ResponseEntity.ok() // --추가된부분--
-                .header(HttpHeaders.SET_COOKIE, cookie.toString()) // --추가된부분--
-                .body(responseBody); // --추가된부분--
+        return ResponseEntity.status(HttpStatus.FOUND)
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .header(HttpHeaders.LOCATION, frontendUrl)
+                .build();
     }
 
 }
