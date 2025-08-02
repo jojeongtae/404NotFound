@@ -166,13 +166,14 @@ const PostDetailPage = () => {
   const handleReport = async () => {
     try {
       const res = await apiClient.post("/user/report", {
-        reason: "간단신고",
+        reason: "간편신고",
         reporter: username,
         reported: post.author,
         targetTable: `board_${boardId}`,
         targetId: postId
       });
       console.log(res.data);
+      alert("신고 완료");
     } catch (err) {
       console.log(err);
     }
@@ -240,12 +241,11 @@ const PostDetailPage = () => {
           {/* 댓글 섹션 끝 */}
         </div>
       )}
-      <div>
+      <div className="btn_wrap">
         {username === post.author && (
           <button className='btn large' onClick={() => navigate(`/board/${boardId}/${postId}/edit`)}>게시글 수정</button>
         )}
         {username === post.author && (
-
           <button className='btn red large' onClick={handleDeletePost}>게시글 삭제</button>
         )}
       </div>

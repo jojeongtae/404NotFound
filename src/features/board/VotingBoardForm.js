@@ -106,41 +106,48 @@ const VotingBoardForm = () => {
     }
 
     const options = [
-        { value: 'O', label: 'O' },
-        { value: 'X', label: 'X' },
+        { value: 'O', label: '⭕' },
+        { value: 'X', label: '❌' },
     ];
 
     return(
-        <div style={{ padding: '20px' }}>
-            <h2>{votingData.title}</h2>
+        <div className="voting-detail stats">
+            <h3>{votingData.title}</h3>
+            <ul className="detail-info">
+                <li className="author">
+                    <span>작성자: </span><span className="user-grade">{getFullGradeDescription(votingData.grade)}</span>{votingData.authorNickname}
+                </li>
+                <li className="date">
+                    <span>작성일: </span>{new Date(votingData.createdAt).toLocaleDateString()}
+                </li>
+            </ul>
 
-            <p><strong>작성자:</strong> {getFullGradeDescription(votingData.grade)}{votingData.authorNickname}</p>
             {votingData &&(
             <img
                 src={`${API_BASE_URL}/${votingData.imgsrc}`}
-                alt={votingData.title || '게시글 이미지'}
-                style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
+                alt={votingData.title+' 이미지' || '게시글 이미지'}
+                className="detail-img"
               />
             )}
             
-            <h3>{votingData.question}</h3>
+            <p className="question">❓{votingData.question}</p>
 
             {hasParticipated ? (
                 // 투표 결과 표시
-                <div>
+                <div className="stats-result">
                     <h4>투표 결과</h4>
                     {resultsLoading && <p>결과를 불러오는 중...</p>}
                     {resultsError && <p style={{ color: 'red' }}>{resultsError}</p>}
                     {votingResults && (
-                        <div>
-                            <p>총 투표수: {totalVotes} 표</p>
-                            <ul>
+                        <div className="results-container">
+                        <p className="result-title">총 투표수: <span>{totalVotes} 표</span></p>
+                            <ul className="result-list">
                                 {options.map((option, index) => {
                                     const voteCount = votingResults[option.value] || 0;
                                     const percentage = totalVotes > 0 ? ((voteCount / totalVotes) * 100).toFixed(1) : 0;
                                     return (
-                                        <li key={index}>
-                                            {option.label}: {voteCount} 표 ({percentage}%)
+                                        <li key={index} className="result-item">
+                                            {option.label} : <strong>{voteCount} 표</strong> ({percentage}%)
                                         </li>
                                     );
                                 })}
@@ -151,10 +158,10 @@ const VotingBoardForm = () => {
             ) : (
                 // 투표 폼 표시
                 <form onSubmit={handleSubmit}>
+                    <ul className="answer-list">
                     {options.map((option, index) => (
-                        <div key={index}>
+                        <li key={index}>
                             <label>
-                                
                                 <input
                                     type="radio"
                                     name="votingOption"
@@ -164,10 +171,10 @@ const VotingBoardForm = () => {
                                 />
                                 {option.label}
                             </label>
-                        </div>
+                        </li>
                     ))}
-                    <br />
-                    <button type="submit">제출</button>
+                    </ul>
+                    <button type="submit" className="btn type2 large submit">제출</button>
                 </form>
             )}
         </div>
