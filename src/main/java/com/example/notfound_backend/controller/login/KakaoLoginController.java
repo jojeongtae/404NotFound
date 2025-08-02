@@ -1,7 +1,6 @@
 package com.example.notfound_backend.controller.login;
 
 import com.example.notfound_backend.data.dto.admin.UserJoinDTO;
-import com.example.notfound_backend.data.dto.login.UserAuthDTO;
 import com.example.notfound_backend.jwt.JwtUtil;
 import com.example.notfound_backend.service.login.UserAuthService;
 import lombok.RequiredArgsConstructor;
@@ -100,29 +99,26 @@ public class KakaoLoginController {
         String nickname = (String) profile.get("nickname");
         String role = "ROLE_USER";
         String username = (email != null) ? email : "kakao_" + kakaoId;
+
+        // ⭐️ 회원가입 로직 개선: 이미 존재하는 회원이라도 예외 발생 후 다음 로직 진행
         try {
-            // 카카오 정보로 UserAuthDTO 생성
             UserJoinDTO userJoinDTO = new UserJoinDTO();
             userJoinDTO.setUsername(username);
             userJoinDTO.setNickname(nickname);
             userJoinDTO.setAddress("kakao login");
             userJoinDTO.setPhone("01032145678");
-            // 비밀번호는 임의로 생성하거나, 소셜 로그인 전용 값으로 설정
             userJoinDTO.setPassword("SOCIAL_LOGIN_PASSWORD");
-
-            // userAuthService를 사용해 회원가입 (DB 저장)
             userAuthService.addUserAuth(userJoinDTO);
         } catch (Exception e) {
-            // 이미 가입된 회원일 경우 예외 처리
-            // 별도의 예외를 던지거나, 로그만 남기고 넘어가도록 처리
             System.err.println("카카오 회원가입 실패 (이미 가입된 회원일 수 있음): " + e.getMessage());
         }
+
         // 3️⃣ JWT 생성
-        String access = jwtUtil.createToken("access", username, role, 60*10*1000L); // --추가된부분--
-        String refresh = jwtUtil.createToken("refresh", username, role, 24*60*60*1000L); // --추가된부분--
+        String access = jwtUtil.createToken("access", username, role, 60*10*1000L);
+        String refresh = jwtUtil.createToken("refresh", username, role, 24*60*60*1000L);
 
         // 4️⃣ 쿠키 세팅 (RefreshToken)
-        ResponseCookie cookie = ResponseCookie.from("refresh", refresh) // --추가된부분--
+        ResponseCookie cookie = ResponseCookie.from("refresh", refresh)
                 .httpOnly(true)
                 .secure(false)
                 .path("/")
@@ -143,5 +139,4 @@ public class KakaoLoginController {
                 .header(HttpHeaders.LOCATION, frontendUrl)
                 .build();
     }
-
 }
