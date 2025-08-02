@@ -246,6 +246,7 @@ const PostDetailPage = () => {
           <button className='btn large' onClick={() => navigate(`/board/${boardId}/${postId}/edit`)}>게시글 수정</button>
         )}
         {username === post.author && (
+
           <button className='btn red large' onClick={handleDeletePost}>게시글 삭제</button>
         )}
       </div>

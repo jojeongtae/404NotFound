@@ -28,7 +28,13 @@ const RankingPage = ({ props }) => {
         const response = await apiClient.get(`/ranking/recommend/week`);
         setRankingData(response.data);
         console.log(response.data);
-        }else{
+        }else if(type === "view"){
+          const response = await apiClient.get('/ranking/views/week')
+          setRankingData(response.data);
+          console.log(response.data);
+        }
+
+        else{
           const response = await apiClient.get(`/ranking/recommend/all`);
         setRankingData(response.data);
         console.log(response.data);
@@ -60,6 +66,8 @@ const RankingPage = ({ props }) => {
     ? '주간 추천수 랭킹'
     : type === 'comments'
       ? '주간 댓글수 랭킹'
+      : type === 'view' 
+      ? '주간 조회수 랭킹'
       : '전체 추천수 랭킹'}
 </h2>
 
@@ -69,7 +77,11 @@ const RankingPage = ({ props }) => {
         <ol>
           {rankingData.map((item, index) => (
             <li key={index} style={{ marginBottom: '10px' }}>
-              <strong>{index + 1}.</strong>제목 : {item.title} |게시판종류 : {GetBoardName((item.category || '').toLowerCase())}| (작성자:{getFullGradeDescription(item.grade)} | {item.authorNickname}, {type === 'comments' ? `댓글수 : ${item.commentCount}` : type === 'recommend' ? `추천수${item.recommend}` : `전체 추천수 : ${item.recommend}`})
+              <strong>{index + 1}.</strong>
+              제목 : {item.title} |게시판종류 : {GetBoardName((item.category || '').toLowerCase())}| (작성자:{getFullGradeDescription(item.grade)} | {item.authorNickname},
+               {type === 'comments' ? `댓글수 : ${item.commentCount}` : type === 'recommend' ? `추천수${item.recommend}` :
+               type === 'view' ? `조회수${item.views}` :
+               `전체 추천수 : ${item.recommend}`})
             </li>
           ))}
         </ol>

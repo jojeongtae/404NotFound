@@ -15,8 +15,11 @@ const BoardPageForm = ({ boardId }) => {
     const [searchText, setSearchText] = useState(""); // 검색어 상태 (입력 필드와 직접 연결)
     const [searchOption, setSearchOption] = useState(""); // 검색 옵션 상태
     const [debouncedSearchText, setDebouncedSearchText] = useState(searchText); // 디바운싱된 검색어 상태
+    const [topPosts, setTopPosts] = useState([]);
     const dropdownRef = useRef(null);
     const navigate = useNavigate(); // useNavigate 훅 사용
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = 10; // 페이지당 게시글 수
 
     const boardNames = {
         free: '자유 게시판',
@@ -32,6 +35,19 @@ const BoardPageForm = ({ boardId }) => {
 
     const displayBoardName = boardNames[boardId] || `${boardId} 게시판`;
 
+    useEffect(() => {
+        if (!boardId || pointBoard) return;
+
+        const fetchTopPost = async () => {
+            try {
+                const response = await apiClient.get(`${boardId}/ranking/recommend`);
+                setTopPosts(response.data.slice(0, 3));
+            } catch (e) {
+                console.log(e);
+            }
+        }
+        fetchTopPost();
+    }, [boardId, pointBoard]);
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -87,6 +103,7 @@ const BoardPageForm = ({ boardId }) => {
             } else {
                 setPointBoard(false);
             }
+            setCurrentPage(1);
             try {
                 setLoading(true);
                 setError(null);
@@ -96,7 +113,7 @@ const BoardPageForm = ({ boardId }) => {
                     url = `/${boardId}/search/${searchOption}?${searchOption}=${searchText}`;
                 }
                 const res = await apiClient.get(url);
-                setPosts(res.data);
+                setPosts([...res.data].reverse());
                 console.log(`게시판 ${boardId}의 게시글:`, res.data);
             } catch (err) {
                 console.error(`게시판 ${boardId} 게시글 불러오기 실패:`, err);
@@ -108,6 +125,14 @@ const BoardPageForm = ({ boardId }) => {
         // boardId, 디바운싱된 검색어, 검색 옵션이 변경될 때마다 다시 불러옴
         fetchBoardPosts();
     }, [boardId, debouncedSearchText, searchOption]); // boardId, debouncedSearchText, searchOption이 변경될 때마다 다시 불러옴
+
+    // 현재 페이지에 표시할 게시글
+    const startIndex = (currentPage - 1) * pageSize;
+    const currentPosts = posts.slice(startIndex, startIndex + pageSize);
+    const totalPages = Math.ceil(posts.length / pageSize);
+
+
+
     return (
         <div className="board-view">
             <h3>{displayBoardName}</h3>
@@ -138,8 +163,22 @@ const BoardPageForm = ({ boardId }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {posts.length > 0 ? (
-                        posts.map(post => (
+                    {!pointBoard && topPosts.map(post => (
+                        <tr key={`top-${post.id}`} className="post-list-item top-recommend">
+                            <td className="post-item post-id" onClick={() => navigate(`/board/${boardId}/${post.id}`)}>{post.id}</td>
+                            <td className="post-item post-title" onClick={() => navigate(`/board/${boardId}/${post.id}`)}>⭐ {post.title}</td>
+                            <td className="post-item post-author" onClick={(e) => handleNicknameClick(e, { nickname: post.authorNickname, id: post.author, grade: post.grade })}>
+                                <span className="user-grade">{getFullGradeDescription(post.grade)}</span>
+                                {post.authorNickname}
+                            </td>
+                            <td className="post-item post-views">{post.views}</td>
+                            <td className="post-item post-recommend">{post.recommend}</td>
+                        </tr>
+
+                    ))}
+
+                    {currentPosts.length > 0 ? (
+                        currentPosts.map(post => (
                             <tr key={post.id} className="post-list-item">
                                 <td className="post-item post-id" onClick={() => navigate(`/board/${boardId}/${post.id}`)} style={{ cursor: 'pointer' }}>{post.id}</td>
                                 <td className="post-item post-title" onClick={() => navigate(`/board/${boardId}/${post.id}`)} style={{ cursor: 'pointer' }}>{post.title}</td>
@@ -162,6 +201,22 @@ const BoardPageForm = ({ boardId }) => {
                     )}
                 </tbody>
             </table>
+            {/* 페이지 네이션 */}
+            <div>
+                <button onClick={() => setCurrentPage(e => Math.max(e - 1, 1))}
+                    disabled={currentPage === 1}
+                >
+                    이전
+                </button>
+                <span>{currentPage} / {totalPages}</span>
+                <button
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                >
+                    다음
+                </button>
+            </div>
+
             {/* 드롭다운 메뉴 */}
             {showDropdown && selectedUser && (
                 <div
