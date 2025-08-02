@@ -39,6 +39,9 @@ function App() {
             <Route path='user/board/:username' element={<SelectUserBoard />}></Route>
             
             {/* 다른 페이지 라우트들 */}
+            {/* ✅ 카카오 OAuth 콜백 처리용 */}
+            <Route path='oauth/kakao' element={<HomePage />} /> 
+          
           </Route>
         </Routes>  
     </AuthProvider>
