@@ -57,11 +57,11 @@ const LoginForm = ({ onClose }) => {
 
     /** 🔹 소셜 로그인 버튼 */
     const handleKakaoLogin = () => {
-        window.location.href = `${API_BASE_URL}/oauth2/authorization/kakao`;
+        window.location.href = `${API_BASE_URL}/api/oauth2/authorization/kakao`;
     };
 
     const handleNaverLogin = () => {
-        window.location.href = `${API_BASE_URL}/oauth2/authorization/naver`;
+        window.location.href = `${API_BASE_URL}/api/oauth2/authorization/naver`;
     };
 
     return (
