@@ -5,6 +5,8 @@ import com.example.notfound_backend.component.CustomAuthEntryPoint;
 import com.example.notfound_backend.jwt.JwtFilter;
 import com.example.notfound_backend.jwt.JwtLoginFilter;
 import com.example.notfound_backend.jwt.JwtUtil;
+import com.example.notfound_backend.service.login.CustomOAuth2UserService;
+import com.example.notfound_backend.service.login.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +31,7 @@ public class SecurityConfig {
     private final CustomAuthEntryPoint customAuthEntryPoint; // 인증실패 예외
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final JwtUtil jwtUtil;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -65,6 +68,11 @@ public class SecurityConfig {
                     corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")); // OPTIONS와 PATCH 추가
                     return corsConfiguration;
                 }))
+                .oauth2Login(oauth -> oauth
+                        .loginPage("/api/login") // 필요시 프론트 URL
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+                        .successHandler(new OAuth2SuccessHandler(jwtUtil))
+                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JwtFilter(this.jwtUtil), JwtLoginFilter.class) // 로그인필터 앞에 Jwt필터 위치
                 .addFilterAt(new JwtLoginFilter(authenticationManager(this.authenticationConfiguration), this.jwtUtil), UsernamePasswordAuthenticationFilter.class)

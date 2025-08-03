@@ -1,37 +1,60 @@
 package com.example.notfound_backend.service.login;
 
-import com.example.notfound_backend.data.dto.login.*;
+
+import com.example.notfound_backend.data.entity.login.UserAuthEntity;
+import com.example.notfound_backend.data.repository.login.UserAuthRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Service;
 
-public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+import java.util.Collections;
+import java.util.Map;
+
+@Service
+@RequiredArgsConstructor
+public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+
+    private final UserAuthRepository userAuthRepository;
 
     @Override
-    public OAuth2User loadUser(OAuth2UserRequest oAuth2UserRequest) throws OAuth2AuthenticationException{
-        OAuth2User oAuth2User = super.loadUser(oAuth2UserRequest);
-        System.out.println(oAuth2User);
-        String resigId=oAuth2UserRequest.getClientRegistration().getRegistrationId();
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        OAuth2User oauth2User = new DefaultOAuth2UserService().loadUser(userRequest);
 
-        OAuth2Response auth2Response=null;
+        String registrationId = userRequest.getClientRegistration().getRegistrationId(); // kakao or naver
+        Map<String, Object> attributes = oauth2User.getAttributes();
 
-        if(resigId.equals("naver")){
-            auth2Response=new NaverOAuth2Response(oAuth2User.getAttributes());
-        }else if(resigId.equals("google")){
-            auth2Response=new GoogleOAuth2Response(oAuth2User.getAttributes());
-        }else{
-            return null;
+        // ✅ 이메일 추출
+        String username;
+        if ("kakao".equals(registrationId)) {
+            Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+            username = kakaoAccount.get("email").toString();
+        } else { // naver
+            Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+            username = response.get("email").toString();
         }
 
-        String username= auth2Response.getProvider()+" "+auth2Response.getProviderId();
-        System.out.println("유저 이름 : "+username);
+        // ✅ DB 조회 or 신규 생성
+        UserAuthEntity user = userAuthRepository.findByUsername(username)
+                .orElseGet(() -> createNewSocialUser(username, registrationId));
 
-        UserAuthDTO userAuthDTO=new UserAuthDTO();
-        userAuthDTO.setUsername(username);
-        userAuthDTO.setRole("ROLE_ADMIN");
-
-        return new CustomOAuth2User(userAuthDTO);
+        return new DefaultOAuth2User(
+                Collections.singleton(new SimpleGrantedAuthority(user.getRole())),
+                attributes,
+                "id" // 기본 키로 쓸 attribute (카카오: id, 네이버: response.id)
+        );
     }
 
+    private UserAuthEntity createNewSocialUser(String username, String provider) {
+        UserAuthEntity newUser = new UserAuthEntity();
+        newUser.setUsername(username);
+        newUser.setPassword(""); // 소셜로그인 사용자는 비번 없음
+        newUser.setRole("ROLE_USER");
+        return userAuthRepository.save(newUser);
+    }
 }
