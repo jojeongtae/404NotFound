@@ -42,8 +42,10 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private UserAuthEntity saveOrUpdate(OAuthAttributes attributes) {
-        UserAuthEntity user = userAuthRepository.findByUsername(attributes.getUsername())
-                .orElseGet(() -> attributes.toEntity());
+        UserAuthEntity user = userAuthRepository.findByUsername(attributes.getUsername());
+        if (user == null) {
+            user = attributes.toEntity();
+        }
         return userAuthRepository.save(user);
     }
 }
@@ -100,6 +102,7 @@ class OAuthAttributes {
     public UserAuthEntity toEntity() {
         return UserAuthEntity.builder()
                 .username(username)
+                .password("") // 소셜 로그인은 비밀번호를 사용하지 않으므로 빈 문자열 저장
                 .role("ROLE_USER")
                 .build();
     }
