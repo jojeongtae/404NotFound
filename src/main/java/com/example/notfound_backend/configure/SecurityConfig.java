@@ -69,10 +69,19 @@ public class SecurityConfig {
                     return corsConfiguration;
                 }))
                 .oauth2Login(oauth -> oauth
-                        .loginPage("/api/login") // 필요시 프론트 URL
-                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+                        .loginPage("/api/login") // 프론트의 로그인 페이지
+                        .authorizationEndpoint(auth ->
+                                auth.baseUri("/api/oauth2/authorization") // 인가 요청에 /api 추가
+                        )
+                        .redirectionEndpoint(redir ->
+                                redir.baseUri("/api/login/oauth2/code/*") // 콜백도 /api 유지
+                        )
+                        .userInfoEndpoint(userInfo ->
+                                userInfo.userService(customOAuth2UserService)
+                        )
                         .successHandler(new OAuth2SuccessHandler(jwtUtil))
                 )
+
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JwtFilter(this.jwtUtil), JwtLoginFilter.class) // 로그인필터 앞에 Jwt필터 위치
                 .addFilterAt(new JwtLoginFilter(authenticationManager(this.authenticationConfiguration), this.jwtUtil), UsernamePasswordAuthenticationFilter.class)
