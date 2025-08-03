@@ -40,9 +40,8 @@ function App() {
             
             {/* 다른 페이지 라우트들 */}
             {/* ✅ 카카오 OAuth 콜백 처리용 */}
-            <Route path='/api/login/oauth2/code/kakao' element={<HomePage />} /> 
-          
-          </Route>
+            <Route path="/oauth2/success" element={<OAuthSuccess />} />
+          </Route>  
         </Routes>  
     </AuthProvider>
       </BrowserRouter>
