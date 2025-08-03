@@ -37,6 +37,12 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             throw new IOException("지원하지 않는 소셜 로그인 제공자입니다.");
         }
 
+        if (username == null) {
+            String redirectUrl = "http://404notfoundpage.duckdns.org/oauth2/fail?reason=email_not_found";
+            getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+            return;
+        }
+
         String role = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .findFirst()
