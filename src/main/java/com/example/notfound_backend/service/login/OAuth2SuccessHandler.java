@@ -22,23 +22,10 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
 
-        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-        Map<String, Object> attributes = oAuth2User.getAttributes();
-        String username;
-
-        // 카카오, 네이버 응답 구조에 맞게 이메일 추출
-        if (attributes.containsKey("kakao_account")) { // Kakao
-            Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-            username = (String) kakaoAccount.get("email");
-        } else if (attributes.containsKey("response")) { // Naver
-            Map<String, Object> responseMap = (Map<String, Object>) attributes.get("response");
-            username = (String) responseMap.get("email");
-        } else {
-            throw new IOException("지원하지 않는 소셜 로그인 제공자입니다.");
-        }
+        String username = authentication.getName();
 
         if (username == null) {
-            String redirectUrl = "http://404notfoundpage.duckdns.org/oauth2/fail?reason=email_not_found";
+            String redirectUrl = "http://404notfoundpage.duckdns.org/oauth2/fail?reason=id_not_found";
             getRedirectStrategy().sendRedirect(request, response, redirectUrl);
             return;
         }
