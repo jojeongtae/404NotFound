@@ -24,6 +24,9 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+           {/* ✅ 카카오 OAuth 콜백 처리용 */}
+          <Route path="/oauth2/success" element={<OAuthSuccess />} />
+
           <Route path='/' element={<div><MainLayout /></div>}>
             <Route index element={<HomePage />} /> {/* 기본 경로를 HomePage로 설정 */}
             <Route path='board/:boardId' element={<BoardPage />} /> {/* 게시판 목록 페이지 */}
@@ -40,8 +43,7 @@ function App() {
             <Route path='user/board/:username' element={<SelectUserBoard />}></Route>
             
             {/* 다른 페이지 라우트들 */}
-            {/* ✅ 카카오 OAuth 콜백 처리용 */}
-            <Route path="/oauth2/success" element={<OAuthSuccess />} />
+           
           </Route>  
         </Routes>  
     </AuthProvider>

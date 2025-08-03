@@ -12,8 +12,10 @@ const OAuthSuccess = () => {
     const accessToken = params.get('accessToken');
 
     if (accessToken) {
-      dispatch(setToken(accessToken));
-      navigate('/'); // 메인으로 이동
+      dispatch(setToken('Bearer ' + accessToken));
+      navigate('/'); // 메인 페이지로 이동
+    } else {
+      navigate('/login?error'); // 실패 시 로그인 화면으로
     }
   }, [dispatch, navigate]);
 
