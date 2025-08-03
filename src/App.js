@@ -17,6 +17,7 @@ import SelectUserBoard from './features/user/SelectUserBoard';
 import SelectUserInfo from './features/user/SelectUserInfo';
 import ReportBoardForm from './features/board/ReportBoardForm';
 import ReportMy from "./features/board/ReportMy";
+import OAuthSuccess from './pages/OAuthSuccess';
 
 function App() {
   return (
