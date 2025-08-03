@@ -40,8 +40,12 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         }
 
         // ✅ DB 조회 or 신규 생성
-        UserAuthEntity user = userAuthRepository.findByUsername(username)
-                .orElseGet(() -> createNewSocialUser(username, registrationId));
+        UserAuthEntity user = userAuthRepository.findByUsername(username);
+
+        if (user == null) {
+            user = createNewSocialUser(username, registrationId);
+        }
+
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(user.getRole())),
