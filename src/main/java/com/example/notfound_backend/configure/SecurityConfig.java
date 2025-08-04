@@ -53,10 +53,10 @@ public class SecurityConfig {
                 // 요청별 권한
                 .authorizeHttpRequests(requests -> {
 //                    requests.anyRequest().permitAll(); // 인증 무력화 (임시)
-                    requests.requestMatchers("/","/api/join", "/api/login","/api/reissue","/api/naver","/api/kakao","/api/google","/api/login/oauth2/code/*").permitAll();
+                    requests.requestMatchers("/","/api/join", "/oauth2/success","/oauth2/fail","/api/login","/api/reissue","/api/naver","/api/kakao","/api/google","/api/login/oauth2/code/*").permitAll();
                     requests.requestMatchers("/api/admin/**").hasRole("ADMIN");
                     requests.requestMatchers("/api/user/**").hasAnyRole("USER","ADMIN");
-//                    requests.anyRequest(    ).permitAll();
+//                    requests.anyRequest().permitAll();
                     requests.anyRequest().authenticated();
                 })
                 .cors(cors -> cors.configurationSource(request -> {
@@ -75,7 +75,7 @@ public class SecurityConfig {
                                 auth.baseUri("/api/oauth2/authorization") // 인가 요청에 /api 추가
                         )
                         .redirectionEndpoint(redir ->
-                                redir.baseUri("/api/login/oauth2/code/*") // 콜백도 /api 유지
+                                redir.baseUri("/api/login/oauth2/code/{registrationId}") // 콜백도 /api 유지
                         )
                         .userInfoEndpoint(userInfo ->
                                 userInfo.userService(customOAuth2UserService)
@@ -83,7 +83,7 @@ public class SecurityConfig {
                         .successHandler(new OAuth2SuccessHandler(jwtUtil))
                 )
 
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JwtFilter(this.jwtUtil), JwtLoginFilter.class) // 로그인필터 앞에 Jwt필터 위치
                 .addFilterAt(new JwtLoginFilter(authenticationManager(this.authenticationConfiguration), this.jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> {
