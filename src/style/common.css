@@ -75,7 +75,7 @@
 .board-detail-footer .report{position:relative;padding-left:15px;}
 .board-detail-footer .report:before{display:block;content:'';position:absolute;top:calc(50% - 10px);left:0;width:1px;height:20px;background-color:#888;}
 
-.board-detail .comment{margin:28px 0 25px;}
+.board-detail .comment{margin:28px 0 0;}
 .board-detail .comment-title{padding:3px 5px 4px;border-radius:5px;background-color:var(--bg-color-light);}
 .board-detail .comment-list{margin-bottom:20px;padding:0 8px;font-size:15px;line-height:1.4em;}
 .board-detail .comment-list > .comment-item{position:relative;padding:12px 0;border-bottom:1px solid var(--border-color);}
@@ -92,8 +92,9 @@
 .board-detail .comment-item .comment-body{}
 .board-detail .new-comment{display:flex;margin-top:10px;}
 .board-detail .new-comment input[type="text"]{flex-grow:1;margin-left:0;}
+[class$="-detail"] ~ .btn_wrap{margin-top:25px;}
 
-/* 글쓰기 */
+    /* 글쓰기 */
 .new-board #boardSelect{margin-left:0;}
 .new-board .board-title{margin-left:0;width:100%;margin-top:14px;}
 .new-board .board-body{width:100%;height:300px;resize:vertical;margin:14px 0 0;padding:10px;}
@@ -120,9 +121,35 @@
 /* OX */
 .new-board .new-board-voting .voting-question{width:100%;margin-left:0;margin-top:14px;}
 .new-board .new-board-voting .voting-answer{margin-top:14px;}
-.new-board .new-board-voting .voting-answer > * {}
 
-/* 이미지첨부 */
+/* 설문, O/X 상세페이지 */
+.stats{font-family:var(--font-arial);letter-spacing:0.02em;}
+.stats .detail-info{display:flex;flex-direction:column;gap:6px;margin-bottom:20px;}
+.stats .question{display:block;margin:25px 0 25px;padding:10px;border-radius:8px;background-color:var(--bg-color-light);font-size:18px;font-weight:500;}
+.stats .answer-list{display:flex;flex-direction:column;gap:8px;margin:20px 0;}
+.stats .answer-list > li input[type="radio"]{margin-right:6px;}
+.stats .detail-img{max-height:300px;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.2);}
+.stats .btn.submit{margin-left:0;}
+/* 설문결과 */
+/*.stats .stats-result{ padding-top:20px;border-top:1px solid var(--border-color);}*/
+.stats .stats-result .result-title{margin:14px 0 10px;font-size:17px;font-weight:500;}
+.stats .stats-result .result-title span{color:var(--blue-color);font-weight:600;}
+.stats .stats-result .result-list{display:flex;flex-direction:column;gap:6px;}
+.stats .stats-result .result-item{position:relative;padding-left:14px;}
+.stats .stats-result .result-item:before{display:block;content:'';position:absolute;top:11px;left:0;width:3px;height:3px;background-color:var(--warning-color);}
+.stats ~ .btn_wrap{margin-top:35px;}
+
+/* Quiz 상세페이지 */
+.quiz-detail .detail-info{display:flex;flex-direction:column;gap:6px;margin-bottom:20px;}
+.quiz-detail .question{display:block;margin:25px 0 35px;padding:10px;border-radius:8px;background-color:var(--bg-color-light);font-size:18px;font-weight:600;}
+.quiz-detail .detail-img{max-height:300px;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.2);}
+.quiz-detail .hint{margin:20px 0 10px;}
+.quiz-detail .answer-box{margin-bottom:10px;}
+.quiz-detail .answer-input{margin-left:0;}
+.quiz-detail .result{margin:20px 0;color:var(--warning-color);}
+.quiz-detail .btn_wrap{margin:45px 0 0;}
+
+    /* 이미지첨부 */
 .new-board .new-board-image{margin:14px 0 20px;padding:10px 0;}
 .new-board .new-board-image input[type="file"]{font-size:15px;}
 .new-board .new-board-image .img-wrapper{margin-top:14px;}
@@ -153,7 +180,7 @@
 .user-detail .detail-item{padding:10px 0;border-bottom:1px solid var(--border-color);}
 .user-detail .detail-item a{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;box-sizing:border-box;border-radius:6px;text-decoration:none;color:var(--text-color);transition:background .2s;}
 .user-detail .detail-item a:hover{background-color:var(--bg-color-light);}
-.user-detail .detail-item .title{display:block;width:100%;margin-bottom:8px;font-size:22px;font-weight:600;color:var(--blue-color);text-decoration:none;}
+.user-detail .detail-item .title{display:block;width:100%;margin-bottom:8px;font-size:22px;font-weight:600;color:var(--text-color2);text-decoration:none;}
 .user-detail .detail-item .info{font-size:15px;}
 .user-detail .detail-item .date{font-size:14px;color:var(--text-color2);}
 
