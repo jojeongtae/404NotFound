@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { setToken } from '../features/auth/tokenSlice';
 import { setUser } from '../features/auth/userSlice';
 import { useNavigate } from 'react-router-dom';
+import apiClient from '../api/apiClient';
 
 const OAuthSuccess = () => {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const OAuthSuccess = () => {
       dispatch(setToken('Bearer ' + accessToken));
       const fetchUserInfo = async () => { // async 함수로 변경
         try {
-          const res = await apiClient.get(`/user/user-info?username=${user.username}`); // await 추가
+          const res = await apiClient.get(`/user/user-info?username=${username}`); // await 추가
           dispatch(setUser(res.data)); // Redux 스토어 업데이트
         } catch (error) {
           console.error("Failed to fetch user info:", error); // console.log 대신 console.error 사용
