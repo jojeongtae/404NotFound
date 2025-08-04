@@ -104,9 +104,13 @@ private final UserInfoRepository userInfoRepository;
         Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
 
         String email = (String) kakaoAccount.get("email");
-        String nickname = (String) profile.get("nickname");
+        String nickname = (profile.get("nickname") != null)
+                ? profile.get("nickname").toString()
+                : "카카오유저";
         String role = "ROLE_USER";
         String username = (email != null) ? email : "kakao_" + kakaoId;
+
+
 
         UserAuthEntity existing = userAuthRepository.findByUsername(username);
         UserAuthEntity user;
@@ -134,7 +138,7 @@ private final UserInfoRepository userInfoRepository;
         UserInfoEntity info = userInfoRepository.findByNickname(nickname);
         if (info == null) {
             info = UserInfoEntity.builder()
-                    .username(existing)
+                    .username(user)
                     .nickname(nickname)
                     .point(0)
                     .build();
