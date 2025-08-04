@@ -64,8 +64,8 @@ public class SecurityConfig {
                     corsConfiguration.setAllowCredentials(true); // 쿠키허용
                     corsConfiguration.addAllowedHeader("*"); //클라이언트가 요청을 보낼때 보낼수 있는 헤더
                     corsConfiguration.setExposedHeaders(List.of("Authorization"));
-                    corsConfiguration.addAllowedOrigin("http://localhost:3000");
-                    corsConfiguration.addAllowedOrigin("http://404notfoundpage.duckdns.org");
+                    corsConfiguration.addAllowedOrigin("*");
+//                    corsConfiguration.addAllowedOrigin("http://404notfoundpage.duckdns.org");
                     corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")); // OPTIONS와 PATCH 추가
                     return corsConfiguration;
                 }))
@@ -75,7 +75,7 @@ public class SecurityConfig {
                                 auth.baseUri("/api/oauth2/authorization") // 인가 요청에 /api 추가
                         )
                         .redirectionEndpoint(redir ->
-                                redir.baseUri("/api/login/oauth2/code/*") // 콜백도 /api 유지
+                                redir.baseUri("http://404notfoundpage.duckdns.org/api/login/oauth2/code/kakao") // 콜백도 /api 유지
                         )
                         .userInfoEndpoint(userInfo ->
                                 userInfo.userService(customOAuth2UserService)
@@ -83,7 +83,7 @@ public class SecurityConfig {
                         .successHandler(new OAuth2SuccessHandler(jwtUtil))
                 )
 
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .addFilterBefore(new JwtFilter(this.jwtUtil), JwtLoginFilter.class) // 로그인필터 앞에 Jwt필터 위치
                 .addFilterAt(new JwtLoginFilter(authenticationManager(this.authenticationConfiguration), this.jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exception -> {

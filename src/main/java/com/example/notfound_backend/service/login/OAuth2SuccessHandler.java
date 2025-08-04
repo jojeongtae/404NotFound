@@ -42,7 +42,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         // 2️⃣ Refresh Token → HttpOnly Cookie 저장
         Cookie cookie = new Cookie("refresh", refreshToken);
         cookie.setHttpOnly(true);
-        cookie.setSecure(true); // HTTPS 권장
+        cookie.setSecure(false); // HTTPS 권장
         cookie.setPath("/");
         cookie.setMaxAge(60 * 60 * 24);
         response.addCookie(cookie);
