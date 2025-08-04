@@ -77,9 +77,10 @@ const RankingPage = ({ props }) => {
             <ol className="ranking-list">
               {rankingData.map((item, index) => (
                   <li key={index} className="ranking-item">
-                    <strong>{index + 1}.</strong>
-                    {item.title} | {GetBoardName((item.category || '').toLowerCase())} | (작성자: <span className="user-grade">{getFullGradeDescription(item.grade)}</span> {item.authorNickname},
-                    {type === 'comments' ? `댓글수: ${item.commentCount}` : type === 'recommend' ? `추천수${item.recommend}` : type === 'view' ? `조회수${item.views}` : `전체 추천수: ${item.recommend}`})
+                    <span className="num">{index + 1}.</span>
+                    <span className="title">{item.title}{GetBoardName((item.category || '').toLowerCase())}</span>
+                    <span className="user-grade">{getFullGradeDescription(item.grade)}</span> {item.authorNickname}
+                    <span>{type === 'comments' ? `댓글수: ${item.commentCount}` : type === 'recommend' ? `추천수${item.recommend}` : type === 'view' ? `조회수${item.views}` : `전체 추천수: ${item.recommend}`}</span>
                   </li>
               ))}
             </ol>
