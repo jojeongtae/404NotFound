@@ -27,8 +27,9 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private final AuthenticationConfiguration authenticationConfiguration;
-    private final CustomAuthEntryPoint customAuthEntryPoint; // 인증실패 예외
+    private final CustomAuthEntryPoint customAuthEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final JwtUtil jwtUtil;
     private final CustomOAuth2UserService customOAuth2UserService;
@@ -43,53 +44,59 @@ public class SecurityConfig {
         return authConfig.getAuthenticationManager();
     }
 
-    // 메인 인증로직
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-                .formLogin(formLogin -> formLogin.disable())
-                .httpBasic(httpBasic -> httpBasic.disable())
+        http
+                .csrf(csrf -> csrf.disable())
+                .formLogin(form -> form.disable())
+                .httpBasic(basic -> basic.disable())
                 .logout(logout -> logout.disable())
-                // 요청별 권한
-                .authorizeHttpRequests(requests -> {
-//                    requests.anyRequest().permitAll(); // 인증 무력화 (임시)
-                    requests.requestMatchers("/","/api/join", "/oauth2/success","/oauth2/fail","/api/login","/api/reissue","/api/naver","/api/kakao","/api/google","/api/login/oauth2/code/*").permitAll();
-                    requests.requestMatchers("/api/admin/**").hasRole("ADMIN");
-                    requests.requestMatchers("/api/user/**").hasAnyRole("USER","ADMIN");
-//                    requests.anyRequest().permitAll();
-                    requests.anyRequest().authenticated();
-                })
+
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/",
+                                "/api/join",
+                                "/api/login",
+                                "/api/reissue",
+                                "/api/naver",
+                                "/api/kakao",
+                                "/api/google",
+                                "/api/login/oauth2/code/*",
+                                "/oauth2/success",
+                                "/oauth2/fail"
+                        ).permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/user/**").hasAnyRole("USER","ADMIN")
+                        .anyRequest().authenticated()
+                )
+
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration corsConfiguration = new CorsConfiguration();
-                    corsConfiguration.setAllowCredentials(true); // 쿠키허용
-                    corsConfiguration.addAllowedHeader("*"); //클라이언트가 요청을 보낼때 보낼수 있는 헤더
+                    corsConfiguration.setAllowCredentials(true);
+                    corsConfiguration.addAllowedHeader("*");
                     corsConfiguration.setExposedHeaders(List.of("Authorization"));
-//                    corsConfiguration.addAllowedOrigin("*");
                     corsConfiguration.addAllowedOrigin("http://404notfoundpage.duckdns.org");
-                    corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")); // OPTIONS와 PATCH 추가
+                    corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
                     return corsConfiguration;
                 }))
+
                 .oauth2Login(oauth -> oauth
-                        .loginPage("/api/login") // 프론트의 로그인 페이지
-                        .authorizationEndpoint(auth ->
-                                auth.baseUri("/api/oauth2/authorization") // 인가 요청에 /api 추가
-                        )
-                        .redirectionEndpoint(redir ->
-                                redir.baseUri("/api/login/oauth2/code/{registrationId}") // 콜백도 /api 유지
-                        )
-                        .userInfoEndpoint(userInfo ->
-                                userInfo.userService(customOAuth2UserService)
-                        )
+                        .loginPage("/api/login")
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
                         .successHandler(new OAuth2SuccessHandler(jwtUtil))
                 )
 
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new JwtFilter(this.jwtUtil), JwtLoginFilter.class) // 로그인필터 앞에 Jwt필터 위치
-                .addFilterAt(new JwtLoginFilter(authenticationManager(this.authenticationConfiguration), this.jwtUtil), UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exception -> {
-                    exception.authenticationEntryPoint(this.customAuthEntryPoint);
-                    exception.accessDeniedHandler(this.customAccessDeniedHandler);
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+
+                .addFilterBefore(new JwtFilter(jwtUtil), JwtLoginFilter.class)
+                .addFilterAt(new JwtLoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),
+                        UsernamePasswordAuthenticationFilter.class)
+
+                .exceptionHandling(ex -> {
+                    ex.authenticationEntryPoint(customAuthEntryPoint);
+                    ex.accessDeniedHandler(customAccessDeniedHandler);
                 });
+
         return http.build();
     }
 }
