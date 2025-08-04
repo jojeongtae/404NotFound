@@ -203,8 +203,8 @@
 
 /* 랭킹 */
 .ranking-page{position:relative;max-width:800px;margin:50px auto;padding:80px 80px;border-radius:14px;box-shadow:0 4px 12px rgba(0, 0, 0, 0.2);}
-.ranking-page .ranking-list{display:flex;flex-direction:column;gap:10px;}
-.ranking-page .ranking-item{}
+.ranking-page .ranking-list{display:flex;flex-direction:column;gap:10px;text-align:left;}
+.ranking-page .ranking-item{display:flex;gap:8px;}
 
 
 /* --관리자-- */
