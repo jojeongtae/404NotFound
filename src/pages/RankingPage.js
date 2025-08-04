@@ -60,33 +60,31 @@ const RankingPage = ({ props }) => {
   }
 
   return (
-    <div>
-      <h2>
-  {type === 'recommend'
-    ? '주간 추천수 랭킹'
-    : type === 'comments'
-      ? '주간 댓글수 랭킹'
-      : type === 'view' 
-      ? '주간 조회수 랭킹'
-      : '전체 추천수 랭킹'}
-</h2>
+      <div className="ranking-page">
+        <h3>
+          {type === 'recommend'
+              ? '주간 추천수 랭킹'
+              : type === 'comments'
+                  ? '주간 댓글수 랭킹'
+                  : type === 'view'
+                      ? '주간 조회수 랭킹'
+                      : '전체 추천수 랭킹'}
+        </h3>
 
-      {rankingData.length === 0 ? (
-        <p>랭킹 데이터가 없습니다.</p>
-      ) : (
-        <ol>
-          {rankingData.map((item, index) => (
-            <li key={index} style={{ marginBottom: '10px' }}>
-              <strong>{index + 1}.</strong>
-              제목 : {item.title} |게시판종류 : {GetBoardName((item.category || '').toLowerCase())}| (작성자:{getFullGradeDescription(item.grade)} | {item.authorNickname},
-               {type === 'comments' ? `댓글수 : ${item.commentCount}` : type === 'recommend' ? `추천수${item.recommend}` :
-               type === 'view' ? `조회수${item.views}` :
-               `전체 추천수 : ${item.recommend}`})
-            </li>
-          ))}
-        </ol>
-      )}
-    </div>
+        {rankingData.length === 0 ? (
+            <p>랭킹 데이터가 없습니다.</p>
+        ) : (
+            <ol className="ranking-list">
+              {rankingData.map((item, index) => (
+                  <li key={index} className="ranking-item">
+                    <strong>{index + 1}.</strong>
+                    {item.title} | {GetBoardName((item.category || '').toLowerCase())} | (작성자: <span className="user-grade">{getFullGradeDescription(item.grade)}</span> {item.authorNickname},
+                    {type === 'comments' ? `댓글수: ${item.commentCount}` : type === 'recommend' ? `추천수${item.recommend}` : type === 'view' ? `조회수${item.views}` : `전체 추천수: ${item.recommend}`})
+                  </li>
+              ))}
+            </ol>
+        )}
+      </div>
   );
 };
 
