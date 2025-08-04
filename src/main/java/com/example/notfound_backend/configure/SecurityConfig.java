@@ -56,7 +56,7 @@ public class SecurityConfig {
                     requests.requestMatchers("/","/api/join", "/api/login","/api/reissue","/api/naver","/api/kakao","/api/google","/api/login/oauth2/code/*").permitAll();
                     requests.requestMatchers("/api/admin/**").hasRole("ADMIN");
                     requests.requestMatchers("/api/user/**").hasAnyRole("USER","ADMIN");
-                    requests.anyRequest(    ).permitAll();
+//                    requests.anyRequest(    ).permitAll();
                     requests.anyRequest().authenticated();
                 })
                 .cors(cors -> cors.configurationSource(request -> {
