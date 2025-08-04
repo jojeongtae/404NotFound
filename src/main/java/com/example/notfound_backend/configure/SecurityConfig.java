@@ -5,8 +5,7 @@ import com.example.notfound_backend.component.CustomAuthEntryPoint;
 import com.example.notfound_backend.jwt.JwtFilter;
 import com.example.notfound_backend.jwt.JwtLoginFilter;
 import com.example.notfound_backend.jwt.JwtUtil;
-import com.example.notfound_backend.service.login.CustomOAuth2UserService;
-import com.example.notfound_backend.service.login.OAuth2SuccessHandler;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +31,6 @@ public class SecurityConfig {
     private final CustomAuthEntryPoint customAuthEntryPoint;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final JwtUtil jwtUtil;
-    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -80,11 +78,7 @@ public class SecurityConfig {
                     return corsConfiguration;
                 }))
 
-                .oauth2Login(oauth -> oauth
-                        .loginPage("/api/login")
-                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
-                        .successHandler(new OAuth2SuccessHandler(jwtUtil))
-                )
+                
 
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
 
