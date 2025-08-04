@@ -134,6 +134,7 @@ private final UserInfoRepository userInfoRepository;
         UserInfoEntity info = userInfoRepository.findByNickname(nickname);
         if (info == null) {
             info = UserInfoEntity.builder()
+                    .username(existing)
                     .nickname(nickname)
                     .point(0)
                     .build();
