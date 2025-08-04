@@ -1,5 +1,9 @@
 package com.example.notfound_backend.controller.login;
 
+import com.example.notfound_backend.data.entity.admin.UserInfoEntity;
+import com.example.notfound_backend.data.entity.login.UserAuthEntity;
+import com.example.notfound_backend.data.repository.admin.UserInfoRepository;
+import com.example.notfound_backend.data.repository.login.UserAuthRepository;
 import com.example.notfound_backend.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,13 +15,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
 public class KakaoLoginController {
-
+private final UserAuthRepository userAuthRepository;
+private final UserInfoRepository userInfoRepository;
     private final JwtUtil jwtUtil;
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -101,7 +108,43 @@ public class KakaoLoginController {
         String role = "ROLE_USER";
         String username = (email != null) ? email : "kakao_" + kakaoId;
 
+        UserAuthEntity existing = userAuthRepository.findByUsername(username);
+        UserAuthEntity user;
+
+        if (existing != null) {
+            user = existing;
+        } else {
+            user = new UserAuthEntity();
+            user.setJoindate(LocalDateTime.now()); // 가입일은 신규 유저만
+        }
+        user.setUsername(username);
+        user.setRole(role);
+        user.setPassword(""); // 소셜 로그인은 비번 없음
+        userAuthRepository.save(user);
+
+// ✅ UserInfoEntity 확인 후 없으면 생성
+        String phone = (kakaoAccount.get("phone") != null)
+                ? kakaoAccount.get("phone").toString()
+                : "010-0000-0000";
+
+        String address = (kakaoAccount.get("address") != null)
+                ? kakaoAccount.get("address").toString()
+                : "주소 미등록";
+
+        UserInfoEntity info = userInfoRepository.findByNickname(nickname);
+        if (info == null) {
+            info = UserInfoEntity.builder()
+                    .nickname(nickname)
+                    .point(0)
+                    .build();
+        }
+
+        info.setPhone(phone);
+        info.setAddress(address);
+        userInfoRepository.save(info);
+
         // 3️⃣ JWT 생성
+
         String access = jwtUtil.createToken("access", username, role, 60 * 10 * 1000L); // 10분
         String refresh = jwtUtil.createToken("refresh", username, role, 24 * 60 * 60 * 1000L); // 24시간
 
