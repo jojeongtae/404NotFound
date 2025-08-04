@@ -53,8 +53,8 @@ const LoginForm = ({ onClose }) => {
 
   // 🔹 카카오 로그인 버튼 (Client ID 제거)
   const handleKakaoLogin = () => {
-    // --수정된부분--: 서버 경유해서 카카오 인증
-    window.location.href = "/api/kakao"; 
+    // --수정된부분--: Spring Security의 OAuth2 인증 시작 URL로 리디렉션
+    window.location.href = "/api/oauth2/authorization/kakao"; 
   };
 
   // 🔹 카카오 OAuth 콜백 처리
