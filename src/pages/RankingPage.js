@@ -80,7 +80,10 @@ const RankingPage = ({ props }) => {
                     <span className="num">{index + 1}.</span>
                     <span className="title">{item.title}</span>
                     <span className="board">{GetBoardName((item.category || '').toLowerCase())}</span>
-                    <span className="user-grade">{getFullGradeDescription(item.grade)}{item.authorNickname}</span>
+                    <span className="user">
+                      <span className="user-grade">{getFullGradeDescription(item.grade)}</span>
+                      {item.authorNickname}
+                    </span>
                     <span>{type === 'comments' ? `댓글수: ${item.commentCount}` : type === 'recommend' ? `추천수${item.recommend}` : type === 'view' ? `조회수${item.views}` : `추천수: ${item.recommend}`}</span>
                   </li>
               ))}

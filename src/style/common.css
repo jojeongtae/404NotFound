@@ -207,8 +207,8 @@
 .ranking-page .ranking-item{position:relative;display:flex;align-items:center;gap:8px;font-size:17px;}
 .ranking-page .ranking-item .num{font-size:18px;font-weight:600;color:var(--accent-color);}
 
-.ranking-page .ranking-item > *:nth-child(n+3){padding-left:8px;}
-.ranking-page .ranking-item > *:nth-child(n+3):before{display:block;content:'';position:absolute;top:calc(50% - 12px);right:0;background-color:var(--accent-color);}
+.ranking-page .ranking-item > *:nth-child(n+3){position:relative;padding-left:10px;}
+.ranking-page .ranking-item > *:nth-child(n+3):before{display:block;content:'';position:absolute;top:calc(50% - 10px);left:0;width:1px;height:20px;background-color:var(--accent-color);}
 
 
 
