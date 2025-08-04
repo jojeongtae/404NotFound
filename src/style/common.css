@@ -103,26 +103,26 @@
 .new-board .board-title{margin-left:0;width:100%;margin-top:14px;}
 .new-board .board-body{width:100%;height:300px;resize:vertical;margin:14px 0 0;padding:10px;}
 
-/* 중고장터 */
+/* 중고장터 글쓰기 */
 .new-board .price-wrap{display:flex;align-items:center;gap:8px;margin-top:14px;margin-bottom:10px;}
 .new-board .price-wrap .unit{font-size:17px;font-weight:600;}
 .new-board .board-price{margin-left:0;}
 
-/* 퀴즈 */
+/* 퀴즈 글쓰기 */
 .new-board .new-board-quiz .board-title{margin-bottom:14px;}
 .new-board .new-board-quiz #quizSelect{margin-left:0;}
 .new-board .new-board-quiz .row{display:flex;}
 .new-board .new-board-quiz .row .quiz-question{flex-grow:1;}
 .new-board .new-board-quiz .quiz-answer{width:100%;margin:14px 0 0;}
 
-/* 설문 */
+/* 설문 글쓰기 */
 .new-board .new-board-survey .notice{margin:10px 0 8px;}
 .new-board .new-board-survey input{display:block;margin-left:0;min-width:260px;}
 .new-board .new-board-survey input.survey-title{width:100%;margin-top:10px;}
 .new-board .new-board-survey input.survey-question{width:100%;margin-bottom:16px;}
 .new-board .new-board-survey input + input{margin-top:8px;}
 
-/* OX */
+/* OX 글쓰기 */
 .new-board .new-board-voting .voting-question{width:100%;margin-left:0;margin-top:14px;}
 .new-board .new-board-voting .voting-answer{margin-top:14px;}
 
@@ -153,7 +153,7 @@
 .quiz-detail .result{margin:20px 0;color:var(--warning-color);}
 .quiz-detail .btn_wrap{margin:45px 0 0;}
 
-    /* 이미지첨부 */
+/* 이미지첨부 */
 .new-board .new-board-image{margin:14px 0 20px;padding:10px 0;}
 .new-board .new-board-image input[type="file"]{font-size:15px;}
 .new-board .new-board-image .img-wrapper{margin-top:14px;}
@@ -201,6 +201,10 @@
 .dice-game .dice-game-container .result{margin-top:25px;}
 .dice-game .dice-game-container .result .result-container{display:flex;flex-direction:column;gap:8px;}
 
+/* 랭킹 */
+.ranking-page{position:relative;max-width:800px;margin:50px auto;padding:80px 80px;border-radius:14px;box-shadow:0 4px 12px rgba(0, 0, 0, 0.2);}
+.ranking-page .ranking-list{display:flex;flex-direction:column;gap:10px;}
+.ranking-page .ranking-item{}
 
 
 /* --관리자-- */
