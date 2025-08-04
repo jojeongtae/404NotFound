@@ -64,11 +64,15 @@
 .board-view .search-board-form .search-input{flex-grow:1;}
 .board-view .search-board-form .submit{min-width:70px;}
 
+.board-view .pagination{display:flex;justify-content:center;align-items:center;gap:10px; margin:25px 0 20px;}
+.board-view .pagination button{margin-left:0;}
+
 /* 게시판 상세 */
 .board-detail{}
 .board-detail-header{padding-bottom:24px;border-bottom:1px solid var(--text-color2);}
 .board-detail-header li:nth-child(n+2){margin-top:4px;}
 .board-detail-body{min-height:100px;padding:30px 0 20px;}
+.board-detail-body .price{margin-bottom:20px;font-size:20px;font-weight:600;}/* 중고장터 */
 
 .board-detail-footer{display:flex;justify-content:center;align-items:center; padding-top:20px;border-top:1px solid var(--text-color2);text-align:center;}
 .board-detail-footer .recommend{margin-right:15px;}
@@ -94,7 +98,7 @@
 .board-detail .new-comment input[type="text"]{flex-grow:1;margin-left:0;}
 [class$="-detail"] ~ .btn_wrap{margin-top:25px;}
 
-    /* 글쓰기 */
+/* 글쓰기 */
 .new-board #boardSelect{margin-left:0;}
 .new-board .board-title{margin-left:0;width:100%;margin-top:14px;}
 .new-board .board-body{width:100%;height:300px;resize:vertical;margin:14px 0 0;padding:10px;}
@@ -183,6 +187,20 @@
 .user-detail .detail-item .title{display:block;width:100%;margin-bottom:8px;font-size:22px;font-weight:600;color:var(--text-color2);text-decoration:none;}
 .user-detail .detail-item .info{font-size:15px;}
 .user-detail .detail-item .date{font-size:14px;color:var(--text-color2);}
+
+/* 주사위 게임 */
+.dice-game{}
+.dice-game .room-id label{display:flex;align-items:center;gap:8px;}
+.dice-game .room-id input[type="text"]{margin-left:0;}
+.dice-game .dice-game-container{margin:35px 0 25px;}
+.dice-game .dice-game-container .room-title{background-color:var(--bg-color-light);padding:10px 14px;border-radius:8px;}
+.dice-game .dice-game-container .play-status{margin:15px 0 0;font-size:17px;}
+.dice-game .dice-game-container .play-status strong{font-weight:bold;font-size:22px;}
+.dice-game .dice-game-container .play-btn{margin:20px 0 0;}
+
+.dice-game .dice-game-container .result{margin-top:25px;}
+.dice-game .dice-game-container .result .result-container{display:flex;flex-direction:column;gap:8px;}
+
 
 
 /* --관리자-- */
