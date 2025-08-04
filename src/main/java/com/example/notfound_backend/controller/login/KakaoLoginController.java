@@ -1,6 +1,7 @@
 package com.example.notfound_backend.controller.login;
 
 import com.example.notfound_backend.data.entity.admin.UserInfoEntity;
+import com.example.notfound_backend.data.entity.enumlist.UserStatus;
 import com.example.notfound_backend.data.entity.login.UserAuthEntity;
 import com.example.notfound_backend.data.repository.admin.UserInfoRepository;
 import com.example.notfound_backend.data.repository.login.UserAuthRepository;
@@ -139,6 +140,8 @@ private final UserInfoRepository userInfoRepository;
         if (info == null) {
             info = UserInfoEntity.builder()
                     .username(user)
+                    .status(UserStatus.ACTIVE)
+                    .warning(0)
                     .nickname(nickname)
                     .point(0)
                     .build();
