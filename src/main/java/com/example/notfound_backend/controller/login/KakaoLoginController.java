@@ -17,15 +17,16 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
 public class KakaoLoginController {
-private final UserAuthRepository userAuthRepository;
-private final UserInfoRepository userInfoRepository;
+
+    private final UserAuthRepository userAuthRepository;
+    private final UserInfoRepository userInfoRepository;
     private final JwtUtil jwtUtil;
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -104,6 +105,7 @@ private final UserInfoRepository userInfoRepository;
         Map<String, Object> kakaoAccount = (Map<String, Object>) body.get("kakao_account");
         Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
 
+        // ✅ Null 안전 처리
         String email = (String) kakaoAccount.get("email");
         String nickname = (profile.get("nickname") != null)
                 ? profile.get("nickname").toString()
@@ -111,62 +113,64 @@ private final UserInfoRepository userInfoRepository;
         String role = "ROLE_USER";
         String username = (email != null) ? email : "kakao_" + kakaoId;
 
+        // 3️⃣ UserAuthEntity 처리 (기존/신규)
+        UserAuthEntity user = Optional.ofNullable(userAuthRepository.findByUsername(username))
+                .orElseGet(() -> {
+                    UserAuthEntity newUser = new UserAuthEntity();
+                    newUser.setJoindate(LocalDateTime.now());
+                    return newUser;
+                });
 
-
-        UserAuthEntity existing = userAuthRepository.findByUsername(username);
-        UserAuthEntity user;
-
-        if (existing != null) {
-            user = existing;
-        } else {
-            user = new UserAuthEntity();
-            user.setJoindate(LocalDateTime.now()); // 가입일은 신규 유저만
-        }
         user.setUsername(username);
         user.setRole(role);
         user.setPassword(""); // 소셜 로그인은 비번 없음
         userAuthRepository.save(user);
 
-// ✅ UserInfoEntity 확인 후 없으면 생성
-        String phone = (kakaoAccount.get("phone") != null)
-                ? kakaoAccount.get("phone").toString()
-                : "010-0000-0000";
+        // 4️⃣ UserInfoEntity 처리 (username FK 기준)
+        String phone = Optional.ofNullable(kakaoAccount.get("phone"))
+                .map(Object::toString)
+                .orElse("010-0000-0000");
 
-        String address = (kakaoAccount.get("address") != null)
-                ? kakaoAccount.get("address").toString()
-                : "주소 미등록";
+        String address = Optional.ofNullable(kakaoAccount.get("address"))
+                .map(Object::toString)
+                .orElse("주소 미등록");
 
-        UserInfoEntity info = userInfoRepository.findByNickname(nickname);
+        UserInfoEntity info = userInfoRepository.findByUsername(user).orElse(null);
         if (info == null) {
             info = UserInfoEntity.builder()
-                    .username(user)
-                    .status(UserStatus.ACTIVE)
-                    .warning(0)
+                    .username(user)                  // FK 설정
+                    .status(UserStatus.ACTIVE)       // 기본 상태
+                    .warning(0)                      // 기본 경고 수
                     .nickname(nickname)
+                    .phone(phone)
+                    .address(address)
                     .point(0)
                     .build();
+        } else {
+            // 기존 유저 정보 업데이트
+            info.setNickname(nickname);
+            info.setPhone(phone);
+            info.setAddress(address);
+            info.setStatus(UserStatus.ACTIVE);
+            if (info.getWarning() == null) info.setWarning(0);
         }
-
-        info.setPhone(phone);
-        info.setAddress(address);
         userInfoRepository.save(info);
 
-        // 3️⃣ JWT 생성
-
+        // 5️⃣ JWT 생성
         String access = jwtUtil.createToken("access", username, role, 60 * 10 * 1000L); // 10분
         String refresh = jwtUtil.createToken("refresh", username, role, 24 * 60 * 60 * 1000L); // 24시간
 
-        // 4️⃣ RefreshToken 쿠키 설정
+        // 6️⃣ RefreshToken 쿠키 설정
         ResponseCookie cookie = ResponseCookie.from("refresh", refresh)
                 .httpOnly(true)
-                .secure(false) // HTTPS라면 true 권장
+                .secure(false) // HTTPS면 true 권장
                 .path("/")
                 .maxAge(24 * 60 * 60)
                 .sameSite("Lax")
                 .build();
         response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        // 5️⃣ 프론트로 리다이렉트 (JWT와 유저정보 전달)
+        // 7️⃣ 프론트로 리다이렉트 (JWT와 유저정보 전달)
         String redirectUrl = "http://404notfoundpage.duckdns.org/oauth2/success"
                 + "?accessToken=" + URLEncoder.encode(access, StandardCharsets.UTF_8)
                 + "&username=" + URLEncoder.encode(username, StandardCharsets.UTF_8)

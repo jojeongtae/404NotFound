@@ -8,12 +8,15 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface UserInfoRepository extends JpaRepository<UserInfoEntity, Integer> {
 
     // 회원정보 찾기
     UserInfoEntity getByUsername(UserAuthEntity username);
 
     UserInfoEntity findByNickname(String nickname);
+    Optional<UserInfoEntity> findByUsername(UserAuthEntity username);
 
     @Modifying
     @Query("update UserInfoEntity u set u.point = u.point + :point where u.username.username = :username")
