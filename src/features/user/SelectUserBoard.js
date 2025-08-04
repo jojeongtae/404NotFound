@@ -11,9 +11,7 @@ const SelectUserBoard = () => {
 
     // 모든 게시판 ID를 여기에 정의합니다.
     // 실제 프로젝트에 맞게 추가/수정해주세요.
-    const boardIds = [
-        'free', 'notice', 'qna', 'info', 'food', 'used', 'quiz', 'survey', 'voting'
-    ];
+    const boardIds = ['free', 'notice', 'qna', 'info', 'food', 'used', 'quiz', 'survey', 'voting'];
 
     useEffect(() => {
         const fetchUserPosts = async () => {
@@ -61,37 +59,26 @@ const SelectUserBoard = () => {
     if (loading) {
         return <div style={{ padding: '20px', textAlign: 'center' }}>{username} 님의 게시글을 불러오는 중...</div>;
     }
-
     if (error) {
         return <div style={{ padding: '20px', textAlign: 'center', color: 'red' }}>{error}</div>;
     }
 
     return (
-        <div style={{ maxWidth: '800px', margin: '50px auto', padding: '20px', border: '1px solid #eee', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-            <h2 style={{ textAlign: 'center', marginBottom: '20px', color: '#333' }}>{username} 님의 작성글</h2>
+        <div className="user-detail">
+            <h3>{username} 님의 작성글</h3>
             {userPosts.length === 0 ? (
                 <p style={{ textAlign: 'center', color: '#666' }}>작성된 게시글이 없습니다.</p>
             ) : (
-                <ul style={{ listStyle: 'none', padding: 0 }}>
+                <ul className="detail-list">
                     {userPosts.map(post => (
-                        <li key={post.id} style={{
-                            borderBottom: '1px solid #f0f0f0',
-                            padding: '15px 0',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center'
-                        }}>
-                            <div style={{ flexGrow: 1 }}>
-                                <Link to={`/board/${post.boardId}/${post.id}`} style={{ textDecoration: 'none', color: '#007bff', fontSize: '1.1em', fontWeight: 'bold' }}>
-                                    {post.title}
-                                </Link>
-                                <p style={{ fontSize: '0.9em', color: '#888', margin: '5px 0 0 0' }}>
-                                    게시판: {post.boardId} | 조회수: {post.views} | 추천: {post.recommend} | 등급: {getFullGradeDescription(post.grade)}
-                                </p>
-                            </div>
-                            <span style={{ fontSize: '0.85em', color: '#999' }}>
-                                {new Date(post.createdAt).toLocaleDateString()}
-                            </span>
+                        <li key={post.id} className="detail-item">
+                            <Link to={`/board/${post.boardId}/${post.id}`}>
+                                <div>
+                                    <div className="title">{post.title}</div>
+                                    <p className="info">게시판: {post.boardId} | 조회수: {post.views} | 추천: {post.recommend} | 등급: <span className="user-grade">{getFullGradeDescription(post.grade)}</span></p>
+                                </div>
+                                <span className="date">{new Date(post.createdAt).toLocaleDateString()}</span>
+                            </Link>
                         </li>
                     ))}
                 </ul>

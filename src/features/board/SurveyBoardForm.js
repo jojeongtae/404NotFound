@@ -116,27 +116,34 @@ const SurveyBoardForm = () => {
     ].filter(col => col);
 
     return(
-        <div style={{ padding: '20px' }}>
-            <h2>제목 : {surveyData.title}</h2>
-            <p><strong>작성자 :</strong> {getFullGradeDescription(surveyData.grade)}{surveyData.authorNickname}</p>
-            <h3>질문 : {surveyData.question}</h3>
+        <div className="survey-detail stats">
+            <h3>{surveyData.title}</h3>
+            <ul className="detail-info">
+                <li className="author">
+                    <span>작성자:</span> <span className="user-grade">{getFullGradeDescription(surveyData.grade)}</span>{surveyData.authorNickname}
+                </li>
+                <li className="date">
+                    <span>작성일: </span>{new Date(surveyData.createdAt).toLocaleDateString()}
+                </li>
+            </ul>
+            <p className="question">❓{surveyData.question}</p>
 
             {hasParticipated ? (
                 // 설문조사 결과 표시
-                <div>
+                <div className="stats-result">
                     <h4>설문조사 결과</h4>
                     {resultsLoading && <p>결과를 불러오는 중...</p>}
                     {resultsError && <p style={{ color: 'red' }}>{resultsError}</p>}
                     {surveyResults && (
-                        <div>
-                            <p>총 투표수: {totalVotes} 표</p>
-                            <ul>
+                        <div className="results-container">
+                            <p className="result-title">총 투표수 : <span>{totalVotes} 표</span></p>
+                            <ul className="result-list">
                                 {columns.map((column, index) => {
                                     const voteCount = surveyResults[column] || 0;
                                     const percentage = totalVotes > 0 ? ((voteCount / totalVotes) * 100).toFixed(1) : 0;
                                     return (
-                                        <li key={index}>
-                                            {column}: {voteCount} 표 ({percentage}%)
+                                        <li key={index} className="result-item">
+                                            {column} : <strong>{voteCount} 표</strong> ({percentage}%)
                                         </li>
                                     );
                                 })}
@@ -148,29 +155,25 @@ const SurveyBoardForm = () => {
                 // 설문조사 폼 표시
                 <form onSubmit={handleSubmit}>
                     {surveyData.imgsrc &&(
-            <img
-                src={`${API_BASE_URL}/${surveyData.imgsrc}`}
-                alt={surveyData.title || '게시글 이미지'}
-                style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
-              />
+            <img className="detail-img" src={`${API_BASE_URL}/${surveyData.imgsrc}`} alt={surveyData.title+" 이미지" || '게시글 이미지'}/>
                     )}
-                 
-                    {columns.map((column, index) => (
-                        <div key={index}>
-                            <label>
-                                <input
-                                    type="radio"
-                                    name="surveyOption"
-                                    value={column}
-                                    checked={selectedOption === column}
-                                    onChange={handleChange}
-                                />
-                                {column}
-                            </label>
-                        </div>
-                    ))}
-                    <br />
-                    <button type="submit">제출</button>
+                    <ul className="answer-list">
+                        {columns.map((column, index) => (
+                            <li key={index}>
+                                <label>
+                                    <input
+                                        type="radio"
+                                        name="surveyOption"
+                                        value={column}
+                                        checked={selectedOption === column}
+                                        onChange={handleChange}
+                                    />
+                                    {column}
+                                </label>
+                            </li>
+                        ))}
+                    </ul>
+                    <button type="submit" className="btn type2 large submit">제출</button>
                 </form>
             )}
         </div>

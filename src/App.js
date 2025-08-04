@@ -16,19 +16,25 @@ import DiceGamePage from './pages/DiceGamePage';
 import SelectUserBoard from './features/user/SelectUserBoard';
 import SelectUserInfo from './features/user/SelectUserInfo';
 import ReportBoardForm from './features/board/ReportBoardForm';
+import ReportMy from "./features/board/ReportMy";
+import OAuthSuccess from './pages/OAuthSuccess';
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+           {/* ✅ 카카오 OAuth 콜백 처리용 */}
+          <Route path="/oauth2/success" element={<OAuthSuccess />} />
+
           <Route path='/' element={<div><MainLayout /></div>}>
             <Route index element={<HomePage />} /> {/* 기본 경로를 HomePage로 설정 */}
             <Route path='board/:boardId' element={<BoardPage />} /> {/* 게시판 목록 페이지 */}
             <Route path='board/:boardId/:postId' element={<PostDetailPage />} /> {/* 게시글 상세 페이지 */}
             <Route path='board/new' element={<NewBoardPage />} /> {/* 새 게시글 작성 페이지 */}
             <Route path='board/:boardId/:postId/edit' element={<PostUpdatePage />}></Route>
-            <Route path='board/user/report' element={<ReportBoardForm />}></Route>
+            <Route path='board/user/report' element={<ReportBoardForm />}></Route>{/* 신고하기 */}
+            <Route path="/board/user/report/:username" element={<ReportMy/>}></Route>{/* 나의 신고 내역 */}
             <Route path='board/admin/list' element={<AdminUserListForm />}></Route>
             <Route path='board/admin/report' element={<AdminReportForm />}></Route>
             <Route path='board/ranking/:type' element={<RankingPage />} />
@@ -37,7 +43,8 @@ function App() {
             <Route path='user/board/:username' element={<SelectUserBoard />}></Route>
             
             {/* 다른 페이지 라우트들 */}
-          </Route>
+           
+          </Route>  
         </Routes>  
     </AuthProvider>
       </BrowserRouter>

@@ -6,14 +6,10 @@ const UserInfoModal = ({ onClose }) => {
   const [view, setView] = useState('info'); // 'info' or 'password'
 
   return (
-    <>
-      <div>
-        <button onClick={() => setView('info')} style={view === 'info' ? activeLinkStyle : linkStyle}>
-          내 정보 수정
-        </button>
-        <button onClick={() => setView('password')} style={view === 'password' ? activeLinkStyle : linkStyle}>
-          비밀번호 변경
-        </button>
+    <div className="userinfo-modal">
+      <div className="modal-tab">
+        <button onClick={() => setView('info')} className={view === 'info' ? 'btn type2' : "btn"}>내 정보 수정</button>
+        <button onClick={() => setView('password')} className={view === 'password' ? 'btn type2' : "btn"}>비밀번호 변경</button>
       </div>
 
       {view === 'info' ? (
@@ -21,25 +17,8 @@ const UserInfoModal = ({ onClose }) => {
       ) : (
         <PasswordChangeForm onClose={onClose} onSwitchToInfo={() => setView('info')} />
       )}
-    </>
+    </div>
   );
-};
-
-const linkStyle = {
-  background: 'none',
-  border: 'none',
-  padding: '5px 10px',
-  cursor: 'pointer',
-  textDecoration: 'underline',
-  color: 'blue',
-  marginRight: '10px'
-};
-
-const activeLinkStyle = {
-  ...linkStyle,
-  textDecoration: 'none',
-  fontWeight: 'bold',
-  color: 'black'
 };
 
 export default UserInfoModal;

@@ -51,7 +51,7 @@
     position: relative;
     animation: glitch-skew 1s infinite linear alternate-reverse;
     user-select: none;
-    color: var(--text-color); /* 기본 텍스트 색상 */
+    color: var(--bg-color-light); /* 기본 텍스트 색상 */
 }
 
 .glitch-title::before,
@@ -62,7 +62,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--bg-color); /* 배경색과 동일하게 설정 */
+    background: var(--main-color); /* 배경색과 동일하게 설정 */
     overflow: hidden;
 }
 
@@ -99,14 +99,14 @@
 
 /* header */
 body{width:100%;}
-header{padding:20px 0 12px;background-color:#ccc;}
+header{padding:20px 0 12px;background-color:var(--main-color);}
 header .main-header{display:flex;justify-content:center;}
 header .header-title-container{display:inline-block;padding-bottom:20px;text-decoration:none;}
 
 header .nav-links{position:absolute;right:0;bottom:0;font-size:0;line-height:0;}
 
 
-.user-intro{display:block;padding:6px 0;border-bottom:1px solid var(--border-color);}
+.user-intro{display:block;padding:8px 0;border-bottom:1px solid var(--border-color);}
 .user-intro .user-message{position:relative;margin-right:12px;padding-right:13px;}
 .user-intro .user-message:before{display:block;content:'';position:absolute;top:calc(50% - 7px);right:0;width:1px;height:16px;background-color:#888;}
 
@@ -132,21 +132,7 @@ aside nav .nav-list li a:hover{background-color:var(--bg-color-light);}
 
 
 /* main */
-main{flex-grow:1;padding:20px 0 0 50px;}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+main{flex-grow:1;padding:20px 0 40px 50px;}
 
 
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import apiClient from '../../api/apiClient';
@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setToken } from '../../features/auth/tokenSlice';
 import { setUser } from '../../features/auth/userSlice';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const LoginForm = ({ onClose }) => {
   const { login } = useAuth();
@@ -14,6 +15,7 @@ const LoginForm = ({ onClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  // 🔹 일반 로그인 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -24,83 +26,84 @@ const LoginForm = ({ onClose }) => {
 
       const response = await apiClient.post("/login", params);
 
-      console.log("로그인 응답", response);
-
       const accessToken = response.headers.authorization;
       if (accessToken) {
         dispatch(setToken(accessToken));
-        console.log("토큰 저장 완료:", accessToken);
       }
 
-      // 1단계: 기본 사용자 정보 (username, role) 저장
       const basicUserData = {
         username: response.data.username || username,
         role: response.data.role,
       };
       dispatch(setUser(basicUserData));
-      console.log("기본 사용자 정보 저장 완료:", basicUserData);
 
-      // 2단계: 추가 정보 비동기 요청 및 저장
-      const fetchUserDetails = async (token, username) => {
-        try {
-          const userDetailsResponse = await apiClient.get(`/user/user-info?username=${username}`,
-            // { headers: { 'Authorization': token }}
+      // 유저 상세 정보 로딩
+      const userDetailsResponse = await apiClient.get(`/user/user-info?username=${basicUserData.username}`);
+      dispatch(setUser({
+        ...basicUserData,
+        ...userDetailsResponse.data,
+      }));
 
-          );
-
-          console.log(userDetailsResponse.data);
-
-
-          dispatch(setUser({
-            ...userDetailsResponse.data, // 기존 사용자 상세 정보
-          }));
-
-          console.log("추가 사용자 정보 저장 완료:", userDetailsResponse.data);
-
-        } catch (error) {
-          console.error("추가 사용자 정보 로딩 중 오류 발생:", error);
-        }
-      };
-
-      if (accessToken) {
-        fetchUserDetails(accessToken, basicUserData.username);
-      }
-
-      login(); // AuthContext의 로그인 상태 업데이트
-      if (response.data.role === "ROLE_ADMIN") {
-        alert("i'm admin");
-      } else {
-        alert('로그인 성공!');
-      }
-      onClose(); // 모달 닫기
+      login();
+      onClose();
       navigate('/');
-
     } catch (error) {
-      console.error('로그인 중 오류 발생:', error);
-      const errorMessage = error.response?.data?.message || error.message || '알 수 없는 오류';
-
-      if (error.response?.status === 401) {
-        alert(`로그인 실패: ${errorMessage}. 아이디 또는 비밀번호를 확인해주세요.`);
-      } else {
-        alert(`로그인 실패: ${errorMessage}. 다시 시도해주세요.`);
-      }
+      const errorMessage = error.response?.data?.message || '로그인 실패';
+      alert(errorMessage);
     }
   };
-  // const handleGoogleLogin = () => {
-  //   window.location.href = "/api/google";  //이렇게 쓰면 주소표시줄만 바꿈
-  // }
-  ///임시 주석
-  ///////
+
+  // 🔹 카카오 로그인 버튼
   const handleKakaoLogin = () => {
-    window.location.href = "/api/kakao";
-  }
+    window.location.href = `${API_BASE_URL}/api/kakao`;
+  };
+
+  // 🔹 네이버 로그인 버튼
   const handleNaverLogin = () => {
-    window.location.href = "/api/naver";
-    
-  }
- return (
-  <>
-    
+    window.location.href = `${API_BASE_URL}/api/oauth2/authorization/naver`;
+  };
+
+  // 🔹 카카오 OAuth 콜백 처리
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get("code");
+
+    if (code) {
+      console.log("카카오 인가 코드 감지:", code);
+
+      apiClient.get(`/login/oauth2/code/kakao?code=${code}`, { withCredentials: true })
+        .then(res => {
+          console.log("카카오 로그인 응답:", res.data);
+
+          if (res.data?.username) {
+            // Redux 상태 갱신
+            dispatch(setToken("Bearer " + res.data.accessToken));
+            dispatch(setUser({
+              username: res.data.username,
+              role: res.data.role,
+              nickname: res.data.nickname,
+              phone: res.data.phone || "", // KakaoLoginController에서 phone을 반환하지 않으므로 기본값 설정
+              address: res.data.address || '', // KakaoLoginController에서 address를 반환하지 않으므로 기본값 설정
+            }));
+
+            login();
+
+            // URL 정리 (code 제거)
+            window.history.replaceState({}, document.title, window.location.pathname);
+
+            onClose();
+            navigate('/');
+          }
+        })
+        .catch(err => {
+          console.error("카카오 로그인 실패:", err);
+          alert("카카오 로그인 실패");
+        });
+    }
+  }, [dispatch, login, navigate, onClose]);
+
+  return (
+    <>
       <form onSubmit={handleSubmit}>
         <h2>로그인</h2>
         <input
@@ -108,18 +111,21 @@ const LoginForm = ({ onClose }) => {
           placeholder="아이디 입력칸"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-        /> <br />
+        /><br />
         <input
           type="password"
           placeholder="비밀번호 입력칸"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-        /> <br />
+        /><br />
         <input type="submit" value="로그인" />
       </form>
-   
-  </>
-);
+      <div>
+        <button type='button' onClick={handleKakaoLogin}>카카오 로그인</button>
+        <button type='button' onClick={handleNaverLogin}>네이버 로그인</button>
+      </div>
+    </>
+  );
 };
 
 export default LoginForm;

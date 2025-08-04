@@ -74,35 +74,40 @@ const AdminReportForm = () => {
         }
     }
     return (
-        <>
-            <h2>신고 관리</h2>
+        <div className="admin-report">
+            <h3>신고 관리</h3>
             <ul className="report-list">
                 {reports.map(report => (
-                    <li key={report.id} className="report-list-item" style={{ border: '1px solid #ccc', padding: '15px', marginBottom: '10px', borderRadius: '5px' }}>
-                        <h3>신고 ID: {report.id}</h3>
-                        <div style={{ marginBottom: '5px' }}><strong>사유:</strong> {report.reason || '사유 없음'}</div>
-                        <div style={{ marginBottom: '5px' }}><strong>상세:</strong> {report.description || '-'}</div>
-                        {/* authorNickname 변경예정 */}
-                        <div style={{ marginBottom: '5px' }}><strong>신고자:</strong> {report.reporter || '알 수 없음'}</div>
-                        {/* authorNickname 변경예정 */}
-                        <div style={{ marginBottom: '5px' }}><strong>피신고자:</strong> {report.reported || '알 수 없음'}</div>
-                        {console.log(report)}
-                        <div style={{ marginBottom: '5px' }}>
-                            <strong>대상:</strong>
-                            <Link to={`/board/${report.targetTable.replace('board_', '')}/${report.targetId}`} style={{ marginLeft: '5px', color: 'blue', textDecoration: 'underline' }}>
-                                {report.targetTable.replace('board_', '')} (ID: {report.targetId})
-                            </Link>
+                    <li key={report.id} className="report-item">
+                        <h4>신고 ID: {report.id}</h4>
+                        <ul className="detail-list">
+                            <li className="detail-item"><em>사유:</em> {report.reason || '사유 없음'}</li>
+                            <li className="detail-item"><em>상세:</em> {report.description || '-'}</li>
+                            {/* authorNickname 변경예정 */}
+                            <li className="detail-item"><em>신고자:</em> {report.reporter || '알 수 없음'}</li>
+                            {/* authorNickname 변경예정 */}
+                            <li className="detail-item"><em>피신고자:</em> {report.reported || '알 수 없음'}</li>
+                            {console.log(report)}
+                            <li className="detail-item">
+                                <em>대상:</em>
+                                <Link to={`/board/${report.targetTable.replace('board_', '')}/${report.targetId}`}
+                                      style={{marginLeft: '5px', color: 'blue', textDecoration: 'underline'}}>
+                                    {report.targetTable.replace('board_', '')} (ID: {report.targetId})
+                                </Link>
+                            </li>
+                            <li className="detail-item"><em>상태:</em> {report.status || '알 수 없음'}</li>
+                            <li className="detail-item"><em>신고 시간:</em> {new Date(report.createdAt).toLocaleString()}</li>
+                            {report.updatedAt && <li className="detail-item"><em>처리 시간:</em> {new Date(report.updatedAt).toLocaleString()}</li>}
+                        </ul>
+                        <div className="btn_wrap">
+                            <button onClick={()=> handleAddReportUser(report.id,report.reporter,report.reported)}>신고 인용</button>
+                            <button onClick={() => handleCancle(report.id)}>신고 기각</button>
                         </div>
-                        <div style={{ marginBottom: '5px' }}><strong>상태:</strong> {report.status || '알 수 없음'}</div>
-                        <div style={{ marginBottom: '5px' }}><strong>신고 시간:</strong> {new Date(report.createdAt).toLocaleString()}</div>
-                        {report.updatedAt && <div style={{ marginBottom: '5px' }}><strong>처리 시간:</strong> {new Date(report.updatedAt).toLocaleString()}</div>}
-                        <button onClick={() => handleCancle(report.id)}>탈락 땅땅땅</button> &nbsp;
-                        <button onClick={()=> handleAddReportUser(report.id,report.reporter,report.reported)}>처리완료 땅땅땅</button>
                         {/* 여기에 신고 처리 버튼 (예: 게시글 숨기기, 사용자 경고 등) 추가 가능 */}
                     </li>
                 ))}
             </ul>
-        </>
+        </div>
     )
 }
 

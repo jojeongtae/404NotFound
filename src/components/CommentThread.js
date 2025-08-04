@@ -22,29 +22,34 @@ const Comment = ({ comment, onReply, username, handleDeleteComment }) => {
   };
 
   return (
-    <li style={{ borderBottom: '1px solid #eee', padding: '10px 0', marginLeft: comment.parentId ? '20px' : '0' }}>
+    // <li className="comment-item" style={{marginLeft: comment.parentId ? '25px' : '0' }}>
+    <li className="comment-item">
       {/* authorNickname 변경예정 */}
-      <div><strong>작성자 :</strong> {getFullGradeDescription(comment.grade)}{comment.authorNickname}</div>
-      <div><strong>내용 :</strong> {comment.content}</div>
-      <div style={{ textAlign: 'right', fontSize: '0.8em', color: '#666' }}>작성시간 : {new Date(comment.createdAt).toLocaleString()}</div>
-      {username && <button onClick={() => setReplying(!replying)}>답글 달기</button>}
-      {username === comment.author && (
-        <button onClick={() => handleDeleteComment(comment.id)} style={{ marginLeft: '10px', background: 'red', color: 'white', border: 'none', padding: '5px 10px', cursor: 'pointer' }}>삭제</button>
-      )}
+      <div className="comment-header">
+        <div>
+          <span className="user-grade">{getFullGradeDescription(comment.grade)}</span>
+          <span>{comment.authorNickname}</span>
+        </div>
+        <span className="time">{new Date(comment.createdAt).toLocaleString()}</span>
+      </div>
+      <div className="comment-body">
+        <p>{comment.content}</p>
+        <div className="btn_box">
+          {username && <button className="small" onClick={() => setReplying(!replying)}>답글 달기</button>}
+          {username === comment.author && (<button className="small red" onClick={() => handleDeleteComment(comment.id)}>삭제</button>)}
+        </div>
+      </div>
+
       {replying && (
-        <form onSubmit={handleReplySubmit} style={{ marginTop: '10px' }}>
-          <textarea
-            value={replyText}
-            onChange={(e) => setReplyText(e.target.value)}
-            placeholder="답글을 입력하세요..."
-            rows="2"
-            style={{ width: '100%', padding: '5px', marginBottom: '5px', border: '1px solid #ccc' }}
-          />
-          <button type="submit">답글 작성</button>
+        <form onSubmit={handleReplySubmit}>
+          <div className="new-comment">
+            <input type="text" onChange={(e) => setReplyText(e.target.value)} placeholder="답글을 입력하세요..." />
+            <button type="submit">답글 작성</button>
+          </div>
         </form>
       )}
       {comment.children && comment.children.length > 0 && (
-        <ul>
+        <ul className="reply-comment-list">
           {comment.children.map(child => (
             <Comment key={child.id} comment={child} onReply={onReply} username={username} handleDeleteComment={handleDeleteComment} />
           ))}
@@ -82,7 +87,7 @@ const CommentThread = ({ comments, onCommentUpdate, username, handleDeleteCommen
   const commentTree = buildCommentTree(comments);
 
   return (
-    <ul>
+    <ul className="comment-list">
       {commentTree.map(comment => (
         <Comment key={comment.id} comment={comment} onReply={onCommentUpdate} username={username} handleDeleteComment={handleDeleteComment} />
       ))}

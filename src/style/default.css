@@ -37,18 +37,17 @@ ol, ul {
 blockquote, q {
     quotes: none;
 }
+
 blockquote:before, blockquote:after,
 q:before, q:after {
     content: '';
     content: none;
 }
+
+table {width:100%;border:none;border-collapse: collapse;border-spacing:0;}
+img {max-width: 100%;}
+em{font-style:normal;font-weight:500;}
 strong{font-weight:600;}
-table {
-    width:100%;
-    border:none;
-    border-collapse: collapse;
-    border-spacing: 0;
-}
 a{color:var(--text-color2)}
 .clearfix{
     content:"";

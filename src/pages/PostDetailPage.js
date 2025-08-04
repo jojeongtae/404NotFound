@@ -166,13 +166,14 @@ const PostDetailPage = () => {
   const handleReport = async () => {
     try {
       const res = await apiClient.post("/user/report", {
-        reason: "간단신고",
+        reason: "간편신고",
         reporter: username,
         reported: post.author,
         targetTable: `board_${boardId}`,
         targetId: postId
       });
       console.log(res.data);
+      alert("신고 완료");
     } catch (err) {
       console.log(err);
     }
@@ -190,64 +191,63 @@ const PostDetailPage = () => {
       ) : (
         <div className="board-detail">
           <h3>{post.title}</h3>
-
-          <p>작성자: {getFullGradeDescription(post.grade)}{post.authorNickname}</p>
-          <p className="post-date">작성일: {new Date(post.createdAt).toLocaleDateString()}</p>
-          <p>조회수: {post.views}</p>
-          <hr />
-          {post.imgsrc && (
-            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-              <img
-                src={`${API_BASE_URL}/${post.imgsrc}`}
-                alt={post.title || '게시글 이미지'}
-                style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
-              />
-                        {boardId === 'used' && post.price && (
-            <p><strong>가격:</strong> {post.price.toLocaleString()}원</p>
-          )}
+          <div className="board-detail-header">
+            <ul>
+              <li>작성자: <span className="user-grade">{getFullGradeDescription(post.grade)}</span>{post.authorNickname}</li>
+              <li>작성일: {new Date(post.createdAt).toLocaleDateString()}</li>
+              <li>조회수: {post.views}</li>
+            </ul>
+          </div>
+          <div className="board-detail-body">
+            {post.imgsrc && (
+                <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                  <img
+                      src={`${API_BASE_URL}/${post.imgsrc}`}
+                      alt={post.title || '게시글 이미지'}
+                      style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
+                  />
+                </div>
+            )}
+            {boardId === 'used' && post.price && (
+                <p className="price"><span>가격:</span> {post.price.toLocaleString()}원</p>
+            )}
+            <div dangerouslySetInnerHTML={{ __html: post.body }}></div>
+          </div>
+          <div className="board-detail-footer">
+            <div className="recommend">
+              <button onClick={handleRecommend} disabled={isRecommended}>
+                {isRecommended ? `추천함👍${post.recommend}` : `추천👍${post.recommend}`}
+              </button>
             </div>
-          )}
-          <div dangerouslySetInnerHTML={{ __html: post.body }}></div>
-
-          <hr />
-          <button onClick={handleRecommend} disabled={isRecommended}>
-            {isRecommended ? "추천 완료" : "추천"}
-          </button>
-          <span>추천수 : {post.recommend}</span> <button onClick={handleReport}>🏮신고하기</button>
-          <hr />
+            <div className="report">
+              <button className="report-btn" onClick={handleReport}>신고🏮</button>
+            </div>
+          </div>
 
           {/* 댓글 섹션 시작 */}
           {boardId !== 'quiz' && boardId !== 'survey' && boardId !== 'voting' && (
-            <>
-              <h3>댓글</h3>
-              {comments.length === 0 && <p>아직 댓글이 없습니다.</p>}
-              <CommentThread comments={comments} onCommentUpdate={loadPostAndComments} username={username} handleDeleteComment={handleDeleteComment} />
-
-              <form onSubmit={handleCommentSubmit} style={{ marginTop: '20px' }}>
-                <textarea
-                  value={newCommentText}
-                  onChange={(e) => setNewCommentText(e.target.value)}
-                  placeholder="댓글을 입력하세요..."
-                  rows="3"
-                  style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc' }}
-                ></textarea>
-                <button type="submit" className="nav-link">
-                  댓글 작성
-                </button>
+            <div className="comment">
+              <h4 className="comment-title">💬댓글</h4>
+              {comments.length === 0 && <p>댓글이 없습니다. 첫번째 댓글을 입력해 보세요.</p>}
+                <CommentThread comments={comments} onCommentUpdate={loadPostAndComments} username={username} handleDeleteComment={handleDeleteComment} />
+              <form onSubmit={handleCommentSubmit}>
+                <div className="new-comment">
+                  <input type="text" value={newCommentText} onChange={(e) => setNewCommentText(e.target.value)} placeholder="댓글을 입력하세요..."/>
+                  <button type="submit" className="btn type2">댓글 작성</button>
+                </div>
               </form>
-            </>
+            </div>
           )}
           {/* 댓글 섹션 끝 */}
         </div>
       )}
-      <div>
+      <div className="btn_wrap">
         {username === post.author && (
-          <button onClick={() => navigate(`/board/${boardId}/${postId}/edit`)} className='nav-link'>게시글 수정</button>
-
+          <button className='btn large' onClick={() => navigate(`/board/${boardId}/${postId}/edit`)}>게시글 수정</button>
         )}
         {username === post.author && (
 
-          <button className='nav-link' onClick={handleDeletePost}>게시글 삭제</button>
+          <button className='btn red large' onClick={handleDeletePost}>게시글 삭제</button>
         )}
       </div>
     </>

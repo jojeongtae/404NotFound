@@ -65,37 +65,36 @@ const AdminUserListForm = () => {
     }
   }
 
-
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>관리자 - 유저 목록</h2>
-      <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
+    <div className="admin-user">
+      <h3>관리자 - 유저 목록</h3>
+      <table className="admin-table">
         <thead>
-          <tr style={{ backgroundColor: '#f2f2f2' }}>
-            <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>아이디</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>닉네임</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>등급</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>전화번호</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>포인트</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>상태</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>주소</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>경고</th>
-            <th style={{ border: '1px solid #ddd', padding: '8px', textAlign: 'center' }}>상태 변경</th>
+          <tr>
+            <th>아이디</th>
+            <th>닉네임</th>
+            <th>등급</th>
+            <th>전화번호</th>
+            <th>포인트</th>
+            <th>상태</th>
+            <th>주소</th>
+            <th>경고</th>
+            <th>상태 변경</th>
           </tr>
         </thead>
         <tbody>
           {users.map((user) => (
             <>
               <tr key={user.username}>
-                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.username}</td>
-                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.nickname}</td>
-                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.grade}</td>
-                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.phone}</td>
-                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.point}</td>
-                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.status}</td>
-                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.address}</td>
-                <td style={{ border: '1px solid #ddd', padding: '8px' }}>{user.warning}</td>
-                <td style={{ border: '1px solid #ddd', padding: '8px' }}><button onClick={()=>handleStatusChange(user.username)}>상태 변경</button></td>
+                <td>{user.username}</td>
+                <td>{user.nickname}</td>
+                <td>{user.grade}</td>
+                <td>{user.phone}</td>
+                <td>{user.point}</td>
+                <td>{user.status}</td>
+                <td>{user.address}</td>
+                <td>{user.warning}</td>
+                <td><button onClick={()=>handleStatusChange(user.username)}>상태변경</button></td>
               </tr>
             </>
           ))}

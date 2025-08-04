@@ -49,6 +49,7 @@ const MainLayout = () => {
 
   useEffect(() => {
     // 로그인 상태이고, 사용자 정보가 Redux 스토어에 없거나 업데이트가 필요한 경우
+    console.log(user);
     if (isLoggedIn && user.username) { // user.username이 있을 때만 API 호출
       const fetchUserInfo = async () => { // async 함수로 변경
         try {
@@ -77,7 +78,7 @@ const MainLayout = () => {
                   <>
                     <Link to="/board/new" className="btn type2 nav-link">글쓰기</Link>
                     <button onClick={() => openModal('userInfo')} className='nav-link'>내 정보 수정</button> {/* 버튼으로 변경 */}
-                    <button onClick={() => openModal('mailbox')} className='nav-link'>우편함</button> {/* 이 줄을 추가합니다. */}
+                    <button onClick={() => openModal('mailbox')} className='nav-link'>메시지</button> {/* 이 줄을 추가합니다. */}
                     <button onClick={logout} className="nav-link">Logout</button>
                   </>
               ) : (
@@ -127,7 +128,8 @@ const MainLayout = () => {
                 <h3>오늘의</h3>
                 <ul className="nav-list">
                   <li><Link to="/board/ranking/recommend">Best404추천수</Link></li>
-                  <li><Link to="/board/ranking/comment">Best404댓글수</Link></li>
+                  <li><Link to="/board/ranking/comments">Best404댓글수</Link></li>
+                  <li><Link to="/board/ranking/view">Best404조회수</Link></li>
                 </ul>
                 <h3>일반 게시판</h3>
                 <ul className="nav-list">

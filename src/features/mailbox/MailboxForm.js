@@ -18,9 +18,9 @@ const MailboxForm = ({ onClose }) => {
           setError(null);
           const response = await apiClient.get(`/message/receiver`, username);
           setMessages(response.data);
-          console.log('우편함 메시지:', response.data);
+          console.log('메시지:', response.data);
         } catch (err) {
-          console.error('우편함 메시지 불러오기 실패:', err);
+          console.error('메시지 불러오기 실패:', err);
           setError('메시지를 불러오는 데 실패했습니다.');
         } finally {
           setLoading(false);
@@ -46,60 +46,40 @@ const MailboxForm = ({ onClose }) => {
   };
 
   return (
-    <div style={{ padding: '20px', minWidth: '400px' }}> {/* 모달 크기 조절 */}
-      <div style={{ marginBottom: '15px', borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
-        <button 
-          onClick={() => setCurrentView('inbox')} 
-          style={{ 
-            padding: '10px 15px', 
-            marginRight: '10px', 
-            border: '1px solid #ccc', 
-            backgroundColor: currentView === 'inbox' ? '#e0e0e0' : '#f0f0f0',
-            cursor: 'pointer'
-          }}
-        >
-          우편함
-        </button>
-        <button 
-          onClick={() => setCurrentView('compose')} 
-          style={{ 
-            padding: '10px 15px', 
-            border: '1px solid #ccc', 
-            backgroundColor: currentView === 'compose' ? '#e0e0e0' : '#f0f0f0',
-            cursor: 'pointer'
-          }}
-        >
-          쪽지 쓰기
-        </button>
+    <div className="message-modal">
+      <div className="modal-tab">
+        <button onClick={() => setCurrentView('inbox')} className={currentView === 'inbox' ? 'btn type2' : 'btn'}>받은 메시지</button>
+        <button onClick={() => setCurrentView('compose')} className={currentView === 'compose' ? 'btn type2' : 'btn'}>메시지 보내기</button>
       </div>
 
       {currentView === 'inbox' ? (
-        <>
-          <h2>우편함</h2>
+        <div className="tab-container message-box">
           {loading ? (
-            <div style={{ textAlign: 'center', padding: '50px' }}>메시지를 불러오는 중...</div>
+            <p className="notice">메시지를 불러오는 중...</p>
           ) : error ? (
-            <div style={{ textAlign: 'center', padding: '50px', color: 'red' }}>{error}</div>
+            <p className="notice red">{error}</p>
           ) : messages.length === 0 ? (
-            <div style={{ textAlign: 'center', padding: '50px' }}>받은 메시지가 없습니다.</div>
+            <p className="notice">받은 메시지가 없습니다.</p>
           ) : (
-            <ul style={{ listStyle: 'none', padding: 0, maxHeight: '300px', overflowY: 'auto' }}>
+            <ul className="message-list">
               {messages.map((msg) => (
-                <li key={msg.id} style={{ borderBottom: '1px solid #999', padding: '10px 0' }}>
-                  <strong>보낸 사람:</strong> {msg.authorNickname || msg.author}<br />
-                  <strong>제목:</strong> {msg.title}<br />
-                  <strong>내용:</strong> {msg.message}<br />
-                  <span style={{ fontSize: '0.8em', color: '#666' }}>{new Date(msg.createdAt).toLocaleString()}</span>
-                  <button onClick={() => handleMessageDelete(msg.id)} style={{ marginLeft: '10px', background: 'red', color: 'white', border: 'none', padding: '5px 10px', cursor: 'pointer' }}>삭제하기</button>
+                <li className="message-item">
+                  <ul>
+                    <li><em>보낸 사람:</em> <span className="user-grade">{msg.authorNickname || msg.author}</span> <br /></li>
+                    <li><em>제목:</em> {msg.title}<br /></li>
+                    <li><em>내용:</em> {msg.message}<br /></li>
+                    <li><span className="time">{new Date(msg.createdAt).toLocaleString()}</span></li>
+                  </ul>
+                  <button className="btn red small delete" onClick={() => handleMessageDelete(msg.id)}>삭제</button>
                 </li>
               ))}
             </ul>
           )}
-        </>
+        </div>
       ) : (
         <ComposeMessageForm onMessageSent={() => setCurrentView('inbox')} /> // 쪽지 전송 후 우편함으로 돌아가기
       )}
-      <button onClick={onClose} style={{ marginTop: '20px' }}>닫기</button>
+      {/*<button onClick={onClose} style={{ marginTop: '20px' }}>닫기</button>*/}
     </div>
   );
 };
