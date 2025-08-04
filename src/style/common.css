@@ -204,7 +204,12 @@
 /* 랭킹 */
 .ranking-page{position:relative;max-width:800px;margin:50px auto;padding:80px 80px;border-radius:14px;box-shadow:0 4px 12px rgba(0, 0, 0, 0.2);}
 .ranking-page .ranking-list{display:flex;flex-direction:column;gap:10px;text-align:left;}
-.ranking-page .ranking-item{display:flex;gap:8px;}
+.ranking-page .ranking-item{position:relative;display:flex;align-items:center;gap:8px;font-size:17px;}
+.ranking-page .ranking-item .num{font-size:18px;font-weight:600;color:var(--accent-color);}
+
+.ranking-page .ranking-item > *:nth-child(n+3){padding-left:8px;}
+.ranking-page .ranking-item > *:nth-child(n+3):before{display:block;content:'';position:absolute;top:calc(50% - 12px);right:0;background-color:var(--accent-color);}
+
 
 
 /* --관리자-- */
