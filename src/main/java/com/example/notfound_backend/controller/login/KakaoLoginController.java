@@ -117,10 +117,10 @@ public class KakaoLoginController {
 
         // 5️⃣ 프론트로 리다이렉트 (JWT와 유저정보 전달)
         String redirectUrl = "http://404notfoundpage.duckdns.org/oauth2/success"
-                + "?accessToken=" + access
+                + "?accessToken=" + URLEncoder.encode(access, StandardCharsets.UTF_8)
                 + "&username=" + URLEncoder.encode(username, StandardCharsets.UTF_8)
                 + "&nickname=" + URLEncoder.encode(nickname, StandardCharsets.UTF_8)
-                + "&role=" + role;
+                + "&role=" + URLEncoder.encode(role, StandardCharsets.UTF_8);
 
         response.sendRedirect(redirectUrl);
     }
