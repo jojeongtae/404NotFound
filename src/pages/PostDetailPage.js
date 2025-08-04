@@ -166,13 +166,14 @@ const PostDetailPage = () => {
   const handleReport = async () => {
     try {
       const res = await apiClient.post("/user/report", {
-        reason: "게시글 빠른 신고",
+        reason: "간편신고",
         reporter: username,
         reported: post.author,
         targetTable: `board_${boardId}`,
         targetId: postId
       });
       console.log(res.data);
+      alert("신고 완료");
     } catch (err) {
       console.log(err);
     }
@@ -201,7 +202,7 @@ const PostDetailPage = () => {
             {post.imgsrc && (
                 <div style={{ textAlign: 'center', marginBottom: '20px' }}>
                   <img
-                      src={`http://404notfoundpage.duckdns.org:8080/${post.imgsrc}`}
+                      src={`${API_BASE_URL}/${post.imgsrc}`}
                       alt={post.title || '게시글 이미지'}
                       style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
                   />
@@ -240,7 +241,7 @@ const PostDetailPage = () => {
           {/* 댓글 섹션 끝 */}
         </div>
       )}
-      <div>
+      <div className="btn_wrap">
         {username === post.author && (
           <button className='btn large' onClick={() => navigate(`/board/${boardId}/${postId}/edit`)}>게시글 수정</button>
         )}
