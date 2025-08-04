@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'; // --수정된부분--
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import apiClient from '../../api/apiClient';
 import { useDispatch } from 'react-redux';
 import { setToken } from '../../features/auth/tokenSlice';
 import { setUser } from '../../features/auth/userSlice';
+
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const LoginForm = ({ onClose }) => {
   const { login } = useAuth();
@@ -51,53 +53,14 @@ const LoginForm = ({ onClose }) => {
     }
   };
 
-  // 🔹 카카오 로그인 버튼 (Client ID 제거)
+  // 🔹 카카오 로그인 버튼
   const handleKakaoLogin = () => {
-    // --수정된부분--: Spring Security의 OAuth2 인증 시작 URL로 리디렉션
-    window.location.href = "/api/oauth2/authorization/kakao"; 
+    window.location.href = `${API_BASE_URL}/api/oauth2/authorization/kakao`;
   };
 
-  // 🔹 카카오 OAuth 콜백 처리
-  useEffect(() => {
-    const url = new URL(window.location.href);
-    const code = url.searchParams.get("code");
-
-    if (code) {
-      console.log("카카오 인가 코드 감지:", code); // --추가된부분--
-
-      apiClient.get(`/login/oauth2/code/kakao?code=${code}`, { withCredentials: true }) // --수정된부분--
-        .then(res => {
-          console.log("카카오 로그인 응답:", res.data); // --추가된부분--
-
-          if (res.data?.username) {
-            // Redux 상태 갱신
-            dispatch(setToken("Bearer " + res.data.accessToken)); // --수정된부분--
-            dispatch(setUser({
-              username: res.data.username,
-              role: res.data.role,
-              nickname: res.data.nickname,
-              phone: "01011112222",
-              address: '카카오로그인 주소',
-            }));
-
-            login();
-
-            // URL 정리 (code 제거)
-            window.history.replaceState({}, document.title, window.location.pathname); // --추가된부분--
-
-            onClose();
-            navigate('/');
-          }
-        })
-        .catch(err => {
-          console.error("카카오 로그인 실패:", err);
-          alert("카카오 로그인 실패");
-        });
-    }
-  }, [dispatch, login, navigate, onClose]);
-
+  // 🔹 네이버 로그인 버튼
   const handleNaverLogin = () => {
-    console.log("Naver Login Clicked");
+    window.location.href = `${API_BASE_URL}/api/oauth2/authorization/naver`;
   };
 
   return (
