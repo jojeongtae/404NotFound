@@ -209,7 +209,7 @@ const PostDetailPage = () => {
                 </div>
             )}
             {boardId === 'used' && post.price && (
-                <p><strong>가격:</strong> {post.price.toLocaleString()}원</p>
+                <p className="price"><span>가격:</span> {post.price.toLocaleString()}원</p>
             )}
             <div dangerouslySetInnerHTML={{ __html: post.body }}></div>
           </div>
