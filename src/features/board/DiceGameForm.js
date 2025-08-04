@@ -89,25 +89,27 @@ const DiceGame = ({ username, roomId }) => {
   };
 
   return (
-    <div>
-      <h2>주사위 게임 (방 ID: {roomId})</h2>
-      <p>{username}님의 주사위: {dice || "아직 굴리지 않았습니다."}</p>
+    <div className="dice-game-container">
+      <h4 className="room-title">주사위 게임 (방 ID: {roomId})</h4>
+      <p className="play-status">{username}님의 주사위: <strong>{dice || "아직 굴리지 않았습니다."}</strong></p>
       {/* 주사위 굴리기 버튼: waiting 상태일 때는 비활성화됩니다. */}
-      <button onClick={rollDice} disabled={waiting}>
+      <button onClick={rollDice} disabled={waiting} className="btn type2 large play-btn">
         {waiting ? "상대방을 기다리는 중..." : "주사위 굴리기"}
       </button>
       {/* 게임 결과가 있을 경우에만 결과를 표시합니다. */}
       {result && (
-        <div>
-          <h3>게임 결과</h3>
+        <div className="result">
+          <h4>게임 결과</h4>
           {/* 무승부 여부에 따라 다른 메시지를 표시합니다. */}
-          {result.draw ? (
-            <p>결과: 무승부!</p>
-          ) : (
-            <p>결과: {result.winner}님의 승리!</p>
-          )}
-          {/* 각 플레이어의 주사위 값을 표시합니다. */}
-          <p>점수: {result.winner}님은 {result.winnerValue}점, {result.loser}님은 {result.loserValue}점 입니다.</p>
+          <div className="result-container">
+            {result.draw ? (
+                <p>결과: <strong>무승부!</strong></p>
+            ) : (
+                <p>결과: <strong>{result.winner}</strong>님의 승리!</p>
+            )}
+            {/* 각 플레이어의 주사위 값을 표시합니다. */}
+            <p>점수: {result.winner}님은 <strong>{result.winnerValue}</strong>점, {result.loser}님은 <strong>{result.loserValue}</strong>점 입니다.</p>
+          </div>
         </div>
       )}
     </div>

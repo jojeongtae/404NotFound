@@ -202,19 +202,10 @@ const BoardPageForm = ({ boardId }) => {
                 </tbody>
             </table>
             {/* 페이지 네이션 */}
-            <div>
-                <button onClick={() => setCurrentPage(e => Math.max(e - 1, 1))}
-                    disabled={currentPage === 1}
-                >
-                    이전
-                </button>
-                <span>{currentPage} / {totalPages}</span>
-                <button
-                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                    disabled={currentPage === totalPages}
-                >
-                    다음
-                </button>
+            <div className="pagination">
+                <button className="btn prev" onClick={() => setCurrentPage(e => Math.max(e - 1, 1))} disabled={currentPage === 1}>이전</button>
+                <span><strong>{currentPage}</strong> / {totalPages}</span>
+                <button className="btn next" onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} disabled={currentPage === totalPages}>다음</button>
             </div>
 
             {/* 드롭다운 메뉴 */}
