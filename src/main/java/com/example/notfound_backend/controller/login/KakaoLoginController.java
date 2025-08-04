@@ -1,15 +1,16 @@
 package com.example.notfound_backend.controller.login;
 
-import com.example.notfound_backend.data.entity.login.UserAuthEntity;
 import com.example.notfound_backend.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.HashMap;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @RestController
@@ -33,27 +34,26 @@ public class KakaoLoginController {
     private final String KAKAO_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
     private final String KAKAO_USERINFO_URL = "https://kapi.kakao.com/v2/user/me";
 
-    // Step 1: 리다이렉트 to Kakao OAuth2 인증 페이지
+    /**
+     * Step 1: 카카오 로그인 페이지로 리다이렉트
+     */
     @GetMapping("/kakao")
     public ResponseEntity<?> redirectToKakaoLogin() {
-        String authorizationUrl = UriComponentsBuilder.fromHttpUrl(KAKAO_AUTH_URL)
-                .queryParam("client_id", clientId)
-                .queryParam("redirect_uri", redirectUri)
-                .queryParam("response_type", "code")
-                .toUriString();
+        String authorizationUrl = KAKAO_AUTH_URL +
+                "?client_id=" + clientId +
+                "&redirect_uri=" + redirectUri +
+                "&response_type=code";
 
         return ResponseEntity.status(HttpStatus.FOUND)
                 .header(HttpHeaders.LOCATION, authorizationUrl)
                 .build();
     }
 
-    // Step 2: 카카오 인증 후 전달된 code 처리
+    /**
+     * Step 2: 카카오 로그인 콜백 처리
+     */
     @GetMapping("/login/oauth2/code/kakao")
-    public ResponseEntity<Map<String, String>> handleKakaoCallback(
-            @RequestParam String code,
-            @RequestHeader(value = "androidApp", required = false) String app) {
-
-        boolean isApp = app != null && app.equalsIgnoreCase("AndroidApp");
+    public void handleKakaoCallback(@RequestParam String code, HttpServletResponse response) throws IOException {
 
         // 1️⃣ 카카오 토큰 요청
         HttpHeaders tokenHeaders = new HttpHeaders();
@@ -72,7 +72,8 @@ public class KakaoLoginController {
         );
 
         if (!tokenResponse.getStatusCode().is2xxSuccessful()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            response.sendRedirect("/oauth2/fail?reason=token_error");
+            return;
         }
 
         String kakaoAccessToken = (String) tokenResponse.getBody().get("access_token");
@@ -86,7 +87,8 @@ public class KakaoLoginController {
         );
 
         if (!userInfoResponse.getStatusCode().is2xxSuccessful()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            response.sendRedirect("/oauth2/fail?reason=userinfo_error");
+            return;
         }
 
         Map<String, Object> body = userInfoResponse.getBody();
@@ -99,31 +101,27 @@ public class KakaoLoginController {
         String role = "ROLE_USER";
         String username = (email != null) ? email : "kakao_" + kakaoId;
 
-        // 사용자 정보 저장 또는 업데이트
-
         // 3️⃣ JWT 생성
-        String access = jwtUtil.createToken("access", username, role, 60*10*1000L); // --추가된부분--
-        String refresh = jwtUtil.createToken("refresh", username, role, 24*60*60*1000L); // --추가된부분--
+        String access = jwtUtil.createToken("access", username, role, 60 * 10 * 1000L); // 10분
+        String refresh = jwtUtil.createToken("refresh", username, role, 24 * 60 * 60 * 1000L); // 24시간
 
-        // 4️⃣ 쿠키 세팅 (RefreshToken)
-        ResponseCookie cookie = ResponseCookie.from("refresh", refresh) // --추가된부분--
+        // 4️⃣ RefreshToken 쿠키 설정
+        ResponseCookie cookie = ResponseCookie.from("refresh", refresh)
                 .httpOnly(true)
-                .secure(false)
+                .secure(false) // HTTPS라면 true 권장
                 .path("/")
-                .maxAge(24*60*60)
+                .maxAge(24 * 60 * 60)
                 .sameSite("Lax")
                 .build();
+        response.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        // 5️⃣ JSON Body 반환
-        Map<String, String> responseBody = new HashMap<>();
-        responseBody.put("username", username);       // --추가된부분--
-        responseBody.put("role", role);               // --추가된부분--
-        responseBody.put("nickname", nickname);       // --추가된부분--
-        responseBody.put("accessToken", access);      // --수정된부분-- (카카오 토큰 → 내 JWT)
+        // 5️⃣ 프론트로 리다이렉트 (JWT와 유저정보 전달)
+        String redirectUrl = "http://404notfoundpage.duckdns.org/oauth2/success"
+                + "?accessToken=" + access
+                + "&username=" + URLEncoder.encode(username, StandardCharsets.UTF_8)
+                + "&nickname=" + URLEncoder.encode(nickname, StandardCharsets.UTF_8)
+                + "&role=" + role;
 
-        return ResponseEntity.ok() // --추가된부분--
-                .header(HttpHeaders.SET_COOKIE, cookie.toString()) // --추가된부분--
-                .body(responseBody); // --추가된부분--
+        response.sendRedirect(redirectUrl);
     }
-
 }
