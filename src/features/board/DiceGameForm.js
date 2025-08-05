@@ -84,8 +84,8 @@ const DiceGame = ({ user, roomId }) => {
   const diceImage = rolling
     ? "/dice/dice-roll.gif"
     : dice
-    ? `/dice/dice${dice}.png`
-    : "/dice/dice1.png"; // 기본 이미지
+      ? `/dice/dice${dice}.png`
+      : "/dice/dice1.png"; // 기본 이미지
 
   return (
     <div className="dice-game-container">
@@ -94,7 +94,7 @@ const DiceGame = ({ user, roomId }) => {
       <img src={diceImage} alt="주사위" width={120} style={{ margin: "10px 0" }} />
 
       <p className="play-status">
-        {user.nickname}님의 주사위: <strong>{dice || "아직 굴리지 않았습니다."}</strong>
+        {user?.nickname || username}님의 주사위: <strong>{dice || "아직 굴리지 않았습니다."}</strong>
       </p>
 
       <button
@@ -105,27 +105,29 @@ const DiceGame = ({ user, roomId }) => {
         {rolling
           ? "굴리는 중..."
           : waiting
-          ? "상대방을 기다리는 중..."
-          : "주사위 굴리기"}
+            ? "상대방을 기다리는 중..."
+            : "주사위 굴리기"}
       </button>
 
       {/* 게임 결과 표시 */}
       {result && (
-        console.log(result.winner),
-        <div className="result">
-          <h4>게임 결과</h4>
-          <div className="result-container">
-            {result.draw ? (
-              <p>결과: <strong>무승부!</strong></p>
-            ) : (
-              <p>결과: <strong>{result.winner}</strong>님의 승리!</p>
-            )}
-            <p>
-              점수: {result.winner}님은 <strong>{result.winnerValue}</strong>점,{" "}
-              {result.loser}님은 <strong>{result.loserValue}</strong>점
-            </p>
+        <>
+          {console.log(result.winner)}
+          <div className="result">
+            <h4>게임 결과</h4>
+            <div className="result-container">
+              {result.draw ? (
+                <p>결과: <strong>무승부!</strong></p>
+              ) : (
+                <p>결과: <strong>{result.winner}</strong>님의 승리!</p>
+              )}
+              <p>
+                점수: {result.winner}님은 <strong>{result.winnerValue}</strong>점,{" "}
+                {result.loser}님은 <strong>{result.loserValue}</strong>점
+              </p>
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
