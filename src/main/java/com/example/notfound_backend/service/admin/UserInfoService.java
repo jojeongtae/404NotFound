@@ -156,7 +156,9 @@ public class UserInfoService {
     }
 
     public List<UserInfoDTO> getTop5UserGradesByPoint() {
+
         return userInfoDAO.getAllUserInfo().stream()
+                .filter(user -> !"500 Internal Server Error (운영진)".equals(getUserGrade(user.getUsername().getUsername())))
                 .sorted(Comparator.comparingInt(UserInfoEntity::getPoint).reversed())  // 포인트 내림차순
                 .limit(5)
                 .map(user -> UserInfoDTO.builder()
