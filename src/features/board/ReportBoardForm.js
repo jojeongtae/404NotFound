@@ -30,7 +30,7 @@ const ReportBoardForm = () => {
                 ...formData,
                 targetId: parseInt(formData.targetId),
             };
-            const response = await apiClient.post("/user/report", formData);
+            const response = await apiClient.post("/user/report", sendData);
             console.log("신고 성공: ", response.data);
             alert("신고가 접수 되었습니다.");
             navigate(`/board/user/report/${user.username}`);
