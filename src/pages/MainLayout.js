@@ -164,7 +164,7 @@ const MainLayout = () => {
           {modalType === 'login' && <LoginForm onClose={closeModal} />}
           {modalType === 'signup' && <SignUpWithCaptcha onClose={closeModal} />}
           {modalType === 'userInfo' && <UserInfoModal onClose={closeModal} />} {/* UserInfoModal 렌더링 추가 */}
-          {modalType === 'mailbox' && <MailboxForm onClose={closeModal} />} {/* 이 줄을 추가합니다. */}
+          {modalType === 'mailbox' && <MailboxForm onClose={closeModal} setMessages={setMessages} messages={messages} />} {/* 이 줄을 추가합니다. */}
         </Modal>
       )}
     </div>
