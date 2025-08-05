@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import apiClient from '../api/apiClient'; // apiClient 임포트
+import { getFullGradeDescription } from '../features/common/GradeDescriptions';
 
 const HomePage = () => {
     const [userRanking, setUserRanking] = useState([]);
@@ -38,7 +39,7 @@ const HomePage = () => {
                         <h3>🏆 유저 등급 랭킹</h3>
                         <ol>
                             {userRanking.map((user, index) => (
-                                <li key={index}>{`${index + 1}. ${user.nickname} (${user.grade})`}</li>
+                                <li key={index}>{`${index + 1}. ${user.nickname} (${getFullGradeDescription(user.grade)})`}</li>
                             ))}
                         </ol>
                     </div>
@@ -46,7 +47,7 @@ const HomePage = () => {
                         <h3>👍 게시글 추천 랭킹</h3>
                         <ol>
                             {recommendRanking.map((post, index) => (
-                                <li key={index}>{`${index + 1}. ${post.title} (${post.recommendCount})`}</li>
+                                <li key={index}>{`${index + 1}. ${post.title} (${post.recommend})`}</li>
                             ))}
                         </ol>
                     </div>
