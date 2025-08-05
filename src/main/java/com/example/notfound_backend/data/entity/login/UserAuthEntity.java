@@ -21,8 +21,8 @@ import java.time.LocalDateTime;
 @Builder
 public class UserAuthEntity {
     @Id
-    @Size(max = 30)
-    @Column(name = "username", nullable = false, length = 30)
+    @Size(max = 255)
+    @Column(name = "username", nullable = false)
     private String username;
 
     @Size(max = 100)

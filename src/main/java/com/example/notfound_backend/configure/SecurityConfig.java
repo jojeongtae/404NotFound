@@ -53,6 +53,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/",
+                                "/uploads/**", // 이미지 경로 허용
                                 "/api/join",
                                 "/api/login",
                                 "/api/reissue",

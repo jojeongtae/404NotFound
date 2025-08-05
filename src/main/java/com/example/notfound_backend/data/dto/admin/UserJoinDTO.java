@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class UserJoinDTO {
 
     @NotBlank(message = "아이디는 필수입니다.")
-    @Size(max = 30, message = "아이디는 최대 30자까지 가능합니다.")
+    @Size(max = 255, message = "아이디는 최대 30자까지 가능합니다.")
     private String username;
 
     @NotBlank(message = "비밀번호는 필수입니다.")
