@@ -85,7 +85,7 @@ const RankingPage = ({ props }) => {
                       <span className="user-grade">{getFullGradeDescription(item.grade)}</span>
                         {item.authorNickname}
                     </span>
-                      <span>{type === 'comments' ? `댓글수: ${item.commentCount}` : type === 'recommend' ? `추천수${item.recommend}` : type === 'view' ? `조회수${item.views}` : `추천수: ${item.recommend}`}</span>
+                      <span className="count">{type === 'comments' ? `댓글수: ${item.commentCount}` : type === 'recommend' ? `추천수${item.recommend}` : type === 'view' ? `조회수${item.views}` : `추천수: ${item.recommend}`}</span>
                     </Link>
                   </li>
               ))}
