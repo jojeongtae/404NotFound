@@ -97,7 +97,7 @@ export default function ReportMy() {
                 <tr>
                     <th>번호</th>
                     <th>신고사유</th>
-                    <th>신고대상</th>
+                    <th>신고대상 ID</th>
                     <th>게시판</th>
                     <th>게시물 ID</th>
                     <th>상세사유</th>
@@ -115,7 +115,10 @@ export default function ReportMy() {
                         <tr key={report.id}>
                             <td>{report.id}</td>
                             <td>{convertReason(report.reason)}</td>
-                            <td>{report.reported}</td>
+                            <td>
+                                <Link to={`/user/userinfo/${report.reported}`}>
+                                {report.reported}
+                                </Link></td>
                             <td>{convertBoard(report.targetTable)}</td>
                             <td>{report.targetId}</td>
                             <td>{report.description}</td>

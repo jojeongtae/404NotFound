@@ -124,7 +124,7 @@ const VotingBoardForm = () => {
 
             {votingData &&(
             <img
-                src={`${API_BASE_URL}/${votingData.imgsrc}`}
+                src={`http://404notfoundpage.duckdns.org/${votingData.imgsrc}`}
                 alt={votingData.title+' 이미지' || '게시글 이미지'}
                 className="detail-img"
               />

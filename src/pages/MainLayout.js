@@ -17,18 +17,6 @@ import '../style/layout.css';
 import '../style/template.css';
 import '../style/common.css';
 
-// const gradeDescriptions = {
-//     "👑 500": "500 Internal Server Error (운영진)",
-//     "🐣 404": "404 Not Found (신규)",
-//     "👍 200": "200 OK (일반 회원)",
-//     "🚀 202": "202 Accepted (활동 회원)",
-//     "💎 403": "403 Forbidden (우수 회원)",
-//     "👻 401": "401 Unauthorized (손님)"
-// };
-
-// export const getFullGradeDescription = (shortGrade) => {
-//     return gradeDescriptions[shortGrade] || shortGrade; // 매핑된 값이 없으면 짧은 등급 그대로 반환
-// };
 
 const MainLayout = () => {
   const { isLoggedIn, logout } = useAuth();
@@ -36,7 +24,7 @@ const MainLayout = () => {
   const [modalType, setModalType] = useState(null);
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
-  // const [currentUser,setCurrentUser] = useState(user);
+  const [messages, setMessages] = useState([]);
   const openModal = (type) => {
     setModalType(type);
     setShowModal(true);
@@ -55,6 +43,10 @@ const MainLayout = () => {
         try {
           const res = await apiClient.get(`/user/user-info?username=${user.username}`); // await 추가
           dispatch(setUser(res.data)); // Redux 스토어 업데이트
+          if(res.status ===200){
+            const response = await apiClient.get(`/message/receiver`, user.username);
+            setMessages(response.data);
+          }
         } catch (error) {
           console.error("Failed to fetch user info:", error); // console.log 대신 console.error 사용
         }
@@ -78,7 +70,7 @@ const MainLayout = () => {
                   <>
                     <Link to="/board/new" className="btn type2 nav-link">글쓰기</Link>
                     <button onClick={() => openModal('userInfo')} className='nav-link'>내 정보 수정</button> {/* 버튼으로 변경 */}
-                    <button onClick={() => openModal('mailbox')} className='nav-link'>메시지</button> {/* 이 줄을 추가합니다. */}
+                    <button onClick={() => openModal('mailbox')} className='nav-link'>{messages.length}메시지</button> {/* 이 줄을 추가합니다. */}
                     <button onClick={logout} className="nav-link">Logout</button>
                   </>
               ) : (
@@ -172,7 +164,7 @@ const MainLayout = () => {
           {modalType === 'login' && <LoginForm onClose={closeModal} />}
           {modalType === 'signup' && <SignUpWithCaptcha onClose={closeModal} />}
           {modalType === 'userInfo' && <UserInfoModal onClose={closeModal} />} {/* UserInfoModal 렌더링 추가 */}
-          {modalType === 'mailbox' && <MailboxForm onClose={closeModal} />} {/* 이 줄을 추가합니다. */}
+          {modalType === 'mailbox' && <MailboxForm onClose={closeModal} setMessages={setMessages} messages={messages} />} {/* 이 줄을 추가합니다. */}
         </Modal>
       )}
     </div>

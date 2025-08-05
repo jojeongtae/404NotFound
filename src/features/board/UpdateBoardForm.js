@@ -39,7 +39,7 @@ const UpdateBoardForm = () => {
       try {
         setLoading(true);
         setError(null);
-        // TODO: 게시글 상세 정보 API 경로 확인
+        // API 경로 수정
         const response = await apiClient.get(`/${boardId}/${postId}`); // 게시글 상세 정보 불러오기
         const postData = response.data;
 
@@ -53,68 +53,56 @@ const UpdateBoardForm = () => {
         setTitle(postData.title);
         setBody(postData.body);
         setOriginalAuthor(postData.author); // 원본 작성자 저장
+        setImagePreviewUrl(postData.imgsrc); // 기존 이미지 미리보기 설정
       } catch (err) {
         console.error('게시글 불러오기 실패:', err);
         setError('게시글을 불러오는 데 실패했습니다.');
         alert('게시글을 불러오는 데 실패했습니다.');
-        navigate(`/board/${boardId}`); // 게시판 목록으로 리디렉션
+        navigate(`/board/${boardId}}`); // 게시판 목록으로 리디렉션
       } finally {
         setLoading(false);
       }
     };
 
-    if (boardId && postId) {
+    if (postId) {
       fetchPost();
     } else {
       setLoading(false);
       setError('잘못된 게시글 경로입니다.');
     }
-  }, [boardId, postId, loggedInUsername, navigate]);
+  }, [postId, loggedInUsername, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let imageUrl = null; // 이미지 URL을 저장할 변수
 
     if (!title.trim() || !body.trim()) {
       alert('제목과 내용을 입력해주세요.');
       return;
     }
 
+    setLoading(true);
 
     try {
-      if (selectedImage) {
-        const imageFormData = new FormData();
-        imageFormData.append('file', selectedImage); // 백엔드에서 'file' 필드명으로 받도록 가정
+      const formData = new FormData();
 
-        console.log("이미지 업로드 시작...");
-        const imageUploadRes = await apiClient.post('/upload', imageFormData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-        console.log("이미지 업로드 응답:", imageUploadRes.data);
-
-        let cleanedPath = imageUploadRes.data.filePath.replace(/\\/g, '/'); // 모든 백슬래시를 슬래시로 변경
-        if (cleanedPath.startsWith('uploads/')) {
-          cleanedPath = cleanedPath.substring('uploads/'.length);
-        }
-        imageUrl = '/resources/' + cleanedPath;
-        if (!imageUrl) {
-          throw new Error("이미지 URL을 받아오지 못했습니다.");
-        }
-      }
-      setLoading(true);
-      const updatedPost = {
+      // boardDTO를 Blob으로 감싸지 않고, 순수한 JSON 문자열로 추가합니다.
+      const boardDTO = {
         title,
         body,
-        author: originalAuthor, // 작성자는 변경되지 않음
-        imgsrc:imageUrl
+        author: originalAuthor,
       };
-      // TODO: 게시글 수정 API 경로 확인 (PUT 또는 PATCH)
-      await apiClient.put(`/${boardId}/${postId}`, updatedPost);
-      dispatch(setPostDetails({ ...updatedPost, id: postId }))
+      formData.append('boardDTO', JSON.stringify(boardDTO));
+
+      // 이미지가 선택된 경우에만 FormData에 추가
+      if (selectedImage) {
+        formData.append('file', selectedImage);
+      }
+
+      // 백엔드 API 호출
+      await apiClient.put(`/${boardId}/${postId}`, formData);
+
       alert('게시글이 성공적으로 수정되었습니다!');
-      navigate(`/board/${boardId}/${postId}`); // 수정된 게시글 상세 페이지로 이동
+      navigate(`/board/free/${postId}`); // 수정된 게시글 상세 페이지로 이동
 
     } catch (err) {
       console.error('게시글 수정 실패:', err);
