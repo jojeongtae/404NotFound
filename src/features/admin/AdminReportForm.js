@@ -38,10 +38,20 @@ const AdminReportForm = () => {
     if (reports.length === 0) {
         return <div style={{ textAlign: 'center', padding: '50px' }}>신고된 게시글이 없습니다.</div>;
     }
-    const handleCancle = async (reportId) => {
+    const handleCancle = async (reportId,reporter) => {
 
         try {
             const res = await apiClient.delete(`/user/report/${reportId}?username=${user.username}`);
+            if (res.status ===200){
+                 const messageBody = {
+                    author:user.username,
+                    receiver:reporter,
+                    title:`신고접수안내`,
+                    message:`신고하신 내용이 기각되었습니다.`
+                }
+                const messageRes = await apiClient.post(`/message/send`,messageBody);
+                console.log(messageRes);
+            } 
             console.log(res.data);
             alert("취소 완료");
             setReports(prevReports => prevReports.filter(report => report.id !== reportId));
@@ -101,7 +111,7 @@ const AdminReportForm = () => {
                         </ul>
                         <div className="btn_wrap">
                             <button onClick={()=> handleAddReportUser(report.id,report.reporter,report.reported)}>신고 인용</button>
-                            <button onClick={() => handleCancle(report.id)}>신고 기각</button>
+                            <button onClick={() => handleCancle(report.id,report.reporter)}>신고 기각</button>
                         </div>
                         {/* 여기에 신고 처리 버튼 (예: 게시글 숨기기, 사용자 경고 등) 추가 가능 */}
                     </li>
