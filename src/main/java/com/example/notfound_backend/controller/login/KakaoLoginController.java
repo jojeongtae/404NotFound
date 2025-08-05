@@ -1,11 +1,7 @@
 package com.example.notfound_backend.controller.login;
 
-import com.example.notfound_backend.data.entity.admin.UserInfoEntity;
-import com.example.notfound_backend.data.entity.enumlist.UserStatus;
-import com.example.notfound_backend.data.entity.login.UserAuthEntity;
-import com.example.notfound_backend.data.repository.admin.UserInfoRepository;
-import com.example.notfound_backend.data.repository.login.UserAuthRepository;
 import com.example.notfound_backend.jwt.JwtUtil;
+import com.example.notfound_backend.service.OAuthUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -16,17 +12,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
 public class KakaoLoginController {
 
-    private final UserAuthRepository userAuthRepository;
-    private final UserInfoRepository userInfoRepository;
+    private final OAuthUserService oAuthUserService;
     private final JwtUtil jwtUtil;
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -112,51 +105,13 @@ public class KakaoLoginController {
                 : "카카오유저";
         String role = "ROLE_USER";
         String username = (email != null) ? email : "kakao_" + kakaoId;
+        String phone = (String) kakaoAccount.getOrDefault("phone_number", "010-0000-0000");
+        String address = "주소 미등록"; // 카카오는 주소 정보 제공 안함
 
-        // 3️⃣ UserAuthEntity 처리 (기존/신규)
-        UserAuthEntity user = Optional.ofNullable(userAuthRepository.findByUsername(username))
-                .orElseGet(() -> {
-                    UserAuthEntity newUser = new UserAuthEntity();
-                    newUser.setJoindate(LocalDateTime.now());
-                    return newUser;
-                });
+        // 3️⃣ 사용자 정보 처리 (OAuthUserService 위임)
+        oAuthUserService.processOAuthUser(username, role, nickname, phone, address);
 
-        user.setUsername(username);
-        user.setRole(role);
-        user.setPassword(""); // 소셜 로그인은 비번 없음
-        userAuthRepository.save(user);
-
-        // 4️⃣ UserInfoEntity 처리 (username FK 기준)
-        String phone = Optional.ofNullable(kakaoAccount.get("phone"))
-                .map(Object::toString)
-                .orElse("01000000000");
-
-        String address = Optional.ofNullable(kakaoAccount.get("address"))
-                .map(Object::toString)
-                .orElse("주소 미등록");
-
-        UserInfoEntity info = userInfoRepository.findByUsername(user).orElse(null);
-        if (info == null) {
-            info = UserInfoEntity.builder()
-                    .username(user)                  // FK 설정
-                    .status(UserStatus.ACTIVE)       // 기본 상태
-                    .warning(0)                      // 기본 경고 수
-                    .nickname(nickname)
-                    .phone(phone)
-                    .address(address)
-                    .point(0)
-                    .build();
-        } else {
-            // 기존 유저 정보 업데이트
-            info.setNickname(nickname);
-            info.setPhone(phone);
-            info.setAddress(address);
-            info.setStatus(UserStatus.ACTIVE);
-            if (info.getWarning() == null) info.setWarning(0);
-        }
-        userInfoRepository.save(info);
-
-        // 5️⃣ JWT 생성
+        // 4️⃣ JWT 생성
         String access = jwtUtil.createToken("access", username, role, 60 * 10 * 1000L); // 10분
         String refresh = jwtUtil.createToken("refresh", username, role, 24 * 60 * 60 * 1000L); // 24시간
 
