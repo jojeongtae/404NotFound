@@ -60,20 +60,30 @@ const LoginForm = ({ onClose }) => {
 
   // 🔹 네이버 로그인 버튼
   const handleNaverLogin = () => {
-    window.location.href = `${API_BASE_URL}/api/oauth2/authorization/naver`;
+    window.location.href = `${API_BASE_URL}/api/naver`;
   };
 
-  // 🔹 카카오 OAuth 콜백 처리
+  // 🔹 OAuth 콜백 처리 (카카오, 네이버)
   useEffect(() => {
     const url = new URL(window.location.href);
     const code = url.searchParams.get("code");
+    const state = url.searchParams.get("state"); // 네이버는 state를 포함합니다.
 
+    // URL에 인가 코드가 있는 경우에만 실행
     if (code) {
-      console.log("카카오 인가 코드 감지:", code);
+      // state 파라미터 유무로 카카오와 네이버를 구분합니다.
+      const isNaver = !!state;
+      const provider = isNaver ? 'naver' : 'kakao';
+      
+      console.log(`${provider} 인가 코드 감지:`, code);
 
-      apiClient.get(`/login/oauth2/code/kakao?code=${code}`, { withCredentials: true })
+      const callbackUrl = isNaver
+        ? `/login/oauth2/code/naver?code=${code}&state=${state}`
+        : `/login/oauth2/code/kakao?code=${code}`;
+
+      apiClient.get(callbackUrl, { withCredentials: true })
         .then(res => {
-          console.log("카카오 로그인 응답:", res.data);
+          console.log(`${provider} 로그인 응답:`, res.data);
 
           if (res.data?.username) {
             // Redux 상태 갱신
@@ -82,13 +92,13 @@ const LoginForm = ({ onClose }) => {
               username: res.data.username,
               role: res.data.role,
               nickname: res.data.nickname,
-              phone: res.data.phone || "", // KakaoLoginController에서 phone을 반환하지 않으므로 기본값 설정
-              address: res.data.address || '', // KakaoLoginController에서 address를 반환하지 않으므로 기본값 설정
+              phone: res.data.phone || "",
+              address: res.data.address || '',
             }));
 
             login();
 
-            // URL 정리 (code 제거)
+            // URL에서 인가 코드 관련 파라미터 제거
             window.history.replaceState({}, document.title, window.location.pathname);
 
             onClose();
@@ -96,8 +106,8 @@ const LoginForm = ({ onClose }) => {
           }
         })
         .catch(err => {
-          console.error("카카오 로그인 실패:", err);
-          alert("카카오 로그인 실패");
+          console.error(`${provider} 로그인 실패:`, err);
+          alert(`${provider} 로그인에 실패했습니다. 자세한 내용은 콘솔을 확인해주세요.`);
         });
     }
   }, [dispatch, login, navigate, onClose]);
