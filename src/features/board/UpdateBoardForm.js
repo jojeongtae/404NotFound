@@ -122,49 +122,31 @@ const UpdateBoardForm = () => {
   }
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>게시글 수정</h2>
+    <div className="update-board">
+      <h3>게시글 수정</h3>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">제목:</label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="제목을 입력하세요"
-            style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
-          />
+        <div className="update-container">
+          <div className="board-title">
+            <label htmlFor="title">제목</label>
+            <input type="text" id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="제목을 입력하세요" />
+          </div>
+          <div className="board-body">
+            <label htmlFor="body">내용</label>
+            <textarea id="body" value={body} onChange={(e) => setBody(e.target.value)} placeholder="내용을 입력하세요" rows="10"></textarea>
+          </div>
+          <div className="board-image">
+            <input type='file' accept="image/*" /> {/*이미지 파일만 선택 가능하도록 onChange={handleImageChange}*/}
+            {imagePreviewUrl && ( // 이미지 미리보기
+                <div className="image-preview">
+                  <img src={imagePreviewUrl} alt="Image Preview" />
+                </div>
+            )}
+          </div>
         </div>
-        <div>
-          <label htmlFor="body">내용:</label>
-          <textarea
-            id="body"
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            placeholder="내용을 입력하세요"
-            rows="10"
-            style={{ width: '100%', padding: '8px', marginBottom: '10px' }}
-          ></textarea>
+        <div className="btn_wrap">
+          <button type="submit" className="btn type2 large" disabled={loading}>수정 완료</button>
+          <button type="button" className="btn large" onClick={() => navigate(-1)}>취소</button>
         </div>
-        <div>
-          <input
-            type='file'
-            accept="image/*" // 이미지 파일만 선택 가능하도록
-            onChange={handleImageChange}
-          /><br />
-          {imagePreviewUrl && ( // 이미지 미리보기
-            <div>
-              <img src={imagePreviewUrl} alt="Image Preview" style={{ maxWidth: '200px', maxHeight: '200px', marginTop: '10px' }} />
-            </div>
-          )}
-        </div>
-        <button type="submit" className="nav-link" disabled={loading}>
-          수정 완료
-        </button>
-        <button type="button" className="nav-link" onClick={() => navigate(-1)} style={{ marginLeft: '10px' }}>
-          취소
-        </button>
       </form>
     </div>
   );
