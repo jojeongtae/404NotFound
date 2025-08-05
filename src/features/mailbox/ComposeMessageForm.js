@@ -89,7 +89,7 @@ const ComposeMessageForm = ({ onMessageSent }) => {
         </ul>
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <div className="btn_wrap">
-          <button type="submit" disabled={sending} className="send-btn">{sending ? '전송 중...' : '보내기'}</button>
+          <button type="submit" disabled={sending} className="btn type2 large send-btn">{sending ? '전송 중...' : '보내기'}</button>
         </div>
       </form>
     </div>
