@@ -11,7 +11,7 @@ const HomePage = () => {
             try {
                 const [userRes, recommendRes] = await Promise.all([
                     apiClient.get('/users-grade/top5'),
-                    apiClient.get('/recommend/all')
+                    apiClient.get('/ranking/recommend/all')
                 ]);
                 setUserRanking(userRes.data || []);
                 setRecommendRanking(recommendRes.data || []);
