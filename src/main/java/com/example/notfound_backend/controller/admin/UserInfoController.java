@@ -37,6 +37,11 @@ public class UserInfoController {
         return ResponseEntity.status(HttpStatus.OK).body(userInfoService.getUserGrade(username));
     }
 
+    @GetMapping("/users-grade/top5")
+    public ResponseEntity<List<UserInfoDTO>> getTop5UserGradesByPoint() {
+        return ResponseEntity.ok(userInfoService.getTop5UserGradesByPoint());
+    }
+
     // 회원정보리스트 (관리자)
     @GetMapping(value = "/admin/users")
     public ResponseEntity<List<UserInfoAllDTO>> getAllUsers() {

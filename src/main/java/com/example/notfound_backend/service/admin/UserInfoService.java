@@ -16,7 +16,9 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -151,6 +153,17 @@ public class UserInfoService {
         } else if (userStatus == UserStatus.INACTIVE) {
             throw new UserSuspendedException("비활성화된 계정 입니다.");
         }
+    }
+
+    public List<UserInfoDTO> getTop5UserGradesByPoint() {
+        return userInfoDAO.getAllUserInfo().stream()
+                .sorted(Comparator.comparingInt(UserInfoEntity::getPoint).reversed())  // 포인트 내림차순
+                .limit(5)
+                .map(user -> UserInfoDTO.builder()
+                        .nickname(user.getNickname())
+                        .grade(getUserGrade(user.getUsername().getUsername()))
+                        .build())
+                .collect(Collectors.toList());
     }
 
 
