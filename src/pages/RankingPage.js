@@ -28,7 +28,7 @@ const RankingPage = ({ props }) => {
         const response = await apiClient.get(`/ranking/recommend/week`);
         setRankingData(response.data);
         console.log(response.data);
-        }else(){
+        }else{
           const response = await apiClient.get('/ranking/views/week')
           setRankingData(response.data);
           console.log(response.data);
