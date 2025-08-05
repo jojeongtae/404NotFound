@@ -18,7 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploads/**")  // 클라이언트(브라우저)가 접근할 URL패턴 지정
-                .addResourceLocations("file:uploads/");  // 로컬 경로와 매핑
+                .addResourceLocations("file:/app/uploads/");  // 로컬 경로와 매핑
     }
 
 }
