@@ -203,9 +203,10 @@
 
 /* 랭킹 */
 .ranking-page{position:relative;max-width:750px;margin:50px auto;padding:55px 70px;border-radius:14px;box-shadow:0 4px 12px rgba(0, 0, 0, 0.2);}
-.ranking-page .ranking-list{display:flex;flex-direction:column;gap:12px;text-align:left;letter-spacing:-0.03em;}
-.ranking-page .ranking-item{position:relative;display:flex;align-items:center;gap:8px;font-size:17px;}
-.ranking-page .ranking-item .item-anchor{display:flex;justify-content:flex-start;align-items:center;text-decoration:none;}
+.ranking-page .ranking-list{display:flex;flex-direction:column;gap:8px;text-align:left;}
+.ranking-page .ranking-item{position:relative;}
+.ranking-page .ranking-item .item-anchor{display:flex;justify-content:flex-start;align-items:center;gap:8px;padding:3px 10px;border-radius:5px;font-size:17px;letter-spacing:-0.03em;color:var(--text-color);text-decoration:none;transition:background .2s;}
+.ranking-page .ranking-item .item-anchor:before{ background-color:var(--bg-color-light);}
 .ranking-page .ranking-item .item-anchor .num{font-size:18px;font-weight:600;color:var(--accent-color);}
 .ranking-page .ranking-item .item-anchor .count{color:var(--text-color2);}
 .ranking-page .ranking-item .item-anchor > *:nth-child(n+3){position:relative;padding-left:12px;}
