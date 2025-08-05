@@ -202,7 +202,7 @@ const PostDetailPage = () => {
             {post.imgsrc && (
                 <div style={{ textAlign: 'center', marginBottom: '20px' }}>
                   <img
-                      src={`http://404notfoundpage.duckdns.org/api/${post.imgsrc}`}
+                      src={`http://404notfoundpage.duckdns.org/${post.imgsrc}`}
                       alt={post.title || '게시글 이미지'}
                       style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
                   />
