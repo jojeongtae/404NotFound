@@ -19,39 +19,42 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api")
-public class KakaoLoginController {
+public class NaverLoginController {
 
     private final UserAuthRepository userAuthRepository;
     private final UserInfoRepository userInfoRepository;
     private final JwtUtil jwtUtil;
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${spring.security.oauth2.client.registration.kakao.client-id}")
+    @Value("${spring.security.oauth2.client.registration.naver.client-id}")
     private String clientId;
 
-    @Value("${spring.security.oauth2.client.registration.kakao.client-secret}")
+    @Value("${spring.security.oauth2.client.registration.naver.client-secret}")
     private String clientSecret;
 
-    @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
+    @Value("${spring.security.oauth2.client.registration.naver.redirect-uri}")
     private String redirectUri;
 
-    private final String KAKAO_AUTH_URL = "https://kauth.kakao.com/oauth/authorize";
-    private final String KAKAO_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
-    private final String KAKAO_USERINFO_URL = "https://kapi.kakao.com/v2/user/me";
+    private final String NAVER_AUTH_URL = "https://nid.naver.com/oauth2.0/authorize";
+    private final String NAVER_TOKEN_URL = "https://nid.naver.com/oauth2.0/token";
+    private final String NAVER_USERINFO_URL = "https://openapi.naver.com/v1/nid/me";
 
     /**
-     * Step 1: 카카오 로그인 페이지로 리다이렉트
+     * Step 1: 네이버 로그인 페이지로 리다이렉트
      */
-    @GetMapping("/kakao")
-    public ResponseEntity<?> redirectToKakaoLogin() {
-        String authorizationUrl = KAKAO_AUTH_URL +
-                "?client_id=" + clientId +
+    @GetMapping("/naver")
+    public ResponseEntity<?> redirectToNaverLogin() {
+        String state = UUID.randomUUID().toString();
+        String authorizationUrl = NAVER_AUTH_URL +
+                "?response_type=code" +
+                "&client_id=" + clientId +
                 "&redirect_uri=" + redirectUri +
-                "&response_type=code";
+                "&state=" + state;
 
         return ResponseEntity.status(HttpStatus.FOUND)
                 .header(HttpHeaders.LOCATION, authorizationUrl)
@@ -59,12 +62,12 @@ public class KakaoLoginController {
     }
 
     /**
-     * Step 2: 카카오 로그인 콜백 처리
+     * Step 2: 네이버 로그인 콜백 처리
      */
-    @GetMapping("/login/oauth2/code/kakao")
-    public void handleKakaoCallback(@RequestParam String code, HttpServletResponse response) throws IOException {
+    @GetMapping("/login/oauth2/code/naver")
+    public void handleNaverCallback(@RequestParam String code, @RequestParam String state, HttpServletResponse response) throws IOException {
 
-        // 1️⃣ 카카오 토큰 요청
+        // 1️⃣ 네이버 토큰 요청
         HttpHeaders tokenHeaders = new HttpHeaders();
         tokenHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
@@ -72,10 +75,11 @@ public class KakaoLoginController {
                 "&client_id=" + clientId +
                 "&client_secret=" + clientSecret +
                 "&redirect_uri=" + redirectUri +
-                "&code=" + code;
+                "&code=" + code +
+                "&state=" + state;
 
         ResponseEntity<Map> tokenResponse = restTemplate.exchange(
-                KAKAO_TOKEN_URL, HttpMethod.POST,
+                NAVER_TOKEN_URL, HttpMethod.POST,
                 new HttpEntity<>(tokenRequestBody, tokenHeaders),
                 Map.class
         );
@@ -85,13 +89,13 @@ public class KakaoLoginController {
             return;
         }
 
-        String kakaoAccessToken = (String) tokenResponse.getBody().get("access_token");
+        String naverAccessToken = (String) tokenResponse.getBody().get("access_token");
 
         // 2️⃣ 사용자 정보 요청
         HttpHeaders userHeaders = new HttpHeaders();
-        userHeaders.setBearerAuth(kakaoAccessToken);
+        userHeaders.setBearerAuth(naverAccessToken);
         ResponseEntity<Map> userInfoResponse = restTemplate.exchange(
-                KAKAO_USERINFO_URL, HttpMethod.GET,
+                NAVER_USERINFO_URL, HttpMethod.GET,
                 new HttpEntity<>(userHeaders), Map.class
         );
 
@@ -101,17 +105,15 @@ public class KakaoLoginController {
         }
 
         Map<String, Object> body = userInfoResponse.getBody();
-        Long kakaoId = ((Number) body.get("id")).longValue();
-        Map<String, Object> kakaoAccount = (Map<String, Object>) body.get("kakao_account");
-        Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+        Map<String, Object> naverResponse = (Map<String, Object>) body.get("response");
 
         // ✅ Null 안전 처리
-        String email = (String) kakaoAccount.get("email");
-        String nickname = (profile.get("nickname") != null)
-                ? profile.get("nickname").toString()
-                : "카카오유저";
+        String email = (String) naverResponse.get("email");
+        String nickname = (naverResponse.get("nickname") != null)
+                ? naverResponse.get("nickname").toString()
+                : "네이버유저";
         String role = "ROLE_USER";
-        String username = (email != null) ? email : "kakao_" + kakaoId;
+        String username = (email != null) ? email : "naver_" + naverResponse.get("id").toString();
 
         // 3️⃣ UserAuthEntity 처리 (기존/신규)
         UserAuthEntity user = Optional.ofNullable(userAuthRepository.findByUsername(username))
@@ -127,13 +129,11 @@ public class KakaoLoginController {
         userAuthRepository.save(user);
 
         // 4️⃣ UserInfoEntity 처리 (username FK 기준)
-        String phone = Optional.ofNullable(kakaoAccount.get("phone"))
+        String phone = Optional.ofNullable(naverResponse.get("mobile"))
                 .map(Object::toString)
                 .orElse("01000000000");
 
-        String address = Optional.ofNullable(kakaoAccount.get("address"))
-                .map(Object::toString)
-                .orElse("주소 미등록");
+        String address = "주소 미등록"; // 네이버는 주소 정보 제공 안함
 
         UserInfoEntity info = userInfoRepository.findByUsername(user).orElse(null);
         if (info == null) {
