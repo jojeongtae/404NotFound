@@ -52,7 +52,7 @@ const QuizPostDisplay = ({ post }) => {
             </ul>
             <p className="question">❓{post.question}</p> {/* 퀴즈 문제 표시 */}
             {post.imgsrc &&(
-                <img src={`http://404notfoundpage.duckdns.org/${post.imgsrc}`} alt={post.title || '게시글 이미지'}/>
+                <img src={`http://404notfoundpage.duckdns.org/api/${post.imgsrc}`} alt={post.title || '게시글 이미지'}/>
             )}
             <form onSubmit={handleAnswerSubmit}>
                 <div className="answer-box">
