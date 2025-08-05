@@ -76,14 +76,14 @@ const RankingPage = ({ props }) => {
               {rankingData.map((item, index) => (
                   <li key={item.id} className="ranking-item">
                     <Link to={`/board/${item.category}/${item.id}`} className="item-anchor">
-                      <span className="num">{index + 1}.</span>
-                      <span className="title">{item.title}</span>
-                      <span className="board">{GetBoardName((item.category || '').toLowerCase())}</span>
-                      <span className="user">
-                      <span className="user-grade">{getFullGradeDescription(item.grade)}</span>
+                      <div className="num">{index + 1}.</div>
+                      <div className="title">{item.title}</div>
+                      <div className="board">{GetBoardName((item.category || '').toLowerCase())}</div>
+                      <div className="user">
+                        <span className="user-grade">{getFullGradeDescription(item.grade)}</span>
                         {item.authorNickname}
                     </span>
-                      <span className="count">{type === 'comments' ? `댓글수: ${item.commentCount}` : type === 'recommend' ? `추천수${item.recommend}` : `조회수${item.views}` }</span>
+                      <div className="count">{type === 'comments' ? `댓글수: ${item.commentCount}` : type === 'recommend' ? `추천수${item.recommend}` : `조회수${item.views}` }</div>
                     </Link>
                   </li>
               ))}
