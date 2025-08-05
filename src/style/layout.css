@@ -111,7 +111,8 @@ header .main-header{display:flex;justify-content:center;}
 header .header-title-container{display:inline-block;padding-bottom:20px;text-decoration:none;}
 
 header .nav-links{position:absolute;right:0;bottom:0;font-size:0;line-height:0;}
-
+header .nav-links .message-btn{position:relative;}
+header .nav-links .message-btn .badge{display:block;position:absolute;top:-8px;left:-8px;width:20px;height:20px;box-sizing:border-box;border-radius:50%;background-color:var(--warning-color);color:#fff;text-align:center;vertical-align:middle;font-size:14px;}
 
 .user-intro{display:block;padding:8px 0;border-bottom:1px solid var(--border-color);}
 .user-intro .intro-list{display:flex;justify-content:flex-start;align-items:center;}
