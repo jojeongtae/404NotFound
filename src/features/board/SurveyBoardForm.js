@@ -155,7 +155,7 @@ const SurveyBoardForm = () => {
                 // 설문조사 폼 표시
                 <form onSubmit={handleSubmit}>
                     {surveyData.imgsrc &&(
-            <img className="detail-img" src={`${API_BASE_URL}/${surveyData.imgsrc}`} alt={surveyData.title+" 이미지" || '게시글 이미지'}/>
+            <img className="detail-img" src={`http://404notfoundpage.duckdns.org/${surveyData.imgsrc}`} alt={surveyData.title+" 이미지" || '게시글 이미지'}/>
                     )}
                     <ul className="answer-list">
                         {columns.map((column, index) => (
