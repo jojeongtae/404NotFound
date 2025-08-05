@@ -7,7 +7,7 @@
 .modal-overlay{display:flex;justify-content:center;align-items:center; position:fixed;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,.7);z-index:1000;}
 .modal-content{position:relative;/*min-width:300px;*/padding:45px 35px 35px 35px;box-sizing:border-box;border-radius:10px; background-color:var(--bg-color);font-family:var(--font-arial);}
 .modal-content .close{position:absolute;top:14px;right:18px;width:30px;height:30px;min-width:0;padding:0;border:none;background-color:transparent;}
-.modal-content .modal-tab{margin-bottom:20px;text-align:center;}
+.modal-content .modal-tab{margin-bottom:25px;text-align:center;}
 .modal-content .notice{text-align:center;padding:50px 0;}
 .modal-content .notice:before{content:'💬';}
 .modal-content .notice.red{color:var(--warning-color);}

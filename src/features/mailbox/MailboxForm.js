@@ -65,9 +65,9 @@ const MailboxForm = ({ onClose }) => {
               {messages.map((msg) => (
                 <li className="message-item">
                   <ul>
-                    <li><em>보낸 사람:</em> <span className="user-grade">{msg.authorNickname || msg.author}</span> <br /></li>
-                    <li><em>제목:</em> {msg.title}<br /></li>
-                    <li><em>내용:</em> {msg.message}<br /></li>
+                    <li><em>보낸 사람:</em> <span className="user-grade">{msg.authorNickname || msg.author}</span></li>
+                    <li><em>제목:</em> {msg.title}</li>
+                    <li><em>내용:</em> {msg.message}</li>
                     <li><span className="time">{new Date(msg.createdAt).toLocaleString()}</span></li>
                   </ul>
                   <button className="btn red small delete" onClick={() => handleMessageDelete(msg.id)}>삭제</button>
@@ -79,7 +79,6 @@ const MailboxForm = ({ onClose }) => {
       ) : (
         <ComposeMessageForm onMessageSent={() => setCurrentView('inbox')} /> // 쪽지 전송 후 우편함으로 돌아가기
       )}
-      {/*<button onClick={onClose} style={{ marginTop: '20px' }}>닫기</button>*/}
     </div>
   );
 };
