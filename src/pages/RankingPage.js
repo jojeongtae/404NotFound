@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 import apiClient from '../api/apiClient';
 import { getFullGradeDescription } from '../features/common/GradeDescriptions';
 import { GetBoardName } from '../features/board/GetBoardName';
@@ -63,12 +63,12 @@ const RankingPage = ({ props }) => {
       <div className="ranking-page">
         <h3>
           {type === 'recommend'
-              ? '주간 추천수 랭킹'
+              ? '🏆주간 추천수 랭킹'
               : type === 'comments'
-                  ? '주간 댓글수 랭킹'
+                  ? '🏆주간 댓글수 랭킹'
                   : type === 'view'
-                      ? '주간 조회수 랭킹'
-                      : '전체 추천수 랭킹'}
+                      ? '🏆주간 조회수 랭킹'
+                      : '🏆전체 추천수 랭킹'}
         </h3>
 
         {rankingData.length === 0 ? (
@@ -76,15 +76,17 @@ const RankingPage = ({ props }) => {
         ) : (
             <ol className="ranking-list">
               {rankingData.map((item, index) => (
-                  <li key={index} className="ranking-item">
-                    <span className="num">{index + 1}.</span>
-                    <span className="title">{item.title}</span>
-                    <span className="board">{GetBoardName((item.category || '').toLowerCase())}</span>
-                    <span className="user">
+                  <li key={item.id} className="ranking-item">
+                    <Link to={`/board/${item.category}/${item.id}`} className="item-anchor">
+                      <span className="num">{index + 1}.</span>
+                      <span className="title">{item.title}</span>
+                      <span className="board">{GetBoardName((item.category || '').toLowerCase())}</span>
+                      <span className="user">
                       <span className="user-grade">{getFullGradeDescription(item.grade)}</span>
-                      {item.authorNickname}
+                        {item.authorNickname}
                     </span>
-                    <span>{type === 'comments' ? `댓글수: ${item.commentCount}` : type === 'recommend' ? `추천수${item.recommend}` : type === 'view' ? `조회수${item.views}` : `추천수: ${item.recommend}`}</span>
+                      <span className="count">{type === 'comments' ? `댓글수: ${item.commentCount}` : type === 'recommend' ? `추천수${item.recommend}` : type === 'view' ? `조회수${item.views}` : `추천수: ${item.recommend}`}</span>
+                    </Link>
                   </li>
               ))}
             </ol>
