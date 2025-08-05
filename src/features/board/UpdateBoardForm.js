@@ -40,7 +40,7 @@ const UpdateBoardForm = () => {
         setLoading(true);
         setError(null);
         // API 경로 수정
-        const response = await apiClient.get(`/api/free/${postId}`); // 게시글 상세 정보 불러오기
+        const response = await apiClient.get(`/free/${postId}`); // 게시글 상세 정보 불러오기
         const postData = response.data;
 
         // 작성자 확인
