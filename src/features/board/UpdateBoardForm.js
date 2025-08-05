@@ -99,7 +99,7 @@ const UpdateBoardForm = () => {
       }
 
       // 3. 백엔드 API 호출 (Content-Type은 FormData 사용 시 자동으로 설정됨)
-      await apiClient.put(`/api/free/${postId}`, formData);
+      await apiClient.put(`/free/${postId}`, formData);
 
       alert('게시글이 성공적으로 수정되었습니다!');
       navigate(`/board/free/${postId}`); // 수정된 게시글 상세 페이지로 이동
