@@ -33,7 +33,7 @@ const ReportBoardForm = () => {
                 const sendData = {
                     ...formData,
                     targetId: parseInt(formData.targetId),
-                    reported:res.data,
+                    reported:res.data.username,
                 };
                 const response = await apiClient.post("/user/report", sendData);
                 console.log("신고 성공: ", response.data);
