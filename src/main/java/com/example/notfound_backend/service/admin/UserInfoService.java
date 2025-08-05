@@ -159,7 +159,8 @@ public class UserInfoService {
         return userInfoDAO.getAllUserInfo().stream()
                 .sorted(Comparator.comparingInt(UserInfoEntity::getPoint).reversed())  // 포인트 내림차순
                 .limit(5)
-                .map(user -> UserInfoDTO.builder()
+                .map(user
+                        -> UserInfoDTO.builder()
                         .nickname(user.getNickname())
                         .grade(getUserGrade(user.getUsername().getUsername()))
                         .build())
