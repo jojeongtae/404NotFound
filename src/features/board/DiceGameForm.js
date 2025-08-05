@@ -1,22 +1,26 @@
 import React, { useEffect, useState, useRef } from "react";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import apiClient from "../../api/apiClient";
 import { setUser } from "../../features/auth/userSlice";
 
-const DiceGame = ({ user, roomId }) => {
+const DiceGame = ({ roomId }) => {
   const [dice, setDice] = useState(null);        // 사용자가 굴린 주사위 값
   const [rolling, setRolling] = useState(false); // 주사위 굴림 애니메이션 상태
   const [result, setResult] = useState(null);    // 게임 결과
   const [waiting, setWaiting] = useState(false); // 상대방을 기다리는 상태
   const clientRef = useRef(null);                // STOMP 클라이언트
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user); // Redux에서 유저 정보 가져오기
   const username = user?.username;
+  const nickname = user?.nickname;
 
   // 🔹 유저 정보 업데이트
   const fetchUserInfo = async () => {
+    if (!username) return;
     try {
       const res = await apiClient.get(`/user/user-info?username=${username}`);
       dispatch(setUser(res.data));
@@ -28,6 +32,8 @@ const DiceGame = ({ user, roomId }) => {
 
   // 🔹 WebSocket 연결
   useEffect(() => {
+    if (!username) return;
+
     const client = new Client({
       webSocketFactory: () => new SockJS(`${API_BASE_URL}/ws-game`),
       onConnect: () => {
@@ -53,7 +59,7 @@ const DiceGame = ({ user, roomId }) => {
         clientRef.current.deactivate();
       }
     };
-  }, [roomId, username, dispatch]);
+  }, [roomId, username]);
 
   // 🔹 주사위 굴리기
   const rollDice = () => {
@@ -84,8 +90,8 @@ const DiceGame = ({ user, roomId }) => {
   const diceImage = rolling
     ? "/dice/dice-roll.gif"
     : dice
-      ? `/dice/dice${dice}.png`
-      : "/dice/dice1.png"; // 기본 이미지
+    ? `/dice/dice${dice}.png`
+    : "/dice/dice1.png"; // 기본 이미지
 
   return (
     <div className="dice-game-container">
@@ -94,7 +100,7 @@ const DiceGame = ({ user, roomId }) => {
       <img src={diceImage} alt="주사위" width={120} style={{ margin: "10px 0" }} />
 
       <p className="play-status">
-        {user?.nickname || username}님의 주사위: <strong>{dice || "아직 굴리지 않았습니다."}</strong>
+        {nickname || username}님의 주사위: <strong>{dice || "아직 굴리지 않았습니다."}</strong>
       </p>
 
       <button
@@ -105,29 +111,26 @@ const DiceGame = ({ user, roomId }) => {
         {rolling
           ? "굴리는 중..."
           : waiting
-            ? "상대방을 기다리는 중..."
-            : "주사위 굴리기"}
+          ? "상대방을 기다리는 중..."
+          : "주사위 굴리기"}
       </button>
 
       {/* 게임 결과 표시 */}
       {result && (
-        <>
-          {console.log(result.winner)}
-          <div className="result">
-            <h4>게임 결과</h4>
-            <div className="result-container">
-              {result.draw ? (
-                <p>결과: <strong>무승부!</strong></p>
-              ) : (
-                <p>결과: <strong>{result.winner}</strong>님의 승리!</p>
-              )}
-              <p>
-                점수: {result.winner}님은 <strong>{result.winnerValue}</strong>점,{" "}
-                {result.loser}님은 <strong>{result.loserValue}</strong>점
-              </p>
-            </div>
+        <div className="result">
+          <h4>게임 결과</h4>
+          <div className="result-container">
+            {result.draw ? (
+              <p>결과: <strong>무승부!</strong></p>
+            ) : (
+              <p>결과: <strong>{result.winner}</strong>님의 승리!</p>
+            )}
+            <p>
+              점수: {result.winner}님은 <strong>{result.winnerValue}</strong>점,{" "}
+              {result.loser}님은 <strong>{result.loserValue}</strong>점
+            </p>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
