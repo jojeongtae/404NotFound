@@ -19,33 +19,46 @@ public class DiceService {
         userInfoRepository.save(userInfo);
     }
 
-    public DiceResultDTO processDiceRoll(DiceMessageDTO player1,DiceMessageDTO player2) {
+    public DiceResultDTO processDiceRoll(DiceMessageDTO player1, DiceMessageDTO player2) {
         int diceValue1 = player1.getDiceValue();
         int diceValue2 = player2.getDiceValue();
 
-        if (diceValue1 == diceValue2){
+        // 무승부 처리
+        if (diceValue1 == diceValue2) {
             return DiceResultDTO.builder()
                     .draw(true)
                     .winnerValue(diceValue1)
                     .loserValue(diceValue2)
                     .build();
         }
-        String winner = diceValue1 > diceValue2 ? player1.getUsername() : player2.getUsername();
-        String loser = diceValue1 < diceValue2 ? player1.getUsername() : player2.getUsername();
+
+        // 승자/패자 구분
+        boolean player1Wins = diceValue1 > diceValue2;
+        String winnerUsername = player1Wins ? player1.getUsername() : player2.getUsername();
+        String loserUsername  = player1Wins ? player2.getUsername() : player1.getUsername();
         int winnerValue = Math.max(diceValue1, diceValue2);
-        int loserValue =  Math.min(diceValue1, diceValue2);
+        int loserValue  = Math.min(diceValue1, diceValue2);
 
-        addPoints(winner,10);
-        addPoints(loser,-10);
+        // 🔹 유저 정보 가져와서 닉네임 조회
+        UserInfoEntity winnerEntity = userInfoDAO.getUserInfo(winnerUsername);
+        UserInfoEntity loserEntity = userInfoDAO.getUserInfo(loserUsername);
 
+        // 포인트 갱신
+        addPoints(winnerUsername, 10);
+        addPoints(loserUsername, -10);
+
+        // DTO 반환
         return DiceResultDTO.builder()
+                .winner(winnerUsername)
+                .winnerNickname(winnerEntity.getNickname())
                 .winnerValue(winnerValue)
+                .loser(loserUsername)
+                .loserNickname(loserEntity.getNickname())
                 .loserValue(loserValue)
-                .winner(winner)
-                .loser(loser)
                 .draw(false)
                 .build();
     }
+
 
 
 }

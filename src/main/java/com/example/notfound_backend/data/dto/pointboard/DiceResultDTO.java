@@ -12,8 +12,10 @@ import lombok.NoArgsConstructor;
 public class DiceResultDTO {
 
     private String winner;
+    private String winnerNickname;
     private String loser;
     private int winnerValue;
+    private String loserNickname;
     private int loserValue;
     private boolean draw;
 }
