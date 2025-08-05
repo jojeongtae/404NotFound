@@ -20,17 +20,18 @@
 .login-modal .login-item label{display:flex;gap:8px;align-items:center;}
 .login-modal .login-item label span{flex-basis:70px;}
 .login-modal .login-item input{margin-left:0;}
-.login-modal .btn_wrap{margin:15px 0 15px;text-align:center;}
+.login-modal .btn_wrap{margin:20px 0 18px;text-align:center;}
 .login-modal .oauth2_wrap{text-align:center;}
-.login-modal .kakao{position:relative;padding-left:30px;border-color:#fae100;background-color:#fae100;color:var(--text-color);}
-.login-modal .kakao:before{display:block;content:'';position:absolute;top:5px;left:6px;width:20px;height:20px;background:url("/public/kakao_icon.png") center/contain no-repeat;}
+.login-modal .oauth2_wrap button{position:relative;padding:8px 10px 8px 30px;}
+.login-modal .kakao{border-color:#fae100;background-color:#fae100;color:var(--text-color);}
+.login-modal .kakao:before{display:block;content:'';position:absolute;top:8px;left:6px;width:20px;height:20px;background:url("/public/kakao_icon.png") center/contain no-repeat;}
 
-.login-modal .naver{position:relative;padding-left:30px;border-color:#03c75a;background-color:#03c75a;color:var(--bg-color);}
-.login-modal .svg-wrap{position:absolute;top:6px;left:8px;}
+.login-modal .naver{border-color:#03c75a;background-color:#03c75a;color:var(--bg-color);}
+.login-modal .svg-wrap{position:absolute;top:9px;left:9px;}
 .login-modal svg{width:13px;height:13px;fill:#fff;}
 
 
-    /* 내 정보 수정 */
+/* 내 정보 수정 */
 .userinfo-modal .tab-container{}
 .userinfo-modal .tab-container ul{display:flex;flex-direction:column;gap:8px;}
 .userinfo-modal .tab-container li input{margin-left:0}
@@ -72,6 +73,8 @@
 .board-view .search-board-form form{display:flex;}
 .board-view .search-board-form .search-input{flex-grow:1;}
 .board-view .search-board-form .submit{min-width:70px;}
+
+.board-view .table.post-list tbody .post-author{text-align:left;}
 
 .board-view .pagination{display:flex;justify-content:center;align-items:center;gap:10px; margin:25px 0 20px;}
 .board-view .pagination button{margin-left:0;}
@@ -212,6 +215,7 @@
 
 /* 랭킹 */
 .ranking-page{position:relative;max-width:750px;margin:50px auto;padding:55px 70px 55px;border-radius:14px;box-shadow:0 4px 12px rgba(0, 0, 0, 0.2);}
+
 .ranking-page .ranking-list{display:flex;flex-direction:column;gap:8px;text-align:left;}
 .ranking-page .ranking-item{position:relative;}
 .ranking-page .ranking-item .item-anchor{display:inline-flex;justify-content:flex-start;align-items:center;gap:8px;padding:3px 10px;border-radius:5px;font-size:17px;letter-spacing:-0.03em;color:var(--text-color);text-decoration:none;transition:background .2s;}
