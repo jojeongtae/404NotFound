@@ -66,9 +66,7 @@ const RankingPage = ({ props }) => {
               ? '🏆주간 추천수 랭킹'
               : type === 'comments'
                   ? '🏆주간 댓글수 랭킹'
-                  : type === 'view'
-                      ? '🏆주간 조회수 랭킹'
-                      : '🏆전체 추천수 랭킹'}
+                      : '🏆주간 조회수 랭킹'}
         </h3>
 
         {rankingData.length === 0 ? (
@@ -85,7 +83,7 @@ const RankingPage = ({ props }) => {
                       <span className="user-grade">{getFullGradeDescription(item.grade)}</span>
                         {item.authorNickname}
                     </span>
-                      <span className="count">{type === 'comments' ? `댓글수: ${item.commentCount}` : type === 'recommend' ? `추천수${item.recommend}` : type === 'view' ? `조회수${item.views}` : `추천수: ${item.recommend}`}</span>
+                      <span className="count">{type === 'comments' ? `댓글수: ${item.commentCount}` : type === 'recommend' ? `추천수${item.recommend}` : `조회수${item.views}` }</span>
                     </Link>
                   </li>
               ))}

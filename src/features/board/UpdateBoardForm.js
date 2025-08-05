@@ -40,13 +40,13 @@ const UpdateBoardForm = () => {
         setLoading(true);
         setError(null);
         // API 경로 수정
-        const response = await apiClient.get(`/free/${postId}`); // 게시글 상세 정보 불러오기
+        const response = await apiClient.get(`/${boardId}/${postId}`); // 게시글 상세 정보 불러오기
         const postData = response.data;
 
         // 작성자 확인
         if (loggedInUsername !== postData.author) {
           alert('게시글 수정 권한이 없습니다.');
-          navigate(`/board/free/${postId}`); // 게시글 상세 페이지로 리디렉션
+          navigate(`/board/${boardId}/${postId}`); // 게시글 상세 페이지로 리디렉션
           return;
         }
 
@@ -58,7 +58,7 @@ const UpdateBoardForm = () => {
         console.error('게시글 불러오기 실패:', err);
         setError('게시글을 불러오는 데 실패했습니다.');
         alert('게시글을 불러오는 데 실패했습니다.');
-        navigate(`/board/free`); // 게시판 목록으로 리디렉션
+        navigate(`/board/${boardId}}`); // 게시판 목록으로 리디렉션
       } finally {
         setLoading(false);
       }
@@ -99,7 +99,7 @@ const UpdateBoardForm = () => {
       }
 
       // 백엔드 API 호출
-      await apiClient.put(`/free/${postId}`, formData);
+      await apiClient.put(`/${boardId}/${postId}`, formData);
 
       alert('게시글이 성공적으로 수정되었습니다!');
       navigate(`/board/free/${postId}`); // 수정된 게시글 상세 페이지로 이동
