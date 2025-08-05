@@ -15,13 +15,22 @@
 .modal-content .btn_wrap{margin:20px 0 0;text-align:center;}
 
 /* 로그인 */
-.login-modal .login-list{}
-.login-modal .login-item:nth-child(n+2){margin-top:10px;}
+.login-modal .login-list{display:flex;flex-direction:column;gap:10px;}
+/*.login-modal .login-item:nth-child(n+2){margin-top:10px;}*/
 .login-modal .login-item label{display:flex;gap:8px;align-items:center;}
 .login-modal .login-item label span{flex-basis:70px;}
 .login-modal .login-item input{margin-left:0;}
+.login-modal .btn_wrap{margin:15px 0 15px;text-align:center;}
+.login-modal .oauth2_wrap{text-align:center;}
+.login-modal .kakao{position:relative;padding-left:30px;border-color:#fae100;background-color:#fae100;color:var(--text-color);}
+.login-modal .kakao:before{display:block;content:'';position:absolute;top:5px;left:6px;width:20px;height:20px;background:url("/public/kakao_icon.png") center/contain no-repeat;}
 
-/* 내 정보 수정 */
+.login-modal .naver{position:relative;padding-left:30px;border-color:#03c75a;background-color:#03c75a;color:var(--bg-color);}
+.login-modal .svg-wrap{position:absolute;top:6px;left:8px;}
+.login-modal svg{width:13px;height:13px;fill:#fff;}
+
+
+    /* 내 정보 수정 */
 .userinfo-modal .tab-container{}
 .userinfo-modal .tab-container ul{display:flex;flex-direction:column;gap:8px;}
 .userinfo-modal .tab-container li input{margin-left:0}
@@ -145,7 +154,7 @@
 
 /* Quiz 상세페이지 */
 .quiz-detail .detail-info{display:flex;flex-direction:column;gap:6px;margin-bottom:20px;}
-.quiz-detail .question{display:block;margin:25px 0 35px;padding:10px;border-radius:8px;background-color:var(--bg-color-light);font-size:18px;font-weight:600;}
+.quiz-detail .question{display:block;margin:45px 0 35px;padding:10px;border-radius:8px;background-color:var(--bg-color-light);font-size:18px;font-weight:600;}
 .quiz-detail .detail-img{max-height:300px;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.2);}
 .quiz-detail .hint{margin:20px 0 10px;}
 .quiz-detail .answer-box{margin-bottom:10px;}
@@ -202,11 +211,11 @@
 .dice-game .dice-game-container .result .result-container{display:flex;flex-direction:column;gap:8px;}
 
 /* 랭킹 */
-.ranking-page{position:relative;max-width:750px;margin:50px auto;padding:55px 70px;border-radius:14px;box-shadow:0 4px 12px rgba(0, 0, 0, 0.2);}
+.ranking-page{position:relative;max-width:750px;margin:50px auto;padding:55px 70px 55px;border-radius:14px;box-shadow:0 4px 12px rgba(0, 0, 0, 0.2);}
 .ranking-page .ranking-list{display:flex;flex-direction:column;gap:8px;text-align:left;}
 .ranking-page .ranking-item{position:relative;}
-.ranking-page .ranking-item .item-anchor{display:flex;justify-content:flex-start;align-items:center;gap:8px;padding:3px 10px;border-radius:5px;font-size:17px;letter-spacing:-0.03em;color:var(--text-color);text-decoration:none;transition:background .2s;}
-.ranking-page .ranking-item .item-anchor:before{ background-color:var(--bg-color-light);}
+.ranking-page .ranking-item .item-anchor{display:inline-flex;justify-content:flex-start;align-items:center;gap:8px;padding:3px 10px;border-radius:5px;font-size:17px;letter-spacing:-0.03em;color:var(--text-color);text-decoration:none;transition:background .2s;}
+.ranking-page .ranking-item .item-anchor:hover{background-color:var(--bg-color-light);}
 .ranking-page .ranking-item .item-anchor .num{font-size:18px;font-weight:600;color:var(--accent-color);}
 .ranking-page .ranking-item .item-anchor .count{color:var(--text-color2);}
 .ranking-page .ranking-item .item-anchor > *:nth-child(n+3){position:relative;padding-left:12px;}
