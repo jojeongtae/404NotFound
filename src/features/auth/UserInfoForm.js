@@ -73,7 +73,7 @@ const UserInfoForm = ({ onClose }) => { // onClose prop 추가
                     </li>
                 </ul>
                 <div className="btn_wrap">
-                    <button type="submit" className="btn">정보 수정</button>
+                    <button type="submit" className="btn type2 large">정보 수정</button>
                 </div>
             </form>
         </div>
