@@ -113,28 +113,49 @@ const LoginForm = ({ onClose }) => {
   }, [dispatch, login, navigate, onClose]);
 
   return (
-    <>
+    <div className="login-modal">
       <form onSubmit={handleSubmit}>
-        <h2>로그인</h2>
-        <input
-          type="text"
-          placeholder="아이디 입력칸"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        /><br />
-        <input
-          type="password"
-          placeholder="비밀번호 입력칸"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        /><br />
-        <input type="submit" value="로그인" />
+        <h3>로그인</h3>
+        <ul className="login-list">
+          <li className="login-item">
+            <label>
+              <span>아이디: </span>
+              <input
+                  type="text"
+                  placeholder="아이디 입력"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+              />
+            </label>
+          </li>
+          <li className="login-item">
+            <label>
+              <span>비밀번호: </span>
+              <input
+                  type="password"
+                  placeholder="비밀번호 입력"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+              />
+            </label>
+          </li>
+        </ul>
+        <div className="btn_wrap">
+          <button type="submit" className="btn type2 large login-btn">로그인</button>
+        </div>
       </form>
-      <div>
-        <button type='button' onClick={handleKakaoLogin}>카카오 로그인</button>
-        <button type='button' onClick={handleNaverLogin}>네이버 로그인</button>
+      <div className="oauth2_wrap">
+        <button type='button' onClick={handleKakaoLogin} className="kakao">카카오 로그인</button>
+        <button type='button' onClick={handleNaverLogin} className="naver">
+          <span className="svg-wrap">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16.273 12.845 7.376 0H0v24h7.727V11.155L16.624 24H24V0h-7.727v12.845z"></path>
+            </svg>
+          </span>
+          <span>네이버 로그인</span>
+        </button>
       </div>
-    </>
+    </div>
   );
 };
 
