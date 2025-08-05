@@ -85,20 +85,20 @@ const UpdateBoardForm = () => {
     try {
       const formData = new FormData();
 
-      // 1. 게시글 데이터를 JSON Blob으로 생성하여 FormData에 추가
+      // boardDTO를 Blob으로 감싸지 않고, 순수한 JSON 문자열로 추가합니다.
       const boardDTO = {
         title,
         body,
-        author: originalAuthor, // 작성자는 변경되지 않음
+        author: originalAuthor,
       };
-      formData.append('boardDTO', new Blob([JSON.stringify(boardDTO)], { type: 'application/json' }));
+      formData.append('boardDTO', JSON.stringify(boardDTO));
 
-      // 2. 이미지가 선택된 경우에만 FormData에 추가
+      // 이미지가 선택된 경우에만 FormData에 추가
       if (selectedImage) {
         formData.append('file', selectedImage);
       }
 
-      // 3. 백엔드 API 호출 (Content-Type은 FormData 사용 시 자동으로 설정됨)
+      // 백엔드 API 호출
       await apiClient.put(`/free/${postId}`, formData);
 
       alert('게시글이 성공적으로 수정되었습니다!');
