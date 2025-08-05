@@ -24,7 +24,7 @@ const UpdateBoardForm = () => {
       // 이미지 미리보기 URL 생성
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreviewUrl(reader.result);
+        setImagePreviewUrl("/"+reader.result);
       };
       reader.readAsDataURL(file);
     } else {

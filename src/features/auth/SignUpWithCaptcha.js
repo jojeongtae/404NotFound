@@ -18,23 +18,20 @@ function SignUpWithCaptcha({ onClose }) {
   };
 
   return (
-    <>
+    <div className="captcha-modal">
       {!isCaptchaVerified ? (
-        <div style={{ textAlign: "center" }}>
-          <h3>로봇이 아닙니다 확인</h3>
+        <form onSubmit={handleCaptcha}>
+          <p className="title">🤖 로봇이 아님을 확인해주세요.</p>
           <CaptchaCanvas onChange={setCaptchaCode} />
-          <input
-            type="text"
-            placeholder="코드를 입력하세요"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-          />
-          <button onClick={handleCaptcha}>확인</button>
-        </div>
+          <div className="captcha-response">
+            <input type="text" placeholder="코드를 입력하세요" value={input} onChange={(e) => setInput(e.target.value)} />
+            <button type="submit" className="btn type2">확인</button>
+          </div>
+        </form>
       ) : (
         <SignUpForm onClose={onClose} />
       )}
-    </>
+    </div>
   );
 }
 

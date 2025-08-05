@@ -58,7 +58,7 @@ function CaptchaCanvas({ length = 5, onChange }) {
   }, []);
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+    <div className="captcha-wrap" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
       <canvas ref={canvasRef} width={200} height={60} style={{ border: "1px solid #ccc" }} />
       <button type="button" onClick={refreshCaptcha}>새로고침</button>
     </div>

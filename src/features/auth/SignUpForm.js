@@ -113,31 +113,35 @@ const SignUpForm = ({ onClose }) => {
   };
 
   return (
-    <>
+    <div className="signup-modal">
       <form onSubmit={handleSubmit}>
-        <h2>회원가입</h2>
-        <div>
-          <input type='text' name='username' placeholder='아이디 입력칸' value={formData.username} onChange={handleChange} />
-          <button type="button" onClick={handleCheckUsername}>아이디 중복확인</button>
-        </div>
-        <div>
-          <input type='text' name='nickname' placeholder='닉네임 입력칸' value={formData.nickname} onChange={handleChange} />
-          <button type="button" onClick={handleCheckNickname}>닉네임 중복확인</button>
-        </div>
-        <div>
-          <input type='password' name='password' placeholder='비밀번호 입력칸' value={formData.password} onChange={handleChange} />
-        </div>
-        <div>
-          <input type='text' name='phone' placeholder='핸드폰 번호 입력칸' value={formData.phone} onChange={handleChange} />
-        </div>
-        <div>
-          <input type='text' name='address' placeholder='주소지 입력칸' value={formData.address} onChange={handleChange} />
-        </div>
-        <div>
-          <input type='submit' value='회원가입' />
+        <h3>회원가입</h3>
+        <div className="signup-container">
+          <ul className="signup-list">
+            <li className="signup-item">
+              <input type='text' name='username' placeholder='아이디 입력' value={formData.username} onChange={handleChange}/>
+              <button type="button" onClick={handleCheckUsername}>아이디 중복확인</button>
+            </li>
+            <li className="signup-item">
+              <input type='text' name='nickname' placeholder='닉네임 입력' value={formData.nickname} onChange={handleChange}/>
+              <button type="button" onClick={handleCheckNickname}>닉네임 중복확인</button>
+            </li>
+            <li className="signup-item">
+              <input type='password' name='password' placeholder='비밀번호 입력' value={formData.password} onChange={handleChange}/>
+            </li>
+            <li className="signup-item">
+              <input type='text' name='phone' placeholder='핸드폰 번호 입력' value={formData.phone} onChange={handleChange}/>
+            </li>
+            <li className="signup-item">
+              <input type='text' name='address' placeholder='주소지 입력' value={formData.address} onChange={handleChange}/>
+            </li>
+          </ul>
+          <div className="btn_wrap">
+            <button type="submit" className="btn type2 large">회원가입</button>
+          </div>
         </div>
       </form>
-    </>
+    </div>
   );
 };
 
