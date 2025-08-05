@@ -84,9 +84,8 @@ const PasswordChangeForm = ({ onSwitchToInfo, onClose }) => {
           {error && <p style={{ color: 'red' }}>{error}</p>}
           {success && <p style={{ color: 'green' }}>{success}</p>}
           <div className="btn_wrap">
-            <button type="submit" className="btn">비밀번호 변경</button>
+            <button type="submit" className="btn type2 large">비밀번호 변경</button>
           </div>
-          {/*<button type="button" onClick={onSwitchToInfo}>내 정보 수정으로 돌아가기</button>*/}
         </form>
       </div>
   );

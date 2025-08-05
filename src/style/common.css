@@ -59,6 +59,17 @@
 .message-modal .tab-container.send-message .send-item textarea,
 .message-modal .tab-container.send-message .send-item input{display:block;width:100%;margin:6px 0 0;}
 
+/* 회원가입 (SignUp) */
+.captcha-modal .title{margin-bottom:10px;}
+.captcha-modal .captcha-wrap{display:flex;align-items:center;gap:12px;}
+.captcha-modal .captcha-wrap button{margin-left:0;}
+.captcha-modal .captcha-response{margin-top:14px;}
+.captcha-modal .captcha-response input{margin-left:0;}
+
+.signup-modal{}
+.signup-modal .signup-list{display:flex;flex-direction:column;gap:6px;}
+.signup-modal .signup-item input{margin-left:0;}
+
 
 /* --게시판-- */
 
@@ -177,9 +188,10 @@
 .update-board .board-title input{display:block;width:100%;margin-left:0;}
 .update-board .board-body textarea{display:block;width:100%;margin-left:0;}
 .update-board .btn_wrap{margin-top:25px;}
-.update-board .image-preview{margin-top:10px;}
+.update-board .image-preview{margin-top:14px;}
+.update-board .image-preview img{max-height:200px;}
 
-    /* 신고하기 */
+/* 신고하기 */
 .board-report{font-family:var(--font-arial);}
 .board-report .report-list{}
 .board-report .report-list > li:nth-child(n+2){margin-top:10px;}
@@ -222,10 +234,9 @@
 
 /* 랭킹 */
 .ranking-page{position:relative;max-width:750px;margin:50px auto;padding:55px 70px 55px;border-radius:14px;box-shadow:0 4px 12px rgba(0, 0, 0, 0.2);}
-
-.ranking-page .ranking-list{display:flex;flex-direction:column;gap:8px;text-align:left;}
+.ranking-page .ranking-list{display:flex;flex-direction:column;gap:3px;text-align:left;}
 .ranking-page .ranking-item{position:relative;}
-.ranking-page .ranking-item .item-anchor{display:inline-flex;justify-content:flex-start;align-items:center;gap:8px;padding:3px 10px;border-radius:5px;font-size:17px;letter-spacing:-0.03em;color:var(--text-color);text-decoration:none;transition:background .2s;}
+.ranking-page .ranking-item .item-anchor{display:inline-flex;justify-content:flex-start;align-items:center;gap:8px;padding:5px 10px;border-radius:5px;font-size:17px;letter-spacing:-0.03em;color:var(--text-color);text-decoration:none;transition:background .2s;}
 .ranking-page .ranking-item .item-anchor:hover{background-color:var(--bg-color-light);}
 .ranking-page .ranking-item .item-anchor .num{font-size:18px;font-weight:600;color:var(--accent-color);}
 .ranking-page .ranking-item .item-anchor .count{color:var(--text-color2);}
