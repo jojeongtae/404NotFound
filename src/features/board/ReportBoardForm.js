@@ -1,7 +1,7 @@
-import {useSelector} from "react-redux";
+import { useSelector } from "react-redux";
 import apiClient from "../../api/apiClient";
-import {useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 //신고게시판
 const ReportBoardForm = () => {
@@ -18,28 +18,37 @@ const ReportBoardForm = () => {
     })
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormData(prev => ({ ...prev, [name]: value}));
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
     }
 
     // 신고
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const sendData = {
-                ...formData,
-                targetId: parseInt(formData.targetId),
-            };
-            const response = await apiClient.post("/user/report", sendData);
-            console.log("신고 성공: ", response.data);
-            alert("신고가 접수 되었습니다.");
-            navigate(`/board/user/report/${user.username}`);
-        }catch (error){
+
+            const res = await apiClient.get(`/user/nickname/${formData.reported}`);
+            console.log(res.data);
+            if (res.data) {
+                const sendData = {
+                    ...formData,
+                    targetId: parseInt(formData.targetId),
+                    reported:res.data,
+                };
+                const response = await apiClient.post("/user/report", sendData);
+                console.log("신고 성공: ", response.data);
+                alert("신고가 접수 되었습니다.");
+                navigate(`/board/user/report/${user.username}`);
+            } else {
+                alert("작성하신 내용중에 문제가 생겼습니다.");
+                return;
+            }
+        } catch (error) {
             console.error("신고 실패: ", error);
         }
     }
 
-    return(
+    return (
         <div className="board-report">
             <form onSubmit={handleSubmit}>
                 <h3>신고하기</h3>
@@ -67,7 +76,7 @@ const ReportBoardForm = () => {
                     </li>
                     <li>
                         <label>
-                        <span>신고글이 있는 게시판</span>
+                            <span>신고글이 있는 게시판</span>
                             <select name="targetTable" value={formData.targetTable} onChange={handleChange}>
                                 <option value="">게시판 선택</option>
                                 <option value="board_free">자유 게시판</option>
@@ -90,7 +99,7 @@ const ReportBoardForm = () => {
                     <li>
                         <label>
                             <span>상세 사유</span>
-                            <textarea name="description" placeholder="신고 사유를 자세히 입력해주세요." value={formData.description} onChange={handleChange} rows="6"/>
+                            <textarea name="description" placeholder="신고 사유를 자세히 입력해주세요." value={formData.description} onChange={handleChange} rows="6" />
                         </label>
                     </li>
                 </ul>
