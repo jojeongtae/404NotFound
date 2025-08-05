@@ -40,6 +40,9 @@ const BoardPageForm = ({ boardId }) => {
 
         const fetchTopPost = async () => {
             try {
+                if(boardId === "notice"){
+                    return;
+                }
                 const response = await apiClient.get(`${boardId}/ranking/recommend`);
                 setTopPosts(response.data.slice(0, 3));
             } catch (e) {
