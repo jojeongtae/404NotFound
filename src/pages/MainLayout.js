@@ -93,17 +93,17 @@ const MainLayout = () => {
         <div className="user-intro">
           <div className="wrap">
             {isLoggedIn ?
-                <>
-                  <span className="user-grade">{getFullGradeDescription(user.grade)}</span>
-                  <span className="user-message">{user.nickname}님 안녕하세요!</span>
-                  <span>현재 포인트 : {user.point}</span>
-                </>
+                <ul className="intro-list">
+                  <li className="user-grade">{getFullGradeDescription(user.grade)}</li>
+                  <li className="user-message">{user.nickname}님 안녕하세요!</li>
+                  <li>현재 포인트 : <strong>{user.point}</strong></li>
+                </ul>
                 :
-                <>
-                  <span className="user-grade">{user?.grade ?? "👻 401"}</span>
-                  <span className="user-message">{user?.nickname ?? "이름없는 방문자"}님 안녕하세요!</span>
-                  <span>현재 포인트 : {user?.point ?? "zero"}</span>
-                </>
+                <ul className="intro-list">
+                  <li className="user-grade">{user?.grade ?? "👻 401"}</li>
+                  <li className="user-message">{user?.nickname ?? "이름없는 방문자"}님 안녕하세요!</li>
+                  <li>현재 포인트 : <strong>{user?.point ?? "zero"}</strong></li>
+                </ul>
             }
           </div>
         </div>

@@ -89,12 +89,19 @@
 
 /* 작업시작 - 0729 희용 */
 
+#root{overflow-x:hidden;}
 .wrap{position:relative;margin:0 auto;}
 @media all and (min-width: 1401px) {
 .wrap{max-width:1400px;}
 }
+@media all and (max-width: 1400px) {
+    .wrap{width:1200px;}
+}
+@media all and (max-width: 1200px) {
+    .wrap{width:1000px;}
+}
 @media all and (max-width: 1000px) {
-    .wrap{max-width:640px;}
+    .wrap{width:94%;}
 }
 
 /* header */
@@ -107,8 +114,12 @@ header .nav-links{position:absolute;right:0;bottom:0;font-size:0;line-height:0;}
 
 
 .user-intro{display:block;padding:8px 0;border-bottom:1px solid var(--border-color);}
+.user-intro .intro-list{display:flex;justify-content:flex-start;align-items:center;}
 .user-intro .user-message{position:relative;margin-right:12px;padding-right:13px;}
 .user-intro .user-message:before{display:block;content:'';position:absolute;top:calc(50% - 7px);right:0;width:1px;height:16px;background-color:#888;}
+
+
+
 
 /* container */
 #container{position:relative;margin-top:40px;}
@@ -143,3 +154,7 @@ footer{padding:60px 0 30px;border-top:1px solid var(--border-color);background-c
 footer .subtitle{margin-bottom:40px;color:var(--text-color2);}
 footer p:nth-child(n+2){margin-top:10px;}
 
+
+
+@media all and (max-width: 1000px) {
+}
