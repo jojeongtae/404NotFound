@@ -28,17 +28,13 @@ const RankingPage = ({ props }) => {
         const response = await apiClient.get(`/ranking/recommend/week`);
         setRankingData(response.data);
         console.log(response.data);
-        }else if(type === "view"){
+        }else(){
           const response = await apiClient.get('/ranking/views/week')
           setRankingData(response.data);
           console.log(response.data);
         }
 
-        else{
-          const response = await apiClient.get(`/ranking/recommend/all`);
-        setRankingData(response.data);
-        console.log(response.data);
-        }
+        
 
       } catch (err) {
         console.error("랭킹 데이터 불러오기 실패:", err);
