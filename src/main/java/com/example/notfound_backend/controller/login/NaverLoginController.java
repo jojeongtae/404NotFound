@@ -103,9 +103,18 @@ public class NaverLoginController {
 
         // ✅ Null 안전 처리
         String email = (String) naverResponse.get("email");
-        String nickname = (naverResponse.get("nickname") != null)
-                ? naverResponse.get("nickname").toString()
-                : "네이버유저";
+
+        // 네이버는 nickname과 name을 모두 제공할 수 있으므로, nickname을 우선 사용하고 없으면 name을 사용
+        Object nicknameObj = naverResponse.get("nickname");
+        Object nameObj = naverResponse.get("name");
+        String nickname = "네이버유저"; // 기본값
+
+        if (nicknameObj != null) {
+            nickname = nicknameObj.toString();
+        } else if (nameObj != null) {
+            nickname = nameObj.toString();
+        }
+
         String role = "ROLE_USER";
         String username = (email != null) ? email : "naver_" + naverResponse.get("id").toString();
         String phone = (String) naverResponse.getOrDefault("mobile", "010-0000-0000");
