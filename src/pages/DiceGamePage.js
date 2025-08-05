@@ -30,7 +30,7 @@ const DiceGamePage = () => {
                     />
                 </label>
             </div>
-            <DiceGame username={user.username} roomId={roomId} />
+            <DiceGame username={user} roomId={roomId} />
         </div>
     );
 };

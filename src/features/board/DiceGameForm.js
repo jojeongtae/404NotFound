@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import apiClient from "../../api/apiClient";
 import { setUser } from "../../features/auth/userSlice";
 
-const DiceGame = ({ username, roomId }) => {
+const DiceGame = ({ user, roomId }) => {
   const [dice, setDice] = useState(null);        // 사용자가 굴린 주사위 값
   const [rolling, setRolling] = useState(false); // 주사위 굴림 애니메이션 상태
   const [result, setResult] = useState(null);    // 게임 결과
@@ -13,6 +13,7 @@ const DiceGame = ({ username, roomId }) => {
   const clientRef = useRef(null);                // STOMP 클라이언트
   const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
   const dispatch = useDispatch();
+  const username = user?.username;
 
   // 🔹 유저 정보 업데이트
   const fetchUserInfo = async () => {
@@ -93,7 +94,7 @@ const DiceGame = ({ username, roomId }) => {
       <img src={diceImage} alt="주사위" width={120} style={{ margin: "10px 0" }} />
 
       <p className="play-status">
-        {username}님의 주사위: <strong>{dice || "아직 굴리지 않았습니다."}</strong>
+        {user.nickname}님의 주사위: <strong>{dice || "아직 굴리지 않았습니다."}</strong>
       </p>
 
       <button
@@ -110,6 +111,7 @@ const DiceGame = ({ username, roomId }) => {
 
       {/* 게임 결과 표시 */}
       {result && (
+        console.log(result.winner),
         <div className="result">
           <h4>게임 결과</h4>
           <div className="result-container">
