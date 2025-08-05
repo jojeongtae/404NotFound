@@ -61,7 +61,8 @@ public class SecurityConfig {
                                 "/api/google",
                                 "/api/login/oauth2/code/*",
                                 "/oauth2/success",
-                                "/oauth2/fail"
+                                "/oauth2/fail",
+                                "/api/**"
                         ).permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/user/**").hasAnyRole("USER","ADMIN")

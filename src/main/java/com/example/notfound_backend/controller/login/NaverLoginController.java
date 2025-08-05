@@ -93,7 +93,7 @@ public class NaverLoginController {
 
         // 2️⃣ 사용자 정보 요청
         HttpHeaders userHeaders = new HttpHeaders();
-        userHeaders.setBearerAuth(naverAccessToken);
+        userHeaders.set("Authorization", "Bearer " + naverAccessToken);
         ResponseEntity<Map> userInfoResponse = restTemplate.exchange(
                 NAVER_USERINFO_URL, HttpMethod.GET,
                 new HttpEntity<>(userHeaders), Map.class
