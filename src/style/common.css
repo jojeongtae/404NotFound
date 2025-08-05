@@ -20,14 +20,14 @@
 .login-modal .login-item label{display:flex;gap:8px;align-items:center;}
 .login-modal .login-item label span{flex-basis:70px;}
 .login-modal .login-item input{margin-left:0;}
-.login-modal .btn_wrap{margin:20px 0 18px;text-align:center;}
+.login-modal .btn_wrap{margin:20px 0 30px;text-align:center;}
 .login-modal .oauth2_wrap{text-align:center;}
-.login-modal .oauth2_wrap button{position:relative;padding:8px 10px 8px 30px;}
+.login-modal .oauth2_wrap button{position:relative;padding:5px 10px 5px 30px;}
 .login-modal .kakao{border-color:#fae100;background-color:#fae100;color:var(--text-color);}
-.login-modal .kakao:before{display:block;content:'';position:absolute;top:8px;left:6px;width:20px;height:20px;background:url("/public/kakao_icon.png") center/contain no-repeat;}
+.login-modal .kakao:before{display:block;content:'';position:absolute;top:5px;left:6px;width:20px;height:20px;background:url("/public/kakao_icon.png") center/contain no-repeat;}
 
 .login-modal .naver{border-color:#03c75a;background-color:#03c75a;color:var(--bg-color);}
-.login-modal .svg-wrap{position:absolute;top:9px;left:9px;}
+.login-modal .svg-wrap{position:absolute;top:6px;left:9px;}
 .login-modal svg{width:13px;height:13px;fill:#fff;}
 
 
@@ -60,7 +60,6 @@
 .message-modal .tab-container.send-message .send-item input{display:block;width:100%;margin:6px 0 0;}
 
 
-
 /* --게시판-- */
 
 /* 게시판 목록 */
@@ -80,7 +79,6 @@
 .board-view .pagination button{margin-left:0;}
 
 /* 게시판 상세 */
-.board-detail{}
 .board-detail-header{padding-bottom:24px;border-bottom:1px solid var(--text-color2);}
 .board-detail-header li:nth-child(n+2){margin-top:4px;}
 .board-detail-body{min-height:100px;padding:30px 0 20px;}
@@ -172,7 +170,16 @@
 
 .new-board button[type="submit"]{margin-left:0 !important;}
 
-/* 신고하기 */
+/* 게시글 수정 */
+.update-board{}
+.update-board .update-container{display:flex;flex-direction:column;gap:14px;}
+.update-board .update-container label{display:inline-block;margin-bottom:10px;}
+.update-board .board-title input{display:block;width:100%;margin-left:0;}
+.update-board .board-body textarea{display:block;width:100%;margin-left:0;}
+.update-board .btn_wrap{margin-top:25px;}
+.update-board .image-preview{margin-top:10px;}
+
+    /* 신고하기 */
 .board-report{font-family:var(--font-arial);}
 .board-report .report-list{}
 .board-report .report-list > li:nth-child(n+2){margin-top:10px;}
