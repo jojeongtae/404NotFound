@@ -26,7 +26,6 @@ const ReportBoardForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-
             const res = await apiClient.get(`/user/nickname/${formData.reported}`);
             console.log(res.data);
             if (res.data) {
@@ -71,7 +70,7 @@ const ReportBoardForm = () => {
                     <li>
                         <label>
                             <span>신고대상</span>
-                            <input type="text" name="reported" placeholder="신고자 ID 또는 이름" value={formData.reported} onChange={handleChange} />
+                            <input type="text" name="reported" placeholder="신고대상 닉네임" value={formData.reported} onChange={handleChange} />
                         </label>
                     </li>
                     <li>
