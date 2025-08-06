@@ -275,7 +275,7 @@
 
 /* 관리자 - 유저정보 */
 .admin-user{font-family:var(--font-arial);}
-
+.admin-user .admin-table td{word-break:break-all;}
 
 
 

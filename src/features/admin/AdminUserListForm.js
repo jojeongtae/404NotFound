@@ -69,21 +69,31 @@ const AdminUserListForm = () => {
     <div className="admin-user">
       <h3>관리자 - 유저 목록</h3>
       <table className="admin-table">
+        <colgroup>
+          <col style="width:14%;"/>
+          <col/>
+          <col style="width:19%;"/>
+          <col/>
+          <col/>
+          <col/>
+          <col style="width:17%;"/>
+          <col/>
+        </colgroup>
         <thead>
-          <tr>
-            <th>아이디</th>
-            <th>닉네임</th>
-            <th>등급</th>
-            <th>전화번호</th>
-            <th>포인트</th>
-            <th>상태</th>
-            <th>주소</th>
-            <th>경고</th>
-            <th>상태 변경</th>
-          </tr>
+        <tr>
+          <th>아이디</th>
+          <th>닉네임</th>
+          <th>등급</th>
+          <th>전화번호</th>
+          <th>포인트</th>
+          <th>상태</th>
+          <th>주소</th>
+          <th>경고</th>
+          <th>상태 변경</th>
+        </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
+        {users.map((user) => (
             <>
               <tr key={user.username}>
                 <td>{user.username}</td>
@@ -94,10 +104,12 @@ const AdminUserListForm = () => {
                 <td>{user.status}</td>
                 <td>{user.address}</td>
                 <td>{user.warning}</td>
-                <td><button onClick={()=>handleStatusChange(user.username)}>상태변경</button></td>
+                <td>
+                  <button onClick={() => handleStatusChange(user.username)}>상태변경</button>
+                </td>
               </tr>
             </>
-          ))}
+        ))}
         </tbody>
       </table>
 
