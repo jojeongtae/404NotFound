@@ -218,13 +218,15 @@ const BoardPageForm = ({ boardId }) => {
                     className="user-info-dropdown"
                     style={{
                         position: 'absolute',
-                        top: dropdownPosition.y - 180,
-                        left: dropdownPosition.x + 30
+                        top: dropdownPosition.y - 142,
+                        left: dropdownPosition.x - 250
                     }}
                 >
                     <div className="title">{selectedUser.nickname}</div>
-                    <Link className="btn small" to={`/user/board/${selectedUser.id}`} onClick={() => setShowDropdown(false)}>작성글 보기</Link>
-                    <Link className="btn small" to={`/user/userinfo/${selectedUser.id}`} onClick={() => setShowDropdown(false)}>유저 정보 보기</Link>
+                    <div className="btn_wrap">
+                        <Link className="btn small" to={`/user/board/${selectedUser.id}`} onClick={() => setShowDropdown(false)}>작성글 보기</Link>
+                        <Link className="btn small" to={`/user/userinfo/${selectedUser.id}`} onClick={() => setShowDropdown(false)}>유저 정보 보기</Link>
+                    </div>
                 </div>
             )}
         </div>
