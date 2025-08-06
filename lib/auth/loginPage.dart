@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:notfound_flutter/auth/token.dart';
 import 'package:notfound_flutter/auth/userInfo.dart';
+import 'package:notfound_flutter/auth/registerPage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -159,6 +160,16 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(height: 24.0),
               ElevatedButton(onPressed: _login, child: const Text('로그인')),
+              const SizedBox(height: 16.0),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const RegisterPage()),
+                  );
+                },
+                child: const Text('아직 회원이 아니신가요?'),
+              ),
             ],
           ),
         ),

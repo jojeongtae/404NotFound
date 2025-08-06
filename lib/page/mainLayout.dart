@@ -82,7 +82,7 @@ class _MainLayoutState extends State<MainLayout> {
                         ),
                         Text(
                           userInfo.username == null || userInfo.username!.isEmpty
-                              ? ""
+                              ? " "
                               : '주소 : ${userInfo.address ?? ''}',
                           style: const TextStyle(color: Colors.black),
                         ),

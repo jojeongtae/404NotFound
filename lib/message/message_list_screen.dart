@@ -41,7 +41,7 @@ class _MessageListScreenState extends State<MessageListScreen> {
       return;
     }
 
-    final url = Uri.parse('hthttp://404notfoundpage.duckdns.org:8080/api/message/receiver'); // TODO: 실제 백엔드 IP로 변경
+    final url = Uri.parse('http://404notfoundpage.duckdns.org:8080/api/message/receiver'); // TODO: 실제 백엔드 IP로 변경
     try {
       final response = await http.get(
         url,

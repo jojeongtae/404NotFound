@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:image/image.dart' as img;
+import 'package:path_provider/path_provider.dart';
 
 import '../auth/userInfo.dart';
 import 'package:notfound_flutter/board/board_provider.dart'; // BoardProvider 임포트
@@ -29,9 +31,26 @@ class _BoardNewPageState extends State<BoardNewPage> {
     final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      setState(() {
-        _imgsrc = pickedFile;
-      });
+      final File imageFile = File(pickedFile.path);
+
+      // 이미지 압축
+      final img.Image? originalImage = img.decodeImage(await imageFile.readAsBytes());
+      if (originalImage != null) {
+        final img.Image resizedImage = img.copyResize(originalImage, width: 1024);
+        final List<int> compressedImage = img.encodeJpg(resizedImage, quality: 85);
+
+        // 압축된 이미지를 임시 파일로 저장
+        final tempDir = await getTemporaryDirectory();
+        final File compressedFile = await File('${tempDir.path}/temp_image.jpg').writeAsBytes(compressedImage);
+
+        setState(() {
+          _imgsrc = XFile(compressedFile.path);
+        });
+      } else {
+        setState(() {
+          _imgsrc = pickedFile;
+        });
+      }
     }
   }
 

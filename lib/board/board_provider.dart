@@ -25,6 +25,7 @@ class BoardProvider extends ChangeNotifier {
       if (response.statusCode == 200) {
         final List<dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
         _boards = responseData.map((json) => BoardPost.fromJson(json)).toList();
+        _boards.sort((a, b) => b.id.compareTo(a.id)); // ID를 기준으로 내림차순 정렬
       } else {
         _errorMessage = '게시글 불러오기 실패: ${response.statusCode}';
         print('Error response body: ${utf8.decode(response.bodyBytes)}');
