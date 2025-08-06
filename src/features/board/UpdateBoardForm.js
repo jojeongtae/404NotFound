@@ -24,7 +24,7 @@ const UpdateBoardForm = () => {
       // 이미지 미리보기 URL 생성
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreviewUrl("/"+reader.result);
+        setImagePreviewUrl(reader.result);
       };
       reader.readAsDataURL(file);
     } else {
@@ -142,7 +142,7 @@ const UpdateBoardForm = () => {
             <input type='file' accept="image/*" onChange={handleImageChange}/> {/*이미지 파일만 선택 가능하도록 onChange={handleImageChange}*/}
             {imagePreviewUrl && ( // 이미지 미리보기
                 <div className="image-preview">
-                  <img src={`http://404notfoundpage.duckdns.org/${imagePreviewUrl}`} alt="Image Preview" />
+                  <img src={imagePreviewUrl} alt="Image Preview" />
                 </div>
             )}
           </div>
