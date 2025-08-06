@@ -139,7 +139,7 @@ const UpdateBoardForm = () => {
             <textarea id="body" value={body} onChange={(e) => setBody(e.target.value)} placeholder="내용을 입력하세요" rows="10"></textarea>
           </div>
           <div className="board-image">
-            <input type='file' accept="image/*" /> {/*이미지 파일만 선택 가능하도록 onChange={handleImageChange}*/}
+            <input type='file' accept="image/*" onChange={handleImageChange}/> {/*이미지 파일만 선택 가능하도록 onChange={handleImageChange}*/}
             {imagePreviewUrl && ( // 이미지 미리보기
                 <div className="image-preview">
                   <img src={imagePreviewUrl} alt="Image Preview" />
