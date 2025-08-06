@@ -31,7 +31,7 @@ const HomePage = () => {
             <div className="intro-header">
                 <p className="main-title">
                     <strong>404 Not Found</strong>
-                    <span> – 존재하지 않던 연결을 찾다</span>
+                    {/*<span> – 존재하지 않던 연결을 찾다</span>*/}
                 </p>
                 <p className="sub-title">지금, 당신의 여정을 함께할 사람들을 만나보세요.</p>
             </div>

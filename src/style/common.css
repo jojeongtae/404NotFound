@@ -78,7 +78,7 @@
 .main-intro .intro-header .sub-title{margin-top:10px;}
 
 .main-intro .ranking-wrap{display:flex;justify-content:center;gap:8%;}
-.main-intro .ranking-wrap .ranking-box{flex-basis:280px;position:relative;padding:30px 40px;border-radius:20px;box-shadow:3px 5px 10px rgba(0,0,0,0.2);}
+.main-intro .ranking-wrap .ranking-box{flex-basis:280px;position:relative;padding:30px 40px;border-radius:16px;box-shadow:3px 5px 10px rgba(0,0,0,0.2);}
 .main-intro .ranking-wrap .ranking-box h4{margin-bottom:20px;text-align:center;}
 .main-intro .ranking-wrap .ranking-box .ranking-list{display:flex;flex-direction:column;gap:8px;text-align:left;font-size:16px;letter-spacing:-0.04em;}
 .main-intro .ranking-wrap .ranking-box .ranking-item{display:flex;align-items:center;gap:5px;}
