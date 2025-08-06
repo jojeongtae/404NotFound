@@ -85,35 +85,38 @@ const UpdateBoardForm = () => {
   try {
     const formData = new FormData();
 
-    // ✅ boardDTO를 Blob(application/json)으로 감싸서 전송
-    const boardDTO = {
-      title,
-      body,
-      author: originalAuthor,
-    };
+    // ✅ boardDTO를 Blob(JSON)으로 추가
+    const boardDTO = { title, body, author: originalAuthor };
     formData.append(
       'boardDTO',
       new Blob([JSON.stringify(boardDTO)], { type: 'application/json' })
     );
 
-    // ✅ 이미지가 선택된 경우만 추가
+    // ✅ 선택된 이미지가 있는 경우만 추가
     if (selectedImage) {
       formData.append('file', selectedImage);
     }
 
-    // ✅ apiClient는 FormData면 Content-Type 자동 처리
-    await apiClient.put(`/${boardId}/${postId}`, formData);
+    // ✅ 요청 시점에만 헤더 설정 (Content-Type 생략)
+    await apiClient.put(`/${boardId}/${postId}`, formData, {
+      headers: {
+        // Content-Type을 아예 지정하지 않음 → Axios가 multipart boundary 자동 생성
+        authorization: store.getState().token?.token || '',
+      },
+      withCredentials: true,
+    });
 
     alert('게시글이 성공적으로 수정되었습니다!');
-    navigate(`/board/free/${postId}`); // 수정된 게시글 상세 페이지로 이동
+    navigate(`/board/${boardId}/${postId}`);
   } catch (err) {
     console.error('게시글 수정 실패:', err);
-    setError('게시글 수정에 실패했습니다.');
     alert('게시글 수정에 실패했습니다.');
+    setError('게시글 수정에 실패했습니다.');
   } finally {
     setLoading(false);
   }
 };
+
 
   if (loading) {
     return <div style={{ textAlign: 'center', padding: '50px' }}>게시글을 불러오는 중...</div>;
