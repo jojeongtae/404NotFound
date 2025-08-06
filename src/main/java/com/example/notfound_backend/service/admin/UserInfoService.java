@@ -99,11 +99,11 @@ public class UserInfoService {
         if (role.equals("ROLE_ADMIN")) {
             return "500 Internal Server Error (운영진)";
         }
-        if (point < 100) {
+        if (point < 150) {
             return "404 Not Found (신규)";
-         } else if (point < 200) {
+         } else if (point < 300) {
             return "200 OK (일반 회원)";
-        } else if (point < 300) {
+        } else if (point < 500) {
             return "202 Accepted (활동 회원)";
         } else {
             return "403 Forbidden (우수 회원)";
