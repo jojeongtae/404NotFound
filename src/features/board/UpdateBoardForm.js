@@ -142,7 +142,7 @@ const UpdateBoardForm = () => {
             <input type='file' accept="image/*" onChange={handleImageChange}/> {/*이미지 파일만 선택 가능하도록 onChange={handleImageChange}*/}
             {imagePreviewUrl && ( // 이미지 미리보기
                 <div className="image-preview">
-                  <img src={imagePreviewUrl} alt="Image Preview" />
+                  <img src={`http://404notfoundpage.duckdns.org/${imagePreviewUrl}`} alt="Image Preview" />
                 </div>
             )}
           </div>
