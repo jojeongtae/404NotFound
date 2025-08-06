@@ -100,8 +100,7 @@ const UpdateBoardForm = () => {
     // ✅ 요청 시점에만 헤더 설정 (Content-Type 생략)
     await apiClient.put(`/${boardId}/${postId}`, formData, {
       headers: {
-        // Content-Type을 아예 지정하지 않음 → Axios가 multipart boundary 자동 생성
-        authorization: store.getState().token?.token || '',
+         'Content-Type': undefined,
       },
       withCredentials: true,
     });
