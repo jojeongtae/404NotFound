@@ -33,7 +33,7 @@ const HomePage = () => {
                     <strong>404 Not Found</strong>
                     {/*<span> – 존재하지 않던 연결을 찾다</span>*/}
                 </p>
-                <p className="sub-title">지금, 당신의 여정을 함께할 사람들을 만나보세요.</p>
+                <p className="sub-title">갈 곳이 없는 사람들이 모인 커뮤니티</p>
             </div>
 
             <div className="intro-ranking">

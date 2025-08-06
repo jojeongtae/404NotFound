@@ -124,7 +124,8 @@ const VotingBoardForm = () => {
 
             {votingData &&(
             <div style={{ marginBottom: '20px' }}>
-              <img
+                {votingData.imgsrc &&(
+                <img
                   src={`http://404notfoundpage.duckdns.org/${votingData.imgsrc}`}
                   alt={votingData.title+' 이미지' || '게시글 이미지'}
                   style={{
@@ -138,6 +139,7 @@ const VotingBoardForm = () => {
                     boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                   }}
               />
+                )}
             </div>
             )}
             

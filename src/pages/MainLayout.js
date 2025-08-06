@@ -120,7 +120,7 @@ const MainLayout = () => {
                       </>:
                       ""}
                 </ul>
-                <h3>오늘의</h3>
+                <h3>주간 BEST</h3>
                 <ul className="nav-list">
                   <li><Link to="/board/ranking/recommend">Best404 추천</Link></li>
                   <li><Link to="/board/ranking/comments">Best404 댓글</Link></li>
@@ -138,7 +138,7 @@ const MainLayout = () => {
                 <h3>포인트 게시판</h3>
                 <ul className="nav-list">
                   <li><Link to="/board/quiz">퀴즈 게시판</Link></li>
-                  <li><Link to="/board/voting">OX 게시판</Link></li>
+                  <li><Link to="/board/voting">찬반 게시판</Link></li>
                   <li><Link to="/board/survey">설문조사 게시판</Link></li>
                   <li><Link to="/board/dice">주사위 게임</Link></li>
                 </ul>

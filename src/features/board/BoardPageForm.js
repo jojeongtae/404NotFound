@@ -30,7 +30,7 @@ const BoardPageForm = ({ boardId }) => {
         used: "중고 게시판",
         quiz: "퀴즈 게시판",
         survey: "설문조사 게시판",
-        voting: "OX 게시판"
+        voting: "찬반 게시판"
     };
 
     const displayBoardName = boardNames[boardId] || `${boardId} 게시판`;
