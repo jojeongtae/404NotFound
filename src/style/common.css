@@ -71,6 +71,24 @@
 .signup-modal .signup-item input{margin-left:0;}
 
 
+/* 인트로 페이지 */
+.main-intro{}
+.main-intro .intro-header{text-align:center;margin:30px 0 40px;}
+.main-intro .intro-header .main-title strong{vertical-align:middle;font-size:24px;}
+.main-intro .intro-header .main-title span{vertical-align:middle;font-size:16px;letter-spacing:-0.05em;}
+.main-intro .intro-header .sub-title{margin-top:10px;}
+
+.main-intro .ranking-wrap{display:flex;justify-content:space-evenly;}
+.main-intro .ranking-wrap .ranking-box{flex-basis:300px;position:relative;padding:25px 30px;/*border:1px solid var(--border-color);*/border-radius:10px;box-shadow:3px 5px 20px rgba(0,0,0,0.2);}
+.main-intro .ranking-wrap .ranking-box h4{text-align:center;}
+.main-intro .ranking-wrap .ranking-box .ranking-list{display:flex;flex-direction:column;gap:5px; text-align:left;font-size:16px;letter-spacing:-0.04em;}
+.main-intro .ranking-wrap .ranking-box .ranking-item{display:flex;align-items:center;gap:4px;}
+.main-intro .ranking-wrap .ranking-box .ranking-item .num{font-weight:600;}
+.main-intro .ranking-wrap .ranking-box .ranking-item .recommend{color:var(--text-color2);}
+
+
+
+
 /* --게시판-- */
 
 /* 게시판 목록 */
@@ -84,6 +102,8 @@
 .board-view .search-board-form .search-input{flex-grow:1;}
 .board-view .search-board-form .submit{min-width:70px;}
 
+.board-view .table.post-list tr.top-recommend{background-color:var(--bg-color-light);}
+.board-view .table.post-list tr.top-recommend .post-title{font-weight:600;}
 .board-view .table.post-list tbody .post-author{text-align:left;}
 
 .board-view .pagination{display:flex;justify-content:center;align-items:center;gap:10px; margin:25px 0 20px;}
@@ -194,11 +214,11 @@
 /* 신고하기 */
 .board-report{font-family:var(--font-arial);}
 .board-report .report-list{}
-.board-report .report-list > li:nth-child(n+2){margin-top:10px;}
-.board-report .report-list > li label{display:flex;align-items:center;gap:8px;}
-.board-report .report-list > li label > *{margin-left:0;}
-.board-report .report-list input[type="number"]{width:70px;}
-.board-report .report-list textarea{flex-grow:0.5;}
+.board-report .report-list > li:nth-child(n+2){margin-top:12px;}
+.board-report .report-list > li label{display:inline-flex;flex-direction:column;gap:7px;align-items:flex-start;}
+.board-report .report-list > li label > *{flex-grow:0; margin-left:0;}
+.board-report .report-list input[type="number"]{width:80px;}
+.board-report .report-list textarea{width:500px;}
 .board-report .btn_wrap{margin-top:30px;}
 
 
