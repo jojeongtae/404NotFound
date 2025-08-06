@@ -13,7 +13,6 @@ const BoardPage = () => {
       <div style={{ textAlign: 'center', padding: '50px' }}>
         <h1>404 Not Found</h1>
         <p>이곳은 404NotFound의 메인 페이지입니다.</p>
-        <p>왼쪽 게시판 목록에서 게시판을 선택해주세요.</p>
       </div>
     );
   }

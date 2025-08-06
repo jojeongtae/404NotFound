@@ -106,9 +106,9 @@ const MainLayout = () => {
         <div id="container">
           <div className="wrap">
             <aside>
-              <div className="aside-title">
-                <h2>메뉴</h2>
-              </div>
+              {/*<div className="aside-title">*/}
+              {/*  <h2>메뉴</h2>*/}
+              {/*</div>*/}
               <nav>
                 <h3>운영자 게시판</h3>
                 <ul className="nav-list">
