@@ -70,13 +70,13 @@ const AdminUserListForm = () => {
       <h3>관리자 - 유저 목록</h3>
       <table className="admin-table">
         <colgroup>
-          <col style="width:14%;"/>
+          <col style={{width:"14%"}}/>
           <col/>
-          <col style="width:19%;"/>
+          <col style={{width:"19%"}}/>
           <col/>
           <col/>
           <col/>
-          <col style="width:17%;"/>
+          <col style={{width:"17%"}}/>
           <col/>
           <col/>
         </colgroup>
