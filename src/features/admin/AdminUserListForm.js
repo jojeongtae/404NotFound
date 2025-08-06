@@ -78,6 +78,7 @@ const AdminUserListForm = () => {
           <col/>
           <col style="width:17%;"/>
           <col/>
+          <col/>
         </colgroup>
         <thead>
         <tr>
