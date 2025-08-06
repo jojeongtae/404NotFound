@@ -72,21 +72,18 @@
 
 
 /* 인트로 페이지 */
-.main-intro{}
 .main-intro .intro-header{text-align:center;margin:30px 0 50px;}
 .main-intro .intro-header .main-title strong{vertical-align:middle;font-size:24px;}
 .main-intro .intro-header .main-title span{vertical-align:middle;font-size:15px;letter-spacing:-0.05em;}
 .main-intro .intro-header .sub-title{margin-top:10px;}
 
 .main-intro .ranking-wrap{display:flex;justify-content:center;gap:8%;}
-.main-intro .ranking-wrap .ranking-box{flex-basis:280px;position:relative;padding:30px 40px;/*border:1px solid var(--border-color);*/border-radius:10px;box-shadow:3px 5px 10px rgba(0,0,0,0.2);}
+.main-intro .ranking-wrap .ranking-box{flex-basis:280px;position:relative;padding:30px 40px;border-radius:20px;box-shadow:3px 5px 10px rgba(0,0,0,0.2);}
 .main-intro .ranking-wrap .ranking-box h4{margin-bottom:20px;text-align:center;}
 .main-intro .ranking-wrap .ranking-box .ranking-list{display:flex;flex-direction:column;gap:8px;text-align:left;font-size:16px;letter-spacing:-0.04em;}
 .main-intro .ranking-wrap .ranking-box .ranking-item{display:flex;align-items:center;gap:5px;}
 .main-intro .ranking-wrap .ranking-box .ranking-item .num{font-weight:600;}
 .main-intro .ranking-wrap .ranking-box .ranking-item .recommend{color:var(--text-color2);}
-
-
 
 
 /* --게시판-- */
@@ -102,7 +99,7 @@
 .board-view .search-board-form .search-input{flex-grow:1;}
 .board-view .search-board-form .submit{min-width:70px;}
 
-.board-view .table.post-list tr.top-recommend{background-color:var(--bg-color-light);}
+/*.board-view .table.post-list tr.top-recommend{background-color:var(--bg-color-light);}*/
 .board-view .table.post-list tr.top-recommend .post-title{font-weight:600;}
 .board-view .table.post-list tbody .post-author{text-align:left;}
 

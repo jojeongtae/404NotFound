@@ -168,9 +168,9 @@ const BoardPageForm = ({ boardId }) => {
                 <tbody>
                     {!pointBoard && topPosts.map(post => (
                         <tr key={`top-${post.id}`} className="post-list-item top-recommend">
-                            <td className="post-item post-id" onClick={() => navigate(`/board/${boardId}/${post.id}`)}>{post.id}</td>
-                            <td className="post-item post-title" onClick={() => navigate(`/board/${boardId}/${post.id}`)}>⭐ {post.title}</td>
-                            <td className="post-item post-author" onClick={(e) => handleNicknameClick(e, { nickname: post.authorNickname, id: post.author, grade: post.grade })}>
+                            <td className="post-item post-id" onClick={() => navigate(`/board/${boardId}/${post.id}`)} style={{ cursor: 'pointer' }}>{post.id}</td>
+                            <td className="post-item post-title" onClick={() => navigate(`/board/${boardId}/${post.id}`)} style={{ cursor: 'pointer' }}>⭐ {post.title}</td>
+                            <td className="post-item post-author" onClick={(e) => handleNicknameClick(e, { nickname: post.authorNickname, id: post.author, grade: post.grade })} style={{ cursor: 'pointer' }}>
                                 <span className="user-grade">{getFullGradeDescription(post.grade)}</span>
                                 {post.authorNickname}
                             </td>
