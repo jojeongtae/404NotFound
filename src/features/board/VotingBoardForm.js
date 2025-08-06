@@ -123,11 +123,22 @@ const VotingBoardForm = () => {
             </ul>
 
             {votingData &&(
-            <img
-                src={`http://404notfoundpage.duckdns.org/${votingData.imgsrc}`}
-                alt={votingData.title+' 이미지' || '게시글 이미지'}
-                className="detail-img"
+            <div style={{ marginBottom: '20px' }}>
+              <img
+                  src={`http://404notfoundpage.duckdns.org/${votingData.imgsrc}`}
+                  alt={votingData.title+' 이미지' || '게시글 이미지'}
+                  style={{
+                    display: 'block',
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    maxWidth: '800px',
+                    width: '100%',
+                    height: 'auto',
+                    borderRadius: '8px',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                  }}
               />
+            </div>
             )}
             
             <p className="question">❓{votingData.question}</p>
