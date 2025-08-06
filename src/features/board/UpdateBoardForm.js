@@ -73,45 +73,47 @@ const UpdateBoardForm = () => {
   }, [postId, loggedInUsername, navigate]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!title.trim() || !body.trim()) {
-      alert('제목과 내용을 입력해주세요.');
-      return;
+  if (!title.trim() || !body.trim()) {
+    alert('제목과 내용을 입력해주세요.');
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const formData = new FormData();
+
+    // ✅ boardDTO를 Blob(application/json)으로 감싸서 전송
+    const boardDTO = {
+      title,
+      body,
+      author: originalAuthor,
+    };
+    formData.append(
+      'boardDTO',
+      new Blob([JSON.stringify(boardDTO)], { type: 'application/json' })
+    );
+
+    // ✅ 이미지가 선택된 경우만 추가
+    if (selectedImage) {
+      formData.append('file', selectedImage);
     }
 
-    setLoading(true);
+    // ✅ apiClient는 FormData면 Content-Type 자동 처리
+    await apiClient.put(`/${boardId}/${postId}`, formData);
 
-    try {
-      const formData = new FormData();
-
-      // boardDTO를 Blob으로 감싸지 않고, 순수한 JSON 문자열로 추가합니다.
-      const boardDTO = {
-        title,
-        body,
-        author: originalAuthor,
-      };
-      formData.append('boardDTO', JSON.stringify(boardDTO));
-
-      // 이미지가 선택된 경우에만 FormData에 추가
-      if (selectedImage) {
-        formData.append('file', selectedImage);
-      }
-
-      // 백엔드 API 호출
-      await apiClient.put(`/${boardId}/${postId}`, formData);
-
-      alert('게시글이 성공적으로 수정되었습니다!');
-      navigate(`/board/free/${postId}`); // 수정된 게시글 상세 페이지로 이동
-
-    } catch (err) {
-      console.error('게시글 수정 실패:', err);
-      setError('게시글 수정에 실패했습니다.');
-      alert('게시글 수정에 실패했습니다.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    alert('게시글이 성공적으로 수정되었습니다!');
+    navigate(`/board/free/${postId}`); // 수정된 게시글 상세 페이지로 이동
+  } catch (err) {
+    console.error('게시글 수정 실패:', err);
+    setError('게시글 수정에 실패했습니다.');
+    alert('게시글 수정에 실패했습니다.');
+  } finally {
+    setLoading(false);
+  }
+};
 
   if (loading) {
     return <div style={{ textAlign: 'center', padding: '50px' }}>게시글을 불러오는 중...</div>;
