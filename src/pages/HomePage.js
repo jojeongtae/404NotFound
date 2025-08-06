@@ -27,32 +27,49 @@ const HomePage = () => {
     }, []);
 
     return (
-        <div style={{ textAlign: 'center', padding: '50px' }}>
-            <h1>환영합니다!</h1>
-            <p>이곳은 404NotFound의 메인 페이지입니다.</p>
-            
-            {loading ? (
-                <p>랭킹 정보를 불러오는 중...</p>
-            ) : (
-                <div style={{ display: 'flex', justifyContent: 'space-around', marginTop: '40px', textAlign: 'left' }}>
-                    <div style={{ flex: 1, marginRight: '20px' }}>
-                        <h3>🏆 유저 등급 랭킹</h3>
-                        <ol>
-                            {userRanking.map((user, index) => (
-                                <li key={index}>{`${index + 1}. ${user.nickname} (${getFullGradeDescription(user.grade)})`}</li>
-                            ))}
-                        </ol>
+        <div className="main-intro">
+            <div className="intro-header">
+                <p className="main-title">
+                    <strong>404 Not Found</strong>
+                    <span> – 존재하지 않던 연결을 찾다</span>
+                </p>
+                <p className="sub-title">지금, 당신의 여정을 함께할 사람들을 만나보세요.</p>
+            </div>
+
+            <div className="intro-ranking">
+                {loading ? (
+                    <p>랭킹 정보를 불러오는 중...</p>
+                ) : (
+                    <div className="ranking-wrap">
+                        <div className="ranking-box user">
+                            <h4>🏆 유저 등급 랭킹</h4>
+                            <ol className="ranking-list">
+                                {userRanking.map((user, index) => (
+                                    <li key={index} className="ranking-item">
+                                        {/*{`${index + 1}. ${user.nickname} (${getFullGradeDescription(user.grade)})`}*/}
+                                        <span className="num">{index + 1}.</span>
+                                        <span className="title">{user.nickname}</span>
+                                        <span className="user-grade">{getFullGradeDescription(user.grade)}</span>
+                                    </li>
+                                ))}
+                            </ol>
+                        </div>
+                        <div className="ranking-box recommend">
+                            <h4>👍 게시글 추천 랭킹</h4>
+                            <ol className="ranking-list">
+                                {recommendRanking.map((post, index) => (
+                                    <li key={index} className="ranking-item">
+                                        {/*{`${index + 1}. ${post.title} (${post.recommend})`}*/}
+                                        <span className="num">{index + 1}.</span>
+                                        <span className="title">{post.title}</span>
+                                        <span className="recommend">({post.recommend}추천)</span>
+                                    </li>
+                                ))}
+                            </ol>
+                        </div>
                     </div>
-                    <div style={{ flex: 1, marginLeft: '20px' }}>
-                        <h3>👍 게시글 추천 랭킹</h3>
-                        <ol>
-                            {recommendRanking.map((post, index) => (
-                                <li key={index}>{`${index + 1}. ${post.title} (${post.recommend})`}</li>
-                            ))}
-                        </ol>
-                    </div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     );
 };
