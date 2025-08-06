@@ -164,7 +164,7 @@ const SurveyBoardForm = () => {
                                 marginLeft: 'auto',
                                 marginRight: 'auto',
                                 maxWidth: '800px',
-                                width: '100%',
+                                width: '30%',
                                 height: 'auto',
                                 borderRadius: '8px',
                                 boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
