@@ -33,7 +33,7 @@ const PostDetailPage = () => {
         const res = await apiClient.delete(`/${boardId}/${postId}`);
         // console.log(res.data);
         alert("삭제가 완료되었습니다");
-        navigate(-1);
+        navigate(`/board/${boardId}`);
       } else {
         return;
       }
