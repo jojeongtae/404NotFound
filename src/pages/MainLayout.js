@@ -68,10 +68,13 @@ const MainLayout = () => {
             <nav className="nav-links">
               {isLoggedIn ? (
                   <>
-                    <Link to="/board/new" className="btn type2 nav-link">글쓰기</Link>
-                    <button onClick={() => openModal('userInfo')} className='nav-link'>내 정보 수정</button> {/* 버튼으로 변경 */}
-                    <button onClick={() => openModal('mailbox')} className='nav-link'>{messages.length}메시지</button> {/* 이 줄을 추가합니다. */}
-                    <button onClick={logout} className="nav-link">Logout</button>
+                    <Link to="/board/new" className="btn type2 btn">글쓰기</Link>
+                    <button onClick={() => openModal('userInfo')} className='btn'>내 정보 수정</button> {/* 버튼으로 변경 */}
+                    <button onClick={() => openModal('mailbox')} className='btn message-btn'>
+                      메시지
+                      <span className="badge">{messages.length}</span>
+                    </button> {/* 이 줄을 추가합니다. */}
+                    <button onClick={logout} className="btn">Logout</button>
                   </>
               ) : (
                   <>
