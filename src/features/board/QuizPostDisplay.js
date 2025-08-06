@@ -25,7 +25,7 @@ const QuizPostDisplay = ({ post }) => {
         quiz_id:post.id,
         result: 1
       })
-      console.log(res.data);
+      // console.log(res.data);
       if(res.data){
       alert('정답입니다! 포인트를 획득했습니다.'); // 백엔드에서 포인트 지급 로직 필요
       }
@@ -36,7 +36,7 @@ const QuizPostDisplay = ({ post }) => {
         quiz_id:post.id,
         result:0
       })
-      console.log(res.data);
+      // console.log(res.data);
       setIsCorrect(false);
       alert('오답입니다.');
     }

@@ -104,16 +104,16 @@ const NewBoardForm = () => {
                 if (selectedImage) {
                     boardFormData.append("file", selectedImage);
                 }
-                console.log("boardDTO JSON:", JSON.stringify(boardDTO));
+                // console.log("boardDTO JSON:", JSON.stringify(boardDTO));
 
-                console.log("FormData (with boardDTO) 전송 시작...");
+                // console.log("FormData (with boardDTO) 전송 시작...");
                res = await apiClient.post(`/${boardId}/new`, boardFormData, {
   headers: {
     'Content-Type': undefined, // <- Axios가 multipart로 자동 설정
   },
 });
 
-            console.log("게시글 작성 응답:", res.data);
+            // console.log("게시글 작성 응답:", res.data);
             alert('글이 성공적으로 작성되었습니다!');
             navigate(`/board/${boardId}`);
 
@@ -121,7 +121,7 @@ const NewBoardForm = () => {
                 try {
                     const userInfoRes = await apiClient.get(`/user/user-info?username=${user.username}`);
                     dispatch(setUser(userInfoRes.data));
-                    console.log("User info updated after new board post:", userInfoRes.data);
+                    // console.log("User info updated after new board post:", userInfoRes.data);
                 } catch (userInfoError) {
                     console.error("Failed to fetch user info after new board post:", userInfoError);
                 }

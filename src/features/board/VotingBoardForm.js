@@ -83,7 +83,7 @@ const VotingBoardForm = () => {
                 answers: selectedOption.toUpperCase(),
             };
             const res = await apiClient.post("/voting-answers/new", responseData);
-            console.log("투표 응답 제출 성공:", res.data);
+            // console.log("투표 응답 제출 성공:", res.data);
             alert("투표 응답이 제출되었습니다!");
             setHasParticipated(true); // 참여 완료
             fetchVotingResults(); // 결과 불러오기

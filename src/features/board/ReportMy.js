@@ -16,7 +16,7 @@ export default function ReportMy() {
 
             try {
                 const response = await apiClient.get(`/user/report/${username}`);
-                console.log(response.data);
+                // console.log(response.data);
                 setReports(response.data);
             } catch (e) {
                 console.error("목록 불러오기 실패: ",e)

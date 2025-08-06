@@ -13,7 +13,7 @@ const AdminUserListForm = () => {
         setError(null);
         const response = await apiClient.get('/admin/users'); // 백엔드 API 경로 확인
         setUsers(response.data);
-        console.log('유저 목록:', response.data);
+        // console.log('유저 목록:', response.data);
       } catch (err) {
         console.error('유저 목록 불러오기 실패:', err);
         setError('유저 목록을 불러오는 데 실패했습니다.');
@@ -58,7 +58,7 @@ const AdminUserListForm = () => {
 
     try {
       const res = await apiClient.patch(`/admin/user-status/${username}?status=${result}`);
-      console.log(res);
+      // console.log(res);
       console.log("변경완료")
     } catch (error) {
       console.log(error);

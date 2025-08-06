@@ -117,7 +117,7 @@ const BoardPageForm = ({ boardId }) => {
                 }
                 const res = await apiClient.get(url);
                 setPosts([...res.data].reverse());
-                console.log(`게시판 ${boardId}의 게시글:`, res.data);
+                // console.log(`게시판 ${boardId}의 게시글:`, res.data);  db양 많아져서 주석처리 
             } catch (err) {
                 console.error(`게시판 ${boardId} 게시글 불러오기 실패:`, err);
                 setError("게시글을 불러오는 데 실패했습니다.");

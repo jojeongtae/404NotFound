@@ -16,7 +16,7 @@ const MailboxForm = ({ onClose, messages, setMessages }) => { // 🔹 props로 m
       setError(null);
       const response = await apiClient.get(`/message/receiver`, username);
       setMessages(response.data); // 🔹 부모 상태도 함께 갱신
-      console.log('메시지:', response.data);
+      // console.log('메시지:', response.data);
     } catch (err) {
       console.error('메시지 불러오기 실패:', err);
       setError('메시지를 불러오는 데 실패했습니다.');

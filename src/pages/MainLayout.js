@@ -37,7 +37,7 @@ const MainLayout = () => {
 
   useEffect(() => {
     // 로그인 상태이고, 사용자 정보가 Redux 스토어에 없거나 업데이트가 필요한 경우
-    console.log(user);
+    // console.log(user);
     if (isLoggedIn && user.username) { // user.username이 있을 때만 API 호출
       const fetchUserInfo = async () => { // async 함수로 변경
         try {

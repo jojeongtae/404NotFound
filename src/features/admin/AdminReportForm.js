@@ -14,7 +14,7 @@ const AdminReportForm = () => {
                 setLoading(true);
                 setError(null);
                 const res = await apiClient.get("/admin/report-list");
-                console.log(res.data);
+                // console.log(res.data);
                 setReports(res.data.filter(user => user.status === "PENDING"));
             } catch (err) {
                 console.error("신고 목록 불러오기 실패:", err);

@@ -28,14 +28,7 @@ const OAuthSuccess = () => {
         }
       };
       fetchUserInfo();
-      // 유저 정보 저장
-      // dispatch(setUser({
-      //   username,
-      //   nickname: nickname || '',
-      //   role: role || 'ROLE_USER',
-      // }));
-
-      // URL 정리
+    
       window.history.replaceState({}, document.title, '/');
 
       navigate('/'); // 메인 페이지로 이동

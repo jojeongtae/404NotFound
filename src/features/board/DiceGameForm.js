@@ -37,7 +37,7 @@ const DiceGame = ({ roomId }) => {
     const client = new Client({
       webSocketFactory: () => new SockJS(`${API_BASE_URL}/ws-game`),
       onConnect: () => {
-        console.log("✅ WebSocket connected!");
+        // console.log("✅ WebSocket connected!");
         client.subscribe(`/topic/game-result/${roomId}`, (message) => {
           const gameResult = JSON.parse(message.body);
           setResult(gameResult);

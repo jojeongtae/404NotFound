@@ -27,7 +27,7 @@ const ReportBoardForm = () => {
         e.preventDefault();
         try {
             const res = await apiClient.get(`/user/nickname/${formData.reported}`);
-            console.log(res.data);
+            // console.log(res.data);
             if (res.data) {
                 const sendData = {
                     ...formData,
@@ -35,7 +35,7 @@ const ReportBoardForm = () => {
                     reported:res.data.username,
                 };
                 const response = await apiClient.post("/user/report", sendData);
-                console.log("신고 성공: ", response.data);
+                // console.log("신고 성공: ", response.data);
                 alert("신고가 접수 되었습니다.");
                 navigate(`/board/user/report/${user.username}`);
             } else {

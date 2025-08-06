@@ -6,7 +6,6 @@ import { GetBoardName } from '../features/board/GetBoardName';
 
 const RankingPage = ({ props }) => {
   const { type } = useParams(); // URL 파라미터에서 랭킹 타입 (recommend 또는 comment)을 가져옴
-  console.log("RankingPage - type:", type);
   const [rankingData, setRankingData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,20 +17,20 @@ const RankingPage = ({ props }) => {
       try {
         if (type === "comments") {
           const response = await apiClient.get(`/ranking/comments/week`);
-          console.log("Original Data (before sort):", response.data);
+          // console.log("Original Data (before sort):", response.data);
           // 댓글 수 기준으로 내림차순 정렬
           const sortedData = [...response.data].sort((a, b) => Number(b.commentCount) - Number(a.commentCount));
-          console.log("Sorted Data:", sortedData);
+          // console.log("Sorted Data:", sortedData);
           setRankingData(sortedData);
 
         } else if (type === "recommend") {
           const response = await apiClient.get(`/ranking/recommend/week`);
           setRankingData(response.data);
-          console.log(response.data);
+          // console.log(response.data);
         } else {
           const response = await apiClient.get('/ranking/views/week')
           setRankingData(response.data);
-          console.log(response.data);
+          // console.log(response.data);
         }
 
 

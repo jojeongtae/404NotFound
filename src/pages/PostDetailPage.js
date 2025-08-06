@@ -31,7 +31,7 @@ const PostDetailPage = () => {
       const result = window.confirm("정말 삭제하시겠습니까?");
       if (result) {
         const res = await apiClient.delete(`/${boardId}/${postId}`);
-        console.log(res.data);
+        // console.log(res.data);
         alert("삭제가 완료되었습니다");
         navigate(-1);
       } else {
@@ -55,7 +55,7 @@ const PostDetailPage = () => {
       } else {
         const { post, comments } = await fetchPostDetailAndComments(boardId, postId, dispatch);
         setPost(post);
-        console.log(post);
+        // console.log(post);
         const sortedComments = comments.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
         setComments(sortedComments);
       }
@@ -87,7 +87,7 @@ const PostDetailPage = () => {
       alert("추천되었습니다!");
       setIsRecommended(true);
       setPost(prevPost => ({ ...prevPost, recommend: prevPost.recommend + 1 }));
-      console.log(res.data);
+      // console.log(res.data);
 
     } catch (error) {
       if (error.status === 500) {
@@ -121,7 +121,7 @@ const PostDetailPage = () => {
         try {
           const userInfoRes = await apiClient.get(`/user/user-info?username=${username}`);
           dispatch(setUser(userInfoRes.data));
-          console.log("User info updated after comment submission:", userInfoRes.data);
+          // console.log("User info updated after comment submission:", userInfoRes.data);
         } catch (userInfoError) {
           console.error("Failed to fetch user info after comment submission:", userInfoError);
         }
