@@ -101,7 +101,7 @@ const BoardPageForm = ({ boardId }) => {
                 setLoading(false);
                 return; // boardId가 없으면 요청하지 않음
             }
-            if (boardId === "ox" || boardId === "quiz" || boardId === 'survey') {
+            if (boardId === "voting" || boardId === "quiz" || boardId === 'survey') {
                 setPointBoard(true);
             } else {
                 setPointBoard(false);
