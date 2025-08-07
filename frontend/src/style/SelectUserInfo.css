@@ -1,0 +1,42 @@
+.user-info-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+.user-info-title {
+    text-align: center;
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+
+.user-info-item {
+    margin: 10px 0;
+    font-size: 1.1em;
+    color: #555;
+}
+
+.user-info-item strong {
+    color: #333;
+    min-width: 120px;
+    display: inline-block;
+}
+
+.user-info-loading,
+.user-info-error,
+.user-info-not-found {
+    padding: 20px;
+    text-align: center;
+}
+
+.user-info-error {
+    color: red;
+}

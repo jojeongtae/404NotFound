@@ -1,0 +1,7 @@
+http://404notfoundpage.duckdns.org/api/login/oauth2/code/kakao?code=7G74_uROrm169VBgtocwnlaTkmrUGk4EJXhEzIKWwiNfASMBhXNRSQAAAAQKDRTdAAABmGk8pJbRDLJpR7eCqA
+{
+  "role": "ROLE_USER",
+  "nickname": "정태",
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJjYXRlZ29yeSI6ImFjY2VzcyIsInVzZXJuYW1lIjoia2FrYW9fNDM2NTQyMTYwMyIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3NTQxMTIyMzksImV4cCI6MTc1NDExMjgzOX0.7k5TAOucoy79tQWFDisq2Ks6KHTZ_kKZHxzc1KHi2Gk",
+  "username": "kakao_4365421603"
+}

@@ -1,0 +1,84 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
+
+:root {
+    --bg-color: #fff; /* 흰색 배경 */
+    --bg-color-light: #eee;
+    --text-color: #333; /* 텍스트 */
+    --text-color2: #6C757D;
+    --accent-color: #374151; /* 버튼/링크 색상 */
+    --accent-color-hover: #4B5563;
+    --border-color: #b6b6b6;
+    --border-color-light: #ddd;
+    --success-color: #10B981;
+    --caution-color: #F59E0B;
+    --warning-color: #EF4444;
+    --blue-color: #3B82F6;
+
+    --main-color: #1F2937;
+    --glitch-color-1: #00e6e6;
+    --glitch-color-2:  #ff33cc;
+
+    --font-arial:Arial,Helvetica,sans-serif;
+    --font-default:'Source Code Pro', monospace;
+}
+
+.red{color:var(--warning-color);}
+
+/* title */
+h3{margin-bottom:25px;font-size:22px;font-weight:600;}
+h4{margin-bottom:10px;font-size:20px;font-weight:600;}
+
+/* button */
+button, .btn{display: inline-block;position: relative;padding: 5px 10px;min-width: 50px;border: 1px solid var(--border-color);border-radius: 5px;background-color: #fff;text-align: center;vertical-align: top;color: var(--text-color);font-size: 15px;font-weight: 400;line-height: 1.4em;text-decoration: none;cursor: pointer;transition: all 250ms;font-family:var(--font-arial);}
+button:hover, .btn:hover {border-color:var(--accent-color);background-color:var(--accent-color);color: var(--bg-color);}
+/* red */
+button.red, .btn.red{border-color:var(--warning-color);color: var(--warning-color);}
+button.red:hover, .btn.red:hover{background-color:var(--warning-color);color:var(--bg-color);}
+/* type2 */
+button.type2, .btn.type2{border:1px solid var(--accent-color);background-color:var(--accent-color);color: #fff;}
+button.type2:hover, .btn.type2:hover{border-color:var(--accent-color-hover);background-color:var(--accent-color-hover);}
+/* small */
+button.small, .btn.small{padding:3px 6px 2px;font-size:14px;}
+/* big */
+button.large, .btn.large{padding:8px 12px;min-width:100px;font-size:16px;}
+
+button:nth-child(n+2), .btn:nth-child(n+2) {margin-left: 8px;}
+button.large:nth-child(n+2), .btn.large:nth-child(n+2) {margin-left:10px;}
+button[disabled], .btn[disabled]{background-color:var(--border-color) !important;border-color:var(--border-color) !important;color:var(--bg-color) !important;}
+
+/* table */
+.table{border-top:1px solid var(--text-color2);border-bottom:1px solid var(--border-color);}
+
+.table th{border-bottom:1px solid var(--border-color);}
+.table tr:nth-last-child(n+2){border-bottom:1px solid var(--border-color-light);}
+.table td, .table th {padding:10px 8px;text-align:center;}
+
+/* admin용 테이블 */
+.admin-table{border-collapse:collapse;border-spacing:0;}
+.admin-table th,
+.admin-table td{border:1px solid var(--border-color);padding:10px 4px;text-align:center;vertical-align:middle;}
+.admin-table thead{background-color:var(--bg-color-light)}
+
+/* form */
+input[type="text"],input[type="number"],input[type="password"],textarea,
+select{vertical-align:top;min-height:33px;padding:5px 6px 5px 10px;box-sizing:border-box;border:1px solid var(--border-color);border-radius:5px;font-size:14px;line-height:1.4em;font-family:var(--font-arial);}
+
+input[type="text"],input[type="number"],input[type="password"],
+select:nth-child(n+2){margin-left:8px;}
+
+select{position:relative;padding-left:6px;}
+
+/* 유저 등급 뱃지 */
+.user-grade {
+    display: inline-block;
+    padding: 2px 7px 3px 5px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    margin-right: 6px;
+    color: #fff;
+    background-color: #a0a0a0; /* 기본 색상 */
+}
