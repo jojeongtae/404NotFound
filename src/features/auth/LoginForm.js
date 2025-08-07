@@ -83,7 +83,7 @@ const LoginForm = ({ onClose }) => {
 
       apiClient.get(callbackUrl, { withCredentials: true })
         .then(res => {
-          console.log(`${provider} 로그인 응답:`, res.data);
+          // console.log(`${provider} 로그인 응답:`, res.data);
 
           if (res.data?.username) {
             // Redux 상태 갱신

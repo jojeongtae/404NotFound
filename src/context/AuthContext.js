@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => { // async 키워드 추가
     try {
 
-      const response = await apiClient.delete('/reissue'); 
+      const response = await apiClient.delete('/logout'); 
       console.log("백엔드 로그아웃 응답:", response.data); // 응답 데이터 확인
     } catch (error) {
       console.error("백엔드 로그아웃 실패:", error);
